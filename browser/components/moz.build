@@ -28,3 +28,9 @@ EXTRA_JS_MODULES += [
     "userjsUtils.sys.mjs",
     "WorkspaceUtils.sys.mjs",
 ]
+
+DEFINES["TOPOBJDIR"] = TOPOBJDIR
+
+EXTRA_PP_JS_MODULES += [
+    "FloorpAppConstants.sys.mjs",
+]
