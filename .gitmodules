@@ -1,0 +1,3 @@
+[submodule "browser/locales/en-US"]
+	path = browser/locales/en-US
+	url = https://github.com/Floorp-Projects/Floorp-strings
