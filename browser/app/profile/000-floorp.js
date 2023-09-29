@@ -170,6 +170,12 @@ pref("floorp.privateContainer.enabled", true);
 pref("floorp.browser.splitView.enabled", false);
 /*----------------------------------------------------------------------------------------------------------------------------------*/
 
+#if defined(FLOORP_LIGHTNING_BUILD)
+pref("browser.firefox-view.feature-tour", "{'screen':'FIREFOX_VIEW_SPOTLIGHT','complete':true}");
+pref("browser.tabs.firefox-view", false);
+pref("browser.tabs.firefox-view.notify-for-tabs", false);
+#endif
+
 //ブックマークツールバー
 pref("browser.toolbars.bookmarks.visibility", "always");
 

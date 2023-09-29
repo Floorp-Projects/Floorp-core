@@ -8,8 +8,12 @@ DIRS += [
     "floorp-actions",
     "official-site-ua",
     "webpanel-ua",
-    "multirow-tabs",
 ]
+
+if not CONFIG["FLOORP_LIGHTNING_BUILD"]:
+    DIRS += [
+        "multirow-tabs",
+    ]
 
 DIRS += ["floorp-system/shared"]
 

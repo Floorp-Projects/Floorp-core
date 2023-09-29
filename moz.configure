@@ -8,14 +8,9 @@
 
 option(
     "--enable-lightning-build",
-    env="FLOORP_LIGHTNING_BUILD",
+    default=False,
     help="Enable Lightning build: Remove some components & features",
 )
 
-@depends("--enable-lightning-build")
-def floorpLightningBuild(value):
-    if value:
-        return True
-
-set_config("FLOORP_LIGHTNING_BUILD", floorpLightningBuild)
-set_define("FLOORP_LIGHTNING_BUILD", floorpLightningBuild)
+set_config("FLOORP_LIGHTNING_BUILD", True, when="--enable-lightning-build")
+set_define("FLOORP_LIGHTNING_BUILD", True, when="--enable-lightning-build")

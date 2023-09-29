@@ -184,13 +184,16 @@ getAllBackupedNotes().then(content => {
 /*------------------------------------- user.js -------------------------------------*/
 // Apply Floorp user.js
 
-let userjsUtils = ChromeUtils.importESModule(
-  "resource:///modules/userjsUtils.sys.mjs"
+var { FloorpAppConstants } = ChromeUtils.importESModule(
+  "resource:///modules/FloorpAppConstants.sys.mjs"
 );
 
 const FLOORP_USERJS_PREF = "floorp.browser.userjs";
 
-(async function applyUserJSCustomize() {
+async function applyUserJSCustomize() {
+  let userjsUtils = ChromeUtils.importESModule(
+    "resource:///modules/userjsUtils.sys.mjs"
+  );
   const pref = Services.prefs.getStringPref("floorp.user.js.customize", "");
 
   if (pref != "") {
@@ -211,4 +214,8 @@ const FLOORP_USERJS_PREF = "floorp.browser.userjs";
         await IOUtils.write(userjs, writeData);
       });
   }
-})();
+};
+
+if (Services.prefs.getStringPref("floorp.user.js.customize", "") != "" && !FloorpAppConstants.FLOORP_LIGHTNING_BUILD) {
+  applyUserJSCustomize();
+}

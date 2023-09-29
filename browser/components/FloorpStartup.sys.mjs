@@ -13,6 +13,7 @@ import { AppConstants } from "resource://gre/modules/AppConstants.sys.mjs";
 import { setTimeout } from "resource://gre/modules/Timer.sys.mjs";
 import { FileUtils } from "resource://gre/modules/FileUtils.sys.mjs";
 import { CustomizableUI } from "resource:///modules/CustomizableUI.sys.mjs";
+import { FloorpAppConstants } from "resource:///modules/FloorpAppConstants.sys.mjs";
 
 // Migration from JSM to ES Module in the future.
 const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
@@ -162,7 +163,7 @@ if (isMainBrowser) {
     }
 }
 
-if (isMainBrowser) {
+if (isMainBrowser && !FloorpAppConstants.FLOORP_LIGHTNING_BUILD) {
     // Load actors
     try {
         ChromeUtils.importESModule("resource:///modules/FloorpActors.sys.mjs");
