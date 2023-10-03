@@ -5,8 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 let QRCodeGeneratePageActionButton = window.MozXULElement.parseXULToFragment(`
-<hbox id="QRCodeGeneratePageAction"
-  class="urlbar-page-action"
+<hbox id="QRCodeGeneratePageAction" data-l10n-id="qrcode-generate-page-action"
+  class="urlbar-page-action" tooltiptext="qrcode-generate-page-action"
   role="button" popup="qrcode-panel">
   <image id="QRCodeGeneratePageAction-image" class="urlbar-icon"/>
   <panel id="qrcode-panel" type="arrow" position="bottomright topright" onpopupshowing="generateCurrentTabQRCode()">
