@@ -6,6 +6,10 @@ browser.jar:
 % skin browser classic/1.0 %skin/classic/browser/
 
 #if !defined(FLOORP_LIGHTNING_BUILD)
+# QR Code
+  skin/classic/browser/QRCode-generater.png                               (icons/QRCode-generater.png)
+  skin/classic/browser/floorp-share.svg                                   (icons/floorp-share.svg)
+
 # verticalTab
   skin/classic/browser/verticaltab.svg                                    (icons/verticaltab.svg)
 

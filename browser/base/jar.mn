@@ -12,7 +12,8 @@ browser.jar:
   content/browser/browser-downloadbar.js        (content/browser-downloadbar.js)
   content/browser/browser-favicon-color.js      (content/browser-favicon-color.js)
   content/browser/browser-tabbar.js             (content/browser-tabbar.js)
-  content/browser/browser-toolbar-features.js   (content/browser-toolbar-features.js)
+  content/browser/browser-browserActions.js     (content/browser-browserActions.js)
+  content/browser/browser-pageActions-floorp.js        (content/browser-pageActions.js)
   content/browser/browser-pinned-tabs-title.js  (content/browser-pinned-tabs-title.js)
   content/browser/browser-rest-mode.js          (content/browser-rest-mode.js)
   content/browser/browser-splitView.js          (content/browser-splitView.js)
@@ -20,6 +21,8 @@ browser.jar:
   content/browser/browser-custom-keyboard-shortcut.js  (content/browser-custom-keyboard-shortcut.js)
   content/browser/browser-verticaltabs.css      (content/browser-verticaltabs.css)
   content/browser/browser-verticaltabs.js       (content/browser-verticaltabs.js)
+# Librarys
+  content/browser/qr-code-styling/qr-code-styling.js  (library/qr-code-styling/qr-code-styling@1.5.0.js)
 #endif
 
 ## Lightning build & Floorp build

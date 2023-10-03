@@ -91,14 +91,6 @@
       }
     }
   },
-  "page_action": {
-    "browser_style": true,
-    "default_icon": "icons/icon.png",
-    "default_popup": "qr-code/popup.html",
-    "show_matches": [
-      "<all_urls>"
-    ]
-  },
   "background": {
     "scripts": [
       "ua_data.js",

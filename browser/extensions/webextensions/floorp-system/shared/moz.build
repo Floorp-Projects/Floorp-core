@@ -49,16 +49,9 @@ FINAL_TARGET_FILES.features["floorp-system@floorp.ablaze.one"]["API"] += [
 FINAL_TARGET_FILES.features["floorp-system@floorp.ablaze.one"]["icons"] += [
     "icons/failed.png",
     "icons/floorp.png",
-    "icons/icon.png",
     "icons/LICENSE",
     "icons/link-48-last.png",
     "icons/link-48.png",
-]
-
-FINAL_TARGET_FILES.features["floorp-system@floorp.ablaze.one"]["qr-code"] += [
-    "qr-code/popup.html",
-    "qr-code/popup.js",
-    "qr-code/qrcode.js",
 ]
 
 FINAL_TARGET_FILES.features["floorp-system@floorp.ablaze.one"]["gesturefy"] += [

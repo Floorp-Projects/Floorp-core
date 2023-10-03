@@ -35,7 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-UI-custom.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-tabbar.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-splitView.js", this);
-        Services.scriptloader.loadSubScript("chrome://browser/content/browser-toolbar-features.js", this);
+        Services.scriptloader.loadSubScript("chrome://browser/content/browser-browserActions.js", this);
+        Services.scriptloader.loadSubScript("chrome://browser/content/browser-pageActions-floorp.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-pinned-tabs-title.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-chromeCSS.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-verticaltabs.js", this);
