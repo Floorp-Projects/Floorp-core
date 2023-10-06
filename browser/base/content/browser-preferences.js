@@ -143,7 +143,7 @@ const backupFloorpNotes = async () => {
   } catch (e) {}
 };
 
-if (Services.prefs.getCharPref(FLOORP_NOTES_PREF) != "") {
+if (!Services.prefs.prefHasUserValue(FLOORP_NOTES_PREF)) {
   backupFloorpNotes();
 }
 
@@ -184,10 +184,6 @@ getAllBackupedNotes().then(content => {
 /*------------------------------------- user.js -------------------------------------*/
 // Apply Floorp user.js
 
-var { FloorpAppConstants } = ChromeUtils.importESModule(
-  "resource:///modules/FloorpAppConstants.sys.mjs"
-);
-
 const FLOORP_USERJS_PREF = "floorp.browser.userjs";
 
 async function applyUserJSCustomize() {
@@ -216,6 +212,4 @@ async function applyUserJSCustomize() {
   }
 };
 
-if (Services.prefs.getStringPref("floorp.user.js.customize", "") != "" && !FloorpAppConstants.FLOORP_LIGHTNING_BUILD) {
-  applyUserJSCustomize();
-}
+applyUserJSCustomize();

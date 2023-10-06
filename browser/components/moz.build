@@ -20,6 +20,7 @@ EXTRA_JS_MODULES += [
     "FloorpStartup.sys.mjs",
     "PortableUpdate.sys.mjs",
     "PrivateContainer.sys.mjs",
+    "userjsUtils.sys.mjs",
     "WorkspaceUtils.sys.mjs",
 ]
 
@@ -30,7 +31,6 @@ if not CONFIG["FLOORP_LIGHTNING_BUILD"]:
         "EscapeShell.sys.mjs",
         "FloorpActors.sys.mjs",
         "OpenLinkInExternal.sys.mjs",
-        "userjsUtils.sys.mjs"
     ]
 
 DEFINES["TOPOBJDIR"] = TOPOBJDIR
