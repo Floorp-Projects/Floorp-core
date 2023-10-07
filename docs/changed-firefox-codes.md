@@ -132,3 +132,14 @@ URL: https://github.com/Floorp-Projects/Floorp/commit/ff13fc3e8e0a64028bbea0c565
 changed: "Connect Floorp Core to Gecko of Firefox."
 
 URL: https://github.com/Floorp-Projects/Floorp/commit/32b43fa707b60d668841012cfcab7247de07d103
+
+
+---
+
+14. browser\components\BrowserContentHandler.sys.mjs
+
+**Feature: "Release Note (Upgrade Floorp)"**
+
+changed: "Insert release note codes. If lang start with "ja", open spesific URL for Japanese users."
+
+URL: https://github.com/Floorp-Projects/Floorp/commit/91a52b0d8c24dc37318e621d97925c93c523ccfd
