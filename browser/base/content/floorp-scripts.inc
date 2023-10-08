@@ -41,5 +41,12 @@ document.addEventListener("DOMContentLoaded", () => {
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-chromeCSS.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-verticaltabs.js", this);
     }
+
+    // If script need more delay, use the following code.
+    SessionStore.promiseInitialized.then(() => {
+        if (!FloorpAppConstants.FLOORP_LIGHTNING_BUILD) {
+            Services.scriptloader.loadSubScript("chrome://browser/content/browser-UI-customizing-menu.js", this);
+        }
+    });
 }, { once: true });
 </script>

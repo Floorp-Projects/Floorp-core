@@ -8,6 +8,7 @@ browser.jar:
 # Floorp build
 #if !defined(FLOORP_LIGHTNING_BUILD)
   content/browser/browser-UI-custom.js          (content/browser-UI-custom.js)
+  content/browser/browser-UI-customizing-menu.js (content/browser-UI-customizing-menu.js)
   content/browser/browser-design.js             (content/browser-design.js)
   content/browser/browser-downloadbar.js        (content/browser-downloadbar.js)
   content/browser/browser-favicon-color.js      (content/browser-favicon-color.js)
