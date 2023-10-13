@@ -36,7 +36,6 @@ function checkBrowserIsStartup() {
 
 function setVerticalTabs() {
   if (Services.prefs.getIntPref("floorp.tabbar.style") == 2) {
-    console.log("Vertical tab bar enabled");
     Services.prefs.setBoolPref("floorp.browser.tabs.verticaltab", true);
 
     window.setTimeout(() => {
