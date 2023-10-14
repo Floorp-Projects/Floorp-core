@@ -141,10 +141,6 @@
   width: 8px;
 }
 
-#tabbrowser-arrowscrollbox::part(scrollbutton-up) {
-  display: none;
-}
-
 :root[customizing] #browser {
   visibility: inherit !important;
   max-height: 300px !important;
