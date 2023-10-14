@@ -42,8 +42,6 @@ function setVerticalTabs() {
       // Vertical tab bar has to position at the  first of child the "browser" elem.
       document.getElementById("browser").prepend(document.getElementById("TabsToolbar"));
 
-      changeXULElementTagName("TabsToolbar", "vbox")
-
       document.getElementById('tabbrowser-arrowscrollbox').setAttribute('orient', 'vertical')
       document.getElementById('tabbrowser-tabs').setAttribute('orient', 'vertical')
       document.getElementById('TabsToolbar').setAttribute('multibar', 'true')
@@ -85,7 +83,6 @@ function setVerticalTabs() {
   } else {
 
     // TODO: Re-implement the vertical tab bar. This code is not working.
-    /*
     document.getElementById("titlebar").prepend(document.getElementById("TabsToolbar"));
 
     document.getElementById('tabbrowser-arrowscrollbox').setAttribute('orient', 'horizontal')
@@ -101,9 +98,6 @@ function setVerticalTabs() {
     document.getElementById("TabsToolbar").style.width = ''
 
     Services.prefs.setBoolPref("floorp.browser.tabs.verticaltab", false);
-    */
-
-    Services.prefs.setBoolPref("floorp.browser.tabs.verticaltab", false);
   }
 }
 
@@ -115,4 +109,5 @@ Services.prefs.addObserver("floorp.tabbar.style", function () {
   } else {
     Services.prefs.setIntPref(tabbarContents.tabbarDisplayStylePref, 0);
   }
+  setVerticalTabs();
 });
