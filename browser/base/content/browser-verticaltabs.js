@@ -38,8 +38,6 @@ function setVerticalTabs() {
   if (Services.prefs.getIntPref("floorp.tabbar.style") == 2) {
     Services.prefs.setBoolPref("floorp.browser.tabs.verticaltab", true);
 
-    window.setTimeout(() => {
-
       // Re-implement the vertical tab bar v2. This is a temporary solution cannot close tab correctly.
       // Vertical tab bar has to position at the  first of child the "browser" elem.
       document.getElementById("browser").prepend(document.getElementById("TabsToolbar"));
@@ -57,7 +55,6 @@ function setVerticalTabs() {
       document.getElementById("TabsToolbar").removeAttribute('flex')
       document.getElementById("TabsToolbar").removeAttribute('hidden')
       document.getElementById("TabsToolbar").style.width = "350px"
-    }, 500);
 
     checkBrowserIsStartup();
 
