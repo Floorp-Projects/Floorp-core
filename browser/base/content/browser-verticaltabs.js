@@ -92,7 +92,6 @@ function setVerticalTabs() {
       .querySelector('#TabsToolbar .toolbar-items')
       ?.setAttribute('align', 'end')
 
-    changeXULElementTagName('TabsToolbar', "toolbar")
     document.getElementById("TabsToolbar").setAttribute('flex', '1')
     // Reset the resize value, or else the tabs will end up squished
     document.getElementById("TabsToolbar").style.width = ''

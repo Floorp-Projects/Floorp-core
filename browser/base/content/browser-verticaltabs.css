@@ -60,7 +60,6 @@
   flex-direction: column;
 }
 
-/* bug 1670836 injection */
 .tabbrowser-tab:not([pinned], [fadein]) {
   min-width: 0.1px;
   max-width: 0.1px;
@@ -152,4 +151,21 @@
 
 :root[customizing] #TabsToolbar .toolbarbutton-1 > .toolbarbutton-text {
   display: inherit !important;
+}
+
+#tabbrowser-arrowscrollbox::part(scrollbutton-up), #tabbrowser-arrowscrollbox::part(scrollbutton-down) {
+  max-height: 0px;
+  visibility: hidden;
+}
+
+#TabsToolbar-customization-target > toolbarpaletteitem:not([notransition])[place="panel"], toolbarpaletteitem:not([notransition])[place="toolbar"] {
+  max-width: 0ms ease-in-out !important;
+  min-width: 0ms ease-in-out !important;
+}
+
+#search-container {
+  flex: unset !important;
+  width: auto;
+  margin: 10px;
+  min-width: -moz-available;
 }
