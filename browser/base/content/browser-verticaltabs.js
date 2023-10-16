@@ -85,6 +85,10 @@ function setVerticalTabs() {
     // TODO: Re-implement the vertical tab bar. This code is not working.
     document.getElementById("titlebar").prepend(document.getElementById("TabsToolbar"));
 
+    // Remove CSS
+    document.getElementById("verticalTabsStyle")?.remove();
+    document.getElementById("floorp-vthover")?.remove();
+
     document.getElementById('tabbrowser-arrowscrollbox').setAttribute('orient', 'horizontal')
     document.getElementById('tabbrowser-tabs').setAttribute('orient', 'horizontal')
 

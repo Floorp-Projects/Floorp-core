@@ -108,15 +108,22 @@
   display: inherit !important;
 }
 
+#new-tab-button > .toolbarbutton-icon {
+  padding: 8px;
+  height: 36px !important;
+  width: 36px !important;
+}
+
 #tabbrowser-tabs {
   border-inline-start: none;
   margin-inline-start: 0;
   padding-inline-start: 0;
-  border-bottom: solid var(--toolbarseparator-color) 2px;
-  border-top: solid var(--toolbarseparator-color) 2px;
-  margin-bottom: 5px;
+  border-bottom: solid var(--toolbarseparator-color) 0.1px;
+  border-top: solid var(--toolbarseparator-color) 0.1px;
   margin-left: 3px;
   margin-right: 3px;
+  padding-bottom: 0 !important;
+  margin-bottom: 10px !important;
 }
 
 .tabbrowser-tab[first-visible-unpinned-tab] {

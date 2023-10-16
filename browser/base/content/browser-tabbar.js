@@ -306,11 +306,6 @@ document.addEventListener(
       } else {
         removeMultirowTabMaxHeight();
         setBrowserDesign();
-
-        const tabToolbarItems = document.querySelector(
-          "#TabsToolbar > .toolbar-items"
-        );
-        tabToolbarItems.style.visibility = "hidden";
       }
     };
     Services.prefs.addObserver("floorp.tabbar.style", applyMultitab);
