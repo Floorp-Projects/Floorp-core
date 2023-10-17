@@ -37,12 +37,16 @@
   transition: min-height 100ms ease-in-out, max-height 100ms ease-in-out;
 }
 
+#TabsToolbar .tabbrowser-tab[flex] {
+  padding: 0 !important;
+}
+
 .tab-background {
   height: 35px
 }
 
-.tab-content {
-  padding: 0 var(--inline-tab-padding) !important;
+.tab-content[align] {
+  padding: 5px !important;
 }
 
 .tab-throbber,
@@ -176,4 +180,9 @@
   width: auto;
   margin: 10px;
   min-width: -moz-available;
+}
+
+#tabbrowser-tabs[closebuttons="activetab"] .tabbrowser-tab:not([visuallyselected]) .tab-close-button[class] {
+  visibility: visible !important;
+  opacity: 1 !important;
 }
