@@ -84,61 +84,138 @@ const bmsController = {
       let floorpSidebarPositionPref = Services.prefs.getBoolPref(
         floorpSidebarPosition
       );
+      let verticaltabPositionPref = Services.prefs.getBoolPref(
+        "floorp.browser.tabs.verticaltab.right"
+      );
+
       let fxSidebar = document.getElementById("sidebar-box");
       let fxSidebarSplitter = document.getElementById("sidebar-splitter");
+
       let floorpSidebar = document.getElementById("sidebar2-box");
       let floorpSidebarSplitter = document.getElementById("sidebar-splitter2");
       let floorpSidebarSelectBox =
         document.getElementById("sidebar-select-box");
+
+      let verticaltabbar = document.getElementById("TabsToolbar");
+      let verticaltabbarSplitter = document.getElementById(
+        "verticaltab-splitter"
+      );
+
       let browserBox = document.getElementById("appcontent");
 
+      // Set flex order to all elements
       // floorpSidebarSelectBox has to always be the window's last child
+      // Vetical tab bar has to always be the window's first child.
+      // Fx's sidebar has to always be between the vertical tab bar and the floorp's sidebar.
       // Seeking opinions on whether we should nest.
-      if (
-        fxSidebarPositionPref === true &&
-        floorpSidebarPositionPref === true
-      ) {
-        //Firefox's sidebar position: left, Floorp's sidebar position: right
-        fxSidebar.style.order = "0";
-        fxSidebarSplitter.style.order = "1";
-        browserBox.style.order = "2";
-        floorpSidebarSplitter.style.order = "3";
-        floorpSidebar.style.order = "4";
-        floorpSidebarSelectBox.style.order = "5";
-      } else if (
-        fxSidebarPositionPref === true &&
-        floorpSidebarPositionPref === false
-      ) {
-        //Firefox's sidebar position: left, Floorp's sidebar position: left
-        floorpSidebarSelectBox.style.order = "0";
-        floorpSidebar.style.order = "1";
-        floorpSidebarSplitter.style.order = "2";
-        fxSidebar.style.order = "3";
-        fxSidebarSplitter.style.order = "4";
-        browserBox.style.order = "5";
-      } else if (
-        fxSidebarPositionPref === false &&
-        floorpSidebarPositionPref === true
-      ) {
-        //Firefox's sidebar position: right, Floorp's sidebar position: right
-        browserBox.style.order = "0";
-        fxSidebarSplitter.style.order = "1";
-        fxSidebar.style.order = "2";
-        floorpSidebarSplitter.style.order = "3";
-        floorpSidebar.style.order = "4";
-        floorpSidebarSelectBox.style.order = "5";
-      } else if (
-        fxSidebarPositionPref === false &&
-        floorpSidebarPositionPref === false
-      ) {
-        //Firefox's sidebar position: right, Floorp's sidebar position: left
-        floorpSidebarSelectBox.style.order = "0";
-        floorpSidebar.style.order = "1";
-        floorpSidebarSplitter.style.order = "2";
-        browserBox.style.order = "3";
-        fxSidebarSplitter.style.order = "4";
-        fxSidebar.style.order = "5";
+      
+      if (verticaltabPositionPref) {
+        if (
+          fxSidebarPositionPref &&
+          floorpSidebarPositionPref
+        ){
+          // Default
+          // Fx's sidebar -> browser -> Vertical tab bar -> Floorp's sidebar
+          fxSidebar.style.order = "0";
+          fxSidebarSplitter.style.order = "1";
+          browserBox.style.order = "2";
+          verticaltabbarSplitter.style.order = "3";
+          verticaltabbar.style.order = "4";
+          floorpSidebarSplitter.style.order = "5";
+          floorpSidebar.style.order = "6";
+          floorpSidebarSelectBox.style.order = "7";
+        } else if (
+          fxSidebarPositionPref &&
+          !floorpSidebarPositionPref
+        ) {
+          // Floorp sidebar -> Fx's sidebar -> browser -> Vertical tab bar
+          floorpSidebarSelectBox.style.order = "0";
+          floorpSidebar.style.order = "1";
+          floorpSidebarSplitter.style.order = "2";
+          fxSidebar.style.order = "3";
+          fxSidebarSplitter.style.order = "4";
+          browserBox.style.order = "5";
+          verticaltabbarSplitter.style.order = "6";
+          verticaltabbar.style.order = "7";
+        } else if (
+          !fxSidebarPositionPref &&
+          floorpSidebarPositionPref
+        ) {
+          // browser -> Vertical tab bar -> Fx's sidebar -> Floorp's sidebar
+          browserBox.style.order = "0";
+          verticaltabbarSplitter.style.order = "1";
+          verticaltabbar.style.order = "2";
+          fxSidebar.style.order = "3";
+          fxSidebarSplitter.style.order = "4";
+          floorpSidebarSplitter.style.order = "5";
+          floorpSidebar.style.order = "6";
+          floorpSidebarSelectBox.style.order = "7";
+        } else {
+          // !fxSidebarPositionPref && !floorpSidebarPositionPref
+          // Floorp's sidebar -> browser -> Vertical tab bar -> Fx's sidebar
+          floorpSidebarSelectBox.style.order = "0";
+          floorpSidebar.style.order = "1";
+          floorpSidebarSplitter.style.order = "2";
+          browserBox.style.order = "3";
+          verticaltabbarSplitter.style.order = "4";
+          verticaltabbar.style.order = "5";
+          fxSidebar.style.order = "6";
+          fxSidebarSplitter.style.order = "7";
+        }
+      } else if (!verticaltabPositionPref) {
+        if (
+          fxSidebarPositionPref &&
+          floorpSidebarPositionPref
+        ){
+          // Fx's sidebar -> vertical tab bar -> browser -> Floorp's sidebar
+          fxSidebar.style.order = "0";
+          fxSidebarSplitter.style.order = "1";
+          verticaltabbar.style.order = "2";
+          verticaltabbarSplitter.style.order = "3";
+          browserBox.style.order = "4";
+          floorpSidebarSplitter.style.order = "5";
+          floorpSidebar.style.order = "6";
+          floorpSidebarSelectBox.style.order = "7";
+        } else if (
+          fxSidebarPositionPref &&
+          !floorpSidebarPositionPref
+        ) {
+          // Floorp sidebar -> Fx's sidebar -> vertical tab bar -> browser
+          floorpSidebarSelectBox.style.order = "0";
+          floorpSidebar.style.order = "1";
+          floorpSidebarSplitter.style.order = "2";
+          fxSidebar.style.order = "3";
+          fxSidebarSplitter.style.order = "4";
+          verticaltabbar.style.order = "5";
+          verticaltabbarSplitter.style.order = "6";
+          browserBox.style.order = "7";
+        } else if (
+          !fxSidebarPositionPref &&
+          floorpSidebarPositionPref
+        ) {
+          // vertical tab bar -> browser -> Fx's sidebar -> Floorp's sidebar
+          verticaltabbar.style.order = "0";
+          verticaltabbarSplitter.style.order = "1";
+          browserBox.style.order = "2";
+          fxSidebarSplitter.style.order = "3";
+          fxSidebar.style.order = "4";
+          floorpSidebarSplitter.style.order = "5";
+          floorpSidebar.style.order = "6";
+          floorpSidebarSelectBox.style.order = "7";
+        } else {
+          // !fxSidebarPositionPref && !floorpSidebarPositionPref
+          // Floorp's sidebar -> browser -> vertical tab bar -> Fx's sidebar
+          floorpSidebarSelectBox.style.order = "0";
+          floorpSidebar.style.order = "1";
+          floorpSidebarSplitter.style.order = "2";
+          browserBox.style.order = "3";
+          verticaltabbar.style.order = "4";
+          verticaltabbarSplitter.style.order = "5";
+          fxSidebar.style.order = "6";
+          fxSidebarSplitter.style.order = "7";
+        }
       }
+    
     },
     selectSidebarItem: event => {
       let custom_url_id = event.target.id.replace("select-", "");
@@ -813,12 +890,17 @@ const bmsController = {
   // Floorp pref: true = right, false = left
   const fxSidebarPosition = "sidebar.position_start";
   const floorpSidebarPosition = "floorp.browser.sidebar.right";
+  const verticaltabPosition = "floorp.browser.tabs.verticaltab.right";
   Services.prefs.addObserver(
     fxSidebarPosition,
     bmsController.eventFunctions.setFlexOrder
   );
   Services.prefs.addObserver(
     floorpSidebarPosition,
+    bmsController.eventFunctions.setFlexOrder
+  );
+  Services.prefs.addObserver(
+    verticaltabPosition,
     bmsController.eventFunctions.setFlexOrder
   );
   // Run function when browser start.
