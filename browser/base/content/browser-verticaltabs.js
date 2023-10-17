@@ -34,6 +34,23 @@ function checkBrowserIsStartup() {
   });
 }
 
+function toggleCustomizeModeVerticaltabStyle() {
+  let customizationContainer = document.getElementById("nav-bar");
+  let observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+        if (mutation.target.getAttribute("customizing") == "true") {
+          Services.prefs.setIntPref("floorp.tabbar.style", 0);
+          Services.prefs.setIntPref(tabbarContents.tabbarDisplayStylePref, 0);
+        } else {
+          Services.prefs.setIntPref("floorp.tabbar.style", 2);
+          Services.prefs.setIntPref(tabbarContents.tabbarDisplayStylePref, 2);
+        }
+    });
+  });
+  let config = { attributes: true };
+  observer.observe(customizationContainer, config);
+}
+
 function setVerticalTabs() {
   if (Services.prefs.getIntPref("floorp.tabbar.style") == 2) {
     Services.prefs.setBoolPref("floorp.browser.tabs.verticaltab", true);
@@ -80,6 +97,8 @@ function setVerticalTabs() {
     //splitter
     document.getElementById("verticaltab-splitter").removeAttribute("hidden");
 
+    // Observer
+    toggleCustomizeModeVerticaltabStyle();
   } else {
 
     // TODO: Re-implement the vertical tab bar. This code is not working.
@@ -100,6 +119,10 @@ function setVerticalTabs() {
     // Reset the resize value, or else the tabs will end up squished
     document.getElementById("TabsToolbar").style.width = ''
 
+    // Remove Observer
+    try{observer.disconnect()}catch(e){};
+
+    // Pref
     Services.prefs.setBoolPref("floorp.browser.tabs.verticaltab", false);
   }
 }

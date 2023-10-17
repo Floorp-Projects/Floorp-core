@@ -125,6 +125,7 @@
   padding-inline-start: 0;
   border-bottom: solid var(--toolbarseparator-color) 0.1px;
   border-top: solid var(--toolbarseparator-color) 0.1px;
+  border-inline-start: none !important;
   margin-left: 3px;
   margin-right: 3px;
   padding-bottom: 0 !important;
@@ -185,4 +186,8 @@
 #tabbrowser-tabs[closebuttons="activetab"] .tabbrowser-tab:not([visuallyselected]) .tab-close-button[class] {
   visibility: visible !important;
   opacity: 1 !important;
+}
+
+#tabbrowser-arrowscrollbox::part(scrollbutton-up), #tabbrowser-arrowscrollbox::part(scrollbutton-down) {
+  display: none !important;
 }
