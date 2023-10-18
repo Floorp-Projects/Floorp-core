@@ -62,7 +62,6 @@ function toggleCustomizeModeVerticaltabStyle() {
 }
 
 function setVerticalTabs() {
-  console.log("setVerticalTabs");
   if (Services.prefs.getIntPref("floorp.tabbar.style") == 2) {
     Services.prefs.setBoolPref("floorp.browser.tabs.verticaltab", true);
 
@@ -111,8 +110,6 @@ function setVerticalTabs() {
     // Observer
     toggleCustomizeModeVerticaltabStyle();
   } else {
-    console.log("setVerticalTabs false");
-
     // TODO: Re-implement the vertical tab bar. This code is not working.
     document.getElementById("titlebar").prepend(document.getElementById("TabsToolbar"));
 
@@ -138,13 +135,11 @@ function setVerticalTabs() {
 
 setVerticalTabs();
 
-window.setTimeout(function () {
-  Services.prefs.addObserver("floorp.tabbar.style", function () {
-    if (Services.prefs.getIntPref("floorp.tabbar.style") == 2) {
-      Services.prefs.setIntPref(tabbarContents.tabbarDisplayStylePref, 2);
-    } else {
-      Services.prefs.setIntPref(tabbarContents.tabbarDisplayStylePref, 0);
-    }
-    setVerticalTabs();
-  })
+Services.prefs.addObserver("floorp.tabbar.style", function () {
+  if (Services.prefs.getIntPref("floorp.tabbar.style") == 2) {
+    Services.prefs.setIntPref(tabbarContents.tabbarDisplayStylePref, 2);
+  } else {
+    Services.prefs.setIntPref(tabbarContents.tabbarDisplayStylePref, 0);
+  }
+  setVerticalTabs();
 });

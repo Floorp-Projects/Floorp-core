@@ -206,6 +206,8 @@ SessionStore.promiseInitialized.then(() => {
   tabbarDisplayStyleFunctions.init();
   tabbarDisplayStyleFunctions.setTabbarDisplayStyle();
 
+  window.setTimeout(tabbarDisplayStyleFunctions.setTabbarDisplayStyle, 2000);
+
   //listen
   Services.prefs.addObserver(
     tabbarContents.tabbarDisplayStylePref,
