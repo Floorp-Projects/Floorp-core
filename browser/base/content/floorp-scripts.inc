@@ -44,8 +44,8 @@ document.addEventListener("DOMContentLoaded", () => {
     SessionStore.promiseInitialized.then(() => {
         if (!FloorpAppConstants.FLOORP_LIGHTNING_BUILD) {
             Services.scriptloader.loadSubScript("chrome://browser/content/browser-UI-customizing-menu.js", this);
-            Services.scriptloader.loadSubScript("chrome://browser/content/browser-tabbar.js", this);
             Services.scriptloader.loadSubScript("chrome://browser/content/browser-verticaltabs.js", this);
+            Services.scriptloader.loadSubScript("chrome://browser/content/browser-tabbar.js", this);
         }
     });
 }, { once: true });

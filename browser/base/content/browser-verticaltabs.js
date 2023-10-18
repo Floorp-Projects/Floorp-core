@@ -4,6 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
+var { setTimeout } = ChromeUtils.importESModule("resource://gre/modules/Timer.sys.mjs");
 
 function setWorkspaceLabel() {
   const workspaceButton = document.getElementById("workspace-button");
@@ -109,6 +110,15 @@ function setVerticalTabs() {
 
     // Observer
     toggleCustomizeModeVerticaltabStyle();
+
+
+    // Modify the tab bar
+    setTimeout(() => {
+      if (document.querySelector("#browser #TabsToolbar")?.getAttribute("hidden") != "true") {
+        document.getElementById("browser").prepend(document.getElementById("TabsToolbar"));
+        document.getElementById("TabsToolbar").removeAttribute("hidden");
+      }
+    }, 1000);
   } else {
     // TODO: Re-implement the vertical tab bar. This code is not working.
     document.getElementById("titlebar").prepend(document.getElementById("TabsToolbar"));
