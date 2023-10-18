@@ -33,7 +33,6 @@ document.addEventListener("DOMContentLoaded", () => {
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-downloadbar.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-favicon-color.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-UI-custom.js", this);
-        Services.scriptloader.loadSubScript("chrome://browser/content/browser-tabbar.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-splitView.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-browserActions.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-pageActions-floorp.js", this);
@@ -45,6 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
     SessionStore.promiseInitialized.then(() => {
         if (!FloorpAppConstants.FLOORP_LIGHTNING_BUILD) {
             Services.scriptloader.loadSubScript("chrome://browser/content/browser-UI-customizing-menu.js", this);
+            Services.scriptloader.loadSubScript("chrome://browser/content/browser-tabbar.js", this);
             Services.scriptloader.loadSubScript("chrome://browser/content/browser-verticaltabs.js", this);
         }
     });

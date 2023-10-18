@@ -91,7 +91,6 @@ const tabbarDisplayStyleFunctions = {
       case 3:
         tabbarDisplayStyleFunctions.revertToDefaultStyle();
 
-        window.setTimeout(() => {
           //move tabbar to navigator-toolbox's bottom
           tabbarContents.navigatorToolboxtabbarElement.appendChild(
             tabbarContents.tabbarElement
@@ -120,7 +119,6 @@ const tabbarDisplayStyleFunctions = {
             "floorp-tabbar-display-style",
             "2"
           );
-        } , 1000);
         break;
       case 4:
         tabbarDisplayStyleFunctions.revertToDefaultStyle();
