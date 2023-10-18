@@ -128,6 +128,7 @@ pref("floorp.browser.tabs.openNewTabPosition", -1);
 pref("floorp.browser.native.verticaltabs.enabled", false);
 pref("floorp.verticaltab.hover.enabled", false);
 pref("floorp.browser.tabs.verticaltab.right", false);
+pref("floorp.browser.tabs.verticaltab.temporary.disabled", false);
 
 // Chrome 形式のダウンローダー
 pref("floorp.browser.native.downloadbar.enabled", false);

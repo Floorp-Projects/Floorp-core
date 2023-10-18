@@ -39,9 +39,11 @@ function toggleCustomizeModeVerticaltabStyle() {
   let observer = new MutationObserver(function(mutations) {
     mutations.forEach(function(mutation) {
         if (mutation.target.getAttribute("customizing") == "true") {
+          Services.prefs.setBoolPref("floorp.browser.tabs.verticaltab.temporary.disabled", true);
           Services.prefs.setIntPref("floorp.tabbar.style", 0);
           Services.prefs.setIntPref(tabbarContents.tabbarDisplayStylePref, 0);
         } else {
+          Services.prefs.setBoolPref("floorp.browser.tabs.verticaltab.temporary.disabled", false);
           Services.prefs.setIntPref("floorp.tabbar.style", 2);
           Services.prefs.setIntPref(tabbarContents.tabbarDisplayStylePref, 2);
         }
@@ -49,9 +51,18 @@ function toggleCustomizeModeVerticaltabStyle() {
   });
   let config = { attributes: true };
   observer.observe(customizationContainer, config);
+
+  Services.prefs.addObserver("floorp.tabbar.style", function () {
+    if (Services.prefs.getIntPref("floorp.tabbar.style") != 2 && !Services.prefs.getBoolPref("floorp.browser.tabs.verticaltab.temporary.disabled")) {
+      observer.disconnect();
+    } else if (Services.prefs.getIntPref("floorp.tabbar.style") == 2 && Services.prefs.getBoolPref("floorp.browser.tabs.verticaltab.temporary.disabled")) {
+      observer.observe(customizationContainer, config);
+    }
+  });
 }
 
 function setVerticalTabs() {
+  console.log("setVerticalTabs");
   if (Services.prefs.getIntPref("floorp.tabbar.style") == 2) {
     Services.prefs.setBoolPref("floorp.browser.tabs.verticaltab", true);
 
@@ -100,6 +111,7 @@ function setVerticalTabs() {
     // Observer
     toggleCustomizeModeVerticaltabStyle();
   } else {
+    console.log("setVerticalTabs false");
 
     // TODO: Re-implement the vertical tab bar. This code is not working.
     document.getElementById("titlebar").prepend(document.getElementById("TabsToolbar"));
@@ -119,9 +131,6 @@ function setVerticalTabs() {
     // Reset the resize value, or else the tabs will end up squished
     document.getElementById("TabsToolbar").style.width = ''
 
-    // Remove Observer
-    try{observer.disconnect()}catch(e){};
-
     // Pref
     Services.prefs.setBoolPref("floorp.browser.tabs.verticaltab", false);
   }
@@ -129,11 +138,13 @@ function setVerticalTabs() {
 
 setVerticalTabs();
 
-Services.prefs.addObserver("floorp.tabbar.style", function () {
-  if (Services.prefs.getIntPref("floorp.tabbar.style") == 2) {
-    Services.prefs.setIntPref(tabbarContents.tabbarDisplayStylePref, 2);
-  } else {
-    Services.prefs.setIntPref(tabbarContents.tabbarDisplayStylePref, 0);
-  }
-  setVerticalTabs();
+window.setTimeout(function () {
+  Services.prefs.addObserver("floorp.tabbar.style", function () {
+    if (Services.prefs.getIntPref("floorp.tabbar.style") == 2) {
+      Services.prefs.setIntPref(tabbarContents.tabbarDisplayStylePref, 2);
+    } else {
+      Services.prefs.setIntPref(tabbarContents.tabbarDisplayStylePref, 0);
+    }
+    setVerticalTabs();
+  })
 });
