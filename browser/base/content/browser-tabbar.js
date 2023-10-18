@@ -91,34 +91,36 @@ const tabbarDisplayStyleFunctions = {
       case 3:
         tabbarDisplayStyleFunctions.revertToDefaultStyle();
 
-        //move tabbar to navigator-toolbox's bottom
-        tabbarContents.navigatorToolboxtabbarElement.appendChild(
-          tabbarContents.tabbarElement
-        );
-        tabbarContents.PanelUIMenuButton.after(
-          document.querySelector("#floorp-tabbar-window-manage-container")
-        );
-        tabbarContents.modifyCSS = document.createElement("style");
-        tabbarContents.modifyCSS.id = "floorp-tabbar-modify-css";
-        tabbarContents.modifyCSS.textContent = `
-          #toolbar-menubar > .titlebar-buttonbox-container {
-            display: none !important;
-          }
-          #titlebar {
-            appearance: none !important;
-          }
-          #TabsToolbar #workspace-button[label] > .toolbarbutton-icon,
-          #TabsToolbar #firefox-view-button > .toolbarbutton-icon {
-            height: 16px !important;
-            width: 16px !important;
-            padding: 0px !important;
-          }
-        `;
-        document.querySelector("head").appendChild(tabbarContents.modifyCSS);
-        tabbarContents.tabbarElement.setAttribute(
-          "floorp-tabbar-display-style",
-          "2"
-        );
+        window.setTimeout(() => {
+          //move tabbar to navigator-toolbox's bottom
+          tabbarContents.navigatorToolboxtabbarElement.appendChild(
+            tabbarContents.tabbarElement
+          );
+          tabbarContents.PanelUIMenuButton.after(
+            document.querySelector("#floorp-tabbar-window-manage-container")
+          );
+          tabbarContents.modifyCSS = document.createElement("style");
+          tabbarContents.modifyCSS.id = "floorp-tabbar-modify-css";
+          tabbarContents.modifyCSS.textContent = `
+            #toolbar-menubar > .titlebar-buttonbox-container {
+              display: none !important;
+            }
+            #titlebar {
+              appearance: none !important;
+            }
+            #TabsToolbar #workspace-button[label] > .toolbarbutton-icon,
+            #TabsToolbar #firefox-view-button > .toolbarbutton-icon {
+              height: 16px !important;
+              width: 16px !important;
+              padding: 0px !important;
+            }
+          `;
+          document.querySelector("head").appendChild(tabbarContents.modifyCSS);
+          tabbarContents.tabbarElement.setAttribute(
+            "floorp-tabbar-display-style",
+            "2"
+          );
+        } , 1000);
         break;
       case 4:
         tabbarDisplayStyleFunctions.revertToDefaultStyle();
@@ -205,8 +207,6 @@ SessionStore.promiseInitialized.then(() => {
   //run
   tabbarDisplayStyleFunctions.init();
   tabbarDisplayStyleFunctions.setTabbarDisplayStyle();
-
-  window.setTimeout(tabbarDisplayStyleFunctions.setTabbarDisplayStyle, 2000);
 
   //listen
   Services.prefs.addObserver(
