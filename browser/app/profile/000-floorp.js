@@ -70,6 +70,10 @@ pref("browser.newtabpage.activity-stream.floorp.background.images.folder", "");
 pref("browser.newtabpage.activity-stream.floorp.background.images.extensions", "png,jpg,jpeg,webp,gif,svg,tiff,tif,bmp,avif,jxl");
 pref("browser.newtabpage.activity-stream.floorp.newtab.backdrop.blur.disable",false);
 
+//新しいタブの広告を非表示
+pref("browser.newtabpage.activity-stream.showSponsoredTopSites", false);
+pref("browser.newtabpage.activity-stream.showSponsored", false);
+
 pref("floorp.multitab.bottommode", false);
 
 pref("browser.display.statusbar", false);
