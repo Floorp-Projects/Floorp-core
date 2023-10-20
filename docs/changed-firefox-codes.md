@@ -143,3 +143,11 @@ URL: https://github.com/Floorp-Projects/Floorp/commit/32b43fa707b60d668841012cfc
 changed: "Insert release note codes. If lang start with "ja", open spesific URL for Japanese users."
 
 URL: https://github.com/Floorp-Projects/Floorp/commit/91a52b0d8c24dc37318e621d97925c93c523ccfd
+
+15. browser\components\newtab\lib\TopSitesFeed.jsm | browser\components\newtab\data\content\tippytop\top_sites.json
+
+**Feature: "Newtab"**
+
+changed: "Replace Firefox's newtab sponsors to Floorp's newtab sponsors."
+
+URL: https://github.com/Floorp-Projects/Floorp/commit/80f761b0e9fe7b9ab9383f9f590b822a841c2428
