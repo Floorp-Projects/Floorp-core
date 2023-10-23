@@ -19,6 +19,7 @@
 #TabsToolbar {
   background-color: -moz-Dialog;
   max-width: 350px;
+  min-width: 150px;
   transition :min-width 150ms ease-in-out, max-width 150ms ease-in-out;
   overflow: hidden;
 }
@@ -151,8 +152,7 @@
 
 #search-container {
   flex: unset !important;
-  width: auto;
-  margin: 10px;
+  margin: 5px;
   min-width: -moz-available;
 }
 
@@ -218,3 +218,6 @@
   opacity: 1 !important;
 }
 
+#TabsToolbar[multibar] .tabbrowser-tab:not([pinned]):not(:first-of-type) {
+  margin-inline: 0px !important;
+}

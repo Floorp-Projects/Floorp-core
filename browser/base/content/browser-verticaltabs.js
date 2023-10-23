@@ -6,6 +6,8 @@
 
 var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 
+const VERTICAL_TABS_WIDTH_PREF = "floorp.browser.tabs.verticaltab.width";
+
 function setWorkspaceLabel() {
   const workspaceButton = document.getElementById("workspace-button");
   const customizeTarget = document.getElementById(
@@ -37,50 +39,97 @@ function checkBrowserIsStartup() {
 
 function toggleCustomizeModeVerticaltabStyle() {
   let customizationContainer = document.getElementById("nav-bar");
-  let observer = new MutationObserver(function(mutations) {
-    mutations.forEach(function(mutation) {
-        if (mutation.target.getAttribute("customizing") == "true") {
-          Services.prefs.setBoolPref("floorp.browser.tabs.verticaltab.temporary.disabled", true);
-          Services.prefs.setIntPref("floorp.tabbar.style", 0);
-          Services.prefs.setIntPref(tabbarContents.tabbarDisplayStylePref, 0);
-        } else {
-          Services.prefs.setBoolPref("floorp.browser.tabs.verticaltab.temporary.disabled", false);
-          Services.prefs.setIntPref("floorp.tabbar.style", 2);
-          Services.prefs.setIntPref(tabbarContents.tabbarDisplayStylePref, 2);
-        }
+  let observer = new MutationObserver(function (mutations) {
+    mutations.forEach(function (mutation) {
+      if (mutation.target.getAttribute("customizing") == "true") {
+        Services.prefs.setBoolPref(
+          "floorp.browser.tabs.verticaltab.temporary.disabled",
+          true
+        );
+        Services.prefs.setIntPref("floorp.tabbar.style", 0);
+        Services.prefs.setIntPref(tabbarContents.tabbarDisplayStylePref, 0);
+      } else {
+        Services.prefs.setBoolPref(
+          "floorp.browser.tabs.verticaltab.temporary.disabled",
+          false
+        );
+        Services.prefs.setIntPref("floorp.tabbar.style", 2);
+        Services.prefs.setIntPref(tabbarContents.tabbarDisplayStylePref, 2);
+      }
     });
   });
   let config = { attributes: true };
   observer.observe(customizationContainer, config);
 
   Services.prefs.addObserver("floorp.tabbar.style", function () {
-    if (Services.prefs.getIntPref("floorp.tabbar.style") != 2 && !Services.prefs.getBoolPref("floorp.browser.tabs.verticaltab.temporary.disabled")) {
+    if (
+      Services.prefs.getIntPref("floorp.tabbar.style") != 2 &&
+      !Services.prefs.getBoolPref(
+        "floorp.browser.tabs.verticaltab.temporary.disabled"
+      )
+    ) {
       observer.disconnect();
-    } else if (Services.prefs.getIntPref("floorp.tabbar.style") == 2 && Services.prefs.getBoolPref("floorp.browser.tabs.verticaltab.temporary.disabled")) {
+    } else if (
+      Services.prefs.getIntPref("floorp.tabbar.style") == 2 &&
+      Services.prefs.getBoolPref(
+        "floorp.browser.tabs.verticaltab.temporary.disabled"
+      )
+    ) {
       observer.observe(customizationContainer, config);
     }
   });
+}
+
+function mutationObserverCallback(mutations) {
+  const tabsToolbar = document.getElementById("TabsToolbar");
+
+  for (const mutation of mutations) {
+    if (mutation.type === "attributes" && mutation.attributeName == "width") {
+      Services.prefs.setIntPref(
+        VERTICAL_TABS_WIDTH_PREF,
+        parseInt(tabsToolbar?.getAttribute("width") || "100")
+      );
+    }
+  }
+}
+
+function toggleVerticalTabsPositionHandler() {
+  let verticaltabPositionPref = Services.prefs.getBoolPref(
+    "floorp.browser.tabs.verticaltab.right"
+  );
+
+  if (!verticaltabPositionPref) {
+    document.getElementById("TabsToolbar")?.setAttribute("positionend", "true");
+  } else {
+    document.getElementById("TabsToolbar")?.removeAttribute("positionend");
+  }
 }
 
 function setVerticalTabs() {
   if (Services.prefs.getIntPref("floorp.tabbar.style") == 2) {
     Services.prefs.setBoolPref("floorp.browser.tabs.verticaltab", true);
 
-      // Re-implement the vertical tab bar v2. This is a temporary solution cannot close tab correctly.
-      // Vertical tab bar has to position at the  first of child the "browser" elem.
-      document.getElementById("browser").prepend(document.getElementById("TabsToolbar"));
+    // Re-implement the vertical tab bar v2. This is a temporary solution cannot close tab correctly.
+    // Vertical tab bar has to position at the  first of child the "browser" elem.
+    document
+      .getElementById("browser")
+      .prepend(document.getElementById("TabsToolbar"));
 
-      document.getElementById('tabbrowser-arrowscrollbox').setAttribute('orient', 'vertical')
-      document.getElementById('tabbrowser-tabs').setAttribute('orient', 'vertical')
-      document.getElementById('TabsToolbar').setAttribute('multibar', 'true')
+    document
+      .getElementById("tabbrowser-arrowscrollbox")
+      .setAttribute("orient", "vertical");
+    document
+      .getElementById("tabbrowser-tabs")
+      .setAttribute("orient", "vertical");
+    document.getElementById("TabsToolbar").setAttribute("multibar", "true");
 
-      document
-        .getElementsByClassName('toolbar-items')[0]
-        .setAttribute('align', 'start')
-  
-      document.getElementById("TabsToolbar").removeAttribute('flex')
-      document.getElementById("TabsToolbar").removeAttribute('hidden')
-      document.getElementById("TabsToolbar").style.width = "350px"
+    document
+      .getElementsByClassName("toolbar-items")[0]
+      .setAttribute("align", "start");
+
+    document.getElementById("TabsToolbar").removeAttribute("flex");
+    document.getElementById("TabsToolbar").removeAttribute("hidden");
+    document.getElementById("TabsToolbar").style.width = "350px";
 
     checkBrowserIsStartup();
 
@@ -111,32 +160,67 @@ function setVerticalTabs() {
     // Observer
     toggleCustomizeModeVerticaltabStyle();
 
+    widthObserver = new MutationObserver(mutationObserverCallback);
+
+    if (document.getElementById("TabsToolbar")) {
+      widthObserver.observe(document.getElementById("TabsToolbar"), {
+        attributes: true,
+      });
+    }
+
+    document
+      .getElementById("TabsToolbar")
+      ?.setAttribute(
+        "width",
+        Services.prefs.getIntPref(VERTICAL_TABS_WIDTH_PREF, 200)
+      );
+
+    if (document.getElementById("TabsToolbar")) {
+      document.getElementById(
+        "TabsToolbar"
+      ).style.width = `${Services.prefs.getIntPref(
+        VERTICAL_TABS_WIDTH_PREF,
+        200
+      )}px`;
+    }
 
     // Modify the tab bar
     window.setTimeout(() => {
-      if (document.querySelector("#browser #TabsToolbar")?.getAttribute("hidden") != "true") {
-        document.getElementById("browser").prepend(document.getElementById("TabsToolbar"));
+      if (
+        document
+          .querySelector("#browser #TabsToolbar")
+          ?.getAttribute("hidden") != "true"
+      ) {
+        document
+          .getElementById("browser")
+          .prepend(document.getElementById("TabsToolbar"));
         document.getElementById("TabsToolbar").removeAttribute("hidden");
       }
     }, 1000);
   } else {
     // TODO: Re-implement the vertical tab bar. This code is not working.
-    document.getElementById("titlebar").prepend(document.getElementById("TabsToolbar"));
+    document
+      .getElementById("titlebar")
+      .prepend(document.getElementById("TabsToolbar"));
 
     // Remove CSS
     document.getElementById("verticalTabsStyle")?.remove();
     document.getElementById("floorp-vthover")?.remove();
 
-    document.getElementById('tabbrowser-arrowscrollbox').setAttribute('orient', 'horizontal')
-    document.getElementById('tabbrowser-tabs').setAttribute('orient', 'horizontal')
+    document
+      .getElementById("tabbrowser-arrowscrollbox")
+      .setAttribute("orient", "horizontal");
+    document
+      .getElementById("tabbrowser-tabs")
+      .setAttribute("orient", "horizontal");
 
     document
-      .querySelector('#TabsToolbar .toolbar-items')
-      ?.setAttribute('align', 'end')
+      .querySelector("#TabsToolbar .toolbar-items")
+      ?.setAttribute("align", "end");
 
-    document.getElementById("TabsToolbar").setAttribute('flex', '1')
+    document.getElementById("TabsToolbar").setAttribute("flex", "1");
     // Reset the resize value, or else the tabs will end up squished
-    document.getElementById("TabsToolbar").style.width = ''
+    document.getElementById("TabsToolbar").style.width = "";
 
     // Pref
     Services.prefs.setBoolPref("floorp.browser.tabs.verticaltab", false);

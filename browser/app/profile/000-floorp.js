@@ -133,6 +133,7 @@ pref("floorp.browser.native.verticaltabs.enabled", false);
 pref("floorp.verticaltab.hover.enabled", false);
 pref("floorp.browser.tabs.verticaltab.right", false);
 pref("floorp.browser.tabs.verticaltab.temporary.disabled", false);
+pref("floorp.browser.tabs.verticaltab.width", 200);
 
 // Chrome 形式のダウンローダー
 pref("floorp.browser.native.downloadbar.enabled", false);
@@ -287,7 +288,6 @@ pref("trailhead.firstrun.branches", "", locked);
 pref("extensions.webcompat-reporter.enabled", false);
 
 pref("browser.startup.page", 3);//自動復元
-pref("browser.tabs.closeWindowWithLastTab", false);//最後のタブを閉じてもブラウザが閉じないように
 
 // https://developer.mozilla.org/docs/Web/API/Navigator/share
 #ifdef XP_WIN

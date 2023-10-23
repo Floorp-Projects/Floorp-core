@@ -162,6 +162,9 @@ const bmsController = {
           fxSidebar.style.order = "6";
           fxSidebarSplitter.style.order = "7";
         }
+
+        // Add attribute to vertical tab bar
+        verticaltabbar?.setAttribute("positionend", "true");
       } else if (!verticaltabPositionPref) {
         if (
           fxSidebarPositionPref &&
@@ -214,8 +217,9 @@ const bmsController = {
           fxSidebar.style.order = "6";
           fxSidebarSplitter.style.order = "7";
         }
+       // Remove attribute from vertical tab bar
+       verticaltabbar?.removeAttribute("positionend");
       }
-    
     },
     selectSidebarItem: event => {
       let custom_url_id = event.target.id.replace("select-", "");
