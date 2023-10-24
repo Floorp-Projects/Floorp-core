@@ -204,6 +204,8 @@
 
 #TabsToolbar[multibar] .tabbrowser-tab {
   max-width: -moz-available !important;
+  width: -moz-available !important;
+  min-width: -moz-available !important;
 }
 
 #verticaltab-splitter {
