@@ -64,7 +64,6 @@
   max-height: 100%;
   min-height: 100%;
   flex-direction: column;
-  padding: 5px;
 }
 
 .tabbrowser-tab:not([pinned], [fadein]) {
@@ -150,7 +149,7 @@
   min-width: 0ms ease-in-out !important;
 }
 
-#search-container {
+#TabsToolbar-customization-target > #search-container {
   flex: unset !important;
   margin: 5px;
   min-width: -moz-available;
