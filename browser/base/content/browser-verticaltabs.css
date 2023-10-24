@@ -222,3 +222,10 @@
 #TabsToolbar[multibar] .tabbrowser-tab:not([pinned]):not(:first-of-type) {
   margin-inline: 0px !important;
 }
+
+:is(:root[inDOMFullscreen],
+:root[inFullscreen]:not([macOSNativeFullscreen]),
+*|*:root[chromehidden~="toolbar"],
+:root[invisibleBMS]) #TabsToolbar {
+  display: none;
+}
