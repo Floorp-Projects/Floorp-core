@@ -229,3 +229,8 @@
 :root[invisibleBMS]) #TabsToolbar {
   display: none;
 }
+
+/* Ui */
+#tabbrowser-tabs[positionpinnedtabs] > #tabbrowser-arrowscrollbox::part(scrollbox) {
+  padding-inline: 0px !important;
+}
