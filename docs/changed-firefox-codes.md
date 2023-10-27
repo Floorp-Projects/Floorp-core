@@ -151,3 +151,13 @@ URL: https://github.com/Floorp-Projects/Floorp/commit/91a52b0d8c24dc37318e621d97
 changed: "Replace Firefox's newtab sponsors to Floorp's newtab sponsors."
 
 URL: https://github.com/Floorp-Projects/Floorp/commit/80f761b0e9fe7b9ab9383f9f590b822a841c2428
+
+---
+
+16. browser/modules/AsyncTabSwitcher.jsm | dom/ipc/BrowserChild.cpp & BrowserHost.cpp & dom/ipc/BrowserParent.cpp
+
+**Feature: "Split View"**
+
+changed: "Insert split view codes."
+
+URL: https://github.com/Floorp-Projects/Floorp/commit/595e139fe7f51a58481939788668adb947396425
