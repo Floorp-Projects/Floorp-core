@@ -73,6 +73,10 @@ let gSplitView = {
     removeSplitView(tab) {
       Services.prefs.setBoolPref("floorp.browser.splitView.working", false);
 
+      if (!tab) {
+        tab = document.querySelector(`.tabbrowser-tab[splitView="true"]`);
+      }
+
       // remove style
       let panel = gSplitView.Functions.getlinkedPanel(tab.linkedPanel);
       let CSSElem = document.getElementById("splitViewCSS");
@@ -273,6 +277,10 @@ let gSplitView = {
     },
 
     handleTabEvent() {
+      if (!Services.prefs.getBoolPref("floorp.browser.splitView.working")) {
+        return;
+      }
+
       let currentSplitViewTab = document.querySelector(
         `.tabbrowser-tab[splitView="true"]`
       );
@@ -328,6 +336,7 @@ let gSplitView = {
                    <menupopup id="splitViewTabContextMenu"
                               onpopupshowing="gSplitView.Functions.tabContextMenu.onPopupShowing(event);"/>
                </menu>
+               <menuitem id="splitViewTabContextMenuClose" data-l10n-id="splitview-close-split-tab"  oncommand="gSplitView.Functions.removeSplitView();"/>
                `);
         beforeElem.before(menuitemElem);
       },
@@ -350,8 +359,8 @@ let gSplitView = {
         }
 
         let menuItem = window.MozXULElement.parseXULToFragment(`
-                  <menuitem id="splitViewTabContextMenuLeft" label="Left" oncommand="gSplitView.Functions.setSplitView(TabContextMenu.contextTab, 'left');"/>
-                  <menuitem id="splitViewTabContextMenuRight" label="Right" oncommand="gSplitView.Functions.setSplitView(TabContextMenu.contextTab, 'right');"/>
+                  <menuitem id="splitViewTabContextMenuLeft" data-l10n-id="splitview-show-on-left"  oncommand="gSplitView.Functions.setSplitView(TabContextMenu.contextTab, 'left');"/>
+                  <menuitem id="splitViewTabContextMenuRight" data-l10n-id="splitview-show-on-right" oncommand="gSplitView.Functions.setSplitView(TabContextMenu.contextTab, 'right');"/>
                 `);
 
         let parentElem = document.getElementById("splitViewTabContextMenu");
