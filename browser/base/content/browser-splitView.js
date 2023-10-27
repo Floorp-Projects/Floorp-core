@@ -10,11 +10,15 @@ let gSplitView = {
   Functions: {
     init() {
       gSplitView.Functions.tabContextMenu.addContextMenuToTabContext();
+      Services.prefs.setBoolPref("floorp.browser.splitView.working", false);
     },
     setSplitView(tab, side) {
+      Services.prefs.setBoolPref("floorp.browser.splitView.working", true);
+
       let panel = gSplitView.Functions.getlinkedPanel(tab.linkedPanel);
       let browser = tab.linkedBrowser;
       let browserRenderLayers = browser.renderLayers;
+      let browserDocShellIsActiveState = browser.docShellIsActive;
 
       // Check if the a tab is already in split view
       let tabs = gBrowser.tabs;
@@ -59,26 +63,18 @@ let gSplitView = {
       panel.classList.add("deck-selected");
       browserRenderLayers = true;
 
-      function applySplitView() {
-        browserRenderLayers = true;
-        panel.classList.add("deck-selected");
+      if (!browserDocShellIsActiveState) {
+        browser.docShellIsActive = true;
       }
-
-      window.setTimeout(applySplitView, 1000);
-      window.setTimeout(applySplitView, 2000);
-      window.setTimeout(applySplitView, 3000);
-      window.setTimeout(applySplitView, 4000);
-      window.setTimeout(applySplitView, 5000);
 
       gSplitView.Functions.setRenderLayersEvent();
     },
 
     removeSplitView(tab) {
-      let panel = gSplitView.Functions.getlinkedPanel(tab.linkedPanel);
-      let browser = tab.linkedBrowser;
-      let browserRenderLayers = browser.renderLayers;
+      Services.prefs.setBoolPref("floorp.browser.splitView.working", false);
 
       // remove style
+      let panel = gSplitView.Functions.getlinkedPanel(tab.linkedPanel);
       let CSSElem = document.getElementById("splitViewCSS");
       CSSElem?.remove();
 
@@ -87,6 +83,10 @@ let gSplitView = {
       panel.removeAttribute("splitviewtab");
       panel.classList.remove("deck-selected");
       browserRenderLayers = false;
+
+      if (browser.docShellIsActive) {
+        browser.docShellIsActive = false;
+      }
 
       gSplitView.Functions.removeRenderLayersEvent();
     },
@@ -281,13 +281,25 @@ let gSplitView = {
       );
       let currentSplitViewBrowser = currentSplitViewTab?.linkedBrowser;
 
+      if (!currentSplitViewBrowser) {
+        return;
+      }
+
       // set renderLayers to true & Set class to deck-selected
       currentSplitViewBrowser.renderLayers = true;
       currentSplitViewPanel?.classList.add("deck-selected");
 
+      if (!currentSplitViewBrowser.docShellIsActive) {
+        currentSplitViewBrowser.docShellIsActive = true;
+      }
+
       function applySplitView() {
         currentSplitViewBrowser.renderLayers = true;
         currentSplitViewPanel?.classList.add("deck-selected");
+
+        if (!browser.docShellIsActive) {
+          browser.docShellIsActive = true;
+        }
       }
 
       (function modifyDeckSelectedClass() {

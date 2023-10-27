@@ -176,6 +176,7 @@ pref("floorp.privateContainer.enabled", true);
 
 // Split View
 pref("floorp.browser.splitView.enabled", false);
+pref("floorp.browser.splitView.working", false);
 /*----------------------------------------------------------------------------------------------------------------------------------*/
 
 #if defined(FLOORP_LIGHTNING_BUILD)
