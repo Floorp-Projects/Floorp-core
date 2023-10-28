@@ -13,6 +13,7 @@ let gSplitView = {
       Services.prefs.setBoolPref("floorp.browser.splitView.working", false);
     },
     setSplitView(tab, side) {
+      try{this.removeSplitView()}catch(e){};
       Services.prefs.setBoolPref("floorp.browser.splitView.working", true);
 
       let panel = gSplitView.Functions.getlinkedPanel(tab.linkedPanel);
@@ -70,11 +71,13 @@ let gSplitView = {
       gSplitView.Functions.setRenderLayersEvent();
     },
 
-    removeSplitView(tab) {
+    removeSplitView() {
       Services.prefs.setBoolPref("floorp.browser.splitView.working", false);
 
+      let tab = document.querySelector(`.tabbrowser-tab[splitView="true"]`);
+
       if (!tab) {
-        tab = document.querySelector(`.tabbrowser-tab[splitView="true"]`);
+        return;
       }
 
       // remove style
@@ -93,6 +96,9 @@ let gSplitView = {
       }
 
       gSplitView.Functions.removeRenderLayersEvent();
+
+      // set renderLayers to true & Set class to deck-selected
+      gBrowser.selectedTab = tab;
     },
 
     getlinkedPanel(id) {
