@@ -105,7 +105,7 @@ For instance, if you want to apply CSS at "about:newtab" and "about:home", you c
 ***********************************************************************
 @-moz-document url-prefix("about:newtab"), url-prefix("about:home") { *
                                                                       *
-/*Write your css*/                                                    *
+* Write your css *                                                    *
                                                                       *
 }                                                                     *
 ***********************************************************************
