@@ -381,6 +381,5 @@ let gSplitView = {
   },
 };
 
-if (Services.prefs.getBoolPref("floorp.browser.splitView.enabled")) {
-  gSplitView.Functions.init();
-}
+// Init
+gSplitView.Functions.init();
