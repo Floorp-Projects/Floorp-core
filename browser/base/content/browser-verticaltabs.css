@@ -225,8 +225,8 @@
 
 :is(:root[inDOMFullscreen],
 :root[inFullscreen]:not([macOSNativeFullscreen]),
-*|*:root[chromehidden~="toolbar"],
-:root[invisibleBMS]) #TabsToolbar {
+*|*:root[chromehidden~="toolbar"])
+#TabsToolbar {
   display: none;
 }
 

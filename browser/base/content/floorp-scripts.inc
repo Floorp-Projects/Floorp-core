@@ -41,12 +41,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // If script need more delay, use the following code.
+
+    //Lightning Build
     SessionStore.promiseInitialized.then(() => {
         if (!FloorpAppConstants.FLOORP_LIGHTNING_BUILD) {
             Services.scriptloader.loadSubScript("chrome://browser/content/browser-UI-customizing-menu.js", this);
             Services.scriptloader.loadSubScript("chrome://browser/content/browser-tabbar.js", this);
             Services.scriptloader.loadSubScript("chrome://browser/content/browser-verticaltabs.js", this);
         }
+
+        // lightning build and normal build
+        Services.scriptloader.loadSubScript("chrome://browser/content/browser-flex-order.js", this);
     });
 }, { once: true });
 </script>
