@@ -5,7 +5,6 @@
 
 Preferences.addAll([
   { id: "enable.floorp.update", type: "bool" },
-  { id: "enable.floorp.updater.latest", type: "bool" },
   { id: "ui.systemUsesDarkTheme", type: "int" },
   { id: "floorp.search.top.mode", type: "bool" },
   { id: "floorp.enable.auto.restart", type: "bool" },

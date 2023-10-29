@@ -15,17 +15,6 @@
 //Floorpアップデートの最新版である旨の通知を許可
 pref("enable.floorp.updater.latest", false);
 pref("enable.floorp.update", true);
-#ifdef XP_MACOSX
-pref("update.id.floorp", "stable");
-#endif
-
-#ifdef XP_WIN
-pref("update.id.floorp", "windows");
-#endif
-
-#ifdef XP_LINUX
-pref("update.id.floorp", "linux");
-#endif
 
 // userAgent
 pref("floorp.browser.UserAgent", 0);
@@ -108,8 +97,6 @@ pref("floorp.browser.tabbar.multirow.max.enabled", true);
 pref("floorp.browser.tabbar.multirow.newtab-inside.enabled", false);
 pref("floorp.browser.tabbar.multirow.max.row", 3);
 
-pref("floorp.display.toolbarbutton.label", false);
-
 // 1つ目はタイトル、2つ目は内容
 
 // Floorp Notes
@@ -156,6 +143,8 @@ pref("floorp.titlebar.favicon.color", false);
 pref("floorp.custom.shortcutkeysAndActions", "[]");
 pref("floorp.custom.shortcutkeysAndActions.enabled", true);
 pref("floorp.custom.shortcutkeysAndActions.remove.fx.actions", false);
+
+// カスタムアクション用
 pref("floorp.custom.shortcutkeysAndActions.customAction1", "");
 pref("floorp.custom.shortcutkeysAndActions.customAction2", "");
 pref("floorp.custom.shortcutkeysAndActions.customAction3", "");
@@ -176,6 +165,9 @@ pref("floorp.privateContainer.enabled", true);
 
 // Split View
 pref("floorp.browser.splitView.working", false);
+
+// user.js
+pref("floorp.user.js.customize", "");
 /*----------------------------------------------------------------------------------------------------------------------------------*/
 
 #if defined(FLOORP_LIGHTNING_BUILD)
@@ -206,7 +198,6 @@ pref("services.sync.prefs.sync.browser.tabs.warnOnClose", false, locked); //た�
 
 // 同期を有効にする
 pref("services.sync.prefs.sync.floorp.browser.sidebar.right", true);// サイドバーの右側を表示
-pref("services.sync.prefs.sync.floorp.browser.sidebar2.data", true);// サイドバーのデータ
 pref("services.sync.prefs.sync.floorp.optimized.verticaltab", true); //ツリー型垂直タブ等に最適化。8.7.2 からフォーカスした際の動作は別に
 pref("services.sync.prefs.sync.floorp.browser.user.interface", true);// Floorp 10 系以降のインターフェーステーマ設定
 
@@ -293,8 +284,6 @@ pref("dom.webshare.enabled", true);
 // 開発者ツールの位置を「右」に変更
 pref("devtools.toolbox.host", "right");
 
-// user.js
-pref("floorp.user.js.customize", "");
 /*-----------------------------------------------------------------------------------all.js の設定-----------------------------------------------------------------------------------*/
 
 pref("extensions.htmlaboutaddons.recommendations.enabled", false, locked);
