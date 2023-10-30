@@ -1,3 +1,4 @@
+/* eslint-disable no-unsanitized/property */
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -13,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function(){
   const deleteMemo = document.getElementById("memo-delete");
   const HTMLPreview = document.getElementById("html-output");
   const memoMarkDownPreViewButton = document.getElementById("memo-markdown-preview");
-  const l10n = new Localization(["browser/floorp.ftl"], true);
+  const l10n = new Localization(["browser/floorp.ftl", "branding/brand.ftl"], true);
   const offlineLabel = document.getElementById("offline-label");
 
   //Clear using pref first
@@ -72,10 +73,10 @@ document.addEventListener('DOMContentLoaded', function(){
 
   function updateSelectedItem(id) {
     const oldSelectedItem = document.querySelector(".memo-list-item.selected, #memo-add.selected");
-    if (oldSelectedItem != null) oldSelectedItem.classList.remove("selected");
+    if (oldSelectedItem != null) {oldSelectedItem.classList.remove("selected");}
     if (id != -1) {
       const newSelectedItem = document.querySelector(`.memo-list-item:nth-child(${id + 1})`);
-      if (newSelectedItem != null) newSelectedItem.classList.add("selected");
+      if (newSelectedItem != null) {newSelectedItem.classList.add("selected");}
     } else {
       const memoNewButton = document.querySelector("#memo-add");
       memoNewButton.classList.add("selected");
@@ -168,6 +169,7 @@ document.addEventListener('DOMContentLoaded', function(){
   };
 
   function convertMarkdownToHtml(markdown) {
+    // eslint-disable-next-line no-undef
     const converter = new showdown.Converter();
     return converter.makeHtml(markdown);
   }

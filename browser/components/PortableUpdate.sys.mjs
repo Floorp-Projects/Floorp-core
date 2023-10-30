@@ -12,7 +12,7 @@ import { FileUtils } from "resource://gre/modules/FileUtils.sys.mjs"
 // Migration from JSM to ES Module in the future.
 const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 
-const L10N = new Localization(["browser/floorp.ftl"]);
+const L10N = new Localization(["browser/floorp.ftl", "branding/brand.ftl"]);
 const ZipReader = Components.Constructor(
     "@mozilla.org/libjar/zip-reader;1",
     "nsIZipReader",

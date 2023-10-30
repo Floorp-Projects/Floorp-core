@@ -22,7 +22,7 @@ function enableRestMode() {
     tag.setAttribute("id", "floorp-rest-mode");
     document.head.appendChild(tag);
 
-    const l10n = new Localization(["browser/floorp.ftl"], true);
+    const l10n = new Localization(["browser/floorp.ftl", "branding/brand.ftl"], true);
     Services.prompt.alert(
       null,
       l10n.formatValueSync("rest-mode"),

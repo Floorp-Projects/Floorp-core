@@ -332,7 +332,7 @@ const workspaceFunctions = {
       let allWorkspace = Services.prefs
         .getStringPref(WorkspaceUtils.workspacesPreferences.WORKSPACE_ALL_PREF)
         .split(",");
-      let l10n = new Localization(["browser/floorp.ftl"], true);
+      let l10n = new Localization(["browser/floorp.ftl", "branding/brand.ftl"], true);
       let prompts = Services.prompt;
       let check = { value: false };
       let pattern = /^[\p{L}\p{N}]+$/u;

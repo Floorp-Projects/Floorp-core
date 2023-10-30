@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const window_ = window.wrappedJSObject.window;
 const browser_ = window.wrappedJSObject.browser;
 
@@ -45,6 +46,7 @@ if (browser_.runtime.id == "{506e023c-7f2b-40a3-8066-bc5deb40aebe}") {
       settingsHeading.title = settingsHeading.textContent = gesturefyController.l10n["gf-floorp-open-extension-sidebar-name"]
 
       const settingsContent = templateFragment.getElementById("settingsScrollContainer");
+      // eslint-disable-next-line no-unsanitized/method
       let settingContentPage = document.createRange().createContextualFragment(`
       <form id="settingsForm">
       <div class="cb-setting">
@@ -54,7 +56,7 @@ if (browser_.runtime.id == "{506e023c-7f2b-40a3-8066-bc5deb40aebe}") {
         </p>
         ${gesturefyController.commandSettings[id]?.UI()}
       </div>
-      <button id="settingsSaveButton" type="submit">${gesturefyController.i18n["buttonSave"]}</button>
+      <button id="settingsSaveButton" type="submit">${gesturefyController.i18n.buttonSave}</button>
       <form>
     `)
     settingContentPage.getElementById("settingsForm").onsubmit = gesturefyController.commandSettings[id].submit
@@ -62,7 +64,7 @@ if (browser_.runtime.id == "{506e023c-7f2b-40a3-8066-bc5deb40aebe}") {
       return templateFragment.firstElementChild
     },
     "settingsL10n":["gf-floorp-open-extension-sidebar-settings-addons-id","gf-floorp-open-extension-sidebar-settings-addons-id-description","gf-floorp-open-extension-sidebar-settings-list-default","gf-floorp-open-extension-sidebar-settings-list-unknwon"],
-    "l10nArg": { "file": ["browser/floorp.ftl"], text: [] },
+    "l10nArg": { "file": ["browser/floorp.ftl", "branding/brand.ftl"], text: [] },
     "gesturefyI18n":["buttonSave"],
     "i18n":{},
     "setting": null,
@@ -73,7 +75,6 @@ if (browser_.runtime.id == "{506e023c-7f2b-40a3-8066-bc5deb40aebe}") {
     "thereIsSetting":false,
     "extensionsInSidebar":null,
     "slideBack":function(){
-            const commandBar = gesturefyController.commandList.getElementById("commandBar");
         const commandsMain = gesturefyController.commandList.getElementById("commandsMain");
         document.querySelector("#gesturePopupCommandSelect")._scrollPosition = commandsMain.scrollTop;
 
@@ -125,7 +126,7 @@ if (browser_.runtime.id == "{506e023c-7f2b-40a3-8066-bc5deb40aebe}") {
 
     return templateFragment
     },
-    createCommandListItem: function (id) {
+    createCommandListItem (id) {
       let returnItem = document.createElement("li")
       returnItem.id = "gf-floorp-" + id
       returnItem.classList.add("cb-command-item")
@@ -160,11 +161,11 @@ if (browser_.runtime.id == "{506e023c-7f2b-40a3-8066-bc5deb40aebe}") {
 
       return returnItem
     },
-    popupCommandSet:function( id,setting){
+    popupCommandSet( id,setting){
       document.querySelector("#gesturePopupCommandSelect").setAttribute("value", `{"name":"SendMessageToOtherAddon","settings":{"extensionId":"floorp-actions@floorp.ablaze.one","message":"{\\"action\\": \\"${id}\\"${setting != undefined ? `,\\"options\\":{${JSON.stringify(JSON.stringify(setting)).slice( 2 ).slice(0, -2 )}}` : ""}}"}}`)
       gesturefyController.commandList.children[1].textContent = gesturefyController.l10n["gf-floorp-" + id + "-name"]
       gesturefyController.commandList.children[1].setAttribute("title",gesturefyController.l10n["gf-floorp-" + id + "-name"])
-      if(!(id in this.commandSettings)) gesturefyController.commandList.children[2].classList.remove("has-settings")
+      if(!(id in this.commandSettings)) {gesturefyController.commandList.children[2].classList.remove("has-settings")}
       document.querySelector("#gesturePopupLabelInput").setAttribute("placeholder",gesturefyController.l10n["gf-floorp-" + id + "-name"])
       if(document.querySelector("#gesturePopupLabelInput").getAttribute("FloorpGFBeforeText") == document.querySelector("#gesturePopupLabelInput").value || document.querySelector("#gesturePopupLabelInput").value == ""){
         document.querySelector("#gesturePopupLabelInput").value = gesturefyController.l10n["gf-floorp-" + id + "-name"]
@@ -174,13 +175,13 @@ if (browser_.runtime.id == "{506e023c-7f2b-40a3-8066-bc5deb40aebe}") {
       document.querySelector("#gesturePopupLabelInput").setAttribute("FloorpGFBeforeText",gesturefyController.l10n["gf-floorp-" + id + "-name"])
       
     },
-    observerFunction: function () {
+    observerFunction () {
       let valueJSON = JSON.parse(document.querySelector("#gesturePopupCommandSelect").getAttribute("value") ?? `{"settings":{"extensionId":""}}`)
       if(document.querySelector("#gesturePopup").getAttribute("open") === "" && valueJSON.settings != undefined &&  valueJSON.settings.extensionId == "floorp-actions@floorp.ablaze.one"){
         if(JSON.parse(valueJSON.settings.message).action == "open-tree-style-tab"){
           document.querySelector("#gesturePopupCommandSelect").setAttribute("value", `{"name":"SendMessageToOtherAddon","settings":{"extensionId":"floorp-actions@floorp.ablaze.one","message":"{\\"action\\": \\"open-extension-sidebar\\",\\"options\\":{\\"extensionId\\":\\"treestyletab@piro.sakura.ne.jp\\"}}"}}`)
           valueJSON = JSON.parse(document.querySelector("#gesturePopupCommandSelect").getAttribute("value"))
-          if(document.querySelector("#gesturePopupLabelInput").value.startsWith("[Floorp]")) document.querySelector("#gesturePopupLabelInput").value = gesturefyController.l10n["gf-floorp-open-extension-sidebar-name"]
+          if(document.querySelector("#gesturePopupLabelInput").value.startsWith("[Floorp]")) {document.querySelector("#gesturePopupLabelInput").value = gesturefyController.l10n["gf-floorp-open-extension-sidebar-name"]}
         }
         this.popupCommandSet(JSON.parse(valueJSON.settings.message).action,JSON.parse(valueJSON.settings.message).options)
         if(this.l10n["gf-floorp-" + JSON.parse(valueJSON.settings.message).action + "-name"] == document.querySelector("#gesturePopupLabelInput").value){
@@ -188,7 +189,7 @@ if (browser_.runtime.id == "{506e023c-7f2b-40a3-8066-bc5deb40aebe}") {
         }
       }
     },
-    showSettingPage:function(id){
+    showSettingPage(id){
       const commandsMain = gesturefyController.commandList.getElementById("commandsMain");
       document.querySelector("#gesturePopupCommandSelect")._scrollPosition = commandsMain.scrollTop;
 
@@ -223,15 +224,14 @@ if (browser_.runtime.id == "{506e023c-7f2b-40a3-8066-bc5deb40aebe}") {
       currentPanel.classList.add("cb-slide-left");
       newPanel.classList.remove("cb-slide-right");
     },
-    clickCommandList:function(event){
-      const commandBar = gesturefyController.commandList.getElementById("commandBar");
+    clickCommandList(event){
       if(event.currentTarget.id.replace("gf-floorp-","") in gesturefyController.commandSettings ){
         gesturefyController.showSettingPage(event.currentTarget.id.replace("gf-floorp-",""))
       }else{
         gesturefyController.closeCommandPanel(event.currentTarget.id.replace("gf-floorp-",""))
       }
     },
-    closeCommandPanel: function (commandID,settings) {
+    closeCommandPanel (commandID,settings) {
       const commandBar = gesturefyController.commandList.getElementById("commandBar");
         const overlay = gesturefyController.commandList.getElementById("overlay");
         
@@ -258,13 +258,13 @@ if (browser_.runtime.id == "{506e023c-7f2b-40a3-8066-bc5deb40aebe}") {
       
 
     },
-    commandMouseLeave: function (event) {
+    commandMouseLeave (event) {
       const commandItemInfo = event.currentTarget.querySelector(".cb-command-info");
       if (commandItemInfo.style.getPropertyValue("height")) {
         commandItemInfo.style.removeProperty("height");
       }
     },
-    commandMouseEnter: function (event) {
+    commandMouseEnter (event) {
       const commandItem = event.currentTarget;
       setTimeout(() => {
         if (commandItem.matches(".cb-command-item:hover")) {
@@ -275,21 +275,21 @@ if (browser_.runtime.id == "{506e023c-7f2b-40a3-8066-bc5deb40aebe}") {
         }
       }, 500);
     },
-    commandNameFocus:function(){
+    commandNameFocus(){
       if(document.querySelector("#gesturePopupLabelInput").getAttribute("FloorpGFBeforeText") == document.querySelector("#gesturePopupLabelInput").value){
         document.querySelector("#gesturePopupLabelInput").value = ""
         document.querySelector("#gesturePopupLabelInput").style.color = ""
       }
       
     },
-    commandNameBlur:function(){
+    commandNameBlur(){
       if(document.querySelector("#gesturePopupLabelInput").getAttribute("FloorpGFBeforeText") == document.querySelector("#gesturePopupLabelInput").value || document.querySelector("#gesturePopupLabelInput").value == ""){
         document.querySelector("#gesturePopupLabelInput").value = document.querySelector("#gesturePopupLabelInput").getAttribute("FloorpGFBeforeText")
         document.querySelector("#gesturePopupLabelInput").style.color = "gray"
       }
       
     },
-    setObserver: function () {
+    setObserver () {
       if (document.querySelector("#gesturePopup") == null) {
         window.setTimeout(this.setObserver, 1000)
       }
@@ -301,7 +301,7 @@ if (browser_.runtime.id == "{506e023c-7f2b-40a3-8066-bc5deb40aebe}") {
         document.querySelector("#gesturePopupLabelInput").addEventListener('blur', this.commandNameBlur);
       }
     },
-    setCmdListObserver: function () {
+    setCmdListObserver () {
       if (document.querySelector("#gesturePopupCommandSelect").shadowRoot == null) {
         window.setTimeout(this.setCmdListObserver, 1000)
       }
@@ -310,7 +310,7 @@ if (browser_.runtime.id == "{506e023c-7f2b-40a3-8066-bc5deb40aebe}") {
         this.cmdListObserver.observe(this.commandList, { childList: true, subtree: true })
       }
     },
-    observerCommandSelectFunction: function () {
+    observerCommandSelectFunction () {
       let valueJSON = JSON.parse(document.querySelector("#gesturePopupCommandSelect").getAttribute("value") ?? `{"settings":{"extensionId":""}}`)
       if (this.commandList.querySelector(`[data-command="DuplicateTab"]`) != null && this.commandList.querySelector("#FloorpCommands") == null) {
         let baseElem = this.commandList.querySelector(`#commandsScrollContainer`)
@@ -330,7 +330,7 @@ if (browser_.runtime.id == "{506e023c-7f2b-40a3-8066-bc5deb40aebe}") {
       if(valueJSON.settings != undefined &&  valueJSON.settings.extensionId == "floorp-actions@floorp.ablaze.one"){
         if(this.commandList.querySelector("#settingsBackButton") != null && this.thereIsNotOverlay){
           this.commandList.querySelector("#settingsBackButton").click()
-          if(JSON.parse(valueJSON.settings.message).action in gesturefyController.commandSettings ) this.thereIsSetting = true
+          if(JSON.parse(valueJSON.settings.message).action in gesturefyController.commandSettings ) {this.thereIsSetting = true}
         }else if(this.commandList.querySelector(`[name="extensionId"]`) && this.commandList.querySelector(`[name="extensionId"]`).value == "floorp-actions@floorp.ablaze.one"){
           this.commandList.querySelector(`[name="extensionId"]`).value = ""
           this.commandList.querySelector(`[name="message"]`).value = ""

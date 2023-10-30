@@ -35,7 +35,7 @@ function convertToDateAndTime(timestamp) {
 }
 
 async function resetWorkspaces() {
-  const l10n = new Localization(["browser/floorp.ftl"], true);
+  const l10n = new Localization(["browser/floorp.ftl", "branding/brand.ftl"], true);
   const prompts = Services.prompt;
   const check = { value: false };
   const flags = prompts.BUTTON_POS_0 * prompts.BUTTON_TITLE_OK + prompts.BUTTON_POS_1 * prompts.BUTTON_TITLE_CANCEL;
