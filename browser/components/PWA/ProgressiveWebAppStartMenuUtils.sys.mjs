@@ -33,34 +33,30 @@ export let ProgressiveWebAppStartMenuUtils = {
         return Cc["@mozilla.org/browser/shell-service;1"].getService(Ci.nsIWindowsShellService); 
     },
 
-    async createShortCut(shortcutName, targetPath, iconPath) {
+    async createShortCut(shortcutName, targetPath) {
         let shellService = this.shellService;
-        let exe = `${this.browserInstallationDirectory}\\${AppConstants.MOZ_APP_DISPLAYNAME_DO_NOT_USE.toLowerCase()}.exe`;
-
-        if (!iconPath) {
-            iconPath = exe;
-        }
+        let winTaskbar = Cc["@mozilla.org/windows-taskbar;1"].getService(
+            Ci.nsIWinTaskbar
+        );
+        let appdir = Services.dirsvc.get("GreD", Ci.nsIFile);
+        let exe = appdir.clone();
+        const PRIVATE_BROWSING_BINARY = `${AppConstants.MOZ_APP_DISPLAYNAME_DO_NOT_USE.toLowerCase()}.exe`
+        exe.append(PRIVATE_BROWSING_BINARY);
 
         if (!targetPath) {
             targetPath = this.startMenuDirectory;
         }
 
-        console.log(`Creating shortcut for ${exe} in ${targetPath} with icon ${iconPath}`);
-
         await shellService.createShortcut(
             exe,
             [],
             "Floorp Progressive Web App for " + shortcutName,
-            exe,
+            icon,
             0,
-            0,
-            "Progressive Web App",
-            "Floorp Progressive Web App for " + shortcutName,
+            winTaskbar.defaultPrivateGroupId,
+            "Programs",
+            "Floorp Progressive Web App.lnk",
             Services.dirsvc.get("GreD", Ci.nsIFile),
         );
     },
-
-    setIconToShortcut(shortcutPath, iconPath, iconIndex) {
-
-    }
 };
