@@ -20,6 +20,8 @@ EXTRA_JS_MODULES += [
     "FloorpStartup.sys.mjs",
     "PortableUpdate.sys.mjs",
     "PrivateContainer.sys.mjs",
+    "PWA/ProgressiveWebAppStartMenuUtils.sys.mjs",
+    "PWA/ProgressiveWebAppWindowUtils.sys.mjs",
     "userjsUtils.sys.mjs",
     "WorkspaceUtils.sys.mjs",
 ]
