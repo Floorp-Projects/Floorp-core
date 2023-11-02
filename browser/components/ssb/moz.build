@@ -10,6 +10,7 @@ XPCOM_MANIFESTS += [
 ]
 
 EXTRA_JS_MODULES += [
+    "SiteSpecificBrowserExternalFileService.jsm",
     "SiteSpecificBrowserIdUtils.jsm",
     "SiteSpecificBrowserService.jsm",
 ]

@@ -34,15 +34,23 @@ const { Services } = ChromeUtils.import(
 let { AppConstants } = ChromeUtils.importESModule(
   "resource://gre/modules/AppConstants.sys.mjs"
 );
+
+let { KeyValueService } = ChromeUtils.importESModule(
+  "resource://gre/modules/kvstore.sys.mjs"
+);
+
 const { XPCOMUtils } = ChromeUtils.import(
   "resource://gre/modules/XPCOMUtils.jsm"
+);
+
+const { SiteSpecificBrowserExternalFileService } = ChromeUtils.import(
+  "resource:///modules/SiteSpecificBrowserExternalFileService.jsm"
 );
 
 
 XPCOMUtils.defineLazyModuleGetters(this, {
   ManifestObtainer: "resource://gre/modules/ManifestObtainer.jsm",
   ManifestProcessor: "resource://gre/modules/ManifestProcessor.jsm",
-  KeyValueService: "resource://gre/modules/kvstore.jsm",
   ImageTools: "resource:///modules/ssb/ImageTools.jsm",
 });
 
@@ -270,16 +278,20 @@ async function buildManifestForBrowser(browser) {
  */
 let SSBMap = new Map();
 
-if (Services.prefs.prefHasUserValue("browser.ssb.SSBMap")) {
-  function loadMapFromLocalStorage() {
-    const mapJson = Services.prefs.getStringPref("browser.ssb.SSBMap");
-    const serializedMap = JSON.parse(mapJson);
-    const map = new Map(serializedMap);
-    return map;
+
+async function loadMapFromLocalStorage() {
+  const mapJson = await SiteSpecificBrowserExternalFileService.getSsbMapData();
+  if (!mapJson) {
+    return new Map();
   }
-  
-  SSBMap = loadMapFromLocalStorage();
+  const serializedMap = JSON.parse(mapJson);
+  const map = new Map(serializedMap);
+  return map;
 }
+
+loadMapFromLocalStorage().then((map) => {
+  SSBMap = map;
+});
 
 
 /**
@@ -390,8 +402,8 @@ class SiteSpecificBrowser extends SiteSpecificBrowserBase {
     SSBMap.set(id, this);
     
     function saveMapToLocalStorage(map) {
-      let mapJson = JSON.stringify([...map]);
-      Services.prefs.setStringPref("browser.ssb.SSBMap", mapJson);
+      const serializedMap = [...map];
+      SiteSpecificBrowserExternalFileService.saveSsbMapData(serializedMap);
     }
     
     saveMapToLocalStorage(SSBMap);
@@ -542,6 +554,21 @@ class SiteSpecificBrowser extends SiteSpecificBrowserBase {
 
       let kvstore = await SiteSpecificBrowserService.getKVStore();
       await kvstore.put(storeKey(this.id), JSON.stringify(data));
+
+      let ssbData = await SiteSpecificBrowserExternalFileService.getCurrentSsbData();
+
+      if (!ssbData) {
+        ssbData = {};
+      }
+
+      ssbData[this.startURI.spec] = {
+        name: this.name,
+        icon: this.getIcon(128).src,
+        id: this.id,
+        startURI: this.startURI.spec,
+      };
+
+      await SiteSpecificBrowserExternalFileService.saveSsbData(ssbData);
     }
   }
 
