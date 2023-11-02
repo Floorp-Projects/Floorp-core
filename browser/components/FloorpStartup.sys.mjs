@@ -17,6 +17,7 @@ import { FloorpAppConstants } from "resource:///modules/FloorpAppConstants.sys.m
 
 // Migration from JSM to ES Module in the future.
 const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
+const { SiteSpecificBrowserIdUtils } = ChromeUtils.import("resource:///modules/SiteSpecificBrowserIdUtils.jsm");
 
 export const env = Services.env;
 // Check information about startup.
@@ -160,6 +161,20 @@ if (isMainBrowser) {
     let pref = "floorp.extensions.webextensions.sidebar-action";
     if (Services.prefs.prefHasUserValue(pref)) {
         Services.prefs.clearUserPref(pref);
+    }
+}
+
+{   
+    let needSsbOpenWindow = Services.prefs.prefHasUserValue("browser.ssb.startup");
+    
+    if (needSsbOpenWindow) {
+      try {
+        SiteSpecificBrowserIdUtils.runSSBWithId(Services.prefs.getStringPref("browser.ssb.startup"));
+        Services.prefs.clearUserPref("browser.ssb.startup");
+      }
+      catch(e) {
+        console.log(e);
+      }
     }
 }
 
