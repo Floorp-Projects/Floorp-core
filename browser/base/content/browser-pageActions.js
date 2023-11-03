@@ -211,5 +211,8 @@ let gFloorpPageAction = {
 
 SessionStore.promiseInitialized.then(() => {
   document.getElementById("star-button-box").before(gFloorpPageAction.qrCode.QRCodeGeneratePageActionButton);
-  document.getElementById("star-button-box").before(gFloorpPageAction.Ssb.SsbPageActionButton);
+
+  if (Services.prefs.getBoolPref("browser.ssb.enabled")) {
+    document.getElementById("star-button-box").before(gFloorpPageAction.Ssb.SsbPageActionButton);
+  }
 });

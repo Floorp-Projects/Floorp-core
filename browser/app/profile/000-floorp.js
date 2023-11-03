@@ -165,6 +165,10 @@ pref("floorp.browser.splitView.working", false);
 
 // user.js
 pref("floorp.user.js.customize", "");
+
+// Web apps support
+pref("browser.ssb.enabled", false);
+
 /*----------------------------------------------------------------------------------------------------------------------------------*/
 
 #if defined(FLOORP_LIGHTNING_BUILD)
