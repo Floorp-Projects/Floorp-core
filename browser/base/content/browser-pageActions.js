@@ -71,7 +71,7 @@ let gFloorpPageAction = {
      class="urlbar-page-action" tooltiptext="ssb-page-action"
      role="button" popup="ssb-panel">
      <image id="ssbPageAction-image" class="urlbar-icon"/>
-     <panel id="ssb-panel" type="arrow" position="bottomright topright" onpopupshowing="gFloorpPageAction.qrCode.generateCurrentTabQRCode()">
+     <panel id="ssb-panel" type="arrow" position="bottomright topright" onpopupshowing="gFloorpPageAction.Ssb.onPopupShowing()">
      <vbox id="ssb-box">
        <vbox class="panel-header">
          <html:h1>
@@ -79,38 +79,133 @@ let gFloorpPageAction = {
          </html:h1>
        </vbox>
        <toolbarseparator/>
-       <vbox id="qrcode-img-vbox">
-       </vbox>
+       <hbox id="ssb-content-hbox">
+        <vbox id="ssb-content-icon-vbox">
+         <html:img id="ssb-content-icon" width="64" height="64"/>
+        </vbox>
+        <vbox id="ssb-content-label-vbox">
+         <html:h2>
+          <label id="ssb-content-label"></label>
+         </html:h2>
+         <description id="ssb-content-description"></description>
+        </vbox>
+       </hbox>
+       <hbox id="ssb-button-hbox">
+        <button id="ssb-button" class="panel-button ssb-app-install-button" oncommand="gFloorpPageAction.Ssb.onCommand(event, this)"/>
+        <button id="ssb-button" class="panel-button ssb-app-cancel-button" data-l10n-id="ssb-app-cancel-button" oncommand="gFloorpPageAction.Ssb.closePopup()"/>
+        </hbox>
       </vbox>
      </panel>
     </hbox>
    `),
 
-    async onPopupShowing() {
-      let currentPageUrl = gBrowser.selectedBrowser.currentURI.spec;
+   async currentTabSsb () {
+    const { SiteSpecificBrowser } = ChromeUtils.import(
+      "resource:///modules/SiteSpecificBrowserService.jsm"
+    );
 
-      let ssb = await SiteSpecificBrowser.createFromBrowser(
-        gBrowser.selectedBrowser
-      );
+    let currentURISsbObj = await SiteSpecificBrowser.createFromBrowser(gBrowser.selectedBrowser);
+
+    return currentURISsbObj;
+   },
+
+    async onPopupShowing() {
+      let currentURISsbObj = await gFloorpPageAction.Ssb.currentTabSsb();
+      let isInstalled = await gFloorpPageAction.Ssb.checkCurrentPageIsInstalled();
+
+      let currentTabTitle = currentURISsbObj.name;
+      let currentTabURL = currentURISsbObj._scope.displayHost;
+
+      let ssbContentLabel = document.getElementById("ssb-content-label");
+      let ssbContentDescription = document.getElementById("ssb-content-description");
+      let ssbContentIcon = document.getElementById("ssb-content-icon");
+
+      let installButton = document.querySelector(".ssb-app-install-button");
+
+      if (ssbContentLabel) {
+        ssbContentLabel.textContent = currentTabTitle;
+      }
+
+      if (ssbContentDescription) {
+        ssbContentDescription.textContent = currentTabURL;
+      }
+
+      if (installButton) {
+        if (isInstalled) {
+          document.l10n.setAttributes(installButton, "ssb-app-open-button");
+        } else {
+          document.l10n.setAttributes(installButton, "ssb-app-install-button");
+        }
+      }
+
+      if (ssbContentIcon) {
+        ssbContentIcon.src = document.querySelector(".tab-icon-image[selected=true]").src;
+      }
     },
 
-    async onCommand(event, buttonNode) {
+    async onCommand() {
+      const { SiteSpecificBrowser } = ChromeUtils.import(
+        "resource:///modules/SiteSpecificBrowserService.jsm"
+      );
+
+      let isInstalled = await gFloorpPageAction.Ssb.checkCurrentPageIsInstalled();
+
+      this.closePopup();
+
       if (!gBrowser.currentURI.schemeIs("https")) {
         return;
       }
-  
-      let ssb = await SiteSpecificBrowser.createFromBrowser(
-        gBrowser.selectedBrowser
-      );
-  
-      // Launching through the UI implies installing.
+
+      if (isInstalled) {
+        const { SiteSpecificBrowserIdUtils } = ChromeUtils.import(
+          "resource:///modules/SiteSpecificBrowserIdUtils.jsm"
+        );
+
+        let ssbObj = await SiteSpecificBrowserIdUtils.getIdByUrl(
+          gBrowser.selectedBrowser.currentURI
+        );
+
+        if (ssbObj) {
+          let id = ssbObj.id;
+          SiteSpecificBrowserIdUtils.runSSBWithId(id);
+          console.log("Open SSB with id: " + id);
+
+          return;
+        }
+      }
+
+      let ssb = await SiteSpecificBrowser.createFromBrowser(gBrowser.selectedBrowser)
+      
       await ssb.install();
-  
+
+      await SiteSpecificBrowserIdUtils.runSSBWithId(ssb.id);
+
       // The site's manifest may point to a different start page so explicitly
       // open the SSB to the current page.
-      ssb.launch(gBrowser.selectedBrowser.currentURI);
       gBrowser.removeTab(gBrowser.selectedTab, { closeWindowWithLastTab: false });
-    }
+    },
+
+    closePopup() {
+      document.getElementById("ssb-panel").hidePopup();
+    },
+
+    async checkCurrentPageIsInstalled() {
+      const { SiteSpecificBrowserExternalFileService } = ChromeUtils.import(
+        "resource:///modules/SiteSpecificBrowserExternalFileService.jsm"
+      );
+
+      let currentTabSsb = await gFloorpPageAction.Ssb.currentTabSsb();
+
+      let ssbData = await SiteSpecificBrowserExternalFileService.getCurrentSsbData();
+
+      
+      for (let key in ssbData) {
+        if (key === currentTabSsb._manifest.start_url) {
+          return true;
+        }
+      }
+      return false;
+    },
   }
 }
 

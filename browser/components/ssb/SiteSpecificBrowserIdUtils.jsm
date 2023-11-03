@@ -113,5 +113,21 @@ let SiteSpecificBrowserIdUtils = {
       return 0;
     });
     return iconList;
-  }
+  },
+
+  async getIdByUrl(url) {
+    const { SiteSpecificBrowserExternalFileService } = ChromeUtils.import(
+      "resource:///modules/SiteSpecificBrowserExternalFileService.jsm"
+    );
+    let ssbData = await SiteSpecificBrowserExternalFileService.getCurrentSsbData();
+
+    // check start with url
+    for (let key in ssbData) {
+      if (url.spec.startsWith(key)) {
+        return ssbData[key];
+      }
+    }
+
+    return null;
+  },
 }

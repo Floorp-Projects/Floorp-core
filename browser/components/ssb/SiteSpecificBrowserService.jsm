@@ -792,7 +792,6 @@ async function loadKVStore() {
     let info = await IOUtils.stat(dir);
 
     if (!info.isDir) {
-      await IOUtils.remove(dir, { ignoreAbsent: true, recursive: true });
       return createStore();
     }
   } catch (e) {
@@ -831,7 +830,6 @@ async function loadKVStore() {
     console.error(e);
 
     // Something is very wrong. Wipe all our data and start again.
-    await IOUtils.removeDir(dir, { ignoreAbsent: true, recursive: true });
     return createStore();
   }
 }
