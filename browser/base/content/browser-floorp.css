@@ -614,3 +614,7 @@ toolbar #workspace-button:not([disabled="true"], [checked], [open], :active):hov
 #ssb-button-hbox {
   margin-top: 15px;
 }
+
+#ssbPageAction-image {
+  list-style-image: url("chrome://browser/skin/install-ssb.svg");
+}

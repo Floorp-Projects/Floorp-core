@@ -458,13 +458,16 @@ browser.jar:
 
 ############################################### Under this line is include to Floorp Lightning ###############################################
 
+## SSB  
+  skin/classic/browser/install-ssb.svg                                      (icons/install-ssb.svg)
+
 # 3rd party icons 
   skin/classic/browser/lepton/screenshot.svg                                (designs/lepton/icons/screenshot.svg)
   skin/classic/browser/floorplegacy/newtab.svg                              (designs/floorp-legacy/newtab.svg)
   skin/classic/browser/settings.svg                                         (icons/settings.svg)
   skin/classic/browser/lepton/toolbox.svg                                   (designs/lepton/icons/toolbox.svg)
   skin/classic/browser/lepton/mail-inbox-all.svg                            (designs/lepton/icons/mail-inbox-all.svg)
-  skin/classic/browser/addons.svg                              (icons/addons.svg)
+  skin/classic/browser/addons.svg                                           (icons/addons.svg)
   skin/classic/browser/lepton/dismiss-filled.svg                            (designs/lepton/icons/dismiss-filled.svg)
 
 # template icons
