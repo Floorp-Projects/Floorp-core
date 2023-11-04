@@ -87,7 +87,7 @@ const WindowsSupport = {
       buildGroupId(ssb.id),
       "Programs",
       `${ssb.name}.lnk`,
-      Services.dirsvc.get("Desk", Ci.nsIFile),
+      Services.dirsvc.get("Desk", Ci.nsIFile)
     );
   },
 
@@ -105,7 +105,7 @@ const WindowsSupport = {
     let link = PathUtils.join(desktop.path, `${ssb.name}.lnk`);
 
     try {
-      await IOUtils.remove(link, { 
+      await IOUtils.remove(link, {
         recursive: true,
       });
     } catch (e) {

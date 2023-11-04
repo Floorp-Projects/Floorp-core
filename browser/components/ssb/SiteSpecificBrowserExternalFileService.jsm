@@ -7,52 +7,48 @@
 const EXPORTED_SYMBOLS = ["SiteSpecificBrowserExternalFileService"];
 
 let SiteSpecificBrowserExternalFileService = {
-    get _saveFile() {
-        return PathUtils.join(PathUtils.profileDir, "ssb.json");
-    },
+  get _saveFile() {
+    return PathUtils.join(PathUtils.profileDir, "ssb.json");
+  },
 
-    async getCurrentSsbData() {
-        let fileExists = await IOUtils.exists(this._saveFile);
-        if (!fileExists) {
-            IOUtils.writeJSON(this._saveFile, {});
-            return {};
-        };
+  async getCurrentSsbData() {
+    let fileExists = await IOUtils.exists(this._saveFile);
+    if (!fileExists) {
+      IOUtils.writeJSON(this._saveFile, {});
+      return {};
+    }
 
-        let result = await IOUtils.readJSON(
-            this._saveFile
-        );
+    let result = await IOUtils.readJSON(this._saveFile);
 
-        return result;
-    },
+    return result;
+  },
 
-    async saveSsbData(ssbData) {
-        await IOUtils.writeJSON(this._saveFile, ssbData);
-    },
+  async saveSsbData(ssbData) {
+    await IOUtils.writeJSON(this._saveFile, ssbData);
+  },
 
-    get _saveSsbMap() {
-        return PathUtils.join(PathUtils.profileDir, "ssb-map.json");
-    },
+  get _saveSsbMap() {
+    return PathUtils.join(PathUtils.profileDir, "ssb-map.json");
+  },
 
-    async ssbMapFileExists() {
-        let fileExists = await IOUtils.exists(this._saveSsbMap);
-        return fileExists;
-    },
-    
-    async getSsbMapData() {
-        let fileExists = await IOUtils.exists(this._saveSsbMap);
-        if (!fileExists) {
-            IOUtils.writeJSON(this._saveSsbMap, {});
-            return null;
-        };
+  async ssbMapFileExists() {
+    let fileExists = await IOUtils.exists(this._saveSsbMap);
+    return fileExists;
+  },
 
-        let result = await IOUtils.readUTF8(
-            this._saveSsbMap
-        );
+  async getSsbMapData() {
+    let fileExists = await IOUtils.exists(this._saveSsbMap);
+    if (!fileExists) {
+      IOUtils.writeJSON(this._saveSsbMap, {});
+      return null;
+    }
 
-        return result;
-    },
+    let result = await IOUtils.readUTF8(this._saveSsbMap);
 
-    async saveSsbMapData(ssbMapData) {
-        await IOUtils.writeJSON(this._saveSsbMap, ssbMapData);
-    },
-}
+    return result;
+  },
+
+  async saveSsbMapData(ssbMapData) {
+    await IOUtils.writeJSON(this._saveSsbMap, ssbMapData);
+  },
+};

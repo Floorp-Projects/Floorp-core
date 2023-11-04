@@ -4,8 +4,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-
-var { SiteSpecificBrowserIdUtils } = ChromeUtils.import("resource:///modules/SiteSpecificBrowserIdUtils.jsm");
+var { SiteSpecificBrowserIdUtils } = ChromeUtils.import(
+  "resource:///modules/SiteSpecificBrowserIdUtils.jsm"
+);
 
 let gSsbSupport = {
   _initialized: false,
@@ -34,7 +35,6 @@ let gSsbSupport = {
     return document.getElementById("identity-box");
   },
 
-
   init() {
     let styleElement = document.createElement("style");
     styleElement.id = "ssb-support";
@@ -47,9 +47,9 @@ let gSsbSupport = {
     gBrowser.tabs.forEach(tab => {
       tab.setAttribute("floorpSSB", "true");
     });
-    
+
     this._initialized = true;
-  }
-}
+  },
+};
 
 gSsbSupport.init();

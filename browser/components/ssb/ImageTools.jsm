@@ -29,7 +29,7 @@ const ImageTools = {
    * found mimetype and "container" which is an imgIContainer.
    *
    * @param {nsIURI} dataURI the URI to load.
-   * @return {Promise<object>} the image info.
+   * @returns {Promise<object>} the image info.
    */
   loadImage(dataURI) {
     return new Promise((resolve, reject) => {

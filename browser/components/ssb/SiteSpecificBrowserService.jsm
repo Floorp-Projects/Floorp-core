@@ -28,9 +28,7 @@ var EXPORTED_SYMBOLS = [
   "SSBCommandLineHandler",
 ];
 
-const { Services } = ChromeUtils.import(
-  "resource://gre/modules/Services.jsm"
-);
+const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 let { AppConstants } = ChromeUtils.importESModule(
   "resource://gre/modules/AppConstants.sys.mjs"
 );
@@ -46,7 +44,6 @@ const { XPCOMUtils } = ChromeUtils.import(
 const { SiteSpecificBrowserExternalFileService } = ChromeUtils.import(
   "resource:///modules/SiteSpecificBrowserExternalFileService.jsm"
 );
-
 
 XPCOMUtils.defineLazyModuleGetters(this, {
   ManifestObtainer: "resource://gre/modules/ManifestObtainer.jsm",
@@ -86,9 +83,7 @@ const SSB_STORE_PREFIX = "ssb:";
 const SSB_STORE_LAST = "ssb;";
 
 function uuid() {
-  return Services.uuid
-    .generateUUID()
-    .toString();
+  return Services.uuid.generateUUID().toString();
 }
 
 const sharedDataKey = id => `SiteSpecificBrowserBase:${id}`;
@@ -247,9 +242,8 @@ async function buildManifestForBrowser(browser) {
 
   // If the site provided no icons then try to use the normal page icons.
   if (!manifest.icons.length) {
-    let linkHandler = browser.browsingContext.currentWindowGlobal.getActor(
-      "LinkHandler"
-    );
+    let linkHandler =
+      browser.browsingContext.currentWindowGlobal.getActor("LinkHandler");
 
     for (let icon of [linkHandler.icon, linkHandler.richIcon]) {
       if (!icon) {
@@ -278,7 +272,6 @@ async function buildManifestForBrowser(browser) {
  */
 let SSBMap = new Map();
 
-
 async function loadMapFromLocalStorage() {
   const mapJson = await SiteSpecificBrowserExternalFileService.getSsbMapData();
   if (!mapJson) {
@@ -289,10 +282,9 @@ async function loadMapFromLocalStorage() {
   return map;
 }
 
-loadMapFromLocalStorage().then((map) => {
+loadMapFromLocalStorage().then(map => {
   SSBMap = map;
 });
-
 
 /**
  * The base contains the data about an SSB instance needed in content processes.
@@ -400,12 +392,12 @@ class SiteSpecificBrowser extends SiteSpecificBrowserBase {
     );
 
     SSBMap.set(id, this);
-    
+
     function saveMapToLocalStorage(map) {
       const serializedMap = [...map];
       SiteSpecificBrowserExternalFileService.saveSsbMapData(serializedMap);
     }
-    
+
     saveMapToLocalStorage(SSBMap);
 
     this._updateSharedData();
@@ -555,7 +547,8 @@ class SiteSpecificBrowser extends SiteSpecificBrowserBase {
       let kvstore = await SiteSpecificBrowserService.getKVStore();
       await kvstore.put(storeKey(this.id), JSON.stringify(data));
 
-      let ssbData = await SiteSpecificBrowserExternalFileService.getCurrentSsbData();
+      let ssbData =
+        await SiteSpecificBrowserExternalFileService.getCurrentSsbData();
 
       if (!ssbData) {
         ssbData = {};

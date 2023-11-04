@@ -32,22 +32,23 @@ let SiteSpecificBrowserIdUtils = {
     if (!ssb) {
       return;
     }
-  
+
     this.createSsbWidow(ssb);
   },
-  
+
   createSsbWidow(ssb) {
-   if (ssb) {
-      let browserWindowFeatures = "chrome,location=yes,centerscreen,dialog=no,resizable=yes,scrollbars=yes";
+    if (ssb) {
+      let browserWindowFeatures =
+        "chrome,location=yes,centerscreen,dialog=no,resizable=yes,scrollbars=yes";
       //"chrome,location=yes,centerscreen,dialog=no,resizable=yes,scrollbars=yes";
-    
+
       let args = Cc["@mozilla.org/supports-string;1"].createInstance(
         Ci.nsISupportsString
       );
-    
+
       // URL
-      args.data = ssb._scope.spec  + "?FloorpEnableSSBWindow=true";
-    
+      args.data = ssb._scope.spec + "?FloorpEnableSSBWindow=true";
+
       let win = Services.ww.openWindow(
         null,
         AppConstants.BROWSER_CHROME_URL,
@@ -55,7 +56,7 @@ let SiteSpecificBrowserIdUtils = {
         browserWindowFeatures,
         args
       );
-    
+
       if (Services.appinfo.OS == "WINNT") {
         WindowsSupport.applyOSIntegration(ssb, win);
       }
@@ -85,19 +86,19 @@ let SiteSpecificBrowserIdUtils = {
 
   buildIconList(icons) {
     let iconList = [];
-  
+
     for (let icon of icons) {
       for (let sizeSpec of icon.sizes) {
         let size =
           sizeSpec == "any" ? Number.MAX_SAFE_INTEGER : parseInt(sizeSpec);
-  
+
         iconList.push({
           icon,
           size,
         });
       }
     }
-  
+
     iconList.sort((a, b) => {
       // Given that we're using MAX_SAFE_INTEGER adding a value to that would
       // overflow and give odd behaviour. And we're using numbers supplied by a
@@ -105,29 +106,29 @@ let SiteSpecificBrowserIdUtils = {
       if (a.size < b.size) {
         return -1;
       }
-  
+
       if (a.size > b.size) {
         return 1;
       }
-  
+
       return 0;
     });
     return iconList;
   },
 
-  async getIdByUrl(url) {
+  async getIdByUrl(uri) {
     const { SiteSpecificBrowserExternalFileService } = ChromeUtils.import(
       "resource:///modules/SiteSpecificBrowserExternalFileService.jsm"
     );
-    let ssbData = await SiteSpecificBrowserExternalFileService.getCurrentSsbData();
+    let ssbData =
+      await SiteSpecificBrowserExternalFileService.getCurrentSsbData();
 
     // check start with url
     for (let key in ssbData) {
-      if (url.spec.startsWith(key)) {
+      if (key == uri) {
         return ssbData[key];
       }
     }
-
     return null;
   },
-}
+};

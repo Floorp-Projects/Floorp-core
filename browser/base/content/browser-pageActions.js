@@ -104,7 +104,7 @@ let gFloorpPageAction = {
         </vbox>
        </hbox>
        <hbox id="ssb-button-hbox">
-        <button id="ssb-button" class="panel-button ssb-app-install-button" oncommand="gFloorpPageAction.Ssb.onCommand(event, this)"/>
+        <button id="ssb-button" class="panel-button ssb-app-install-button" oncommand="gFloorpPageAction.Ssb.onCommand()"/>
         <button id="ssb-button" class="panel-button ssb-app-cancel-button" data-l10n-id="ssb-app-cancel-button" oncommand="gFloorpPageAction.Ssb.closePopup()"/>
         </hbox>
       </vbox>
@@ -113,7 +113,6 @@ let gFloorpPageAction = {
    `),
 
    async currentTabSsb () {
-
     let currentURISsbObj = await SiteSpecificBrowser.createFromBrowser(gBrowser.selectedBrowser);
 
     return currentURISsbObj;
@@ -163,30 +162,24 @@ let gFloorpPageAction = {
       }
 
       if (isInstalled) {
+        let currentTabSsb = await this.currentTabSsb();
         let ssbObj = await SiteSpecificBrowserIdUtils.getIdByUrl(
-          gBrowser.selectedBrowser.currentURI
+          currentTabSsb._manifest.start_url
         );
 
         if (ssbObj) {
           let id = ssbObj.id;
-          SiteSpecificBrowserIdUtils.runSSBWithId(id);
-          console.log("Open SSB with id: " + id);
-
-          return;
+          await SiteSpecificBrowserIdUtils.runSSBWithId(id);
         }
-
-        Browser.removeTab(gBrowser.selectedTab, { closeWindowWithLastTab: false });
-      }
-
-      let ssb = await SiteSpecificBrowser.createFromBrowser(gBrowser.selectedBrowser)
+      } else {
+        let ssb = await SiteSpecificBrowser.createFromBrowser(gBrowser.selectedBrowser)
       
-      await ssb.install();
-
-      await SiteSpecificBrowserIdUtils.runSSBWithId(ssb.id);
-
+        await ssb.install();
+        await SiteSpecificBrowserIdUtils.runSSBWithId(ssb.id);
+      }
       // The site's manifest may point to a different start page so explicitly
       // open the SSB to the current page.
-      gBrowser.removeTab(gBrowser.selectedTab, { closeWindowWithLastTab: false });
+      // gBrowser.removeTab(gBrowser.selectedTab, { closeWindowWithLastTab: false });
     },
 
     closePopup() {
@@ -194,11 +187,8 @@ let gFloorpPageAction = {
     },
 
     async checkCurrentPageIsInstalled() {
-
       let currentTabSsb = await gFloorpPageAction.Ssb.currentTabSsb();
-
       let ssbData = await SiteSpecificBrowserExternalFileService.getCurrentSsbData();
-
       
       for (let key in ssbData) {
         if (key === currentTabSsb._manifest.start_url) {
