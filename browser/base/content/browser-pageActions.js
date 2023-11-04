@@ -6,6 +6,19 @@
 
 /****************************************************** QR Code ******************************************************/
 
+var { SiteSpecificBrowserExternalFileService } = ChromeUtils.import(
+  "resource:///modules/SiteSpecificBrowserExternalFileService.jsm"
+);
+
+var { SiteSpecificBrowser } = ChromeUtils.import(
+  "resource:///modules/SiteSpecificBrowserService.jsm"
+);
+
+var { SiteSpecificBrowserIdUtils } = ChromeUtils.import(
+  "resource:///modules/SiteSpecificBrowserIdUtils.jsm"
+);
+
+
 let gFloorpPageAction = {
   qrCode: {
     QRCodeGeneratePageActionButton: window.MozXULElement.parseXULToFragment(`
@@ -100,9 +113,6 @@ let gFloorpPageAction = {
    `),
 
    async currentTabSsb () {
-    const { SiteSpecificBrowser } = ChromeUtils.import(
-      "resource:///modules/SiteSpecificBrowserService.jsm"
-    );
 
     let currentURISsbObj = await SiteSpecificBrowser.createFromBrowser(gBrowser.selectedBrowser);
 
@@ -144,10 +154,6 @@ let gFloorpPageAction = {
     },
 
     async onCommand() {
-      const { SiteSpecificBrowser } = ChromeUtils.import(
-        "resource:///modules/SiteSpecificBrowserService.jsm"
-      );
-
       let isInstalled = await gFloorpPageAction.Ssb.checkCurrentPageIsInstalled();
 
       this.closePopup();
@@ -157,10 +163,6 @@ let gFloorpPageAction = {
       }
 
       if (isInstalled) {
-        const { SiteSpecificBrowserIdUtils } = ChromeUtils.import(
-          "resource:///modules/SiteSpecificBrowserIdUtils.jsm"
-        );
-
         let ssbObj = await SiteSpecificBrowserIdUtils.getIdByUrl(
           gBrowser.selectedBrowser.currentURI
         );
@@ -172,6 +174,8 @@ let gFloorpPageAction = {
 
           return;
         }
+
+        Browser.removeTab(gBrowser.selectedTab, { closeWindowWithLastTab: false });
       }
 
       let ssb = await SiteSpecificBrowser.createFromBrowser(gBrowser.selectedBrowser)
@@ -190,9 +194,6 @@ let gFloorpPageAction = {
     },
 
     async checkCurrentPageIsInstalled() {
-      const { SiteSpecificBrowserExternalFileService } = ChromeUtils.import(
-        "resource:///modules/SiteSpecificBrowserExternalFileService.jsm"
-      );
 
       let currentTabSsb = await gFloorpPageAction.Ssb.currentTabSsb();
 

@@ -730,34 +730,6 @@ class SiteSpecificBrowser extends SiteSpecificBrowserBase {
     let manifest = await buildManifestForBrowser(browser);
     await this.updateFromManifest(manifest);
   }
-
-  /**
-   * Launches a SSB by opening the necessary UI.
-   * Open URL is getting from the current browser.
-   */
-  launch() {
-    let browserWindowFeatures = "chrome,location=yes,centerscreen,dialog=no,resizable=yes,scrollbars=yes";
-    //"chrome,location=yes,centerscreen,dialog=no,resizable=yes,scrollbars=yes";
-
-    let args = Cc["@mozilla.org/supports-string;1"].createInstance(
-      Ci.nsISupportsString
-    );
-
-    // URL
-    args.data = this.startURI.spec + "?FloorpEnableSSBWindow=true";
-
-    let win = Services.ww.openWindow(
-      null,
-      AppConstants.BROWSER_CHROME_URL,
-      "_blank",
-      browserWindowFeatures,
-      args
-    );
-
-    if (Services.appinfo.OS == "WINNT") {
-      WindowsSupport.applyOSIntegration(this, win);
-    }
-  }
 }
 
 /**

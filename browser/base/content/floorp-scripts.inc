@@ -52,7 +52,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // lightning build and normal build
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-flex-order.js", this);
-        Services.scriptloader.loadSubScript("chrome://browser/content/browser-ssb-support.js", this);
     });
 }, { once: true });
 </script>
