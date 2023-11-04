@@ -161,3 +161,16 @@ URL: https://github.com/Floorp-Projects/Floorp/commit/80f761b0e9fe7b9ab9383f9f59
 changed: "Insert split view codes."
 
 URL: https://github.com/Floorp-Projects/Floorp/commit/595e139fe7f51a58481939788668adb947396425
+
+
+---
+
+17. browser/base/content/browser-tabsintitlebar.js | browser/base/content/browser.js
+
+**Feature: "Site Specific Browser"**
+
+changed: "Insert Site Specific Browser codes."
+
+URL: https://github.com/Floorp-Projects/Floorp/commit/c3041c9aebd207d42e8da75ea298cecd7c573196
+
+---
