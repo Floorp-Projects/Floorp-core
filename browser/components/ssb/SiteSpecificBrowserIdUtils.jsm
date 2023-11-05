@@ -47,7 +47,7 @@ let SiteSpecificBrowserIdUtils = {
       );
 
       // URL
-      args.data = ssb._scope.spec + "?FloorpEnableSSBWindow=true";
+      args.data = `${ssb._scope.spec},${ssb._id},?FloorpEnableSSBWindow=true`;
 
       let win = Services.ww.openWindow(
         null,

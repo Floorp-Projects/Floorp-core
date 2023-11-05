@@ -8,8 +8,16 @@ var { SiteSpecificBrowserIdUtils } = ChromeUtils.import(
   "resource:///modules/SiteSpecificBrowserIdUtils.jsm"
 );
 
+var { SiteSpecificBrowser } = ChromeUtils.import(
+  "resource:///modules/SiteSpecificBrowserService.jsm"
+);
+
 let gSsbSupport = {
   _initialized: false,
+
+  get ssbWindowId() {
+    return document.documentElement.getAttribute("FloorpSSBId");
+  },
 
   get TabsToolbar() {
     return document.getElementById("TabsToolbar");
@@ -35,7 +43,12 @@ let gSsbSupport = {
     return document.getElementById("identity-box");
   },
 
-  init() {
+  async getSsbObj(id) {
+    let result = await SiteSpecificBrowser.load(id);
+    return result;
+  },
+
+  async init() {
     let styleElement = document.createElement("style");
     styleElement.id = "ssb-support";
     styleElement.textContent = `@import url("chrome://browser/content/browser-ssb-support.css");`;
@@ -48,6 +61,12 @@ let gSsbSupport = {
       tab.setAttribute("floorpSSB", "true");
     });
 
+    let ssbObj = await this.getSsbObj(this.ssbWindowId)
+
+    // Set theme color to Navbar
+    this.navToolbar.style.backgroundColor = ssbObj._manifest.theme_color;
+
+    // finish initialize
     this._initialized = true;
   },
 };
