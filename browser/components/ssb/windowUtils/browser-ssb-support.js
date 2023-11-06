@@ -48,6 +48,24 @@ let gSsbSupport = {
     return result;
   },
 
+  hexToRgb(hex) {
+        return {
+            r: parseInt(hex.substring(1, 3), 16),
+            g: parseInt(hex.substring(3, 5), 16),
+            b: parseInt(hex.substring(5, 7), 16)
+        };
+  },
+    
+  getSymmetricalColor(hex) {
+      const rgb = this.hexToRgb(hex);
+      const symmetricalRgb = {
+          r: 255 - rgb.r,
+          g: 255 - rgb.g,
+          b: 255 - rgb.b
+      };
+      return `rgb(${symmetricalRgb.r},${symmetricalRgb.g},${symmetricalRgb.b})`;
+  },
+
   async init() {
     let styleElement = document.createElement("style");
     styleElement.id = "ssb-support";
@@ -65,6 +83,9 @@ let gSsbSupport = {
 
     // Set theme color to Navbar
     this.navToolbar.style.backgroundColor = ssbObj._manifest.theme_color;
+    
+    // const symmetricalColor = this.getSymmetricalColor(ssbObj._manifest.theme_color);
+    // document.documentElement.style.setProperty("--toolbarbutton-icon-fill", `${symmetricalColor} !important`)
 
     // finish initialize
     this._initialized = true;
