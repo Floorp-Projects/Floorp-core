@@ -79,13 +79,13 @@ let gSsbSupport = {
       tab.setAttribute("floorpSSB", "true");
     });
 
+    /* Set theme color to Navbar
     let ssbObj = await this.getSsbObj(this.ssbWindowId)
-
-    // Set theme color to Navbar
-    this.navToolbar.style.backgroundColor = ssbObj._manifest.theme_color;
     
-    // const symmetricalColor = this.getSymmetricalColor(ssbObj._manifest.theme_color);
-    // document.documentElement.style.setProperty("--toolbarbutton-icon-fill", `${symmetricalColor} !important`)
+    this.navToolbar.style.backgroundColor = ssbObj._manifest.theme_color;    
+    const symmetricalColor = this.getSymmetricalColor(ssbObj._manifest.theme_color);
+    this.navToolbar.style.cssText += `--toolbarbutton-icon-fill: ${symmetricalColor} !important`;
+    */
 
     // finish initialize
     this._initialized = true;
