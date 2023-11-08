@@ -114,11 +114,7 @@ const WindowsSupport = {
 
     let dir = PathUtils.join(PathUtils.profileDir, "ssb", ssb.id);
     try {
-      await IOUtils.removeDir(dir, {
-        ignoreAbsent: true,
-        ignorePermissions: true,
-        recursive: true,
-      });
+      await IOUtils.remove(dir, { recursive: true });
     } catch (e) {
       console.error(e);
     }
