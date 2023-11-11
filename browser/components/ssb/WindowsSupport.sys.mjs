@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-var EXPORTED_SYMBOLS = ["WindowsSupport"];
+export const EXPORTED_SYMBOLS = ["WindowsSupport"];
 
 const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 const { XPCOMUtils } = ChromeUtils.import(
@@ -16,7 +16,8 @@ const { SiteSpecificBrowserIdUtils } = ChromeUtils.import(
   "resource:///modules/SiteSpecificBrowserIdUtils.jsm"
 );
 
-XPCOMUtils.defineLazyModuleGetters(this, {
+const lazy = {};
+XPCOMUtils.defineLazyModuleGetters(lazy, {
   ImageTools: "resource:///modules/ssb/ImageTools.jsm",
 });
 
@@ -46,7 +47,7 @@ function buildGroupId(id) {
   }
 }
 
-const WindowsSupport = {
+export const WindowsSupport = {
   /**
    * Installs an SSB by creating a shortcut to launch it on the user's desktop.
    *
@@ -69,10 +70,10 @@ const WindowsSupport = {
     // does not support this. For now just embed a sensible size.
     let icon = await SiteSpecificBrowserIdUtils.getIconBySSBId(ssb.id, 128);
     if (icon) {
-      let { container } = await ImageTools.loadImage(
+      let { container } = await lazy.ImageTools.loadImage(
         Services.io.newURI(icon.src)
       );
-      ImageTools.saveIcon(container, 128, 128, iconFile);
+      lazy.ImageTools.saveIcon(container, 128, 128, iconFile);
     } else {
       // TODO use a default icon file.
       iconFile = null;
@@ -129,6 +130,7 @@ const WindowsSupport = {
    * @param {DOMWindow} window the window showing the SSB.
    */
   async applyOSIntegration(ssb, window) {
+    taskbar.setGroupIdForWindow(window, buildGroupId(ssb._id));
     const getIcon = async size => {
       let icon = await SiteSpecificBrowserIdUtils.getIconBySSBId(ssb._id, size);
       if (!icon) {
@@ -136,7 +138,7 @@ const WindowsSupport = {
       }
 
       try {
-        let image = await ImageTools.loadImage(Services.io.newURI(icon.src));
+        let image = await lazy.ImageTools.loadImage(Services.io.newURI(icon.src));
         return image.container;
       } catch (e) {
         console.error(e);
@@ -156,7 +158,5 @@ const WindowsSupport = {
     if (icons[0] || icons[1]) {
       uiUtils.setWindowIcon(window, icons[0], icons[1]);
     }
-
-    taskbar.setGroupIdForWindow(window, buildGroupId(ssb._id));
   },
 };

@@ -21,7 +21,10 @@
  * SiteSpecificBrowserBase instance in any content process.
  */
 
-var EXPORTED_SYMBOLS = [
+import { AppConstants } from "resource://gre/modules/AppConstants.sys.mjs";
+import { KeyValueService } from "resource://gre/modules/kvstore.sys.mjs";
+
+export const EXPORTED_SYMBOLS = [
   "SiteSpecificBrowserService",
   "SiteSpecificBrowserBase",
   "SiteSpecificBrowser",
@@ -29,23 +32,15 @@ var EXPORTED_SYMBOLS = [
 ];
 
 const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
-let { AppConstants } = ChromeUtils.importESModule(
-  "resource://gre/modules/AppConstants.sys.mjs"
+const { SiteSpecificBrowserExternalFileService } = ChromeUtils.import(
+  "resource:///modules/SiteSpecificBrowserExternalFileService.jsm"
 );
-
-let { KeyValueService } = ChromeUtils.importESModule(
-  "resource://gre/modules/kvstore.sys.mjs"
-);
-
 const { XPCOMUtils } = ChromeUtils.import(
   "resource://gre/modules/XPCOMUtils.jsm"
 );
 
-const { SiteSpecificBrowserExternalFileService } = ChromeUtils.import(
-  "resource:///modules/SiteSpecificBrowserExternalFileService.jsm"
-);
-
-XPCOMUtils.defineLazyModuleGetters(this, {
+const lazy = {};
+XPCOMUtils.defineLazyModuleGetters(lazy, {
   ManifestObtainer: "resource://gre/modules/ManifestObtainer.jsm",
   ManifestProcessor: "resource://gre/modules/ManifestProcessor.jsm",
   ImageTools: "resource:///modules/ssb/ImageTools.jsm",
@@ -53,13 +48,13 @@ XPCOMUtils.defineLazyModuleGetters(this, {
 
 if (AppConstants.platform == "win") {
   ChromeUtils.defineModuleGetter(
-    this,
+    lazy,
     "WindowsSupport",
     "resource:///modules/ssb/WindowsSupport.jsm"
   );
 
   ChromeUtils.defineModuleGetter(
-    this,
+    lazy,
     "SiteSpecificBrowserIdUtils",
     "resource:///modules/SiteSpecificBrowserIdUtils.jsm"
   );
@@ -152,7 +147,7 @@ function scopeIncludes(scope, uri) {
 function manifestForURI(uri) {
   try {
     let manifestURI = Services.io.newURI("/manifest.json", null, uri);
-    return ManifestProcessor.process({
+    return lazy.ManifestProcessor.process({
       jsonText: "{}",
       manifestURL: manifestURI.spec,
       docURL: uri.spec,
@@ -171,7 +166,7 @@ function manifestForURI(uri) {
  */
 async function getIconResource(iconData) {
   // This should be a data url so no network traffic.
-  let imageData = await ImageTools.loadImage(
+  let imageData = await lazy.ImageTools.loadImage(
     Services.io.newURI(iconData.iconURL)
   );
   if (imageData.container.type == Ci.imgIContainer.TYPE_VECTOR) {
@@ -202,7 +197,7 @@ async function getIconResource(iconData) {
 async function buildManifestForBrowser(browser) {
   let manifest = null;
   try {
-    manifest = await ManifestObtainer.browserObtainManifest(browser);
+    manifest = await lazy.ManifestObtainer.browserObtainManifest(browser);
   } catch (e) {
     // We can function without a valid manifest.
     console.error(e);
@@ -291,7 +286,7 @@ loadMapFromLocalStorage().then(map => {
  *
  * The only data needed currently is site's `scope` which is just a URI.
  */
-class SiteSpecificBrowserBase {
+export class SiteSpecificBrowserBase {
   /**
    * Creates a new SiteSpecificBrowserBase. Generally should only be called by
    * code within this module.
@@ -364,7 +359,7 @@ class SiteSpecificBrowserBase {
  * We pass data based on these down to the SiteSpecificBrowserBase in this and
  * other processes (via `_updateSharedData`).
  */
-class SiteSpecificBrowser extends SiteSpecificBrowserBase {
+export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
   /**
    * Creates a new SiteSpecificBrowser. Generally should only be called by
    * code within this module.
@@ -578,7 +573,7 @@ class SiteSpecificBrowser extends SiteSpecificBrowserBase {
     await this._maybeSave();
 
     if (AppConstants.platform == "win") {
-      await WindowsSupport.install(this);
+      await lazy.WindowsSupport.install(this);
     }
 
     Services.obs.notifyObservers(
@@ -598,7 +593,7 @@ class SiteSpecificBrowser extends SiteSpecificBrowserBase {
     }
 
     if (AppConstants.platform == "win") {
-      await WindowsSupport.uninstall(this);
+      await lazy.WindowsSupport.uninstall(this);
     }
 
     this._config.persisted = false;
@@ -693,10 +688,10 @@ class SiteSpecificBrowser extends SiteSpecificBrowserBase {
       return null;
     }
 
-    let { container } = await ImageTools.loadImage(
+    let { container } = await lazy.ImageTools.loadImage(
       Services.io.newURI(icon.src)
     );
-    return ImageTools.scaleImage(container, size, size);
+    return lazy.ImageTools.scaleImage(container, size, size);
   }
 
   /**
@@ -799,7 +794,7 @@ async function loadKVStore() {
   }
 }
 
-const SiteSpecificBrowserService = {
+export const SiteSpecificBrowserService = {
   kvstore: null,
 
   /**
@@ -855,13 +850,13 @@ async function startSSB(id) {
 
   // Whatever happens we must exitLastWindowClosingSurvivalArea when done.
   try {
-    await SiteSpecificBrowserIdUtils.runSSBWithId(id);
+    await lazy.SiteSpecificBrowserIdUtils.runSSBWithId(id);
   } finally {
     Services.startup.exitLastWindowClosingSurvivalArea();
   }
 }
 
-class SSBCommandLineHandler {
+export class SSBCommandLineHandler {
   /* nsICommandLineHandler */
   handle(cmdLine) {
     if (!SiteSpecificBrowserService.isEnabled) {

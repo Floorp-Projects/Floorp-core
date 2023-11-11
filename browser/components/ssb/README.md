@@ -1,3 +1,7 @@
+## MEMO
+
+
+```JS
 /* eslint-disable no-undef */
 
 BrowserPageActions.launchSSB = {
@@ -31,3 +35,4 @@ var a = await SiteSpecificBrowser.createFromBrowser(gBrowser.selectedBrowser)
 await a.install() 
 
 */
+```

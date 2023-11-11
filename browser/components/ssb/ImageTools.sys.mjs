@@ -2,28 +2,29 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-var EXPORTED_SYMBOLS = ["ImageTools"];
+export const EXPORTED_SYMBOLS = ["ImageTools"];
 
 const { XPCOMUtils } = ChromeUtils.import(
   "resource://gre/modules/XPCOMUtils.jsm"
 );
 
-XPCOMUtils.defineLazyModuleGetters(this, {
+var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
+
+const lazy = {};
+
+XPCOMUtils.defineLazyModuleGetters(lazy, {
   FileUtils: "resource://gre/modules/FileUtils.jsm",
   NetUtil: "resource://gre/modules/NetUtil.jsm",
-  Services: "resource://gre/modules/Services.jsm",
 });
 
 XPCOMUtils.defineLazyServiceGetter(
-  this,
+  lazy,
   "ImgTools",
   "@mozilla.org/image/tools;1",
   Ci.imgITools
 );
 
-XPCOMUtils.defineLazyGlobalGetters(this, ["Blob"]);
-
-const ImageTools = {
+export const ImageTools = {
   /**
    * Given a data URI decodes the data into an object with "type" which is the
    * found mimetype and "container" which is an imgIContainer.
@@ -38,12 +39,12 @@ const ImageTools = {
         return;
       }
 
-      let channel = NetUtil.newChannel({
+      let channel = lazy.NetUtil.newChannel({
         uri: dataURI,
         loadUsingSystemPrincipal: true,
       });
 
-      ImgTools.decodeImageFromChannelAsync(
+      lazy.ImgTools.decodeImageFromChannelAsync(
         dataURI,
         channel,
         (container, status) => {
@@ -63,7 +64,7 @@ const ImageTools = {
 
   scaleImage(container, width, height) {
     return new Promise((resolve, reject) => {
-      let stream = ImgTools.encodeScaledImage(
+      let stream = lazy.ImgTools.encodeScaledImage(
         container,
         "image/png",
         width,
@@ -117,15 +118,15 @@ const ImageTools = {
 
   saveIcon(container, width, height, target) {
     return new Promise((resolve, reject) => {
-      let output = FileUtils.openFileOutputStream(target);
-      let stream = ImgTools.encodeScaledImage(
+      let output = lazy.FileUtils.openFileOutputStream(target);
+      let stream = lazy.ImgTools.encodeScaledImage(
         container,
         "image/vnd.microsoft.icon",
         width,
         height,
         ""
       );
-      NetUtil.asyncCopy(stream, output, status => {
+      lazy.NetUtil.asyncCopy(stream, output, status => {
         if (Components.isSuccessCode(status)) {
           resolve();
         } else {

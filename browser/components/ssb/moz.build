@@ -14,21 +14,21 @@ XPCOM_MANIFESTS += [
 ]
 
 EXTRA_JS_MODULES += [
-    "SiteSpecificBrowserExternalFileService.jsm",
-    "SiteSpecificBrowserIdUtils.jsm",
-    "SiteSpecificBrowserService.jsm",
+    "SiteSpecificBrowserExternalFileService.sys.mjs",
+    "SiteSpecificBrowserIdUtils.sys.mjs",
+    "SiteSpecificBrowserService.sys.mjs",
 ]
 
 EXTRA_JS_MODULES.ssb += [
-    "ImageTools.jsm",
+    "ImageTools.sys.mjs",
 ]
 
 FINAL_TARGET_FILES.actors += [
-    "SiteSpecificBrowserChild.jsm",
-    "SiteSpecificBrowserParent.jsm",
+    "actors/SiteSpecificBrowserChild.sys.mjs",
+    "actors/SiteSpecificBrowserParent.sys.mjs",
 ]
 
 if CONFIG["MOZ_WIDGET_TOOLKIT"] == "windows":
     EXTRA_JS_MODULES.ssb += [
-        "WindowsSupport.jsm",
+        "WindowsSupport.sys.mjs",
     ]

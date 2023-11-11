@@ -2,9 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-"use strict";
-
-const EXPORTED_SYMBOLS = ["SiteSpecificBrowserChild"];
+export const EXPORTED_SYMBOLS = ["SiteSpecificBrowserChild"];
 
 const { SiteSpecificBrowserBase } = ChromeUtils.import(
   "resource:///modules/SiteSpecificBrowserService.jsm"
@@ -38,7 +36,7 @@ async function loadIcon(window, uri) {
   });
 }
 
-class SiteSpecificBrowserChild extends JSWindowActorChild {
+export class SiteSpecificBrowserChild extends JSWindowActorChild {
   receiveMessage(message) {
     switch (message.name) {
       case "SetSSB":

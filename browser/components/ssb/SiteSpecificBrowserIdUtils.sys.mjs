@@ -1,34 +1,27 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+ 
+import { AppConstants } from "resource://gre/modules/AppConstants.sys.mjs";
 
-"use strict";
+export const EXPORTED_SYMBOLS = ["SiteSpecificBrowserIdUtils"];
 
-var { SiteSpecificBrowser } = ChromeUtils.import(
-  "resource:///modules/SiteSpecificBrowserService.jsm"
-);
-
-var { AppConstants } = ChromeUtils.importESModule(
-  "resource://gre/modules/AppConstants.sys.mjs"
-);
-
+const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 const { XPCOMUtils } = ChromeUtils.import(
   "resource://gre/modules/XPCOMUtils.jsm"
 );
 
+const lazy = {};
 if (AppConstants.platform == "win") {
-  XPCOMUtils.defineLazyModuleGetters(this, {
+  XPCOMUtils.defineLazyModuleGetters(lazy, {
+    SiteSpecificBrowser: "resource:///modules/SiteSpecificBrowserService.jsm",
     WindowsSupport: "resource:///modules/ssb/WindowsSupport.jsm",
   });
 }
 
-const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
-
-const EXPORTED_SYMBOLS = ["SiteSpecificBrowserIdUtils"];
-
-let SiteSpecificBrowserIdUtils = {
+export let SiteSpecificBrowserIdUtils = {
   async runSSBWithId(id) {
-    let ssb = await SiteSpecificBrowser.load(id);
+    let ssb = await lazy.SiteSpecificBrowser.load(id);
     if (!ssb) {
       return;
     }
@@ -58,13 +51,13 @@ let SiteSpecificBrowserIdUtils = {
       );
 
       if (Services.appinfo.OS == "WINNT") {
-        WindowsSupport.applyOSIntegration(ssb, win);
+        lazy.WindowsSupport.applyOSIntegration(ssb, win);
       }
     }
   },
 
   async getIconBySSBId(id, size) {
-    let ssb = await SiteSpecificBrowser.load(id);
+    let ssb = await lazy.SiteSpecificBrowser.load(id);
 
     if (!ssb._iconSizes) {
       ssb._iconSizes = this.buildIconList(ssb._manifest.icons);

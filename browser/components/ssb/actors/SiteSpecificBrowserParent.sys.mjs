@@ -2,9 +2,8 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-"use strict";
 
-var EXPORTED_SYMBOLS = ["SiteSpecificBrowserParent"];
+export const EXPORTED_SYMBOLS = ["SiteSpecificBrowserParent"];
 
 const { BrowserWindowTracker } = ChromeUtils.import(
   "resource:///modules/BrowserWindowTracker.jsm"
@@ -17,7 +16,7 @@ const { AppConstants } = ChromeUtils.import(
   "resource://gre/modules/AppConstants.jsm"
 );
 
-class SiteSpecificBrowserParent extends JSWindowActorParent {
+export class SiteSpecificBrowserParent extends JSWindowActorParent {
   receiveMessage(message) {
     switch (message.name) {
       case "RetargetOutOfScopeURIToBrowser":
