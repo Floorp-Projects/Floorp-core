@@ -23,6 +23,7 @@
 
 import { AppConstants } from "resource://gre/modules/AppConstants.sys.mjs";
 import { KeyValueService } from "resource://gre/modules/kvstore.sys.mjs";
+import { SiteSpecificBrowserExternalFileService } from "resource:///modules/SiteSpecificBrowserExternalFileService.sys.mjs";
 
 export const EXPORTED_SYMBOLS = [
   "SiteSpecificBrowserService",
@@ -32,9 +33,6 @@ export const EXPORTED_SYMBOLS = [
 ];
 
 const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
-const { SiteSpecificBrowserExternalFileService } = ChromeUtils.import(
-  "resource:///modules/SiteSpecificBrowserExternalFileService.jsm"
-);
 const { XPCOMUtils } = ChromeUtils.import(
   "resource://gre/modules/XPCOMUtils.jsm"
 );
@@ -43,20 +41,23 @@ const lazy = {};
 XPCOMUtils.defineLazyModuleGetters(lazy, {
   ManifestObtainer: "resource://gre/modules/ManifestObtainer.jsm",
   ManifestProcessor: "resource://gre/modules/ManifestProcessor.jsm",
-  ImageTools: "resource:///modules/ssb/ImageTools.jsm",
+});
+
+ChromeUtils.defineESModuleGetters(lazy, {
+  ImageTools: "resource:///modules/ssb/ImageTools.sys.mjs",
 });
 
 if (AppConstants.platform == "win") {
   ChromeUtils.defineModuleGetter(
     lazy,
     "WindowsSupport",
-    "resource:///modules/ssb/WindowsSupport.jsm"
+    "resource:///modules/ssb/WindowsSupport.sys.mjs"
   );
 
   ChromeUtils.defineModuleGetter(
     lazy,
     "SiteSpecificBrowserIdUtils",
-    "resource:///modules/SiteSpecificBrowserIdUtils.jsm"
+    "resource:///modules/SiteSpecificBrowserIdUtils.sys.mjs"
   );
 }
 

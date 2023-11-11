@@ -6,16 +6,16 @@
 
 /****************************************************** QR Code ******************************************************/
 
-var { SiteSpecificBrowserExternalFileService } = ChromeUtils.import(
-  "resource:///modules/SiteSpecificBrowserExternalFileService.jsm"
+var { SiteSpecificBrowserExternalFileService } = ChromeUtils.importESModule(
+  "resource:///modules/SiteSpecificBrowserExternalFileService.sys.mjs"
 );
 
-var { SiteSpecificBrowser } = ChromeUtils.import(
-  "resource:///modules/SiteSpecificBrowserService.jsm"
+var { SiteSpecificBrowser } = ChromeUtils.importESModule(
+  "resource:///modules/SiteSpecificBrowserService.sys.mjs"
 );
 
-var { SiteSpecificBrowserIdUtils } = ChromeUtils.import(
-  "resource:///modules/SiteSpecificBrowserIdUtils.jsm"
+var { SiteSpecificBrowserIdUtils } = ChromeUtils.importESModule(
+  "resource:///modules/SiteSpecificBrowserIdUtils.sys.mjs"
 );
 
 

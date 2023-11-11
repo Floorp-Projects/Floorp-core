@@ -4,12 +4,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-var { SiteSpecificBrowserIdUtils } = ChromeUtils.import(
-  "resource:///modules/SiteSpecificBrowserIdUtils.jsm"
+var { SiteSpecificBrowserIdUtils } = ChromeUtils.importESModule(
+  "resource:///modules/SiteSpecificBrowserIdUtils.sys.mjs"
 );
 
-var { SiteSpecificBrowser } = ChromeUtils.import(
-  "resource:///modules/SiteSpecificBrowserService.jsm"
+var { SiteSpecificBrowser } = ChromeUtils.importESModule(
+  "resource:///modules/SiteSpecificBrowserService.sys.mjs"
 );
 
 let gSsbSupport = {
