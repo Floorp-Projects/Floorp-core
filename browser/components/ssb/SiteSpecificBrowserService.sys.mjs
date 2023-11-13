@@ -48,17 +48,10 @@ ChromeUtils.defineESModuleGetters(lazy, {
 });
 
 if (AppConstants.platform == "win") {
-  ChromeUtils.defineModuleGetter(
-    lazy,
-    "WindowsSupport",
-    "resource:///modules/ssb/WindowsSupport.sys.mjs"
-  );
-
-  ChromeUtils.defineModuleGetter(
-    lazy,
-    "SiteSpecificBrowserIdUtils",
-    "resource:///modules/SiteSpecificBrowserIdUtils.sys.mjs"
-  );
+  ChromeUtils.defineESModuleGetters(lazy, {
+    SiteSpecificBrowserIdUtils: "resource:///modules/SiteSpecificBrowserIdUtils.sys.mjs",
+    WindowsSupport: "resource:///modules/ssb/WindowsSupport.sys.mjs",
+  });
 }
 
 /**
@@ -386,6 +379,15 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
       },
       config
     );
+
+    // If map has already same uri, remove the old one.
+    for (let key of SSBMap) {
+      key.forEach((value, key) => {
+        if (manifest == value._manifest) {
+          SSBMap.delete(key);
+        }
+      });
+    }
 
     SSBMap.set(id, this);
 

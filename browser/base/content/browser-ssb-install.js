@@ -25,17 +25,7 @@ const gSsbInstallSupport = {
     }
 
     // Use internal APIs to detect when the current tab changes.
-    let currentURL = gBrowser.currentURI.spec;
-    function checkURLChange() {
-      const newURL = gBrowser.currentURI.spec;
-
-      if (newURL !== currentURL) {
-        currentURL = newURL;
-
-        gSsbInstallSupport.eventListeners.onCurrentTabChangedOrLoaded();
-      }
-    }
-    setInterval(checkURLChange, 1000);
+    setInterval(this.eventListeners.onCurrentTabChangedOrLoaded, 2000);
 
     let events = ["TabSelect"];
 
@@ -188,4 +178,6 @@ const gSsbInstallSupport = {
   },
 };
 
-gSsbInstallSupport.init();
+if (Services.prefs.getBoolPref("browser.ssb.enabled")) {
+    gSsbInstallSupport.init();
+}

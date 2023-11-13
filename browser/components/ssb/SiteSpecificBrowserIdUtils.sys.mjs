@@ -40,7 +40,7 @@ export let SiteSpecificBrowserIdUtils = {
       );
 
       // URL
-      args.data = `${ssb._scope.spec},${ssb._id},?FloorpEnableSSBWindow=true`;
+      args.data = `${ssb._manifest.start_url},${ssb._id},?FloorpEnableSSBWindow=true`;
 
       let win = Services.ww.openWindow(
         null,

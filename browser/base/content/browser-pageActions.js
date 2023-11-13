@@ -116,7 +116,7 @@ let gFloorpPageAction = {
 
     async onCommand() {
       let isInstalled =
-        await gFloorpPageAction.Ssb.checkCurrentPageIsInstalled();
+        await gSsbInstallSupport.functions.checkCurrentPageIsInstalled();
 
       this.closePopup();
 
@@ -125,7 +125,7 @@ let gFloorpPageAction = {
       }
 
       if (isInstalled) {
-        let currentTabSsb = await this.getCurrentTabSsb();
+        let currentTabSsb = await gSsbInstallSupport.functions.getCurrentTabSsb();
         let ssbObj = await SiteSpecificBrowserIdUtils.getIdByUrl(
           currentTabSsb._manifest.start_url
         );
@@ -135,7 +135,7 @@ let gFloorpPageAction = {
           await SiteSpecificBrowserIdUtils.runSSBWithId(id);
         }
       } else {
-        let ssb = await SiteSpecificBrowser.manifestIsExsitingFromBrowser(
+        let ssb = await SiteSpecificBrowser.createFromBrowser(
           gBrowser.selectedBrowser
         );
 
