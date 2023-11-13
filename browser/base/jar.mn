@@ -35,6 +35,7 @@ browser.jar:
   content/browser/browser-preferences.js        (content/browser-preferences.js)
   content/browser/browser-private-container.js  (content/browser-private-container.js)
   content/browser/browser-statusbar.js          (content/browser-statusbar.js)
+  content/browser/browser-ssb-install.js        (content/browser-ssb-install.js)
   content/browser/browser-workspace.js          (content/browser-workspace.js)
   content/browser/browser-context-menu.js       (content/browser-context-menu.js)
   content/browser/browser-bms-window.css        (content/browser-bms-window.css)

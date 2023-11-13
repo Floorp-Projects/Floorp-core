@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-manager-sidebar.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-preferences.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-workspace.js", this);
+    Services.scriptloader.loadSubScript("chrome://browser/content/browser-pageActions-floorp.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-private-container.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-statusbar.js", this);
 
@@ -35,7 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-UI-custom.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-splitView.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-browserActions.js", this);
-        Services.scriptloader.loadSubScript("chrome://browser/content/browser-pageActions-floorp.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-pinned-tabs-title.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-chromeCSS.js", this);
     }
@@ -52,6 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // lightning build and normal build
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-flex-order.js", this);
+        Services.scriptloader.loadSubScript("chrome://browser/content/browser-ssb-install.js", this);
     });
 }, { once: true });
 </script>

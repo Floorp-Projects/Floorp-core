@@ -50,7 +50,15 @@ export class SiteSpecificBrowserChild extends JSWindowActorChild {
         break;
       case "LoadIcon":
         return loadIcon(this.contentWindow, message.data);
-    }
+      case "checkSsbManifestIsExistent":
+        let manifestHref = null;
+        this.document.head.childNodes.forEach(element => {
+          if (element.rel === "manifest") {
+            manifestHref = element.href;
+          }
+        });
+        return manifestHref;
+      }
 
     return null;
   }
