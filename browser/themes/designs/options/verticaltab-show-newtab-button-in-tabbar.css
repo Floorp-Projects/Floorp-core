@@ -1,0 +1,42 @@
+/*-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#tabbrowser-arrowscrollbox-periphery {
+  width: -moz-available;
+  margin-top: 0.5em;
+}
+
+#tabs-newtab-button {
+  display: flex !important;
+  width: -moz-available;
+}
+
+#tabs-newtab-button:hover {
+  background: var(--toolbarbutton-hover-background);
+}
+
+#tabs-newtab-button:active {
+  background: var(--toolbarbutton-active-background);
+}
+
+#tabs-newtab-button {
+  border-radius: 5px;
+}
+
+#tabs-newtab-button {
+  width: -moz-available;
+  position: unset;
+  appearance: inherit;
+  margin-left: 5px !important;
+  margin-right: 5px !important;
+}
+
+#tabs-newtab-button > .toolbarbutton-icon {
+  background-color: unset !important;
+  background: none !important;
+}
+
+#tabbrowser-arrowscrollbox-periphery {
+  display: block !important;
+}

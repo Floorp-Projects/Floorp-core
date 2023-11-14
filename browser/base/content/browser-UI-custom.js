@@ -225,3 +225,17 @@ observePreference("floorp.verticaltab.hover.enabled", function (event) {
     document.getElementById("floorp-vthover")?.remove();
   }
 });
+
+observePreference("floorp.verticaltab.show.newtab.button", function (event) {
+  if (Services.prefs.getIntPref("floorp.tabbar.style", false) != 2) {
+    return;
+  }
+  if (event.prefValue) {
+    var Tag = document.createElement("style");
+    Tag.innerText = `@import url(chrome://browser/skin/options/verticaltab-show-newtab-button-in-tabbar.css)`;
+    Tag.setAttribute("id", "floorp-newtabbuttonintabbar");
+    document.head.appendChild(Tag);
+  } else {
+    document.getElementById("floorp-newtabbuttonintabbar")?.remove();
+  }
+});

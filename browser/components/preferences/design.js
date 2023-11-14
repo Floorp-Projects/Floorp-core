@@ -21,6 +21,7 @@ Preferences.addAll([
   { id: "floorp.Tree-type.verticaltab.optimization", type: "bool" },
   { id: "floorp.browser.tabs.verticaltab.right", type: "bool" },
   { id: "floorp.verticaltab.hover.enabled", type: "bool" },
+  { id: "floorp.verticaltab.show.newtab.button" , type: "bool" },
 ])
 var gDesign = {
   _pane: null,
