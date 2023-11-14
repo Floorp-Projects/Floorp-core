@@ -86,7 +86,7 @@ let gFloorpPageAction = {
      class="urlbar-page-action" tooltiptext="ssb-page-action"
      role="button" popup="ssb-panel">
      <image id="ssbPageAction-image" class="urlbar-icon"/>
-     <panel id="ssb-panel" type="arrow" position="bottomright topright" onpopupshowing="gSsbInstallSupport.functions.setImageToInstallButton();">
+     <panel id="ssb-panel" type="arrow" position="bottomright topright" onpopupshowing="gSsbChromeManager.functions.setImageToInstallButton();">
      <vbox id="ssb-box">
        <vbox class="panel-header">
          <html:h1>
@@ -115,42 +115,8 @@ let gFloorpPageAction = {
    `),
 
     async onCommand() {
-      let isInstalled =
-        await gSsbInstallSupport.functions.checkCurrentPageIsInstalled();
-
       this.closePopup();
-
-      if (!gBrowser.currentURI.schemeIs("https")) {
-        return;
-      }
-
-      if (isInstalled) {
-        let currentTabSsb = await gSsbInstallSupport.functions.getCurrentTabSsb();
-        let ssbObj = await SiteSpecificBrowserIdUtils.getIdByUrl(
-          currentTabSsb._manifest.start_url
-        );
-
-        if (ssbObj) {
-          let id = ssbObj.id;
-          await SiteSpecificBrowserIdUtils.runSSBWithId(id);
-        }
-      } else {
-        let ssb = await SiteSpecificBrowser.createFromBrowser(
-          gBrowser.selectedBrowser,
-          {
-            // Configure the SSB to use the site's manifest if it exists.
-            useWebManifest: true,
-          }
-        );
-
-        await ssb.install();
-        await SiteSpecificBrowserIdUtils.runSSBWithId(ssb.id);
-      }
-      // The site's manifest may point to a different start page so explicitly
-      // open the SSB to the current page.
-      gBrowser.removeTab(gBrowser.selectedTab, {
-        closeWindowWithLastTab: false,
-      });
+      gSsbChromeManager.functions.installOrRunCurrentPageAsSsb(true);
     },
 
     closePopup() {

@@ -16,7 +16,7 @@ var { SiteSpecificBrowserIdUtils } = ChromeUtils.importESModule(
   "resource:///modules/SiteSpecificBrowserIdUtils.sys.mjs"
 );
 
-const gSsbInstallSupport = {
+const gSsbChromeManager = {
   _initialized: false,
 
   init() {
@@ -45,6 +45,44 @@ const gSsbInstallSupport = {
   },
 
   functions: {
+    async installOrRunCurrentPageAsSsb(asPwa) {
+      let isInstalled =
+        await gSsbChromeManager.functions.checkCurrentPageIsInstalled();
+
+      if (!gBrowser.currentURI.schemeIs("https")) {
+        return;
+      }
+
+      if (isInstalled) {
+        let currentTabSsb =
+          await gSsbChromeManager.functions.getCurrentTabSsb();
+        let ssbObj = await SiteSpecificBrowserIdUtils.getIdByUrl(
+          currentTabSsb._manifest.start_url
+        );
+
+        if (ssbObj) {
+          let id = ssbObj.id;
+          await SiteSpecificBrowserIdUtils.runSSBWithId(id);
+        }
+      } else {
+        let ssb = await SiteSpecificBrowser.createFromBrowser(
+          gBrowser.selectedBrowser,
+          {
+            // Configure the SSB to use the site's manifest if it exists.
+            useWebManifest: asPwa,
+          }
+        );
+
+        await ssb.install();
+        await SiteSpecificBrowserIdUtils.runSSBWithId(ssb.id);
+      }
+      // The site's manifest may point to a different start page so explicitly
+      // open the SSB to the current page.
+      gBrowser.removeTab(gBrowser.selectedTab, {
+        closeWindowWithLastTab: false,
+      });
+    },
+
     async checkCurrentPageCanBeInstalled() {
       let currentURI = gBrowser.currentURI;
       let currentTab = gBrowser.selectedTab;
@@ -108,8 +146,13 @@ const gSsbInstallSupport = {
     },
 
     async getCurrentTabSsb() {
+      let options = {
+        useWebManifest: true,
+      };
+
       let currentURISsbObj = await SiteSpecificBrowser.createFromBrowser(
-        gBrowser.selectedBrowser
+        gBrowser.selectedBrowser,
+        options
       );
 
       return currentURISsbObj;
@@ -154,30 +197,81 @@ const gSsbInstallSupport = {
         ).src;
       }
     },
+
+    async onSsbSubViewOpened() {
+      // Update ssb infomation
+      let beforeElem = document.getElementById("panelMenu_openInstalledApps");
+      let list =
+        await SiteSpecificBrowserExternalFileService.getCurrentSsbData();
+
+      // remove old ssb infomation
+      let ssbAppInfoButtons = document.querySelectorAll(".ssb-app-info-button");
+      for (let ssbAppInfoButton of ssbAppInfoButtons) {
+        ssbAppInfoButton.remove();
+      }
+
+      for (let key in list) {
+        let id = list[key].id;
+        let name = list[key].name;
+        let icon = list[key].icon;
+
+        let elem = window.MozXULElement.parseXULToFragment(`
+          <toolbarbutton id="ssb-${id}" class="subviewbutton ssb-app-info-button" label="${name}" image="${icon}"
+                         oncommand="SiteSpecificBrowserIdUtils.runSSBWithId('${id}');"/>
+        `);
+
+        beforeElem.after(elem);
+      }
+
+      // Check current page ssb is installed
+      let currentPageCanBeInstalled =
+       await gSsbChromeManager.functions.checkCurrentPageCanBeInstalled();
+      let installButtonOnPanelUI = document.getElementById("appmenu-install-current-page-button");
+
+      if (!currentPageCanBeInstalled) {
+        installButtonOnPanelUI.setAttribute("disabled", true);
+        document.l10n.setAttributes(installButtonOnPanelUI, "appmenuitem-install-current-page");
+      } else {
+        installButtonOnPanelUI.removeAttribute("disabled");
+        let isInstalled =
+          await gSsbChromeManager.functions.checkCurrentPageIsInstalled();
+        if (isInstalled) {
+          document.l10n.setAttributes(installButtonOnPanelUI, "appmenuitem-open-current-page");
+        }
+      }
+    },
+
+    async showSsbPanelSubView() {
+      await PanelUI.showSubView(
+        "PanelUI-ssb",
+        document.getElementById("appMenu-ssb-button")
+      );
+      this.onSsbSubViewOpened();
+    },
   },
 
   eventListeners: {
     async onCurrentTabChangedOrLoaded() {
       // set image to the install button
       let currentPageCanBeInstalled =
-        await gSsbInstallSupport.functions.checkCurrentPageCanBeInstalled();
+        await gSsbChromeManager.functions.checkCurrentPageCanBeInstalled();
       let currentPageHasSsbManifest =
-        await gSsbInstallSupport.functions.checkCurrentPageHasSsbManifest();
+        await gSsbChromeManager.functions.checkCurrentPageHasSsbManifest();
 
       if (!currentPageCanBeInstalled || currentPageHasSsbManifest === null) {
-        gSsbInstallSupport.functions.disableInstallButton();
+        gSsbChromeManager.functions.disableInstallButton();
         return;
       }
 
-      gSsbInstallSupport.functions.setImageToInstallButton();
+      gSsbChromeManager.functions.setImageToInstallButton();
 
       window.setTimeout(() => {
-        gSsbInstallSupport.functions.enableInstallButton();
+        gSsbChromeManager.functions.enableInstallButton();
       }, 100);
     },
   },
 };
 
 if (Services.prefs.getBoolPref("browser.ssb.enabled")) {
-    gSsbInstallSupport.init();
+  gSsbChromeManager.init();
 }
