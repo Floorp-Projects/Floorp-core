@@ -2,25 +2,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-/**
- * A Site Specific Browser intends to allow the user to navigate through the
- * chosen site in the SSB UI. Any attempt to load something outside the site
- * should be loaded in a normal browser. In order to achieve this we have to use
- * various APIs to listen for attempts to load new content and take appropriate
- * action. Often this requires returning synchronous responses to method calls
- * in content processes and will require data about the SSB in order to respond
- * correctly. Here we implement an architecture to support that:
- *
- * In the main process the SiteSpecificBrowser class implements all the
- * functionality involved with managing an SSB. All content processes can
- * synchronously retrieve a matching SiteSpecificBrowserBase that has enough
- * data about the SSB in order to be able to respond to load requests
- * synchronously. To support this we give every SSB a unique ID (UUID based)
- * and the appropriate data is shared via sharedData. Once created the ID can be
- * used to retrieve the SiteSpecificBrowser instance in the main process or
- * SiteSpecificBrowserBase instance in any content process.
- */
-
 import { AppConstants } from "resource://gre/modules/AppConstants.sys.mjs";
 import { SiteSpecificBrowserExternalFileService } from "resource:///modules/SiteSpecificBrowserExternalFileService.sys.mjs";
 
@@ -52,10 +33,6 @@ if (AppConstants.platform == "win") {
     WindowsSupport: "resource:///modules/ssb/WindowsSupport.sys.mjs",
   });
 }
-
-/**
- * A prefix that will sort immediately after any SSB ids in the store.
- */
 
 function uuid() {
   return Services.uuid.generateUUID().toString();
@@ -172,10 +149,12 @@ async function getIconResource(iconData) {
  * @param {Element} browser the browser element the site is loaded in.
  * @returns {Promise<Manifest>} an app manifest.
  */
-async function buildManifestForBrowser(browser) {
+async function buildManifestForBrowser(browser, options) {
   let manifest = null;
   try {
-    manifest = await lazy.ManifestObtainer.browserObtainManifest(browser);
+    if (options.useWebManifest) {
+      manifest = await lazy.ManifestObtainer.browserObtainManifest(browser);
+    }
   } catch (e) {
     // We can function without a valid manifest.
     console.error(e);
@@ -435,7 +414,9 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
    * @param {Element} browser the browser element the site is loaded in.
    * @returns {Promise<SiteSpecificBrowser>} the generated SSB.
    */
-  static async createFromBrowser(browser) {
+  static async createFromBrowser(browser, options) {
+    let createManifestOptions = options || {};
+
     if (!SiteSpecificBrowserService.isEnabled) {
       throw new Error("Site specific browsing is disabled.");
     }
@@ -446,7 +427,7 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
       );
     }
 
-    let manifest = await buildManifestForBrowser(browser);
+    let manifest = await buildManifestForBrowser(browser, createManifestOptions);
     let ssb = await SiteSpecificBrowser.createFromManifest(manifest);
 
     if (!manifest.name) {

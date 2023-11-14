@@ -136,7 +136,11 @@ let gFloorpPageAction = {
         }
       } else {
         let ssb = await SiteSpecificBrowser.createFromBrowser(
-          gBrowser.selectedBrowser
+          gBrowser.selectedBrowser,
+          {
+            // Configure the SSB to use the site's manifest if it exists.
+            useWebManifest: true,
+          }
         );
 
         await ssb.install();
