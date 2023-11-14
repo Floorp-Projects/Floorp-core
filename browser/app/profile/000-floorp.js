@@ -167,7 +167,7 @@ pref("floorp.browser.splitView.working", false);
 pref("floorp.user.js.customize", "");
 
 // Web apps support
-pref("browser.ssb.enabled", false);
+pref("browser.ssb.enabled", true);
 
 /*----------------------------------------------------------------------------------------------------------------------------------*/
 

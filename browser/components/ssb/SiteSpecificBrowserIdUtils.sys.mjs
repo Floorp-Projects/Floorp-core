@@ -12,6 +12,10 @@ const { XPCOMUtils } = ChromeUtils.import(
 );
 
 const lazy = {};
+ChromeUtils.defineESModuleGetters(lazy, {
+  SiteSpecificBrowserExternalFileService: "resource:///modules/SiteSpecificBrowserExternalFileService.sys.mjs",
+});
+
 if (AppConstants.platform == "win") {
   XPCOMUtils.defineLazyModuleGetters(lazy, {
     SiteSpecificBrowser: "resource:///modules/SiteSpecificBrowserService.jsm",
@@ -26,41 +30,14 @@ export let SiteSpecificBrowserIdUtils = {
       return;
     }
 
-    this.createSsbWidow(ssb);
-  },
-
-  createSsbWidow(ssb) {
-    if (ssb) {
-      let browserWindowFeatures =
-        "chrome,location=yes,centerscreen,dialog=no,resizable=yes,scrollbars=yes";
-      //"chrome,location=yes,centerscreen,dialog=no,resizable=yes,scrollbars=yes";
-
-      let args = Cc["@mozilla.org/supports-string;1"].createInstance(
-        Ci.nsISupportsString
-      );
-
-      // URL
-      args.data = `${ssb._manifest.start_url},${ssb._id},?FloorpEnableSSBWindow=true`;
-
-      let win = Services.ww.openWindow(
-        null,
-        AppConstants.BROWSER_CHROME_URL,
-        "_blank",
-        browserWindowFeatures,
-        args
-      );
-
-      if (Services.appinfo.OS == "WINNT") {
-        lazy.WindowsSupport.applyOSIntegration(ssb, win);
-      }
-    }
+    createSsbWidow(ssb);
   },
 
   async getIconBySSBId(id, size) {
     let ssb = await lazy.SiteSpecificBrowser.load(id);
 
     if (!ssb._iconSizes) {
-      ssb._iconSizes = this.buildIconList(ssb._manifest.icons);
+      ssb._iconSizes = buildIconList(ssb.manifest.icons);
     }
 
     if (!ssb._iconSizes.length) {
@@ -77,37 +54,22 @@ export let SiteSpecificBrowserIdUtils = {
       : ssb._iconSizes[ssb._iconSizes.length - 1].icon;
   },
 
-  buildIconList(icons) {
-    let iconList = [];
+    async uninstallById(id) {  
+      let ssb = await lazy.SiteSpecificBrowser.load(id);
 
-    for (let icon of icons) {
-      for (let sizeSpec of icon.sizes) {
-        let size =
-          sizeSpec == "any" ? Number.MAX_SAFE_INTEGER : parseInt(sizeSpec);
-
-        iconList.push({
-          icon,
-          size,
-        });
+      if (AppConstants.platform == "win") {
+        await lazy.WindowsSupport.uninstall(ssb);
       }
-    }
+  
+      // Remve the SSB from ssb.json
+      await lazy.SiteSpecificBrowserExternalFileService.removeSsbData(ssb.id);
 
-    iconList.sort((a, b) => {
-      // Given that we're using MAX_SAFE_INTEGER adding a value to that would
-      // overflow and give odd behaviour. And we're using numbers supplied by a
-      // website so just compare for safety.
-      if (a.size < b.size) {
-        return -1;
-      }
-
-      if (a.size > b.size) {
-        return 1;
-      }
-
-      return 0;
-    });
-    return iconList;
-  },
+      Services.obs.notifyObservers(
+        null,
+        "site-specific-browser-uninstall",
+        ssb.id
+      );
+    },
 
   async getIdByUrl(uri) {
     const { SiteSpecificBrowserExternalFileService } = ChromeUtils.import(
@@ -125,3 +87,62 @@ export let SiteSpecificBrowserIdUtils = {
     return null;
   },
 };
+
+function createSsbWidow(ssb) {
+  if (ssb) {
+    let browserWindowFeatures =
+      "chrome,location=yes,centerscreen,dialog=no,resizable=yes,scrollbars=yes";
+    //"chrome,location=yes,centerscreen,dialog=no,resizable=yes,scrollbars=yes";
+
+    let args = Cc["@mozilla.org/supports-string;1"].createInstance(
+      Ci.nsISupportsString
+    );
+
+    // URL
+    args.data = `${ssb.startURI},${ssb.id},?FloorpEnableSSBWindow=true`;
+
+    let win = Services.ww.openWindow(
+      null,
+      AppConstants.BROWSER_CHROME_URL,
+      "_blank",
+      browserWindowFeatures,
+      args
+    );
+
+    if (Services.appinfo.OS == "WINNT") {
+      lazy.WindowsSupport.applyOSIntegration(ssb, win);
+    }
+  }
+}
+
+function buildIconList(icons) {
+  let iconList = [];
+
+  for (let icon of icons) {
+    for (let sizeSpec of icon.sizes) {
+      let size =
+        sizeSpec == "any" ? Number.MAX_SAFE_INTEGER : parseInt(sizeSpec);
+
+      iconList.push({
+        icon,
+        size,
+      });
+    }
+  }
+
+  iconList.sort((a, b) => {
+    // Given that we're using MAX_SAFE_INTEGER adding a value to that would
+    // overflow and give odd behaviour. And we're using numbers supplied by a
+    // website so just compare for safety.
+    if (a.size < b.size) {
+      return -1;
+    }
+
+    if (a.size > b.size) {
+      return 1;
+    }
+
+    return 0;
+  });
+  return iconList;
+}

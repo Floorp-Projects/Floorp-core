@@ -22,7 +22,6 @@
  */
 
 import { AppConstants } from "resource://gre/modules/AppConstants.sys.mjs";
-import { KeyValueService } from "resource://gre/modules/kvstore.sys.mjs";
 import { SiteSpecificBrowserExternalFileService } from "resource:///modules/SiteSpecificBrowserExternalFileService.sys.mjs";
 
 export const EXPORTED_SYMBOLS = [
@@ -55,29 +54,14 @@ if (AppConstants.platform == "win") {
 }
 
 /**
- * A schema version for the SSB data stored in the kvstore.
- *
- * Version 1 has the `manifest` and `config` properties.
- */
-const DATA_VERSION = 1;
-
-/**
- * The prefix used for SSB ids in the store.
- */
-const SSB_STORE_PREFIX = "ssb:";
-
-/**
  * A prefix that will sort immediately after any SSB ids in the store.
  */
-const SSB_STORE_LAST = "ssb;";
 
 function uuid() {
   return Services.uuid.generateUUID().toString();
 }
 
 const sharedDataKey = id => `SiteSpecificBrowserBase:${id}`;
-const storeKey = id => SSB_STORE_PREFIX + id;
-
 /**
  * Builds a lookup table for all the icons in order of size.
  */
@@ -261,20 +245,6 @@ async function buildManifestForBrowser(browser) {
  */
 let SSBMap = new Map();
 
-async function loadMapFromLocalStorage() {
-  const mapJson = await SiteSpecificBrowserExternalFileService.getSsbMapData();
-  if (!mapJson) {
-    return new Map();
-  }
-  const serializedMap = JSON.parse(mapJson);
-  const map = new Map(serializedMap);
-  return map;
-}
-
-loadMapFromLocalStorage().then(map => {
-  SSBMap = map;
-});
-
 /**
  * The base contains the data about an SSB instance needed in content processes.
  *
@@ -380,24 +350,6 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
       config
     );
 
-    // If map has already same uri, remove the old one.
-    for (let key of SSBMap) {
-      key.forEach((value, key) => {
-        if (manifest == value._manifest) {
-          SSBMap.delete(key);
-        }
-      });
-    }
-
-    SSBMap.set(id, this);
-
-    function saveMapToLocalStorage(map) {
-      const serializedMap = [...map];
-      SiteSpecificBrowserExternalFileService.saveSsbMapData(serializedMap);
-    }
-
-    saveMapToLocalStorage(SSBMap);
-
     this._updateSharedData();
   }
 
@@ -415,17 +367,18 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
       );
     }
 
+    let list = await SiteSpecificBrowserExternalFileService.getCurrentSsbData();
+    for (const key in list) {
+      if (list.hasOwnProperty(key)) {
+        const item = list[key];
+        if (item.id == id) {
+          return item;
+        }
+      }
+    }
+
     if (SSBMap.has(id)) {
       return SSBMap.get(id);
-    }
-
-    if (!data) {
-      let kvstore = await SiteSpecificBrowserService.getKVStore();
-      data = await kvstore.get(storeKey(id), null);
-    }
-
-    if (!data) {
-      return null;
     }
 
     try {
@@ -537,14 +490,6 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
   async _maybeSave() {
     // If this SSB is persisted then update it in the data store.
     if (this._config.persisted) {
-      let data = {
-        manifest: this._manifest,
-        config: this._config,
-      };
-
-      let kvstore = await SiteSpecificBrowserService.getKVStore();
-      await kvstore.put(storeKey(this.id), JSON.stringify(data));
-
       let ssbData =
         await SiteSpecificBrowserExternalFileService.getCurrentSsbData();
 
@@ -557,6 +502,9 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
         icon: this.getIcon(128).src,
         id: this.id,
         startURI: this.startURI.spec,
+        manifest: this._manifest,
+        scope: this._scope.spec,
+        config: this._config,
       };
 
       await SiteSpecificBrowserExternalFileService.saveSsbData(ssbData);
@@ -582,30 +530,6 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
     Services.obs.notifyObservers(
       null,
       "site-specific-browser-install",
-      this.id
-    );
-  }
-
-  /**
-   * Uninstalls this SiteSpecificBrowser. Undoes eveerything above. The SSB is
-   * still usable afterwards.
-   */
-  async uninstall() {
-    if (!this._config.persisted) {
-      return;
-    }
-
-    if (AppConstants.platform == "win") {
-      await lazy.WindowsSupport.uninstall(this);
-    }
-
-    this._config.persisted = false;
-    let kvstore = await SiteSpecificBrowserService.getKVStore();
-    await kvstore.delete(storeKey(this.id));
-
-    Services.obs.notifyObservers(
-      null,
-      "site-specific-browser-uninstall",
       this.id
     );
   }
@@ -723,94 +647,7 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
   }
 }
 
-/**
- * Loads the KV store for SSBs. Should always resolve with a store even if that
- * means wiping whatever is currently on disk because it was unreadable.
- */
-async function loadKVStore() {
-  let dir = PathUtils.join(PathUtils.profileDir, "ssb");
-  let dirIsExisting = await IOUtils.exists(dir);
-
-  if (!dirIsExisting) {
-    await IOUtils.makeDirectory(dir);
-  }
-
-  /**
-   * Creates an empty store. Called when we know there is an empty directory.
-   */
-  async function createStore() {
-    await IOUtils.makeDirectory(dir);
-    let kvstore = await KeyValueService.getOrCreate(dir, "ssb");
-    await kvstore.put(
-      "_meta",
-      JSON.stringify({
-        version: DATA_VERSION,
-      })
-    );
-
-    return kvstore;
-  }
-  // First see if anything exists.
-  try {
-    let info = await IOUtils.stat(dir);
-
-    if (!info.isDir) {
-      return createStore();
-    }
-  } catch (e) {
-    if (e.becauseNoSuchFile) {
-      return createStore();
-    }
-    throw e;
-  }
-
-  // Something exists, try to load it.
-  try {
-    let kvstore = await KeyValueService.getOrCreate(dir, "ssb");
-
-    let meta = await kvstore.get("_meta", null);
-    if (meta) {
-      let data = JSON.parse(meta);
-      if (data.version == DATA_VERSION) {
-        return kvstore;
-      }
-      console.error(`SSB store is an unexpected version ${data.version}`);
-    } else {
-      console.error("SSB store was missing meta data.");
-    }
-
-    // We don't know how to handle this database, re-initialize it.
-    await kvstore.clear();
-    await kvstore.put(
-      "_meta",
-      JSON.stringify({
-        version: DATA_VERSION,
-      })
-    );
-
-    return kvstore;
-  } catch (e) {
-    console.error(e);
-
-    // Something is very wrong. Wipe all our data and start again.
-    return createStore();
-  }
-}
-
 export const SiteSpecificBrowserService = {
-  kvstore: null,
-
-  /**
-   * Returns a promise that resolves to the KV store for SSBs.
-   */
-  getKVStore() {
-    if (!this.kvstore) {
-      this.kvstore = loadKVStore();
-    }
-
-    return this.kvstore;
-  },
-
   /**
    * Checks if OS integration is enabled. This will affect whether installs and
    * uninstalls have effects on the OS itself amongst other things. Generally
@@ -822,19 +659,6 @@ export const SiteSpecificBrowserService = {
     }
 
     return Services.prefs.getBoolPref("browser.ssb.osintegration", true);
-  },
-
-  /**
-   * Returns a promise that resolves to an array of all of the installed SSBs.
-   */
-  async list() {
-    let kvstore = await this.getKVStore();
-    let list = await kvstore.enumerate(SSB_STORE_PREFIX, SSB_STORE_LAST);
-    return Promise.all(
-      Array.from(list).map(({ key: id, value: data }) =>
-        SiteSpecificBrowser.load(id.substring(SSB_STORE_PREFIX.length), data)
-      )
-    );
   },
 };
 

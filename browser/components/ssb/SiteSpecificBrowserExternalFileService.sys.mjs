@@ -25,28 +25,16 @@ export const SiteSpecificBrowserExternalFileService = {
     await IOUtils.writeJSON(this._saveFile, ssbData);
   },
 
-  get _saveSsbMap() {
-    return PathUtils.join(PathUtils.profileDir, "ssb-map.json");
-  },
-
-  async ssbMapFileExists() {
-    let fileExists = await IOUtils.exists(this._saveSsbMap);
-    return fileExists;
-  },
-
-  async getSsbMapData() {
-    let fileExists = await IOUtils.exists(this._saveSsbMap);
-    if (!fileExists) {
-      IOUtils.writeJSON(this._saveSsbMap, {});
-      return null;
+  async removeSsbData(ssbId) {
+    let list = await SiteSpecificBrowserExternalFileService.getCurrentSsbData();
+    for (const key in list) {
+      if (list.hasOwnProperty(key)) {
+        const item = list[key];
+        if (item.id == ssbId) {
+          delete list[key];
+          await SiteSpecificBrowserExternalFileService.saveSsbData(list);
+        }
+      }
     }
-
-    let result = await IOUtils.readUTF8(this._saveSsbMap);
-
-    return result;
-  },
-
-  async saveSsbMapData(ssbMapData) {
-    await IOUtils.writeJSON(this._saveSsbMap, ssbMapData);
   },
 };
