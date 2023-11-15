@@ -25,7 +25,6 @@
 }
 
 #urlbar-container {
-    max-width: 300px;
     margin-right: auto;
     border-right: 0.1px solid var(--toolbarbutton-border-color) !important;
     padding-right: 5px;
