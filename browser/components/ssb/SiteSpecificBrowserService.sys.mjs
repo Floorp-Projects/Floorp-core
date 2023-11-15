@@ -629,11 +629,6 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
 }
 
 export const SiteSpecificBrowserService = {
-  /**
-   * Checks if OS integration is enabled. This will affect whether installs and
-   * uninstalls have effects on the OS itself amongst other things. Generally
-   * only disabled for testing.
-   */
   get useOSIntegration() {
     if (Services.appinfo.OS != "WINNT") {
       return false;
@@ -658,7 +653,7 @@ async function startSSB(id) {
 
   // Whatever happens we must exitLastWindowClosingSurvivalArea when done.
   try {
-    await lazy.SiteSpecificBrowserIdUtils.runSSBWithId(id);
+    await lazy.SiteSpecificBrowserIdUtils.runSsbById(id);
   } finally {
     Services.startup.exitLastWindowClosingSurvivalArea();
   }

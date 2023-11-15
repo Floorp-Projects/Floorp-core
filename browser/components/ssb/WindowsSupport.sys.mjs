@@ -102,10 +102,9 @@ export const WindowsSupport = {
       return;
     }
 
-    let desktop = Services.dirsvc.get("Desk", Ci.nsIFile);
-    let link = PathUtils.join(desktop.path, `${ssb.name}.lnk`);
-
     try {
+      let desktop = Services.dirsvc.get("Desk", Ci.nsIFile);
+      let link = PathUtils.join(desktop.path, `${ssb.name}.lnk`);
       await IOUtils.remove(link, {
         recursive: true,
       });

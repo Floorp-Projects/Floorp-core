@@ -62,7 +62,7 @@ const gSsbChromeManager = {
 
         if (ssbObj) {
           let id = ssbObj.id;
-          await SiteSpecificBrowserIdUtils.runSSBWithId(id);
+          await SiteSpecificBrowserIdUtils.runSsbById(id);
         }
       } else {
         let ssb = await SiteSpecificBrowser.createFromBrowser(
@@ -74,7 +74,7 @@ const gSsbChromeManager = {
         );
 
         await ssb.install();
-        await SiteSpecificBrowserIdUtils.runSSBWithId(ssb.id);
+        await SiteSpecificBrowserIdUtils.runSsbById(ssb.id);
       }
       // The site's manifest may point to a different start page so explicitly
       // open the SSB to the current page.
@@ -200,7 +200,7 @@ const gSsbChromeManager = {
 
     async onSsbSubViewOpened() {
       // Update ssb infomation
-      let beforeElem = document.getElementById("panelMenu_openInstalledApps");
+      let parentElem = document.getElementById("panelMenu_installedSsbMenu");
       let list =
         await SiteSpecificBrowserExternalFileService.getCurrentSsbData();
 
@@ -217,10 +217,10 @@ const gSsbChromeManager = {
 
         let elem = window.MozXULElement.parseXULToFragment(`
           <toolbarbutton id="ssb-${id}" class="subviewbutton ssb-app-info-button" label="${name}" image="${icon}"
-                         oncommand="SiteSpecificBrowserIdUtils.runSSBWithId('${id}');"/>
+                         ssbId="${id}" oncommand="SiteSpecificBrowserIdUtils.runSsbById('${id}');"/>
         `);
 
-        beforeElem.after(elem);
+        parentElem?.appendChild(elem);
       }
 
       // Check current page ssb is installed
@@ -247,6 +247,42 @@ const gSsbChromeManager = {
         document.getElementById("appMenu-ssb-button")
       );
       this.onSsbSubViewOpened();
+    },
+  },
+
+  contextMenu: {
+    panelUIInstalledAppContextMenu: {
+      onPopupShowing(e) {
+        // Create context menu
+        let oldMenuItems = document.querySelectorAll(".ssb-contextmenu-items");
+
+        for (let i = 0; i < oldMenuItems.length; i++) {
+          oldMenuItems[i].remove();
+        }
+  
+        let menuitemElem = window.MozXULElement.parseXULToFragment(`
+          <menuitem id="run-ssb-contextmenu" class="ssb-contextmenu-items" data-l10n-id="appmenuitem-contextmenu-open-app" oncommand="gSsbChromeManager.contextMenu.panelUIInstalledAppContextMenu.openSsbApp('${e.explicitOriginalTarget.getAttribute(
+            "ssbId"
+          )}');"/>
+
+          <menuitem id="uninstall-ssb-contextmenu" class="ssb-contextmenu-items" data-l10n-id="appmenuitem-contextmenu-uninstall-app" oncommand="gSsbChromeManager.contextMenu.panelUIInstalledAppContextMenu.uninstallSsbApp('${e.explicitOriginalTarget.getAttribute(
+            "ssbId"
+          )}');"/>
+        `);
+  
+        document
+          .getElementById("ssbInstalledAppMenu-context")
+          .appendChild(menuitemElem);
+      },
+      openSsbApp(id) {
+        // id is Ssb id
+        SiteSpecificBrowserIdUtils.runSsbById(id);
+      },
+      uninstallSsbApp(id) {
+        document.querySelector(`[ssbId="${id}"]`).hidden = true;
+        // id is Ssb id
+        SiteSpecificBrowserIdUtils.uninstallById(id);
+      }
     },
   },
 

@@ -24,7 +24,7 @@ if (AppConstants.platform == "win") {
 }
 
 export let SiteSpecificBrowserIdUtils = {
-  async runSSBWithId(id) {
+  async runSsbById(id) {
     let ssb = await lazy.SiteSpecificBrowser.load(id);
     if (!ssb) {
       return;

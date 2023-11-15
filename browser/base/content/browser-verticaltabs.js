@@ -15,7 +15,6 @@ function setWorkspaceLabel() {
   );
 
   if (!workspaceButton) {
-    console.info("Workspace button not found");
     return;
   }
 

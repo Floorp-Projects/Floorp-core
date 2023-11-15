@@ -618,3 +618,7 @@ toolbar #workspace-button:not([disabled="true"], [checked], [open], :active):hov
 #ssbPageAction-image {
   list-style-image: url("chrome://browser/skin/install-ssb.svg");
 }
+
+.ssb-app-info-button > .toolbarbutton-icon {
+  width: 20px;
+}

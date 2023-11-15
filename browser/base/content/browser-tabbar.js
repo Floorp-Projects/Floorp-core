@@ -174,7 +174,6 @@ const tabbarDisplayStyleFunctions = {
     );
 
     if (!workspaceButton) {
-      console.error("Workspace button not found");
       return;
     }
 
@@ -184,7 +183,6 @@ const tabbarDisplayStyleFunctions = {
   moveToDefaultSpace() {
     let workspaceButton = document.getElementById("workspace-button");
     if (!workspaceButton) {
-      console.error("Workspace button not found");
       return;
     }
     document.querySelector(".toolbar-items").before(workspaceButton);
