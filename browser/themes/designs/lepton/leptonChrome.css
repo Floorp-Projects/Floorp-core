@@ -13656,6 +13656,12 @@
     #openprofiledir {
       list-style-image: url("chrome://browser/skin/lepton/folder.svg");
     }
+    #appMenu-ssb-button {
+      list-style-image: url("chrome://browser/skin/install-ssb.svg");
+    }
+    #appmenu-install-current-page-button {
+      list-style-image: url("chrome://browser/skin/install-ssb.svg");
+    }
   }
   @supports -moz-bool-pref("userChrome.icon.menu") {
     #toggle_sharemode {
