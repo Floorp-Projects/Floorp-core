@@ -7,19 +7,16 @@ import { AppConstants } from "resource://gre/modules/AppConstants.sys.mjs";
 export const EXPORTED_SYMBOLS = ["SiteSpecificBrowserIdUtils"];
 
 const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
-const { XPCOMUtils } = ChromeUtils.import(
-  "resource://gre/modules/XPCOMUtils.jsm"
-);
 
 const lazy = {};
 ChromeUtils.defineESModuleGetters(lazy, {
   SiteSpecificBrowserExternalFileService: "resource:///modules/SiteSpecificBrowserExternalFileService.sys.mjs",
+  SiteSpecificBrowser: "resource:///modules/SiteSpecificBrowserService.sys.mjs",
 });
 
 if (AppConstants.platform == "win") {
-  XPCOMUtils.defineLazyModuleGetters(lazy, {
-    SiteSpecificBrowser: "resource:///modules/SiteSpecificBrowserService.jsm",
-    WindowsSupport: "resource:///modules/ssb/WindowsSupport.jsm",
+  ChromeUtils.defineESModuleGetters(lazy, {
+    WindowsSupport: "resource:///modules/ssb/WindowsSupport.sys.mjs"
   });
 }
 
