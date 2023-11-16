@@ -25,7 +25,6 @@ const gSsbChromeManager = {
     }
 
     // Use internal APIs to detect when the current tab changes.
-    setInterval(this.eventListeners.onCurrentTabChangedOrLoaded, 2000);
 
     let events = ["TabSelect"];
 
@@ -34,11 +33,24 @@ const gSsbChromeManager = {
         event,
         this.eventListeners.onCurrentTabChangedOrLoaded
       );
+    }   
+
+    let currentURL = gBrowser.currentURI.spec;
+    function checkURLChange() {
+      const newURL = gBrowser.currentURI.spec;
+    
+      if (newURL !== currentURL) {
+        gSsbChromeManager.eventListeners.onCurrentTabChangedOrLoaded();
+        currentURL = newURL;
+      }
     }
+
+    // Use internal APIs to detect when the current tab changes.
+    setInterval(checkURLChange, 2000);
 
     // This is needed to handle the case when the user opens a new tab in the same window.
     window.setTimeout(() => {
-      this.eventListeners.onCurrentTabChangedOrLoaded();
+      gSsbChromeManager.eventListeners.onCurrentTabChangedOrLoaded();
     }, 1000);
 
     this._initialized = true;
@@ -165,6 +177,7 @@ const gSsbChromeManager = {
       let isInstalled = await this.checkCurrentPageIsInstalled();
 
       let currentTabTitle = currentURISsbObj.name;
+      let currentTabIcon = currentURISsbObj._manifest.icons[0].src 
       let currentTabURL = currentURISsbObj._scope.displayHost;
 
       let ssbContentLabel = document.getElementById("ssb-content-label");
@@ -192,9 +205,7 @@ const gSsbChromeManager = {
       }
 
       if (ssbContentIcon) {
-        ssbContentIcon.src = document.querySelector(
-          ".tab-icon-image[selected=true]"
-        ).src;
+        ssbContentIcon.src = currentTabIcon;
       }
     },
 
