@@ -74,7 +74,7 @@ const gSsbChromeManager = {
 
         if (ssbObj) {
           let id = ssbObj.id;
-          await SiteSpecificBrowserIdUtils.runSsbById(id);
+          await SiteSpecificBrowserIdUtils.runSsbByUrlAndId(gBrowser.currentURI.spec, id);
         }
       } else {
         let ssb = await SiteSpecificBrowser.createFromBrowser(

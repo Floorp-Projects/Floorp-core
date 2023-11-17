@@ -30,6 +30,16 @@ export let SiteSpecificBrowserIdUtils = {
     createSsbWidow(ssb);
   },
 
+  async runSsbByUrlAndId(url, id) {
+    let ssb = await lazy.SiteSpecificBrowser.load(id);
+    if (!ssb) {
+      return;
+    }
+
+    ssb.startURI = url;
+    createSsbWidow(ssb);
+  },
+
   async getIconBySSBId(id, size) {
     let ssb = await lazy.SiteSpecificBrowser.load(id);
 
