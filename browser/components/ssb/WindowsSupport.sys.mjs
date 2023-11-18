@@ -40,11 +40,7 @@ const File = Components.Constructor(
 );
 
 function buildGroupId(id) {
-  try {
-    return `${taskbar.defaultGroupId}.ssb.${id}`;
-  } catch (e) {
-    return `Firefox.ssb.${id}`;
-  }
+  return `ablaze.floorp.ssb.${id}`;
 }
 
 export const WindowsSupport = {
@@ -88,13 +84,10 @@ export const WindowsSupport = {
       buildGroupId(ssb.id),
       "Programs",
       `${ssb.name}.lnk`,
-      Services.dirsvc.get("Desk", Ci.nsIFile)
     );
   },
 
   /**
-   * Uninstalls an SSB by deleting its shortcut from the user's desktop.
-   *
    * @param {SiteSpecificBrowser} ssb the SSB to uninstall.
    */
   async uninstall(ssb) {
@@ -103,11 +96,8 @@ export const WindowsSupport = {
     }
 
     try {
-      let desktop = Services.dirsvc.get("Desk", Ci.nsIFile);
-      let link = PathUtils.join(desktop.path, `${ssb.name}.lnk`);
-      await IOUtils.remove(link, {
-        recursive: true,
-      });
+      let startMenu = Services.dirsvc.get("Home", Ci.nsIFile).path + "\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\";
+      IOUtils.remove(new File(startMenu + ssb.name + ".lnk"), { recursive: true });
     } catch (e) {
       console.error(e);
     }
