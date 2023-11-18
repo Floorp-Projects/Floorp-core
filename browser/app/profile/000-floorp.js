@@ -138,7 +138,7 @@ pref("floorp.browser.workspaces.disabledBySystem", true);
 pref("floorp.titlebar.favicon.color", false);
 
 // カスタムショートカットキー
-pref("floorp.custom.shortcutkeysAndActions", '[{"actionName":"EnableRestMode","key":"","keyCode":"VK_F9","modifiers":""},{"actionName":"toggleBMS","key":"","keyCode":"VK_F2","modifiers":""}]');
+pref("floorp.custom.shortcutkeysAndActions", '[{"actionName":"toggleBMS","key":"","keyCode":"VK_F2","modifiers":""}]');
 pref("floorp.custom.shortcutkeysAndActions.enabled", true);
 pref("floorp.custom.shortcutkeysAndActions.remove.fx.actions", false);
 
