@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const l10n = new Localization(["browser/floorp.ftl"], true);
+const l10n = new Localization(["browser/floorp.ftl", "branding/brand.ftl"], true);
 
 const WorkspaceUtils = ChromeUtils.importESModule(
   "resource:///modules/WorkspaceUtils.sys.mjs"
@@ -332,7 +332,6 @@ const workspaceFunctions = {
       let allWorkspace = Services.prefs
         .getStringPref(WorkspaceUtils.workspacesPreferences.WORKSPACE_ALL_PREF)
         .split(",");
-      let l10n = new Localization(["browser/floorp.ftl", "branding/brand.ftl"], true);
       let prompts = Services.prompt;
       let check = { value: false };
       let pattern = /^[\p{L}\p{N}]+$/u;
@@ -439,7 +438,6 @@ const workspaceFunctions = {
     renameWorkspace(label) {
       label = label.replace(/\s+/g, "-");
       let prompts = Services.prompt;
-      let l10n = new Localization(["browser/floorp.ftl"], true);
       let check = { value: false };
       let pattern = /^[\p{L}\p{N}\s]+$/u;
       let input = { value: "" };
@@ -542,7 +540,6 @@ const workspaceFunctions = {
       let allWorkspace = Services.prefs
         .getStringPref(WorkspaceUtils.workspacesPreferences.WORKSPACE_ALL_PREF)
         .split(",");
-      let l10n = new Localization(["browser/floorp.ftl"], true);
       prompts = Services.prompt;
       let check = { value: false };
       const pattern = /^[\p{L}\p{N}\s]+$/u;

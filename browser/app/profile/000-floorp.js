@@ -40,9 +40,6 @@ pref("floorp.tabscroll.wrap",false);
 
 pref("floorp.enable.auto.restart", false);
 
-pref("floorp.browser.rest.mode", false);// 休止モード
-
-
 pref("browser.disable.nt.image.gb", false);// 画像を表示しない
 
 pref("floorp.enable.dualtheme", false); //デュアルテーマの有効・無効 
@@ -141,7 +138,7 @@ pref("floorp.browser.workspaces.disabledBySystem", true);
 pref("floorp.titlebar.favicon.color", false);
 
 // カスタムショートカットキー
-pref("floorp.custom.shortcutkeysAndActions", "[]");
+pref("floorp.custom.shortcutkeysAndActions", '[{"actionName":"EnableRestMode","key":"","keyCode":"VK_F9","modifiers":""},{"actionName":"toggleBMS","key":"","keyCode":"VK_F2","modifiers":""}]');
 pref("floorp.custom.shortcutkeysAndActions.enabled", true);
 pref("floorp.custom.shortcutkeysAndActions.remove.fx.actions", false);
 

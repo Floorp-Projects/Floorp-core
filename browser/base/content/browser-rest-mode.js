@@ -5,7 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 function enableRestMode() {
-  if (Services.prefs.getBoolPref("floorp.browser.rest.mode", false)) {
     const selectedTab = gBrowser.selectedTab;
     const selectedTabLocation = selectedTab.linkedBrowser.documentURI.spec;
 
@@ -34,5 +33,4 @@ function enableRestMode() {
     if (selectedTabLocation) {
       openTrustedLinkIn(selectedTabLocation, "current");
     }
-  }
 }

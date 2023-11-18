@@ -12,7 +12,6 @@ Preferences.addAll([
   { id: "toolkit.tabbox.switchByScrolling", type: "bool" },
   { id: "browser.tabs.closeTabByDblclick", type: "bool" },
   { id: "floorp.browser.UserAgent", type: "int" },
-  { id: "floorp.browser.rest.mode", type: "bool" },
   { id: "floorp.disable.fullscreen.notification", type: "bool" },
   { id: "floorp.tabsleep.enabled", type: "bool" },
   { id: "floorp.tabs.showPinnedTabsTitle", type: "bool" },
