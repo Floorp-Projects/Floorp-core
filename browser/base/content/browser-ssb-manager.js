@@ -321,4 +321,19 @@ const gSsbChromeManager = {
 
 if (Services.prefs.getBoolPref("browser.ssb.enabled")) {
   gSsbChromeManager.init();
+} else {
+  // Hide XUL elements
+  let css = `
+    #ssbPageAction,
+    #appMenu-ssb-button,
+    #appmenu-install-current-page-button,
+    #appMenu-ssb-button {
+      display: none !important;
+    }
+  `;
+  let sss = Cc["@mozilla.org/content/style-sheet-service;1"].getService(
+    Ci.nsIStyleSheetService
+  );
+  let uri = makeURI("data:text/css," + encodeURIComponent(css));
+  sss.loadAndRegisterSheet(uri, sss.USER_SHEET);
 }
