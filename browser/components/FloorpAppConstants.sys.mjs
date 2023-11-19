@@ -7,10 +7,5 @@
 
 // Immutable for export.
 export var FloorpAppConstants = Object.freeze({
-    FLOORP_LIGHTNING_BUILD:
-#ifdef FLOORP_LIGHTNING_BUILD
-    true,
-#else
-    false,
-#endif
+    
 });

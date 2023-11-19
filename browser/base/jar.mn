@@ -6,7 +6,6 @@ browser.jar:
 %  content browser %content/browser/ contentaccessible=yes
 
 # Floorp build
-#if !defined(FLOORP_LIGHTNING_BUILD)
   content/browser/browser-UI-custom.js          (content/browser-UI-custom.js)
   content/browser/browser-UI-customizing-menu.js (content/browser-UI-customizing-menu.js)
   content/browser/browser-design.js             (content/browser-design.js)
@@ -22,9 +21,7 @@ browser.jar:
   content/browser/browser-custom-keyboard-shortcut.js  (content/browser-custom-keyboard-shortcut.js)
   content/browser/browser-verticaltabs.css      (content/browser-verticaltabs.css)
   content/browser/browser-verticaltabs.js       (content/browser-verticaltabs.js)
-# Librarys
   content/browser/qr-code-styling/qr-code-styling.js  (library/qr-code-styling/qr-code-styling@1.5.0.js)
-#endif
 
 ## Lightning build & Floorp build
   content/browser/browser-manager-sidebar.js    (content/browser-manager-sidebar.js)

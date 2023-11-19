@@ -169,13 +169,6 @@ pref("browser.ssb.enabled", false);
 
 /*----------------------------------------------------------------------------------------------------------------------------------*/
 
-#if defined(FLOORP_LIGHTNING_BUILD)
-pref("browser.firefox-view.feature-tour", "{'screen':'FIREFOX_VIEW_SPOTLIGHT','complete':true}");
-pref("browser.tabs.firefox-view", false);
-pref("browser.tabs.firefox-view.notify-for-tabs", false);
-pref("browser.firefox-view.view-count", 1);
-#endif
-
 //ブックマークツールバー
 pref("browser.toolbars.bookmarks.visibility", "always");
 

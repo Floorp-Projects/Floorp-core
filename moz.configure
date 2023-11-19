@@ -6,11 +6,13 @@
 
 ## Add Floorp build options
 
-option(
-    "--enable-lightning-build",
-    default=False,
-    help="Enable Lightning build: Remove some components & features",
-)
+# Example of adding a new option
 
-set_config("FLOORP_LIGHTNING_BUILD", True, when="--enable-lightning-build")
-set_define("FLOORP_LIGHTNING_BUILD", True, when="--enable-lightning-build")
+# option(
+#     "--enable-lightning-build",
+#     default=False,
+#     help="Enable Lightning build: Remove some components & features",
+#  )
+
+#  set_config("FLOORP_LIGHTNING_BUILD", True, when="--enable-lightning-build")
+#  set_define("FLOORP_LIGHTNING_BUILD", True, when="--enable-lightning-build")

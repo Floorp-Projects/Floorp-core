@@ -163,7 +163,7 @@ if (isMainBrowser) {
     }
 }
 
-if (isMainBrowser && !FloorpAppConstants.FLOORP_LIGHTNING_BUILD) {
+if (isMainBrowser) {
     // Load actors
     try {
         ChromeUtils.importESModule("resource:///modules/FloorpActors.sys.mjs");
