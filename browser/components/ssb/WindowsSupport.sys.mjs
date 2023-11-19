@@ -97,7 +97,7 @@ export const WindowsSupport = {
 
     try {
       let startMenu = Services.dirsvc.get("Home", Ci.nsIFile).path + "\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\";
-      IOUtils.remove(new File(startMenu + ssb.name + ".lnk"), { recursive: true });
+      await IOUtils.remove(startMenu + ssb.name + ".lnk");
     } catch (e) {
       console.error(e);
     }

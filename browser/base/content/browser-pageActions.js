@@ -106,8 +106,8 @@ let gFloorpPageAction = {
         </vbox>
        </hbox>
        <hbox id="ssb-button-hbox">
-        <button id="ssb-button" class="panel-button ssb-app-install-button" oncommand="gFloorpPageAction.Ssb.onCommand()"/>
-        <button id="ssb-button" class="panel-button ssb-app-cancel-button" data-l10n-id="ssb-app-cancel-button" oncommand="gFloorpPageAction.Ssb.closePopup()"/>
+        <button id="ssb-app-install-button" class="panel-button" oncommand="gFloorpPageAction.Ssb.onCommand()"/>
+        <button id="ssb-app-cancel-button" class="panel-button" data-l10n-id="ssb-app-cancel-button" oncommand="gFloorpPageAction.Ssb.closePopup()"/>
         </hbox>
       </vbox>
      </panel>
@@ -115,7 +115,6 @@ let gFloorpPageAction = {
    `),
 
     async onCommand() {
-      this.closePopup();
       gSsbChromeManager.functions.installOrRunCurrentPageAsSsb(true);
     },
 

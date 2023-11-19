@@ -86,13 +86,20 @@ const gSsbChromeManager = {
         );
 
         await ssb.install();
-        await SiteSpecificBrowserIdUtils.runSsbById(ssb.id);
+
+        // Installing needs some time to finish. So we wait 4 seconds before
+        window.setTimeout(() => {
+          SiteSpecificBrowserIdUtils.runSsbById(ssb.id);
+          
+          // The site's manifest may point to a different start page so explicitly
+          // open the SSB to the current page.
+          gBrowser.removeTab(gBrowser.selectedTab, {
+            closeWindowWithLastTab: false,
+          });
+          
+          gFloorpPageAction.Ssb.closePopup();
+        }, 3000);
       }
-      // The site's manifest may point to a different start page so explicitly
-      // open the SSB to the current page.
-      gBrowser.removeTab(gBrowser.selectedTab, {
-        closeWindowWithLastTab: false,
-      });
     },
 
     async checkCurrentPageCanBeInstalled() {
@@ -186,7 +193,7 @@ const gSsbChromeManager = {
       );
       let ssbContentIcon = document.getElementById("ssb-content-icon");
 
-      let installButton = document.querySelector(".ssb-app-install-button");
+      let installButton = document.querySelector("#ssb-app-install-button");
 
       if (ssbContentLabel) {
         ssbContentLabel.textContent = currentTabTitle;

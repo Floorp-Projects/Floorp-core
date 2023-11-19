@@ -584,7 +584,7 @@ toolbar #workspace-button:not([disabled="true"], [checked], [open], :active):hov
   margin: 30px 20px;
 }
 
-.ssb-app-install-button {
+#ssb-app-install-button {
   appearance: none;
   border: 0;
   border-radius: 4px;
@@ -599,7 +599,15 @@ toolbar #workspace-button:not([disabled="true"], [checked], [open], :active):hov
   margin-right: 5px;
 }
 
-.ssb-app-cancel-button {
+#ssb-app-install-button:hover {
+  background-color: var(--button-primary-hover-bgcolor);
+}
+
+#ssb-app-install-button:active {
+  background-color: var(--button-primary-active-bgcolor);
+}
+
+#ssb-app-cancel-button {
   appearance: none;
   border: 0;
   border-radius: 4px;
@@ -609,6 +617,14 @@ toolbar #workspace-button:not([disabled="true"], [checked], [open], :active):hov
   font-weight: 600;
   min-width: 0;
   margin-bottom: 0;
+}
+
+#ssb-app-cancel-button:hover {
+  background-color: var(--button-hover-bgcolor, color-mix(in srgb, currentColor 17%, transparent));
+}
+
+#ssb-app-cancel-button:active {
+  background-color: var(--button-active-bgcolor, color-mix(in srgb, currentColor 30%, transparent));
 }
 
 #ssb-button-hbox {
