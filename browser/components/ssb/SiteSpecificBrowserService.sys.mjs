@@ -155,6 +155,16 @@ async function buildManifestForBrowser(browser, options) {
     console.error(e);
   }
 
+  // Remove white icon if it exists & icons is not 1 or 0.
+  if (manifest && manifest.icons && manifest.icons.length !== 1) {
+    let icons = manifest.icons
+    for (let i = 0; i < icons.length; i++) {
+      if (icons[i].purpose.includes("monochrome")) {
+        icons.splice(i, 1)
+      }
+    }
+  }
+
   // Reject the manifest if its scope doesn't include the current document.
   if (
     !manifest ||
