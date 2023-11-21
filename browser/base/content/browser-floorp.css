@@ -298,9 +298,10 @@
   display: none;
 }
 
-:root[invisibleBMS] #sidebar2-box{
-max-width: 0px !important;
-min-width: 0px !important;
+:root[invisibleBMS] #sidebar2-box {
+  max-width: 0px !important;
+  min-width: 0px !important;
+  border: unset !important;
 }
 
 #bsb-context-add, #bsb-context-link-add {
