@@ -200,7 +200,15 @@ function setVerticalTabs() {
       if (
         Services.prefs.getBoolPref(scroolbarPref)
       ) {
-        document.getElementById("tabbrowser-arrowscrollbox").shadowRoot.querySelector("scrollbox").style = "overflow-y: scroll !important;";
+        let arrowscrollbox = document.getElementById("tabbrowser-arrowscrollbox");
+        let elem = arrowscrollbox.shadowRoot.createElementAndAppendChildAt(
+          arrowscrollbox.shadowRoot.querySelector(".scrollbox-clip"),
+          "style"
+        );
+        elem.textContent = `scrollbox[part="scrollbox"] {
+          overflow-y: scroll;
+        }`;
+        elem.setAttribute("class", "floorp-vtscrollbar");
       }
     }, 1000);
   } else {

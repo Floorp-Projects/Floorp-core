@@ -9,7 +9,7 @@ var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 const observePreference = function (prefName, callback) {
   let prefValue = Services.prefs.getBoolPref(prefName, false);
 
-  const notifyCallback = (reason) => {
+  const notifyCallback = reason => {
     try {
       callback({
         pref: prefName,
@@ -184,16 +184,15 @@ observePreference("floorp.delete.browser.border", function (event) {
   }
 });
 
-
 observePreference("floorp.hide.unifiedExtensionsButtton", function (event) {
- if (event.prefValue) {
-   let Tag = document.createElement("style");
-   Tag.innerText = `#unified-extensions-button {display: none !important;}`;
-   Tag.id = "floorp-hide-unified-extensions-button";
-   document.head.appendChild(Tag);
- } else {
-   document.getElementById("floorp-hide-unified-extensions-button")?.remove();
- }
+  if (event.prefValue) {
+    let Tag = document.createElement("style");
+    Tag.innerText = `#unified-extensions-button {display: none !important;}`;
+    Tag.id = "floorp-hide-unified-extensions-button";
+    document.head.appendChild(Tag);
+  } else {
+    document.getElementById("floorp-hide-unified-extensions-button")?.remove();
+  }
 });
 
 /*------------------------------------------- sidebar -------------------------------------------*/
@@ -240,15 +239,27 @@ observePreference("floorp.verticaltab.show.newtab.button", function (event) {
   }
 });
 
+
+// verticaltab.js has same code
 observePreference("floorp.verticaltab.show.scrollbar", function (event) {
   let arrowscrollbox = document.getElementById("tabbrowser-arrowscrollbox");
-
   if (Services.prefs.getIntPref("floorp.tabbar.style", false) != 2) {
     return;
   }
   if (event.prefValue) {
-    arrowscrollbox.shadowRoot.querySelector("scrollbox").style = "overflow-y: scroll !important;";
+    let elem = arrowscrollbox.shadowRoot.createElementAndAppendChildAt(
+      arrowscrollbox.shadowRoot.querySelector(".scrollbox-clip"),
+      "style"
+    );
+    elem.textContent = `scrollbox[part="scrollbox"] {
+      overflow-y: scroll;
+    }`;
+    elem.setAttribute("class", "floorp-vtscrollbar");
   } else {
-    arrowscrollbox.shadowRoot.querySelector("scrollbox").style = "overflow-y: hidden !important;";
+    arrowscrollbox.shadowRoot.querySelectorAll(".floorp-vtscrollbar").forEach(
+      function (elem) {
+        elem.remove();
+      }
+    );
   }
 });
