@@ -195,6 +195,13 @@ function setVerticalTabs() {
           .prepend(document.getElementById("TabsToolbar"));
         document.getElementById("TabsToolbar").removeAttribute("hidden");
       }
+
+      let scroolbarPref = "floorp.verticaltab.show.scrollbar";
+      if (
+        Services.prefs.getBoolPref(scroolbarPref)
+      ) {
+        document.getElementById("tabbrowser-arrowscrollbox").shadowRoot.querySelector("scrollbox").style = "overflow-y: scroll !important;";
+      }
     }, 1000);
   } else {
     // TODO: Re-implement the vertical tab bar. This code is not working.

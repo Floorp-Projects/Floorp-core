@@ -239,3 +239,16 @@ observePreference("floorp.verticaltab.show.newtab.button", function (event) {
     document.getElementById("floorp-newtabbuttonintabbar")?.remove();
   }
 });
+
+observePreference("floorp.verticaltab.show.scrollbar", function (event) {
+  let arrowscrollbox = document.getElementById("tabbrowser-arrowscrollbox");
+
+  if (Services.prefs.getIntPref("floorp.tabbar.style", false) != 2) {
+    return;
+  }
+  if (event.prefValue) {
+    arrowscrollbox.shadowRoot.querySelector("scrollbox").style = "overflow-y: scroll !important;";
+  } else {
+    arrowscrollbox.shadowRoot.querySelector("scrollbox").style = "overflow-y: hidden !important;";
+  }
+});

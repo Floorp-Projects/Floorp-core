@@ -115,6 +115,7 @@ pref("floorp.verticaltab.hover.enabled", false);
 pref("floorp.browser.tabs.verticaltab.right", false);
 pref("floorp.browser.tabs.verticaltab.temporary.disabled", false);
 pref("floorp.browser.tabs.verticaltab.width", 200);
+pref("floorp.verticaltab.show.scrollbar", true);
 
 // Chrome 形式のダウンローダー
 pref("floorp.browser.native.downloadbar.enabled", false);
