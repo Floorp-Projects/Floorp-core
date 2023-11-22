@@ -19,6 +19,14 @@ let gSsbSupport = {
     return document.documentElement.getAttribute("FloorpSSBId");
   },
 
+  get urlbar() {
+    return document.getElementById("urlbar");
+  },
+
+  get searchbar() {
+    return document.getElementById("searchbar");
+  },
+
   get TabsToolbar() {
     return document.getElementById("TabsToolbar");
   },
@@ -29,10 +37,6 @@ let gSsbSupport = {
 
   get navToolbar() {
     return document.getElementById("nav-bar");
-  },
-
-  get TabsToolbarWindowControls() {
-    return document.querySelector("#TabsToolbar .titlebar-buttonbox-container");
   },
 
   get pageActionBox() {
@@ -48,22 +52,27 @@ let gSsbSupport = {
     return result;
   },
 
-  hexToRgb(hex) {
-        return {
-            r: parseInt(hex.substring(1, 3), 16),
-            g: parseInt(hex.substring(3, 5), 16),
-            b: parseInt(hex.substring(5, 7), 16)
-        };
-  },
-    
-  getSymmetricalColor(hex) {
-      const rgb = this.hexToRgb(hex);
-      const symmetricalRgb = {
-          r: 255 - rgb.r,
-          g: 255 - rgb.g,
-          b: 255 - rgb.b
-      };
-      return `rgb(${symmetricalRgb.r},${symmetricalRgb.g},${symmetricalRgb.b})`;
+  getIconShouldBlackOrWhite(color) {
+    let r, g, b, hsp;
+    if (color.match(/^rgb/)) {
+      color = color.match(
+        /^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i
+      );
+      r = color[1];
+      g = color[2];
+      b = color[3];
+    } else {
+      color = +(
+        "0x" + color.slice(1).replace(color.length < 5 && /./g, "$&$&")
+      );
+      r = color >> 16;
+      g = (color >> 8) & 255;
+      b = color & 255;
+    }
+    hsp = Math.sqrt(
+      0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b)
+    );
+    return hsp > 127.5 ? "black" : "white";
   },
 
   async init() {
@@ -72,7 +81,6 @@ let gSsbSupport = {
     styleElement.textContent = `@import url("chrome://browser/content/browser-ssb-support.css");`;
     document.head.appendChild(styleElement);
 
-    this.navToolbar.append(this.TabsToolbarWindowControls);
     this.identityBox.after(this.pageActionBox);
 
     gBrowser.tabs.forEach(tab => {
@@ -80,14 +88,15 @@ let gSsbSupport = {
     });
 
     /* Set theme color to Navbar
-    let ssbObj = await this.getSsbObj(this.ssbWindowId)
+    let ssbObj = await this.getSsbObj(this.ssbWindowId);
     
-    this.navToolbar.style.backgroundColor = ssbObj._manifest.theme_color;    
-    const symmetricalColor = this.getSymmetricalColor(ssbObj._manifest.theme_color);
-    this.navToolbar.style.cssText += `--toolbarbutton-icon-fill: ${symmetricalColor} !important`;
+    this.navToolbar.style.backgroundColor = ssbObj.manifest.theme_color;    
+    const iconColor = this.getIconShouldBlackOrWhite(ssbObj.manifest.theme_color);
+    this.navToolbar.style.cssText += `--toolbarbutton-icon-fill: ${iconColor};`;
+    this.urlbar.style.cssText += `color: ${iconColor} !important;`;
+    this.searchbar.style.cssText += `color: ${iconColor} !important;`;
     */
 
-    // finish initialize
     this._initialized = true;
   },
 };

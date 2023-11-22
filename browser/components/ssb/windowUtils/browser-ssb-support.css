@@ -12,6 +12,15 @@
 
 /** Search bar & URL bar **/
 
+/* break min-height: var(--urlbar-container-height); */
+#urlbar-container[breakout] {
+    min-height: unset !important;
+}
+
+#urlbar[breakout] {
+   top: unset !important;
+}
+
 #star-button-box,
 #ssbPageAction {
     display: none;
