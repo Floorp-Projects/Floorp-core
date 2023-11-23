@@ -33,15 +33,21 @@ const gSsbChromeManager = {
         event,
         this.eventListeners.onCurrentTabChangedOrLoaded
       );
-    }   
+    }
 
+    let count = 0;
     let currentURL = gBrowser.currentURI.spec;
+
     function checkURLChange() {
-      const newURL = gBrowser.currentURI.spec;
-    
-      if (newURL !== currentURL) {
+      const newURL = gBrowser.currentURI.spec;    
+      if (newURL !== currentURL || count < 2) {
         gSsbChromeManager.eventListeners.onCurrentTabChangedOrLoaded();
         currentURL = newURL;
+        // try 2 times
+        if (newURL !== currentURL) {
+          count = 0;
+        }
+        count++;
       }
     }
 
@@ -75,6 +81,7 @@ const gSsbChromeManager = {
         if (ssbObj) {
           let id = ssbObj.id;
           await SiteSpecificBrowserIdUtils.runSsbByUrlAndId(gBrowser.currentURI.spec, id);
+          gFloorpPageAction.Ssb.closePopup();
         }
       } else {
         let ssb = await SiteSpecificBrowser.createFromBrowser(
