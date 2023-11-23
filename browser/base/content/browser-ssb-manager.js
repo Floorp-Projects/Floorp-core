@@ -191,7 +191,7 @@ const gSsbChromeManager = {
       let isInstalled = await this.checkCurrentPageIsInstalled();
 
       let currentTabTitle = currentURISsbObj.name;
-      let currentTabIcon = currentURISsbObj._manifest.icons[0].src 
+      let currentTabIcon = currentURISsbObj._manifest.icons[0]?.src 
       let currentTabURL = currentURISsbObj._scope.displayHost;
 
       let ssbContentLabel = document.getElementById("ssb-content-label");
@@ -251,6 +251,8 @@ const gSsbChromeManager = {
       // Check current page ssb is installed
       let currentPageCanBeInstalled =
        await gSsbChromeManager.functions.checkCurrentPageCanBeInstalled();
+      let isInstalled =
+       await gSsbChromeManager.functions.checkCurrentPageIsInstalled();
       let installButtonOnPanelUI = document.getElementById("appmenu-install-current-page-button");
 
       if (!currentPageCanBeInstalled) {
@@ -258,10 +260,10 @@ const gSsbChromeManager = {
         document.l10n.setAttributes(installButtonOnPanelUI, "appmenuitem-install-current-page");
       } else {
         installButtonOnPanelUI.removeAttribute("disabled");
-        let isInstalled =
-          await gSsbChromeManager.functions.checkCurrentPageIsInstalled();
         if (isInstalled) {
           document.l10n.setAttributes(installButtonOnPanelUI, "appmenuitem-open-current-page");
+        } else {
+          document.l10n.setAttributes(installButtonOnPanelUI, "appmenuitem-install-current-page");
         }
       }
     },
