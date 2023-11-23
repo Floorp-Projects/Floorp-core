@@ -9,7 +9,7 @@ var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 const observePreference = function (prefName, callback) {
   let prefValue = Services.prefs.getBoolPref(prefName, false);
 
-  const notifyCallback = (reason) => {
+  const notifyCallback = reason => {
     try {
       callback({
         pref: prefName,
@@ -184,16 +184,15 @@ observePreference("floorp.delete.browser.border", function (event) {
   }
 });
 
-
 observePreference("floorp.hide.unifiedExtensionsButtton", function (event) {
- if (event.prefValue) {
-   let Tag = document.createElement("style");
-   Tag.innerText = `#unified-extensions-button {display: none !important;}`;
-   Tag.id = "floorp-hide-unified-extensions-button";
-   document.head.appendChild(Tag);
- } else {
-   document.getElementById("floorp-hide-unified-extensions-button")?.remove();
- }
+  if (event.prefValue) {
+    let Tag = document.createElement("style");
+    Tag.innerText = `#unified-extensions-button {display: none !important;}`;
+    Tag.id = "floorp-hide-unified-extensions-button";
+    document.head.appendChild(Tag);
+  } else {
+    document.getElementById("floorp-hide-unified-extensions-button")?.remove();
+  }
 });
 
 /*------------------------------------------- sidebar -------------------------------------------*/
@@ -223,5 +222,44 @@ observePreference("floorp.verticaltab.hover.enabled", function (event) {
     document.head.appendChild(Tag);
   } else {
     document.getElementById("floorp-vthover")?.remove();
+  }
+});
+
+observePreference("floorp.verticaltab.show.newtab.button", function (event) {
+  if (Services.prefs.getIntPref("floorp.tabbar.style", false) != 2) {
+    return;
+  }
+  if (event.prefValue) {
+    var Tag = document.createElement("style");
+    Tag.innerText = `@import url(chrome://browser/skin/options/verticaltab-show-newtab-button-in-tabbar.css)`;
+    Tag.setAttribute("id", "floorp-newtabbuttonintabbar");
+    document.head.appendChild(Tag);
+  } else {
+    document.getElementById("floorp-newtabbuttonintabbar")?.remove();
+  }
+});
+
+
+// verticaltab.js has same code
+observePreference("floorp.verticaltab.show.scrollbar", function (event) {
+  let arrowscrollbox = document.getElementById("tabbrowser-arrowscrollbox");
+  if (Services.prefs.getIntPref("floorp.tabbar.style", false) != 2) {
+    return;
+  }
+  if (event.prefValue) {
+    let elem = arrowscrollbox.shadowRoot.createElementAndAppendChildAt(
+      arrowscrollbox.shadowRoot.querySelector(".scrollbox-clip"),
+      "style"
+    );
+    elem.textContent = `scrollbox[part="scrollbox"] {
+      overflow-y: scroll;
+    }`;
+    elem.setAttribute("class", "floorp-vtscrollbar");
+  } else {
+    arrowscrollbox.shadowRoot.querySelectorAll(".floorp-vtscrollbar").forEach(
+      function (elem) {
+        elem.remove();
+      }
+    );
   }
 });

@@ -298,9 +298,10 @@
   display: none;
 }
 
-:root[invisibleBMS] #sidebar2-box{
-max-width: 0px !important;
-min-width: 0px !important;
+:root[invisibleBMS] #sidebar2-box {
+  max-width: 0px !important;
+  min-width: 0px !important;
+  border: unset !important;
 }
 
 #bsb-context-add, #bsb-context-link-add {
@@ -559,4 +560,82 @@ toolbar #workspace-button:not([disabled="true"], [checked], [open], :active):hov
 
 #new-tab-button > .toolbarbutton-icon {
   width: 22px !important;
+}
+
+/* Progressive Web Apps */
+
+#ssb-box {
+  min-width: 350px;
+}
+
+#ssb-content-description {
+  color: var(--menu-disabled-color) !important;
+}
+
+#ssb-content-hbox {
+  display: flex;
+}
+
+#ssb-content-icon {
+  width: 32px !important;
+  height: 32px !important;
+}
+
+#ssb-content-icon-vbox {
+  margin: 30px 20px;
+}
+
+#ssb-app-install-button {
+  appearance: none;
+  border: 0;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-weight: 600;
+  min-width: 0;
+  margin-inline: 8px 0;
+  margin-bottom: 0;
+  color: var(--button-primary-color);
+  background-color: var(--button-primary-bgcolor);
+  margin-left: auto;
+  margin-right: 5px;
+}
+
+#ssb-app-install-button:hover {
+  background-color: var(--button-primary-hover-bgcolor);
+}
+
+#ssb-app-install-button:active {
+  background-color: var(--button-primary-active-bgcolor);
+}
+
+#ssb-app-cancel-button {
+  appearance: none;
+  border: 0;
+  border-radius: 4px;
+  color: var(--button-color, inherit);
+  background-color: var(--button-bgcolor, color-mix(in srgb, currentColor 13%, transparent));
+  padding: 8px 16px;
+  font-weight: 600;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+#ssb-app-cancel-button:hover {
+  background-color: var(--button-hover-bgcolor, color-mix(in srgb, currentColor 17%, transparent));
+}
+
+#ssb-app-cancel-button:active {
+  background-color: var(--button-active-bgcolor, color-mix(in srgb, currentColor 30%, transparent));
+}
+
+#ssb-button-hbox {
+  margin-top: 15px;
+}
+
+#ssbPageAction-image {
+  list-style-image: url("chrome://browser/skin/install-ssb.svg");
+}
+
+.ssb-app-info-button > .toolbarbutton-icon {
+  width: 20px;
 }

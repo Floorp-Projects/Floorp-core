@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const l10n = new Localization(["browser/floorp.ftl"], true);
+const l10n = new Localization(["browser/floorp.ftl", "branding/brand.ftl"], true);
 
 const WorkspaceUtils = ChromeUtils.importESModule(
   "resource:///modules/WorkspaceUtils.sys.mjs"
@@ -332,7 +332,6 @@ const workspaceFunctions = {
       let allWorkspace = Services.prefs
         .getStringPref(WorkspaceUtils.workspacesPreferences.WORKSPACE_ALL_PREF)
         .split(",");
-      let l10n = new Localization(["browser/floorp.ftl", "branding/brand.ftl"], true);
       let prompts = Services.prompt;
       let check = { value: false };
       let pattern = /^[\p{L}\p{N}]+$/u;
@@ -439,7 +438,6 @@ const workspaceFunctions = {
     renameWorkspace(label) {
       label = label.replace(/\s+/g, "-");
       let prompts = Services.prompt;
-      let l10n = new Localization(["browser/floorp.ftl"], true);
       let check = { value: false };
       let pattern = /^[\p{L}\p{N}\s]+$/u;
       let input = { value: "" };
@@ -542,7 +540,6 @@ const workspaceFunctions = {
       let allWorkspace = Services.prefs
         .getStringPref(WorkspaceUtils.workspacesPreferences.WORKSPACE_ALL_PREF)
         .split(",");
-      let l10n = new Localization(["browser/floorp.ftl"], true);
       prompts = Services.prompt;
       let check = { value: false };
       const pattern = /^[\p{L}\p{N}\s]+$/u;
@@ -1261,16 +1258,17 @@ const workspaceFunctions = {
 
       <vbox id="workspace-box-${label}" class="workspace-label-box">
        <hbox id="workspace-${label}" class="workspace-item-box">
-         <toolbarbutton id="workspace-label" label="${labelDisplay}"
+         <toolbarbutton id="${label}-button" label="${labelDisplay}"
                    class="toolbarbutton-1 workspace-item" workspace="${label}"
                    context="workspace-item-context" oncommand="workspaceFunctions.manageWorkspaceFunctions.changeWorkspace('${label}')"/>
-         <toolbarbutton workspace="${labelDisplay}" iconName="${label}"  context="workspace-icon-context" id="workspace-icon" class="workspace-item-icon toolbarbutton-1" oncommand="workspaceFunctions.manageWorkspaceFunctions.changeWorkspace('${label}')" style="list-style-image: url(${workspaceFunctions.iconFunctions.getWorkspaceIcon(
-        label
-      )})"/>
        </hbox>
        <menuseparator class="workspace-item-separator"/>
       </vbox>
     `);
+
+      let iconElem =  window.MozXULElement.parseXULToFragment(`<toolbarbutton workspace="${labelDisplay}" iconName="${label}" class="workspace-item-icon toolbarbutton-1" oncommand="workspaceFunctions.manageWorkspaceFunctions.changeWorkspace('${label}')" style="list-style-image: url(${workspaceFunctions.iconFunctions.getWorkspaceIcon(
+                        label)}
+                      )"/>`);
 
       if (nextElem) {
         nextElem.before(workspaceItemElem);
@@ -1280,6 +1278,9 @@ const workspaceFunctions = {
           .before(workspaceItemElem);
       }
 
+      document
+        .getElementById(`${label}-button`)
+        .appendChild(iconElem);
       if (
         Services.prefs
           .getStringPref(
@@ -1305,38 +1306,19 @@ const workspaceFunctions = {
       }
 
       let menuitemElem = window.MozXULElement.parseXULToFragment(`
-        <menuitem class="workspace-item-contexts" id="workspace-item-context-rename" data-l10n-id="workspace-rename" oncommand="workspaceFunctions.manageWorkspaceFunctions.renameWorkspace('${e.explicitOriginalTarget.getAttribute(
-          "label"
-        )}')"/>
-      `);
-
-      document
-        .getElementById("workspace-item-context")
-        .appendChild(menuitemElem);
-    },
-
-    createWorkspaceIconContext(e) {
-      let oldMenuItems = document.querySelectorAll(".workspace-icon-context");
-
-      for (let i = 0; i < oldMenuItems.length; i++) {
-        oldMenuItems[i].remove();
-      }
-
-      let menuitemElem = window.MozXULElement.parseXULToFragment(`
-      <menuitem class="workspace-icon-context" id="workspace-item-context-icon-delete" data-l10n-id="workspace-delete" 
+      <menuitem class="workspace-item-contexts" id="workspace-item-context-icon-delete" data-l10n-id="workspace-delete" 
                 oncommand="workspaceFunctions.manageWorkspaceFunctions.deleteworkspace('${e.explicitOriginalTarget.getAttribute(
                   "workspace"
                 )}');"/>
-      <menuitem class="workspace-icon-context" id="workspace-item-context-icon-rename" data-l10n-id="workspace-rename" 
+      <menuitem class="workspace-item-contexts" id="workspace-item-context-icon-rename" data-l10n-id="workspace-rename" 
                 oncommand="workspaceFunctions.manageWorkspaceFunctions.renameWorkspace('${e.explicitOriginalTarget.getAttribute(
                   "workspace"
                 )}')"/>
-      <menuitem class="workspace-icon-context" id="workspace-item-context-icon-change-icon" data-l10n-id="manage-workspace"
+      <menuitem class="workspace-item-contexts" id="workspace-item-context-icon-change-icon" data-l10n-id="manage-workspace"
                 oncommand="workspaceFunctions.iconFunctions.setWorkspaceFromPrompt('${e.explicitOriginalTarget.getAttribute(
                   "workspace"
                 )}')"/>
- 
-     `);
+      `);
 
       if (
         e.explicitOriginalTarget.getAttribute("workspace") ==
@@ -1346,7 +1328,7 @@ const workspaceFunctions = {
       }
 
       document
-        .getElementById("workspace-icon-context")
+        .getElementById("workspace-item-context")
         .appendChild(menuitemElem);
     },
 
@@ -1361,6 +1343,15 @@ const workspaceFunctions = {
         .workspace-item[workspace="${currentWorkspace}"] > .toolbarbutton-icon {
           visibility: inherit !important;
         }
+      `;
+
+      let manageOnBMSIsEnabled = Services.prefs.getBoolPref(
+        WorkspaceUtils.workspacesPreferences
+          .WORKSPACE_MANAGE_ON_BMS_PREF
+      );
+
+      if (manageOnBMSIsEnabled) {
+        Tag.innerText += `
         .workspace-item-icon[workspace="${currentWorkspace.replace(
           /-/g,
           " "
@@ -1369,7 +1360,9 @@ const workspaceFunctions = {
           box-shadow: 0 0 0 1px var(--lwt-accent-color) !important;
           background-color: var(--lwt-accent-color) !important;
         }
-      `;
+        `;
+      }
+
       Tag.setAttribute("id", "workspaceMenuItemCheckCSS");
       document.head.appendChild(Tag);
     },
@@ -1388,7 +1381,16 @@ const workspaceFunctions = {
 
       const styleElem = document.createElement("style");
       const modifyCSS = `
-      #workspace-label {
+      .workspace-item {
+        width: unset !important;
+        appearance: none;
+        background-color: unset !important;
+        background: unset !important;
+      }
+      .workspace-item > .toolbarbutton-icon {
+        display: none !important;
+      }
+      .workspace-item > .toolbarbutton-text {
         display: none !important;
       }
       #workspace-delete {
@@ -1412,9 +1414,19 @@ const workspaceFunctions = {
         border-radius: 4px;
         color: inherit;
         fill: currentColor;
-        margin: 1px 2px 5px 5px;
+        margin: 2px;
         padding: 7px;
         scale: 1.0;
+      }
+
+      :root[uidensity="touch"] .workspace-item-icon {
+        margin: 4px !important;
+        padding: 14px !important;
+      }
+
+      :root[uidensity="compact"] .workspace-item-icon {
+        margin: 2px 0px 0px 1.3px !important;
+        padding: 5px !important;
       }
 
       #addNewWorkspaceButton {
@@ -1430,11 +1442,25 @@ const workspaceFunctions = {
         height: 31px !important;
       }
 
+      :root[uidensity="compact"] #addNewWorkspaceButton {
+        width: 27px !important;
+        height: 30px !important;
+        margin: 1px 2px 3px 4px !important;
+        padding: 6px !important;
+      }
+
+      :root[uidensity="touch"] #addNewWorkspaceButton {
+        padding: 16px !important;
+        scale: 1.0 !important;
+        width: 48px !important;
+        height: 48px !important;
+      }
+
       #addNewWorkspaceButton > .toolbarbutton-icon {
         scale: 1.2;
       }
 
-      #workspace-icon > .toolbarbutton-icon {
+      .workspace-item-icon > .toolbarbutton-icon {
         scale: 1.3;
       }
 

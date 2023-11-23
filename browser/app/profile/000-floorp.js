@@ -40,9 +40,6 @@ pref("floorp.tabscroll.wrap",false);
 
 pref("floorp.enable.auto.restart", false);
 
-pref("floorp.browser.rest.mode", false);// 休止モード
-
-
 pref("browser.disable.nt.image.gb", false);// 画像を表示しない
 
 pref("floorp.enable.dualtheme", false); //デュアルテーマの有効・無効 
@@ -92,6 +89,7 @@ pref("app.feedback.baseURL", "https://support.ablaze.one/");
 // 多段タブ
 pref("floorp.tabbar.style",0);
 pref("floorp.browser.tabs.verticaltab", false);
+pref("floorp.verticaltab.show.newtab.button" , false);
 pref("floorp.enable.multitab", false);
 pref("floorp.browser.tabbar.multirow.max.enabled", true);
 pref("floorp.browser.tabbar.multirow.newtab-inside.enabled", false);
@@ -117,6 +115,7 @@ pref("floorp.verticaltab.hover.enabled", false);
 pref("floorp.browser.tabs.verticaltab.right", false);
 pref("floorp.browser.tabs.verticaltab.temporary.disabled", false);
 pref("floorp.browser.tabs.verticaltab.width", 200);
+pref("floorp.verticaltab.show.scrollbar", true);
 
 // Chrome 形式のダウンローダー
 pref("floorp.browser.native.downloadbar.enabled", false);
@@ -140,7 +139,7 @@ pref("floorp.browser.workspaces.disabledBySystem", true);
 pref("floorp.titlebar.favicon.color", false);
 
 // カスタムショートカットキー
-pref("floorp.custom.shortcutkeysAndActions", "[]");
+pref("floorp.custom.shortcutkeysAndActions", '[{"actionName":"toggleBMS","key":"","keyCode":"VK_F2","modifiers":""}]');
 pref("floorp.custom.shortcutkeysAndActions.enabled", true);
 pref("floorp.custom.shortcutkeysAndActions.remove.fx.actions", false);
 
@@ -165,14 +164,11 @@ pref("floorp.browser.splitView.working", false);
 
 // user.js
 pref("floorp.user.js.customize", "");
-/*----------------------------------------------------------------------------------------------------------------------------------*/
 
-#if defined(FLOORP_LIGHTNING_BUILD)
-pref("browser.firefox-view.feature-tour", "{'screen':'FIREFOX_VIEW_SPOTLIGHT','complete':true}");
-pref("browser.tabs.firefox-view", false);
-pref("browser.tabs.firefox-view.notify-for-tabs", false);
-pref("browser.firefox-view.view-count", 1);
-#endif
+// Web apps support
+pref("browser.ssb.enabled", false);
+
+/*----------------------------------------------------------------------------------------------------------------------------------*/
 
 //ブックマークツールバー
 pref("browser.toolbars.bookmarks.visibility", "always");

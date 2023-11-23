@@ -143,6 +143,8 @@ const tabbarDisplayStyleFunctions = {
           "floorp-tabbar-display-style",
           "3"
         );
+        // set margin to the top of urlbar container & allow moving the window
+        document.getElementById("urlbar-container").style.marginTop = "10px"; 
         break;
     }
   },
@@ -159,6 +161,8 @@ const tabbarDisplayStyleFunctions = {
     );
     document.querySelector("#floorp-tabbar-modify-css")?.remove();
     tabbarContents.tabbarElement.removeAttribute("floorp-tabbar-display-style");
+    // Remove tabbar margin from the top (when tabs are at the bottom)
+    document.getElementById("urlbar-container")?.style.removeProperty("margin-top");
     tabbarDisplayStyleFunctions.moveToDefaultSpace();
   },
 
@@ -170,7 +174,6 @@ const tabbarDisplayStyleFunctions = {
     );
 
     if (!workspaceButton) {
-      console.error("Workspace button not found");
       return;
     }
 
@@ -180,7 +183,6 @@ const tabbarDisplayStyleFunctions = {
   moveToDefaultSpace() {
     let workspaceButton = document.getElementById("workspace-button");
     if (!workspaceButton) {
-      console.error("Workspace button not found");
       return;
     }
     document.querySelector(".toolbar-items").before(workspaceButton);

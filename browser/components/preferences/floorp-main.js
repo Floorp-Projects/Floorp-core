@@ -12,7 +12,6 @@ Preferences.addAll([
   { id: "toolkit.tabbox.switchByScrolling", type: "bool" },
   { id: "browser.tabs.closeTabByDblclick", type: "bool" },
   { id: "floorp.browser.UserAgent", type: "int" },
-  { id: "floorp.browser.rest.mode", type: "bool" },
   { id: "floorp.disable.fullscreen.notification", type: "bool" },
   { id: "floorp.tabsleep.enabled", type: "bool" },
   { id: "floorp.tabs.showPinnedTabsTitle", type: "bool" },
@@ -58,29 +57,6 @@ window.addEventListener("pageshow", async function() {
     Services.prefs.addObserver(prefName, function () {
       elem.value = Services.prefs.getIntPref(prefName, undefined);
     });
-  }
-
-  // hide all not lightning prefences
-  // eslint-disable-next-line no-lone-blocks
-  {
-    var { FloorpAppConstants } = ChromeUtils.importESModule(
-      "resource:///modules/FloorpAppConstants.sys.mjs"
-    );
-
-    function hideAllNotLightningPrefences() {
-      let styleElem = document.createElement("style");
-      styleElem.id = "lightningPrefences";
-      styleElem.innerText = `
-      .hide-if-lightning-build {
-        display: none;
-      }
-      `;
-      document.head.appendChild(styleElem);
-    }
-
-    if (FloorpAppConstants.FLOORP_LIGHTNING_BUILD) {
-      hideAllNotLightningPrefences();
-    }
   }
 
   {

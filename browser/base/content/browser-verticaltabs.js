@@ -15,7 +15,6 @@ function setWorkspaceLabel() {
   );
 
   if (!workspaceButton) {
-    console.info("Workspace button not found");
     return;
   }
 
@@ -195,6 +194,21 @@ function setVerticalTabs() {
           .getElementById("browser")
           .prepend(document.getElementById("TabsToolbar"));
         document.getElementById("TabsToolbar").removeAttribute("hidden");
+      }
+
+      let scroolbarPref = "floorp.verticaltab.show.scrollbar";
+      if (
+        Services.prefs.getBoolPref(scroolbarPref)
+      ) {
+        let arrowscrollbox = document.getElementById("tabbrowser-arrowscrollbox");
+        let elem = arrowscrollbox.shadowRoot.createElementAndAppendChildAt(
+          arrowscrollbox.shadowRoot.querySelector(".scrollbox-clip"),
+          "style"
+        );
+        elem.textContent = `scrollbox[part="scrollbox"] {
+          overflow-y: scroll;
+        }`;
+        elem.setAttribute("class", "floorp-vtscrollbar");
       }
     }, 1000);
   } else {

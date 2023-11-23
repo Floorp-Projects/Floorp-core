@@ -107,7 +107,7 @@ const buildShortCutkeyFunctions = {
     let keyElems = document.querySelector("#mainKeyset").childNodes;
     for (let keyElem of keyElems) {
       if (!keyElem.classList.contains("floorpCustomShortcutKey")) {
-        keyElem.setAttribute("disabled", "true");
+        keyElem.remove();
       }
     }
   },

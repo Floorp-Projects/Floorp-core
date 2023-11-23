@@ -71,6 +71,7 @@ export const keyboradShortcutActions = {
     muteCurrentTab: ["gBrowser.toggleMuteAudioOnMultiSelectedTabs(gBrowser.selectedTab)", "mute-current-tab", "page-action"],
     showSourceOfPage: ["BrowserViewSource(window.gBrowser.selectedBrowser)", "show-source-of-page", "page-action"],
     showPageInfo: ["BrowserPageInfo()", "show-page-info", "page-action"],
+    EnableRestMode: ["enableRestMode();", "rest-mode", "page-action"],
 
     // Visible actions
     zoomIn: ["FullZoom.enlarge()", "zoom-in", "visible-action"],
