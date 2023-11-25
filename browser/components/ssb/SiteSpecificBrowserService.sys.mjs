@@ -20,7 +20,8 @@ ChromeUtils.defineESModuleGetters(lazy, {
   ManifestObtainer: "resource://gre/modules/ManifestObtainer.sys.mjs",
   ManifestProcessor: "resource://gre/modules/ManifestProcessor.sys.mjs",
   ImageTools: "resource:///modules/ssb/ImageTools.sys.mjs",
-  SiteSpecificBrowserIdUtils: "resource:///modules/SiteSpecificBrowserIdUtils.sys.mjs",
+  SiteSpecificBrowserIdUtils:
+    "resource:///modules/SiteSpecificBrowserIdUtils.sys.mjs",
 });
 
 if (AppConstants.platform == "win") {
@@ -157,10 +158,10 @@ async function buildManifestForBrowser(browser, options) {
 
   // Remove white icon if it exists & icons is not 1 or 0.
   if (manifest && manifest.icons && manifest.icons.length !== 1) {
-    let icons = manifest.icons
+    let icons = manifest.icons;
     for (let i = 0; i < icons.length; i++) {
       if (icons[i].purpose.includes("monochrome")) {
-        icons.splice(i, 1)
+        icons.splice(i, 1);
       }
     }
   }
@@ -432,7 +433,10 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
       );
     }
 
-    let manifest = await buildManifestForBrowser(browser, createManifestOptions);
+    let manifest = await buildManifestForBrowser(
+      browser,
+      createManifestOptions
+    );
     let ssb = await SiteSpecificBrowser.createFromManifest(manifest);
 
     if (!manifest.name) {

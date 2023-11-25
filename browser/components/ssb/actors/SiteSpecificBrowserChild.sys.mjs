@@ -58,7 +58,7 @@ export class SiteSpecificBrowserChild extends JSWindowActorChild {
           }
         });
         return manifestHref;
-      }
+    }
 
     return null;
   }

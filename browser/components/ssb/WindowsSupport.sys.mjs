@@ -83,7 +83,7 @@ export const WindowsSupport = {
       0,
       buildGroupId(ssb.id),
       "Programs",
-      `${ssb.name}.lnk`,
+      `${ssb.name}.lnk`
     );
   },
 
@@ -96,7 +96,9 @@ export const WindowsSupport = {
     }
 
     try {
-      let startMenu = Services.dirsvc.get("Home", Ci.nsIFile).path + "\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\";
+      let startMenu =
+        Services.dirsvc.get("Home", Ci.nsIFile).path +
+        "\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\";
       await IOUtils.remove(startMenu + ssb.name + ".lnk");
     } catch (e) {
       console.error(e);
@@ -127,7 +129,9 @@ export const WindowsSupport = {
       }
 
       try {
-        let image = await lazy.ImageTools.loadImage(Services.io.newURI(icon.src));
+        let image = await lazy.ImageTools.loadImage(
+          Services.io.newURI(icon.src)
+        );
         return image.container;
       } catch (e) {
         console.error(e);

@@ -1,7 +1,7 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
- 
+
 import { AppConstants } from "resource://gre/modules/AppConstants.sys.mjs";
 
 export const EXPORTED_SYMBOLS = ["SiteSpecificBrowserIdUtils"];
@@ -10,13 +10,14 @@ const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 
 const lazy = {};
 ChromeUtils.defineESModuleGetters(lazy, {
-  SiteSpecificBrowserExternalFileService: "resource:///modules/SiteSpecificBrowserExternalFileService.sys.mjs",
+  SiteSpecificBrowserExternalFileService:
+    "resource:///modules/SiteSpecificBrowserExternalFileService.sys.mjs",
   SiteSpecificBrowser: "resource:///modules/SiteSpecificBrowserService.sys.mjs",
 });
 
 if (AppConstants.platform == "win") {
   ChromeUtils.defineESModuleGetters(lazy, {
-    WindowsSupport: "resource:///modules/ssb/WindowsSupport.sys.mjs"
+    WindowsSupport: "resource:///modules/ssb/WindowsSupport.sys.mjs",
   });
 }
 
@@ -61,22 +62,22 @@ export let SiteSpecificBrowserIdUtils = {
       : ssb._iconSizes[ssb._iconSizes.length - 1].icon;
   },
 
-    async uninstallById(id) {  
-      let ssb = await lazy.SiteSpecificBrowser.load(id);
+  async uninstallById(id) {
+    let ssb = await lazy.SiteSpecificBrowser.load(id);
 
-      if (AppConstants.platform == "win") {
-        await lazy.WindowsSupport.uninstall(ssb);
-      }
-  
-      // Remve the SSB from ssb.json
-      await lazy.SiteSpecificBrowserExternalFileService.removeSsbData(ssb.id);
+    if (AppConstants.platform == "win") {
+      await lazy.WindowsSupport.uninstall(ssb);
+    }
 
-      Services.obs.notifyObservers(
-        null,
-        "site-specific-browser-uninstall",
-        ssb.id
-      );
-    },
+    // Remve the SSB from ssb.json
+    await lazy.SiteSpecificBrowserExternalFileService.removeSsbData(ssb.id);
+
+    Services.obs.notifyObservers(
+      null,
+      "site-specific-browser-uninstall",
+      ssb.id
+    );
+  },
 
   async getIdByUrl(uri) {
     const { SiteSpecificBrowserExternalFileService } = ChromeUtils.import(

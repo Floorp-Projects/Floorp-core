@@ -207,6 +207,7 @@ function setVerticalTabs() {
         );
         elem.textContent = `scrollbox[part="scrollbox"] {
           overflow-y: scroll;
+          scrollbar-width: thin;
         }`;
         elem.setAttribute("class", "floorp-vtscrollbar");
       }
