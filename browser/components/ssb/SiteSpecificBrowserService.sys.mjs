@@ -485,7 +485,6 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
 
       ssbData[this.startURI.spec] = {
         name: this.name,
-        icon: this.getIcon(128).src,
         id: this.id,
         startURI: this.startURI.spec,
         manifest: this._manifest,

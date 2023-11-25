@@ -149,12 +149,12 @@ const gSsbChromeManager = {
     },
 
     async checkCurrentPageIsInstalled() {
-      let currentTabSsb = await this.getCurrentTabSsb();
+      let currentTabSsb = await gSsbChromeManager.functions.getCurrentTabSsb();
       let ssbData =
         await SiteSpecificBrowserExternalFileService.getCurrentSsbData();
 
       for (let key in ssbData) {
-        if (key === currentTabSsb._manifest.start_url) {
+        if (key === currentTabSsb._manifest.start_url || currentTabSsb._manifest.start_url.startsWith(key)) {
           return true;
         }
       }
@@ -238,7 +238,7 @@ const gSsbChromeManager = {
       for (let key in list) {
         let id = list[key].id;
         let name = list[key].name;
-        let icon = list[key].icon;
+        let icon = list[key].manifest.icons[0].src;
 
         let elem = window.MozXULElement.parseXULToFragment(`
           <toolbarbutton id="ssb-${id}" class="subviewbutton ssb-app-info-button" label="${name}" image="${icon}"
