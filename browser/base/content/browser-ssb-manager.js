@@ -251,14 +251,14 @@ const gSsbChromeManager = {
       // Check current page ssb is installed
       let currentPageCanBeInstalled =
        await gSsbChromeManager.functions.checkCurrentPageCanBeInstalled();
-      let isInstalled =
-       await gSsbChromeManager.functions.checkCurrentPageIsInstalled();
       let installButtonOnPanelUI = document.getElementById("appmenu-install-current-page-button");
 
-      if (!currentPageCanBeInstalled) {
-        installButtonOnPanelUI.setAttribute("disabled", true);
+      if (currentPageCanBeInstalled === false) {
+        installButtonOnPanelUI.setAttribute("disabled", "true");
         document.l10n.setAttributes(installButtonOnPanelUI, "appmenuitem-install-current-page");
       } else {
+        let isInstalled =
+          await gSsbChromeManager.functions.checkCurrentPageIsInstalled();
         installButtonOnPanelUI.removeAttribute("disabled");
         if (isInstalled) {
           document.l10n.setAttributes(installButtonOnPanelUI, "appmenuitem-open-current-page");
