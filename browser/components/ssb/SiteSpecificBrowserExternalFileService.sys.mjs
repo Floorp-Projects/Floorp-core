@@ -6,7 +6,7 @@ export const EXPORTED_SYMBOLS = ["SiteSpecificBrowserExternalFileService"];
 
 export const SiteSpecificBrowserExternalFileService = {
   get _ssbStoreFile() {
-    return PathUtils.join(PathUtils.profileDir + "ssb", "ssb.json");
+    return PathUtils.join(PathUtils.profileDir, "ssb", "ssb.json");
   },
 
   async getCurrentSsbData() {
