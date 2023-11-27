@@ -80,6 +80,11 @@ const gSsbChromeManager = {
 
         if (ssbObj) {
           let id = ssbObj.id;
+          // The site's manifest may point to a different start page so explicitly
+          // open the SSB to the current page.
+          gBrowser.removeTab(gBrowser.selectedTab, {
+            closeWindowWithLastTab: false,
+          });
           await SiteSpecificBrowserIdUtils.runSsbByUrlAndId(gBrowser.currentURI.spec, id);
           gFloorpPageAction.Ssb.closePopup();
         }

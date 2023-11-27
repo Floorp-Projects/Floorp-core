@@ -470,7 +470,7 @@ toolbar #workspace-button:not([disabled="true"], [checked], [open], :active):hov
 }
 
 .workspace-item {
-  width: 80%;
+  width: 100%;
   min-height: 35px;
 }
 
