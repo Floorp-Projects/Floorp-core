@@ -1855,7 +1855,7 @@ const startWorkspace = function () {
 };
 
 const workspacesMigtation = {
-  async createBackupFileObject() {
+  async createSTGBackupFileObject() {
     // Migration from floorp to Simple Tab Groups.
     // Generate Backup file for Simple Tab Groups. This file is can be used for restore Workspaces & Tabs.
     // This file is saved in User's personal desktop directory.
@@ -2080,7 +2080,117 @@ const workspacesMigtation = {
       "floorp-workspace-backup.json"
     );
     IOUtils.writeJSON(path, backupData);
-  }
+  },
+
+  async createPanoramaViewBackupFileObject() {
+    let backupData = {
+      file: {
+        type: "panoramaView",
+        version: 2
+      },
+      windows: [
+        {
+          pinnedTabs: [],
+          tabGroups: [],
+        }
+      ]
+    };
+
+    // Get floorp's Workspaces data.
+    let allWorkspaces = [];
+    let usedWorkspacesNumber = [];
+
+    allWorkspaces = Services.prefs
+      .getStringPref(WorkspaceUtils.workspacesPreferences.WORKSPACE_ALL_PREF)
+      .split(",");
+
+    for (let i = 0; i < allWorkspaces.length; i++) {
+      let workspace = allWorkspaces[i];
+
+      let workspaceObj = {
+          title: workspace,
+          rect: {
+						x: i * 0.1,
+						y: 1 - 0.2,
+						w: 0.3,
+						h: 0.3
+					},
+          tabs: [],
+      };
+
+      let allTabs = gBrowser.tabs;
+
+      for (let j = 0; j < allTabs.length; j++) {
+        let tab = allTabs[j];
+        if (tab.getAttribute("floorpWorkspace") == workspace && !tab.pinned) {
+          let tabTitle = tab.label;
+          let tabUrl = tab.linkedBrowser.currentURI.spec;
+          let tabContainerNo = tab.getAttribute("usercontextid");
+          let tabContainerName = "";
+          if (tabContainerNo == 0 || tabContainerNo == undefined || tabContainerNo == null) {
+            tabContainerName = "firefox-default";
+          } else {
+            tabContainerName = "firefox-container-" + tabContainerNo;
+
+            // Add tabContainerName to usedWorkspacesNumber.
+            if (!usedWorkspacesNumber.includes(tabContainerNo)) {
+              usedWorkspacesNumber.push(tabContainerNo);
+            }
+          }
+
+          let tabObj = {
+            url: tabUrl,
+            title: tabTitle,
+            cookieStoreId: tabContainerName,
+          };
+
+          workspaceObj.tabs.push(tabObj);
+        }
+      }
+
+      // Add workspaceObj to backupData.
+      backupData.windows[0].tabGroups.push(workspaceObj);
+
+      // Pinned tabs
+      let tabs = gBrowser.tabs;
+      for (let j = 0; j < tabs.length; j++) {
+        let tab = tabs[j];
+        if (tab.pinned) {
+          let tabTitle = tab.label;
+          let tabUrl = tab.linkedBrowser.currentURI.spec;
+          let tabContainerNo = tab.getAttribute("usercontextid");
+          let tabContainerName = "";
+          if (tabContainerNo == 0) {
+            tabContainerName = "firefox-default";
+          } else {
+            tabContainerName = "firefox-container-" + tabContainerNo;
+
+            // Add tabContainerName to usedWorkspacesNumber.
+            if (!usedWorkspacesNumber.includes(tabContainerName)) {
+              usedWorkspacesNumber.push(tabContainerNo);
+            }
+          }
+
+          let tabObj = {
+            url: tabUrl,
+            title: tabTitle,
+            cookieStoreId: tabContainerName,
+          };
+
+          backupData.windows[0].pinnedTabs.push(tabObj);
+        }
+      }
+    }
+
+    // Write backupData to JSON file.
+    // Save backupData to JSON file. This file is can be used for restore Workspaces & Tabs.
+    // Save to Desktop.
+    let path = PathUtils.join(
+      Services.dirsvc.get("Desk", Ci.nsIFile).path,
+      "floorp-workspace-backup-panorama.json"
+    );
+    IOUtils.writeJSON(path, backupData);
+  },
 };
 
 async function getBase64DataFromPng(iconURL) {
@@ -2167,6 +2277,6 @@ function disableWorkspacesByDefaultCheck() {
 disableWorkspacesByDefaultCheck();
 
 Services.obs.addObserver(
-  workspacesMigtation.createBackupFileObject,
+  workspacesMigtation.createSTGBackupFileObject,
   "migrationFromFloorpToSTG"
 );
