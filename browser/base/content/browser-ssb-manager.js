@@ -155,6 +155,18 @@ const gSsbChromeManager = {
     },
 
     async checkCurrentPageIsInstalled() {
+      if (
+        gBrowser.currentURI.schemeIs("about") ||
+        gBrowser.currentURI.schemeIs("chrome") ||
+        gBrowser.currentURI.schemeIs("resource") ||
+        gBrowser.currentURI.schemeIs("view-source") ||
+        gBrowser.currentURI.schemeIs("moz-extension") ||
+        // Exlude "about:blank"
+        gBrowser.currentURI.spec === "about:blank"
+      ) {
+        return false;
+      }
+
       let currentTabSsb = await gSsbChromeManager.functions.getCurrentTabSsb();
       let ssbData =
         await SiteSpecificBrowserExternalFileService.getCurrentSsbData();
@@ -167,9 +179,16 @@ const gSsbChromeManager = {
       return false;
     },
 
-    enableInstallButton() {
+    enableInstallButton(openSsb) {
       let installButton = document.getElementById("ssbPageAction");
       installButton.removeAttribute("hidden");
+
+      let image = document.getElementById("ssbPageAction-image");
+      if (openSsb) {
+        image.setAttribute("open-ssb", "true");
+      } else {
+        image.removeAttribute("open-ssb");
+      }
     },
 
     disableInstallButton() {
@@ -205,7 +224,6 @@ const gSsbChromeManager = {
         "ssb-content-description"
       );
       let ssbContentIcon = document.getElementById("ssb-content-icon");
-
       let installButton = document.querySelector("#ssb-app-install-button");
 
       if (ssbContentLabel) {
@@ -219,8 +237,10 @@ const gSsbChromeManager = {
       if (installButton) {
         if (isInstalled) {
           document.l10n.setAttributes(installButton, "ssb-app-open-button");
+          installButton.setAttribute("open-ssb", "true");
         } else {
           document.l10n.setAttributes(installButton, "ssb-app-install-button");
+          installButton.removeAttribute("open-ssb");
         }
       }
 
@@ -257,19 +277,22 @@ const gSsbChromeManager = {
       // Check current page ssb is installed
       let currentPageCanBeInstalled =
        await gSsbChromeManager.functions.checkCurrentPageCanBeInstalled();
-      let installButtonOnPanelUI = document.getElementById("appmenu-install-current-page-button");
+      let installButtonOnPanelUI = document.getElementById("appmenu-install-or-open-ssb-current-page-button");
 
       if (currentPageCanBeInstalled === false) {
         installButtonOnPanelUI.setAttribute("disabled", "true");
         document.l10n.setAttributes(installButtonOnPanelUI, "appmenuitem-install-current-page");
+        installButtonOnPanelUI.removeAttribute("open-ssb");
       } else {
         let isInstalled =
           await gSsbChromeManager.functions.checkCurrentPageIsInstalled();
         installButtonOnPanelUI.removeAttribute("disabled");
         if (isInstalled) {
           document.l10n.setAttributes(installButtonOnPanelUI, "appmenuitem-open-current-page");
+          installButtonOnPanelUI.setAttribute("open-ssb", "true");
         } else {
           document.l10n.setAttributes(installButtonOnPanelUI, "appmenuitem-install-current-page");
+          installButtonOnPanelUI.removeAttribute("open-ssb");
         }
       }
     },
@@ -326,8 +349,10 @@ const gSsbChromeManager = {
         await gSsbChromeManager.functions.checkCurrentPageCanBeInstalled();
       let currentPageHasSsbManifest =
         await gSsbChromeManager.functions.checkCurrentPageHasSsbManifest();
+      let currentPageIsInstalled =
+        await gSsbChromeManager.functions.checkCurrentPageIsInstalled();
 
-      if (!currentPageCanBeInstalled || currentPageHasSsbManifest === null) {
+      if ((!currentPageCanBeInstalled || currentPageHasSsbManifest === null) && !currentPageIsInstalled) {
         gSsbChromeManager.functions.disableInstallButton();
         return;
       }
@@ -335,7 +360,7 @@ const gSsbChromeManager = {
       gSsbChromeManager.functions.setImageToInstallButton();
 
       window.setTimeout(() => {
-        gSsbChromeManager.functions.enableInstallButton();
+        gSsbChromeManager.functions.enableInstallButton(currentPageIsInstalled);
       }, 100);
     },
   },
@@ -348,7 +373,7 @@ if (Services.prefs.getBoolPref("browser.ssb.enabled")) {
   let css = `
     #ssbPageAction,
     #appMenu-ssb-button,
-    #appmenu-install-current-page-button,
+    #appmenu-install-or-open-ssb-current-page-button,
     #appMenu-ssb-button {
       display: none !important;
     }

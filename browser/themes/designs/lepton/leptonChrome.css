@@ -13659,7 +13659,7 @@
     #appMenu-ssb-button {
       list-style-image: url("chrome://browser/skin/install-ssb.svg");
     }
-    #appmenu-install-current-page-button {
+    #appmenu-install-or-open-ssb-current-page-button {
       list-style-image: url("chrome://browser/skin/install-ssb.svg");
     }
   }
