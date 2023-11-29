@@ -75,7 +75,7 @@ const gSsbChromeManager = {
         let currentTabSsb =
           await gSsbChromeManager.functions.getCurrentTabSsb();
         let ssbObj = await SiteSpecificBrowserIdUtils.getIdByUrl(
-          currentTabSsb._manifest.start_url
+          currentTabSsb._manifest.start_url,
         );
 
         if (ssbObj) {
@@ -277,7 +277,7 @@ const gSsbChromeManager = {
       // Check current page ssb is installed
       let currentPageCanBeInstalled =
        await gSsbChromeManager.functions.checkCurrentPageCanBeInstalled();
-      let installButtonOnPanelUI = document.getElementById("appmenu-install-or-open-ssb-current-page-button");
+      let installButtonOnPanelUI = document.getElementById("appMenu-install-or-open-ssb-current-page-button");
 
       if (currentPageCanBeInstalled === false) {
         installButtonOnPanelUI.setAttribute("disabled", "true");
@@ -373,7 +373,7 @@ if (Services.prefs.getBoolPref("browser.ssb.enabled")) {
   let css = `
     #ssbPageAction,
     #appMenu-ssb-button,
-    #appmenu-install-or-open-ssb-current-page-button,
+    #appMenu-install-or-open-ssb-current-page-button,
     #appMenu-ssb-button {
       display: none !important;
     }

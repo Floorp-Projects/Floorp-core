@@ -92,6 +92,14 @@ export let SiteSpecificBrowserIdUtils = {
         return ssbData[key];
       }
     }
+
+    // Search for host
+    for (let key in ssbData) {
+      if (uri.startsWith(key)) {
+        return ssbData[key];
+      }
+    }
+
     return null;
   },
 };
