@@ -772,3 +772,17 @@
   .csks-box-item-description::before {
     display: none;
   }
+
+  #workspaces-removed-title {
+    margin: 0;
+    margin-bottom: 10px;
+  }
+
+  #workspaces-removed-warning-container {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  #workspaces-removed-migration-tools-description {
+    margin-bottom: 10px;
+  }

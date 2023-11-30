@@ -292,7 +292,11 @@ const workspaceFunctions = {
                         style="list-style-image: url('chrome://browser/skin/workspace-floorp.png');">
           <menupopup id="workspace-menu" context="workspace-menu-context">
             <toolbarbutton style="list-style-image: url('chrome://global/skin/icons/plus.svg');"
-                    id="addNewWorkspaceButton"        data-l10n-id="workspace-add" class="subviewbutton subviewbutton-nav" oncommand="workspaceFunctions.manageWorkspaceFunctions.addNewWorkspace();"/>
+                    id="addNewWorkspaceButton" data-l10n-id="workspace-add" class="subviewbutton subviewbutton-nav" oncommand="workspaceFunctions.manageWorkspaceFunctions.addNewWorkspace();"/>
+
+            <description id="workspaces-migation-menuitem-text" data-l10n-id="workspaces-migation-menuitem-text">
+              <label is="text-link" id="workspaces-removed-learning-more" data-l10n-name="workspaces-removed-learning-more" href="https://blog.ablaze.one/3672/2023-11-17/" target="_blank"></label>
+            </description>
           </menupopup>
         </toolbarbutton>
       `);
@@ -1881,7 +1885,6 @@ const workspacesMigtation = {
       showExtendGroupsPopupWithActiveTabs: false,
       showTabsWithThumbnailsInManageGroups: true,
       fullPopupWidth: false,
-      temporaryContainerTitle: "⌚一時的なコンテナー",
       contextMenuTab: [
         "open-in-new-window",
         "reload",
@@ -2080,6 +2083,10 @@ const workspacesMigtation = {
       "floorp-workspace-backup.json"
     );
     IOUtils.writeJSON(path, backupData);
+
+    alert(
+      l10n.formatValueSync("workspace-STG-backup-success-message")
+    );
   },
 
   async createPanoramaViewBackupFileObject() {

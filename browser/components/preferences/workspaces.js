@@ -67,6 +67,11 @@ const gWorkspacesPane = {
     const resetButton = document.getElementById("reset-workspaces-button");
     resetButton.addEventListener("command", resetWorkspaces);
 
+    const createSTGBackupButton = document.getElementById("workspaces-removed-migrate-to-STG-button");
+    createSTGBackupButton.addEventListener("command", () => {
+      Services.obs.notifyObservers([], "migrationFromFloorpToSTG");
+    });
+
     // get workspace backups.
     const file = FileUtils.getFile("ProfD", ["floorp-workspace-backup.json"]);
 
