@@ -294,14 +294,31 @@ const workspaceFunctions = {
             <toolbarbutton style="list-style-image: url('chrome://global/skin/icons/plus.svg');"
                     id="addNewWorkspaceButton" data-l10n-id="workspace-add" class="subviewbutton subviewbutton-nav" oncommand="workspaceFunctions.manageWorkspaceFunctions.addNewWorkspace();"/>
 
+            <menuseparator/>
             <description id="workspaces-migation-menuitem-text" data-l10n-id="workspaces-migation-menuitem-text">
-              <label is="text-link" id="workspaces-removed-learning-more" data-l10n-name="workspaces-removed-learning-more" href="https://blog.ablaze.one/3672/2023-11-17/" target="_blank"></label>
+              <label is="text-link" id="workspaces-removed-learning-more" data-l10n-name="workspaces-removed-learning-more" href="" target="_blank"></label>
             </description>
           </menupopup>
         </toolbarbutton>
       `);
 
       document.querySelector(".toolbar-items").before(toolbarButtonEle);
+
+      // Add href to learning more
+      let urlTarget = document.getElementById("workspaces-removed-learning-more");
+      let currentUILanguage = Services.locale.appLocaleAsBCP47;
+      if (currentUILanguage == "ja") {
+        urlTarget.setAttribute(
+          "href",
+          "https://blog.ablaze.one/3665/2023-11-17/"
+        );
+      } else {
+        urlTarget.setAttribute(
+          "href",
+          "https://blog.ablaze.one/3672/2023-11-17/"
+        );
+      }
+
       if (
         !Services.prefs.getBoolPref(
           WorkspaceUtils.workspacesPreferences.WORKSPACE_TAB_ENABLED_PREF

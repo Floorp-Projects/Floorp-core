@@ -72,6 +72,14 @@ const gWorkspacesPane = {
       Services.obs.notifyObservers([], "migrationFromFloorpToSTG");
     });
 
+    let urlTarget = document.getElementById("workspaces-removed-learning-more");
+    let currentUILanguage = Services.locale.appLocaleAsBCP47;
+    if (currentUILanguage == "ja") {
+      urlTarget.setAttribute("href", "https://blog.ablaze.one/3665/2023-11-17/");
+    } else {
+      urlTarget.setAttribute("href", "https://blog.ablaze.one/3672/2023-11-17/");
+    }
+
     // get workspace backups.
     const file = FileUtils.getFile("ProfD", ["floorp-workspace-backup.json"]);
 
