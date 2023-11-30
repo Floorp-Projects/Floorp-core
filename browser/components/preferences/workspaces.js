@@ -25,6 +25,7 @@ Preferences.addAll([
   { id: WorkspaceUtils.workspacesPreferences.WORKSPACE_MANAGE_ON_BMS_PREF, type: "bool" },
   { id: WorkspaceUtils.workspacesPreferences.WORKSPACE_SHOW_WORKSPACE_NAME_PREF, type: "bool" },
   { id: WorkspaceUtils.workspacesPreferences.WORKSPACE_CHANGE_WORKSPACE_WITH_DEFAULT_KEY_PREF, type: "bool"},
+  { id: "floorp.extensions.STG.like.floorp.workspaces.enabled", type: "bool" },
 ])
 
 function convertToDateAndTime(timestamp) {

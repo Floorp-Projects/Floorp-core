@@ -195,6 +195,17 @@ observePreference("floorp.hide.unifiedExtensionsButtton", function (event) {
   }
 });
 
+observePreference("floorp.extensions.STG.like.floorp.workspaces.enabled", function (event) {
+  if (event.prefValue) {
+    let Tag = document.createElement("style");
+    Tag.innerText = `@import url(chrome://browser/skin/options/STG-like-floorp-workspaces.css)`;
+    Tag.id = "floorp-STG-like-floorp-workspaces";
+    document.head.appendChild(Tag);
+  } else {
+    document.getElementById("floorp-STG-like-floorp-workspaces")?.remove();
+  }
+});
+
 /*------------------------------------------- sidebar -------------------------------------------*/
 
 if (!Services.prefs.getBoolPref("floorp.browser.sidebar.enable", false)) {
