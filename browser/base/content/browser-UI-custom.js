@@ -142,15 +142,22 @@ observePreference("floorp.navbar.bottom", function (event) {
     document
       .getElementById("fullscreen-and-pointerlock-wrapper")
       .after(document.getElementById("nav-bar"));
+    // eslint-disable-next-line no-undef
+    SessionStore.promiseInitialized.then(() => {
+      document
+      .querySelector(".urlbarView")
+      .after(document.getElementById("urlbar-input-container"));
+    });
   } else {
     document.getElementById("floorp-navvarcss")?.remove();
     if (event.reason === "changed") {
       //Fix for the bug that bookmarksbar is on the navigation toolbar when the pref is cahaned to false
-
       document
         .getElementById("navigator-toolbox")
         .appendChild(document.getElementById("nav-bar"));
-
+      document
+        .querySelector(".urlbarView")
+        .before(document.getElementById("urlbar-input-container"));
       if (
         !Services.prefs.getBoolPref("floorp.bookmarks.fakestatus.mode", false)
       ) {
