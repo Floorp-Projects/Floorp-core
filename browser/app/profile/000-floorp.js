@@ -168,6 +168,9 @@ pref("floorp.user.js.customize", "");
 // Web apps support
 pref("browser.ssb.enabled", true);
 
+// Tab Stack
+pref("floorp.browser.tabStack.enabled", true);
+
 /*----------------------------------------------------------------------------------------------------------------------------------*/
 
 //ブックマークツールバー
