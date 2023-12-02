@@ -127,5 +127,5 @@ export const TabStacksGroupService = {
 }
 
 export const tabStacksPreferences = {
-  TAB_STACKS_ENABLED_PREF: "floorp.browser.tabstack.enabled",
+  TAB_STACKS_ENABLED_PREF: "floorp.browser.tabstacks.enabled",
 };

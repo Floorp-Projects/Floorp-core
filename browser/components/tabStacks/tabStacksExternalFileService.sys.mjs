@@ -51,8 +51,6 @@ export const tabStacksExternalFileService = {
         let json = await IOUtils.readJSON(this._tabStacksStoreFile);
         json.windows[windowId] = tabStacksData;
 
-        console.log(json);
-
         await IOUtils.writeJSON(this._tabStacksStoreFile, json);
     },
 }

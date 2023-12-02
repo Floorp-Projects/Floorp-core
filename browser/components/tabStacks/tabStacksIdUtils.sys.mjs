@@ -53,7 +53,10 @@ export const tabStacksIdUtils = {
         let windowTabStacksData = json.windows[windowId];
         for (let tabStackId in windowTabStacksData) {
             let tabStack = windowTabStacksData[tabStackId];
-            tabStack.tabs = [];
+            if (tabStack.tabs) {
+                let tabStack = windowTabStacksData[tabStackId];
+                tabStack.tabs = [];
+            }
         }
 
         await IOUtils.writeJSON(lazy.tabStacksExternalFileService._tabStacksStoreFile, json);
