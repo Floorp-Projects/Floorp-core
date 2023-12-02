@@ -46,6 +46,17 @@ export const tabStacksExternalFileService = {
         }
         return null;
     },
+
+    async getSelectedTabStackId(windowId) {
+        let tabStacksData = await this.getWindowTabStacksData(windowId);
+        for (let tabStackId in tabStacksData) {
+            let tabStack = tabStacksData[tabStackId];
+            if (tabStack.selected) {
+                return tabStackId;
+            }
+        }
+        return null;
+    },
     
     async saveTabStacksData(tabStacksData, windowId) {
         let json = await IOUtils.readJSON(this._tabStacksStoreFile);

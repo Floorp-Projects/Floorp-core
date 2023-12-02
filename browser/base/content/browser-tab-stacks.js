@@ -53,6 +53,10 @@ let gTabStack = {
     return document.querySelector("#TabsToolbar .toolbar-items");
   },
 
+  get tabStackButtons() {
+    return document.querySelectorAll(".tabStackButton");
+  },
+
   /* Preferences */
   get tabStackEnabled() {
     return Services.prefs.getBoolPref(
@@ -68,9 +72,10 @@ let gTabStack = {
   },
 
   async getCurrentTabStack() {
-    let tab = gBrowser.selectedTab;
     let windowId = this.getCurrentWindowId();
-    let tabStackId = await tabStacksIdUtils.getTabStackIdByTab(tab, windowId);
+    let tabStackId = await tabStacksExternalFileService.getSelectedTabStackId(
+      windowId
+    );
     if (tabStackId == null) {
       let id = await tabStacksExternalFileService.getDefaultTabStackId(
         windowId
@@ -99,6 +104,12 @@ let gTabStack = {
     let tabStacksData =
       await tabStacksExternalFileService.getWindowTabStacksData(windowId);
     return tabStacksData;
+  },
+
+  async getAllTabStacksBlockElements () {
+    let windowId = this.getCurrentWindowId();
+    let result = await TabStacksToolbarService.getAllTabStacksBlockElements(windowId);
+    return result;
   },
 
   /* tab stacks saver */
@@ -142,6 +153,11 @@ let gTabStack = {
   async createTabStack(name, defaultTabStack) {
     let windowId = this.getCurrentWindowId();
     await tabStacksService.createTabStack(name, windowId, defaultTabStack);
+    this.functions.rebuildTabStacksToolbar();
+  },
+
+  async createNoNameTabStack() {
+    await this.createTabStack("New Tab Stack", false);
   },
 
   async addTabToTabStack(tabStackId, tab) {
@@ -175,17 +191,14 @@ let gTabStack = {
     if (this._initialized) {
       return;
     }
-
-    console.log("init tab stacks");
     
     let currentTabStack = await gTabStack.getCurrentTabStack();
     if (!currentTabStack) {
-      console.log("create default tab stack");
       await gTabStack.createTabStack("Default", true);
 
       // Set default tab stack
       let tabStackId = await gTabStack.getCurrentTabStackId();
-      await gTabStack.setDefaultTabStack(tabStackId);
+      await gTabStack.setSelectTabStack(tabStackId);
     }
 
     async function checkURLChange() {
@@ -194,6 +207,19 @@ let gTabStack = {
 
     // Use internal APIs to detect when the current tab changes.
     setInterval(checkURLChange, 1000);
+
+    let events = [
+      "TabSelect",
+      "TabPinned",
+      "TabUnpinned",
+    ];
+
+    for (let event of events) {
+      gBrowser.tabContainer.addEventListener(
+        event,
+        gTabStack.functions.rebuildTabStacksToolbar
+      );
+    }
 
     // init tab stacks toolbar
     let toolbarElement = window.MozXULElement.parseXULToFragment(
@@ -223,6 +249,8 @@ let gTabStack = {
       }
     }
 
+    // build tab stacks toolbar
+    await gTabStack.functions.rebuildTabStacksToolbar();
     this._initialized = true;
   },
 
@@ -277,6 +305,24 @@ let gTabStack = {
       }
       // Save tab stacks data
       await gTabStack.saveTabStacksData(tabStacksData);
+    },
+
+    async rebuildTabStacksToolbar() {
+      // Remove all tab stacks toolbar
+      while (gTabStack.tabStackButtons.length) {
+        gTabStack.tabStacksToolbarContent.firstChild.remove();
+      }
+
+      // Add all tab stacks toolbar
+      let tabStackBlockElements = await gTabStack.getAllTabStacksBlockElements();
+      for (let tabStackBlockElement of tabStackBlockElements) {
+        let tabStackBlockElementFragment = window.MozXULElement.parseXULToFragment(
+          tabStackBlockElement
+        );
+        gTabStack.tabStacksToolbarContent.appendChild(
+          tabStackBlockElementFragment
+        );
+      }
     },
   },
 };

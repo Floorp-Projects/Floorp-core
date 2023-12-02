@@ -6,11 +6,24 @@
 
 export const EXPORTED_SYMBOLS = ["TabStacksToolbarService"];
 
+let { tabStacksExternalFileService } = ChromeUtils.importESModule(
+  "resource:///modules/tabStacksExternalFileService.sys.mjs"
+);
+
+let { tabStacksService } = ChromeUtils.importESModule(
+  "resource:///modules/tabStacksService.sys.mjs"
+);
+
 export const TabStacksToolbarService = {
     toolbarElement:
       `<toolbar id="tabStacksToolbar" toolbarname="tab stacks toolbar" customizable="true" style="border-top: 1px solid var(--chrome-content-separator-color)"
                class="browser-toolbar customization-target" mode="icons" context="toolbar-context-menu" accesskey="A">
                   <hbox id="tabStacksToolbarContent" align="center" flex="1" class="statusbar-padding"/>
+
+                  <toolbarbutton id="tabStacksCreateNewTabStackButton" class="toolbarbutton-1 chromeclass-toolbar-additional" label="Create new tab stack" tooltiptext="Create new tab stack"
+                                 oncommand="tabStacksService.createNewTabStack();" />
+                  <toolbarbutton id="tabStacksManageTabStacksButton" class="toolbarbutton-1 chromeclass-toolbar-additional" label="Manage tab stacks" tooltiptext="Manage tab stacks"
+                                 oncommand="tabStacksService.openTabStacksManager();" />
       </toolbar>`,
 
     injectionCSS: `
@@ -26,15 +39,53 @@ export const TabStacksToolbarService = {
         }
         #tabStacksToolbarContent {
           background: inherit !important;
+          height: var(--tab-min-height) !important;
+          max-width: fit-content !important;
         }
         #tabStacksToolbar {
           background: inherit !important;
         }
+        .tabStackButton label,
+        .tabStackButton image {
+          display: inherit !important;
+          background-color: unset !important;
+          color: var(--tab-text-color) !important;
+        }
+        .tabStackButton[selected="true"] {
+          background-color: var(--tab-selected-bgcolor, var(--toolbar-bgcolor));
+          box-shadow: 0 0 4px rgba(0,0,0,.4);
+        }
+        .tabStackButton {
+          list-style-image: url("chrome://branding/content/icon32.png");
+          border-radius: var(--tab-border-radius);
+          margin-right: 5px !important;
+        }
+        #tabStacksCreateNewTabStackButton {
+          list-style-image: url(chrome://global/skin/icons/plus.svg);
+        }
+        #tabStacksManageTabStacksButton {
+          list-style-image: url("chrome://browser/skin/settings.svg");
+        }
      `,
      
-     tabStackBlockElement(tabStackId, tabStackName) {
-        return `<toolbarbutton id="tabStack-${tabStackId}" class="toolbarbutton-1 chromeclass-toolbar-additional" label="${tabStackName}" tooltiptext="${tabStackName}" oncommand="gTabStack.switchTabStack('${tabStackId}')">
-                    <image class="toolbarbutton-icon" src="chrome://browser/skin/tabStack.svg" />
-                </toolbarbutton>`;
+     tabStackBlockElement(tabStackId, tabStackName, selected) {
+        return `<toolbarbutton id="tabStack-${tabStackId}" context="tabStacksToolbarItemContextMenu"
+                               class="toolbarbutton-1 chromeclass-toolbar-additional tabStackButton"
+                               label="${tabStackName}" tooltiptext="TabStack ${tabStackName}"
+                               ${selected ? "selected=\"true\"" : ""}
+                               oncommand="tabStacksService.switchToTabStack('${tabStackId}');" />
+               `
+     },
+
+     async getAllTabStacksBlockElements(windowId) {
+        let tabStacksData = await tabStacksExternalFileService.getWindowTabStacksData(windowId);
+        delete tabStacksData.defaultTabStack;
+
+        let tabStackBlockElements = [];
+        for (let tabStackId in tabStacksData) {
+            let tabStack = tabStacksData[tabStackId];
+            tabStackBlockElements.push(this.tabStackBlockElement(tabStackId, tabStack.name, tabStack.selected));
+        }
+        return tabStackBlockElements;
      }
 }
