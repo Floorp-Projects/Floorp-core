@@ -324,6 +324,12 @@ let gTabStack = {
         );
       }
     },
+
+    changeTabStack(tabStackId) {
+      // Change tab stack
+      gTabStack.setSelectTabStack(tabStackId);
+      gTabStack.functions.rebuildTabStacksToolbar();
+    },
   },
 };
 

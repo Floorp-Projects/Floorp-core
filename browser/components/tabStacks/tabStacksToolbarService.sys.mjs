@@ -4,15 +4,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import { tabStacksExternalFileService } from "resource:///modules/tabStacksExternalFileService.sys.mjs";
+
 export const EXPORTED_SYMBOLS = ["TabStacksToolbarService"];
-
-let { tabStacksExternalFileService } = ChromeUtils.importESModule(
-  "resource:///modules/tabStacksExternalFileService.sys.mjs"
-);
-
-let { tabStacksService } = ChromeUtils.importESModule(
-  "resource:///modules/tabStacksService.sys.mjs"
-);
 
 export const TabStacksToolbarService = {
     toolbarElement:
@@ -73,7 +67,7 @@ export const TabStacksToolbarService = {
                                class="toolbarbutton-1 chromeclass-toolbar-additional tabStackButton"
                                label="${tabStackName}" tooltiptext="TabStack ${tabStackName}"
                                ${selected ? "selected=\"true\"" : ""}
-                               oncommand="tabStacksService.switchToTabStack('${tabStackId}');" />
+                               oncommand="gTabStack.functions.changeTabStack('${tabStackId}');" />
                `
      },
 

@@ -89,7 +89,9 @@ export const tabStacksService = {
       await lazy.tabStacksExternalFileService.getWindowTabStacksData(
         windowId
       );
-    tabStacksData.defaultTabStack = tabStackId;
+    tabStacksData.preferences = {
+      defaultTabStack: tabStackId,
+    }
     await lazy.tabStacksExternalFileService.saveTabStacksData(
       tabStacksData,
       windowId
@@ -101,7 +103,11 @@ export const tabStacksService = {
       await lazy.tabStacksExternalFileService.getWindowTabStacksData(
         windowId
       );
-    tabStacksData.selected = tabStackId;
+    tabStacksData.preferences = {
+      selectedTabStack: tabStackId,
+    }
+
+    console.log(tabStacksData);
     await lazy.tabStacksExternalFileService.saveTabStacksData(
       tabStacksData,
       windowId
