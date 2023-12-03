@@ -4,15 +4,15 @@
     "description": "拡張機能の名前です。"
   },
   "browserActionTitle": {
-    "message": "Check for Updates",
+    "message": "Checking for Updates",
     "description": "browserActionのタイトル"
   },
   "start": {
-    "message": "Download Start",
+    "message": "Starting Download",
     "description": "ダウンロード開始"
   },
   "finish": {
-    "message": "Download Finish !",
+    "message": "Download Finished!",
     "description": "ダウンロード完了"
   },
   "notificationTitle": {
@@ -21,7 +21,7 @@
   },
   "notificationContent": {
     "message": "The latest version of Floorp has been released!\nClick to download the installer.\nCurrent Version:$OLD$\nLatest Version:$NEW$",
-    "description": "Tells the user which link they clicked.",
+    "description": "Indicates the link clicked by the user.",
     "placeholders": {
       "old" : {
         "content" : "$1",
@@ -34,7 +34,7 @@
     }
   },
   "notificationContent-last": {
-    "message": "The Floorp you are using is the latest version.\n No update is required.\nThank you for using Floorp browser.",
+    "message": "You are using the latest version of Floorp.\n No update is required.\nThank you for using Floorp browser.",
     "description": "リンクをクリックした時通知を表示",
     "placeholders": {
       "old" : {
