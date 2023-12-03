@@ -12,6 +12,7 @@ browser.jar:
   content/browser/browser-downloadbar.js        (content/browser-downloadbar.js)
   content/browser/browser-favicon-color.js      (content/browser-favicon-color.js)
   content/browser/browser-tabbar.js             (content/browser-tabbar.js)
+  content/browser/browser-tab-stacks.js         (content/browser-tab-stacks.js)
   content/browser/browser-browserActions.js     (content/browser-browserActions.js)
   content/browser/browser-pageActions-floorp.js        (content/browser-pageActions.js)
   content/browser/browser-pinned-tabs-title.js  (content/browser-pinned-tabs-title.js)
@@ -22,8 +23,6 @@ browser.jar:
   content/browser/browser-verticaltabs.css      (content/browser-verticaltabs.css)
   content/browser/browser-verticaltabs.js       (content/browser-verticaltabs.js)
   content/browser/qr-code-styling/qr-code-styling.js  (library/qr-code-styling/qr-code-styling@1.5.0.js)
-
-## Lightning build & Floorp build
   content/browser/browser-manager-sidebar.js    (content/browser-manager-sidebar.js)
   content/browser/browser-floorp.css            (content/browser-floorp.css)
   content/browser/browser-command.js            (content/browser-command.js)

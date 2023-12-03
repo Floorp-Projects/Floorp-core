@@ -96,7 +96,7 @@ let gFloorpPageAction = {
        <toolbarseparator/>
        <hbox id="ssb-content-hbox">
         <vbox id="ssb-content-icon-vbox">
-         <html:img id="ssb-content-icon" width="64" height="64"/>
+         <html:img id="ssb-content-icon" width="48" height="48"/>
         </vbox>
         <vbox id="ssb-content-label-vbox">
          <html:h2>
@@ -106,8 +106,11 @@ let gFloorpPageAction = {
         </vbox>
        </hbox>
        <hbox id="ssb-button-hbox">
-        <button id="ssb-app-install-button" class="panel-button" oncommand="gFloorpPageAction.Ssb.onCommand()"/>
-        <button id="ssb-app-cancel-button" class="panel-button" data-l10n-id="ssb-app-cancel-button" oncommand="gFloorpPageAction.Ssb.closePopup()"/>
+        <vbox id="ssb-installing-vbox">
+          <html:img id="ssb-installing-icon" hidden="true" src="file:///C:/Users/surapunoyousei/Downloads/load-33_128.gif" width="48" height="48"/>
+        </vbox>
+        <button id="ssb-app-install-button" class="panel-button ssb-install-buttons" oncommand="gFloorpPageAction.Ssb.onCommand()"/>
+        <button id="ssb-app-cancel-button" class="panel-button ssb-install-buttons" data-l10n-id="ssb-app-cancel-button" oncommand="gFloorpPageAction.Ssb.closePopup()"/>
         </hbox>
       </vbox>
      </panel>
@@ -116,10 +119,29 @@ let gFloorpPageAction = {
 
     async onCommand() {
       gSsbChromeManager.functions.installOrRunCurrentPageAsSsb(true);
+      
+      // Show installing gif
+      let installingGif = document.getElementById("ssb-installing-icon");
+      installingGif?.removeAttribute("hidden");
+
+      // Hide install button
+      let installButtons = document.getElementsByClassName("ssb-install-buttons");
+      for (let installButton of installButtons) {
+        installButton?.setAttribute("hidden", true);
+      }
     },
 
     closePopup() {
       document.getElementById("ssb-panel").hidePopup();
+      // Show installing gif
+      let installingGif = document.getElementById("ssb-installing-icon");
+      installingGif?.setAttribute("hidden", true);
+
+      // Hide install button
+      let installButtons = document.getElementsByClassName("ssb-install-buttons");
+      for (let installButton of installButtons) {
+        installButton?.removeAttribute("hidden");
+      }
     },
   },
 };

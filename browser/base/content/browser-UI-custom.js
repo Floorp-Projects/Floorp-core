@@ -142,15 +142,22 @@ observePreference("floorp.navbar.bottom", function (event) {
     document
       .getElementById("fullscreen-and-pointerlock-wrapper")
       .after(document.getElementById("nav-bar"));
+    // eslint-disable-next-line no-undef
+    SessionStore.promiseInitialized.then(() => {
+      document
+      .querySelector(".urlbarView")
+      .after(document.getElementById("urlbar-input-container"));
+    });
   } else {
     document.getElementById("floorp-navvarcss")?.remove();
     if (event.reason === "changed") {
       //Fix for the bug that bookmarksbar is on the navigation toolbar when the pref is cahaned to false
-
       document
         .getElementById("navigator-toolbox")
         .appendChild(document.getElementById("nav-bar"));
-
+      document
+        .querySelector(".urlbarView")
+        .before(document.getElementById("urlbar-input-container"));
       if (
         !Services.prefs.getBoolPref("floorp.bookmarks.fakestatus.mode", false)
       ) {
@@ -192,6 +199,17 @@ observePreference("floorp.hide.unifiedExtensionsButtton", function (event) {
     document.head.appendChild(Tag);
   } else {
     document.getElementById("floorp-hide-unified-extensions-button")?.remove();
+  }
+});
+
+observePreference("floorp.extensions.STG.like.floorp.workspaces.enabled", function (event) {
+  if (event.prefValue) {
+    let Tag = document.createElement("style");
+    Tag.innerText = `@import url(chrome://browser/skin/options/STG-like-floorp-workspaces.css)`;
+    Tag.id = "floorp-STG-like-floorp-workspaces";
+    document.head.appendChild(Tag);
+  } else {
+    document.getElementById("floorp-STG-like-floorp-workspaces")?.remove();
   }
 });
 
@@ -253,6 +271,7 @@ observePreference("floorp.verticaltab.show.scrollbar", function (event) {
     );
     elem.textContent = `scrollbox[part="scrollbox"] {
       overflow-y: scroll;
+      scrollbar-width: thin;
     }`;
     elem.setAttribute("class", "floorp-vtscrollbar");
   } else {

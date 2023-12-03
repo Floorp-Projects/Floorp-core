@@ -197,18 +197,22 @@ function setVerticalTabs() {
       }
 
       let scroolbarPref = "floorp.verticaltab.show.scrollbar";
-      if (
-        Services.prefs.getBoolPref(scroolbarPref)
-      ) {
-        let arrowscrollbox = document.getElementById("tabbrowser-arrowscrollbox");
+      let arrowscrollbox = document.getElementById(
+        "tabbrowser-arrowscrollbox"
+      );
+      if (Services.prefs.getBoolPref(scroolbarPref)) {
         let elem = arrowscrollbox.shadowRoot.createElementAndAppendChildAt(
           arrowscrollbox.shadowRoot.querySelector(".scrollbox-clip"),
           "style"
         );
         elem.textContent = `scrollbox[part="scrollbox"] {
           overflow-y: scroll;
+          scrollbar-width: thin;
         }`;
         elem.setAttribute("class", "floorp-vtscrollbar");
+        arrowscrollbox.shadowRoot.querySelector(
+          ".scrollbox-clip[part='scrollbox-clip']"
+        ).style.overflowY = "scroll";
       }
     }, 1000);
   } else {
@@ -238,6 +242,17 @@ function setVerticalTabs() {
 
     // Pref
     Services.prefs.setBoolPref("floorp.browser.tabs.verticaltab", false);
+    let arrowscrollbox = document.getElementById(
+      "tabbrowser-arrowscrollbox"
+    );
+    arrowscrollbox.shadowRoot.querySelectorAll(".floorp-vtscrollbar").forEach(
+      function (elem) {
+        elem.remove();
+      }
+    );
+    arrowscrollbox.shadowRoot.querySelector(
+      ".scrollbox-clip[part='scrollbox-clip']"
+    ).style.overflowY = ""
   }
 }
 

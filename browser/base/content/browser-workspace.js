@@ -4,7 +4,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const l10n = new Localization(["browser/floorp.ftl", "branding/brand.ftl"], true);
+const l10n = new Localization(
+  ["browser/floorp.ftl", "branding/brand.ftl"],
+  true
+);
 
 const WorkspaceUtils = ChromeUtils.importESModule(
   "resource:///modules/WorkspaceUtils.sys.mjs"
@@ -289,12 +292,33 @@ const workspaceFunctions = {
                         style="list-style-image: url('chrome://browser/skin/workspace-floorp.png');">
           <menupopup id="workspace-menu" context="workspace-menu-context">
             <toolbarbutton style="list-style-image: url('chrome://global/skin/icons/plus.svg');"
-                    id="addNewWorkspaceButton"        data-l10n-id="workspace-add" class="subviewbutton subviewbutton-nav" oncommand="workspaceFunctions.manageWorkspaceFunctions.addNewWorkspace();"/>
+                    id="addNewWorkspaceButton" data-l10n-id="workspace-add" class="subviewbutton subviewbutton-nav" oncommand="workspaceFunctions.manageWorkspaceFunctions.addNewWorkspace();"/>
+
+            <menuseparator/>
+            <description id="workspaces-migation-menuitem-text" data-l10n-id="workspaces-migation-menuitem-text">
+              <label is="text-link" id="workspaces-removed-learning-more" data-l10n-name="workspaces-removed-learning-more" href="" target="_blank"></label>
+            </description>
           </menupopup>
         </toolbarbutton>
       `);
 
       document.querySelector(".toolbar-items").before(toolbarButtonEle);
+
+      // Add href to learning more
+      let urlTarget = document.getElementById("workspaces-removed-learning-more");
+      let currentUILanguage = Services.locale.appLocaleAsBCP47;
+      if (currentUILanguage == "ja") {
+        urlTarget.setAttribute(
+          "href",
+          "https://blog.ablaze.one/3665/2023-11-17/"
+        );
+      } else {
+        urlTarget.setAttribute(
+          "href",
+          "https://blog.ablaze.one/3672/2023-11-17/"
+        );
+      }
+
       if (
         !Services.prefs.getBoolPref(
           WorkspaceUtils.workspacesPreferences.WORKSPACE_TAB_ENABLED_PREF
@@ -307,13 +331,17 @@ const workspaceFunctions = {
       let workspaceAll = Services.prefs
         .getStringPref(WorkspaceUtils.workspacesPreferences.WORKSPACE_ALL_PREF)
         .split(",");
-        
+
       for (let i = 0; i < workspaceAll.length; i++) {
         let label = workspaceAll[i];
         workspaceFunctions.WorkspaceContextMenu.addWorkspaceElemToMenu(label);
-        
+
         // Check if workspace tabs are exist
-        if (!workspaceFunctions.manageWorkspaceFunctions.checkWorkspaceTabsAreExist(workspaceAll[i])) {
+        if (
+          !workspaceFunctions.manageWorkspaceFunctions.checkWorkspaceTabsAreExist(
+            workspaceAll[i]
+          )
+        ) {
           workspaceFunctions.manageWorkspaceFunctions.deleteworkspace(
             workspaceAll[i]
           );
@@ -1012,7 +1040,10 @@ const workspaceFunctions = {
         return null;
       }
       let iconURL = settings[targetWorkspaceNumber][workspaceName].icon;
-      let removeSVG = iconURL.replace("chrome://browser/skin/workspace-icons/", "");
+      let removeSVG = iconURL.replace(
+        "chrome://browser/skin/workspace-icons/",
+        ""
+      );
       let result = removeSVG.replace(".svg", "");
       return result;
     },
@@ -1038,12 +1069,10 @@ const workspaceFunctions = {
     },
 
     setWorkspaceFromPrompt(label) {
-      let iconName = workspaceFunctions.iconFunctions.getIconNameByWorkspaceName(
-        label
-      );
-      let containerNumber = workspaceFunctions.containerFunctions.getWorkspaceUserContextId(
-        label
-      );
+      let iconName =
+        workspaceFunctions.iconFunctions.getIconNameByWorkspaceName(label);
+      let containerNumber =
+        workspaceFunctions.containerFunctions.getWorkspaceUserContextId(label);
 
       let parentWindow = Services.wm.getMostRecentWindow("navigator:browser");
       let object = { workspaceName: label, iconName, containerNumber };
@@ -1266,8 +1295,10 @@ const workspaceFunctions = {
       </vbox>
     `);
 
-      let iconElem =  window.MozXULElement.parseXULToFragment(`<toolbarbutton workspace="${labelDisplay}" iconName="${label}" class="workspace-item-icon toolbarbutton-1" oncommand="workspaceFunctions.manageWorkspaceFunctions.changeWorkspace('${label}')" style="list-style-image: url(${workspaceFunctions.iconFunctions.getWorkspaceIcon(
-                        label)}
+      let iconElem = window.MozXULElement
+        .parseXULToFragment(`<toolbarbutton workspace="${labelDisplay}" iconName="${label}" class="workspace-item-icon toolbarbutton-1" oncommand="workspaceFunctions.manageWorkspaceFunctions.changeWorkspace('${label}')" style="list-style-image: url(${workspaceFunctions.iconFunctions.getWorkspaceIcon(
+        label
+      )}
                       )"/>`);
 
       if (nextElem) {
@@ -1278,9 +1309,7 @@ const workspaceFunctions = {
           .before(workspaceItemElem);
       }
 
-      document
-        .getElementById(`${label}-button`)
-        .appendChild(iconElem);
+      document.getElementById(`${label}-button`).appendChild(iconElem);
       if (
         Services.prefs
           .getStringPref(
@@ -1346,8 +1375,7 @@ const workspaceFunctions = {
       `;
 
       let manageOnBMSIsEnabled = Services.prefs.getBoolPref(
-        WorkspaceUtils.workspacesPreferences
-          .WORKSPACE_MANAGE_ON_BMS_PREF
+        WorkspaceUtils.workspacesPreferences.WORKSPACE_MANAGE_ON_BMS_PREF
       );
 
       if (manageOnBMSIsEnabled) {
@@ -1847,6 +1875,402 @@ const startWorkspace = function () {
   });
 };
 
+const workspacesMigtation = {
+  async createSTGBackupFileObject() {
+    // Migration from floorp to Simple Tab Groups.
+    // Generate Backup file for Simple Tab Groups. This file is can be used for restore Workspaces & Tabs.
+    // This file is saved in User's personal desktop directory.
+
+    // Create backup JSON file.
+    let backupData = {
+      version: "5.2",
+      groups: [],
+      lastCreatedGroupPosition: 3,
+      defaultGroupProps: {},
+      closePopupAfterChangeGroup: true,
+      closePopupAfterSelectTab: false,
+      openGroupAfterChange: false,
+      alwaysAskNewGroupName: true,
+      createNewGroupWhenOpenNewWindow: false,
+      openManageGroupsInTab: true,
+      showConfirmDialogBeforeGroupArchiving: true,
+      showConfirmDialogBeforeGroupDelete: true,
+      showNotificationAfterGroupDelete: true,
+      showContextMenuOnTabs: true,
+      showContextMenuOnLinks: true,
+      defaultBookmarksParent: "toolbar_____",
+      showExtendGroupsPopupWithActiveTabs: false,
+      showTabsWithThumbnailsInManageGroups: true,
+      fullPopupWidth: false,
+      contextMenuTab: [
+        "open-in-new-window",
+        "reload",
+        "discard",
+        "remove",
+        "update-thumbnail",
+        "set-group-icon",
+        "move-tab-to-group",
+      ],
+      contextMenuGroup: [
+        "open-in-new-window",
+        "sort-asc",
+        "sort-desc",
+        "discard",
+        "discard-other",
+        "export-to-bookmarks",
+        "unload",
+        "archive",
+        "rename",
+        "reload-all-tabs",
+      ],
+      autoBackupEnable: true,
+      autoBackupLastBackupTimeStamp: 1701171548,
+      autoBackupIntervalKey: "hours",
+      autoBackupIntervalValue: 3,
+      autoBackupIncludeTabThumbnails: false,
+      autoBackupIncludeTabFavIcons: false,
+      autoBackupFolderName: "STG-backups-FF-115.6.0",
+      autoBackupByDayIndex: true,
+      theme: "auto",
+      hotkeys: [],
+      pinnedTabs: [],
+      containers: {},
+    };
+
+    // Get floorp's Workspaces data.
+    let allWorkspaces = [];
+    let usedWorkspacesNumber = [];
+
+    allWorkspaces = Services.prefs
+      .getStringPref(WorkspaceUtils.workspacesPreferences.WORKSPACE_ALL_PREF)
+      .split(",");
+
+    for (let i = 0; i < allWorkspaces.length; i++) {
+      let workspace = allWorkspaces[i];
+
+      let workspaceIcon =
+        workspaceFunctions.iconFunctions.getWorkspaceIcon(workspace);
+      let workspacesContainerNo =
+        workspaceFunctions.containerFunctions.getWorkspaceUserContextId(
+          workspace
+        );
+      let workspacesContainerName = "";
+
+      if (workspacesContainerNo == 0) {
+        workspacesContainerName = "firefox-default";
+      } else {
+        workspacesContainerName = "firefox-container-" + workspacesContainerNo;
+
+        // Add tabContainerName to usedWorkspacesNumber.
+        if (!usedWorkspacesNumber.includes(workspacesContainerNo)) {
+          usedWorkspacesNumber.push(workspacesContainerNo);
+        }
+      }
+
+      let workspaceObj = {
+        id: i + 1,
+        title: workspace,
+        iconColor: "hsla(70, 100%, 50%, 1)",
+        iconUrl: await getBase64DataFromPng(workspaceIcon),
+        iconViewType: null,
+        tabs: [],
+        isArchive: false,
+        discardTabsAfterHide: false,
+        discardExcludeAudioTabs: false,
+        prependTitleToWindow: false,
+        exportToBookmarksWhenAutoBackup: false,
+        leaveBookmarksOfClosedTabs: false,
+        newTabContainer: workspacesContainerName,
+        ifDifferentContainerReOpen: false,
+        excludeContainersForReOpen: [],
+        isSticky: false,
+        catchTabContainers: [],
+        catchTabRules: "",
+        moveToGroupIfNoneCatchTabRules: null,
+        muteTabsWhenGroupCloseAndRestoreWhenOpen: false,
+        showTabAfterMovingItIntoThisGroup: false,
+        showOnlyActiveTabAfterMovingItIntoThisGroup: false,
+        showNotificationAfterMovingTabIntoThisGroup: true,
+        bookmarkId: null,
+      };
+
+      let allTabs = gBrowser.tabs;
+
+      for (let i = 0; i < allTabs.length; i++) {
+        let tab = allTabs[i];
+        if (tab.getAttribute("floorpWorkspace") == workspace && !tab.pinned) {
+          let tabTitle = tab.label;
+          let tabUrl = tab.linkedBrowser.currentURI.spec;
+          let tabContainerNo = tab.getAttribute("usercontextid");
+          let tabContainerName = "";
+          if (tabContainerNo == 0 || tabContainerNo == undefined || tabContainerNo == null) {
+            tabContainerName = "firefox-default";
+          } else {
+            tabContainerName = "firefox-container-" + tabContainerNo;
+
+            // Add tabContainerName to usedWorkspacesNumber.
+            if (!usedWorkspacesNumber.includes(tabContainerNo)) {
+              usedWorkspacesNumber.push(tabContainerNo);
+            }
+          }
+
+          let tabObj = {
+            url: tabUrl,
+            title: tabTitle,
+            cookieStoreId: tabContainerName,
+            id: i,
+          };
+
+          if (tabObj.cookieStoreId == "firefox-default") {
+            delete tabObj.cookieStoreId;
+          }
+
+          workspaceObj.tabs.push(tabObj);
+        }
+      }
+
+      // Add workspaceObj to backupData.
+      backupData.groups.push(workspaceObj);
+    }
+
+    // Pinned tabs
+    let tabs = gBrowser.tabs;
+    for (let i = 0; i < tabs.length; i++) {
+      let tab = tabs[i];
+      if (tab.pinned) {
+        let tabTitle = tab.label;
+        let tabUrl = tab.linkedBrowser.currentURI.spec;
+        let tabContainerNo = tab.getAttribute("usercontextid");
+        let tabContainerName = "";
+        if (tabContainerNo == 0) {
+          tabContainerName = "firefox-default";
+        } else {
+          tabContainerName = "firefox-container-" + tabContainerNo;
+
+          // Add tabContainerName to usedWorkspacesNumber.
+          if (!usedWorkspacesNumber.includes(tabContainerName)) {
+            usedWorkspacesNumber.push(tabContainerNo);
+          }
+        }
+
+        let tabObj = {
+          url: tabUrl,
+          title: tabTitle,
+          cookieStoreId: tabContainerName,
+          id: i,
+        };
+
+        backupData.pinnedTabs.push(tabObj);
+      }
+    }
+
+    // Containers Object
+    let { ContextualIdentityService } = ChromeUtils.importESModule(
+      "resource://gre/modules/ContextualIdentityService.sys.mjs"
+    );
+
+    let containers = ContextualIdentityService.getPublicIdentities();
+
+    for (let i = 0; i < usedWorkspacesNumber.length; i++) {
+      let containerNo = usedWorkspacesNumber[i];
+      let containerName = "firefox-container-" + containerNo;
+      
+      for (let j = 0; j < containers.length; j++) {
+        let container = containers[j];
+        if (containerNo == container.userContextId) {
+          let containerObj = {
+            name: containerName,
+            color: container.color,
+            icon: container.icon,
+            iconUrl: "resource://usercontext-content/" + container.icon + ".svg",
+            colorCode: container.color,
+            cookieStoreId: containerName,
+          };
+
+          backupData.containers[containerName] = containerObj;
+        }
+      }
+    }
+
+    // Write backupData to JSON file.
+    // Save backupData to JSON file. This file is can be used for restore Workspaces & Tabs.
+    // Save to Desktop.
+    let path = PathUtils.join(
+      Services.dirsvc.get("Desk", Ci.nsIFile).path,
+      "floorp-workspace-backup.json"
+    );
+    IOUtils.writeJSON(path, backupData);
+
+    alert(
+      l10n.formatValueSync("workspace-STG-backup-success-message")
+    );
+  },
+
+  async createPanoramaViewBackupFileObject() {
+    let backupData = {
+      file: {
+        type: "panoramaView",
+        version: 2
+      },
+      windows: [
+        {
+          pinnedTabs: [],
+          tabGroups: [],
+        }
+      ]
+    };
+
+    // Get floorp's Workspaces data.
+    let allWorkspaces = [];
+    let usedWorkspacesNumber = [];
+
+    allWorkspaces = Services.prefs
+      .getStringPref(WorkspaceUtils.workspacesPreferences.WORKSPACE_ALL_PREF)
+      .split(",");
+
+    for (let i = 0; i < allWorkspaces.length; i++) {
+      let workspace = allWorkspaces[i];
+
+      let workspaceObj = {
+          title: workspace,
+          rect: {
+						x: i * 0.1,
+						y: 1 - 0.2,
+						w: 0.3,
+						h: 0.3
+					},
+          tabs: [],
+      };
+
+      let allTabs = gBrowser.tabs;
+
+      for (let j = 0; j < allTabs.length; j++) {
+        let tab = allTabs[j];
+        if (tab.getAttribute("floorpWorkspace") == workspace && !tab.pinned) {
+          let tabTitle = tab.label;
+          let tabUrl = tab.linkedBrowser.currentURI.spec;
+          let tabContainerNo = tab.getAttribute("usercontextid");
+          let tabContainerName = "";
+          if (tabContainerNo == 0 || tabContainerNo == undefined || tabContainerNo == null) {
+            tabContainerName = "firefox-default";
+          } else {
+            tabContainerName = "firefox-container-" + tabContainerNo;
+
+            // Add tabContainerName to usedWorkspacesNumber.
+            if (!usedWorkspacesNumber.includes(tabContainerNo)) {
+              usedWorkspacesNumber.push(tabContainerNo);
+            }
+          }
+
+          let tabObj = {
+            url: tabUrl,
+            title: tabTitle,
+            cookieStoreId: tabContainerName,
+          };
+
+          workspaceObj.tabs.push(tabObj);
+        }
+      }
+
+      // Add workspaceObj to backupData.
+      backupData.windows[0].tabGroups.push(workspaceObj);
+
+      // Pinned tabs
+      let tabs = gBrowser.tabs;
+      for (let j = 0; j < tabs.length; j++) {
+        let tab = tabs[j];
+        if (tab.pinned) {
+          let tabTitle = tab.label;
+          let tabUrl = tab.linkedBrowser.currentURI.spec;
+          let tabContainerNo = tab.getAttribute("usercontextid");
+          let tabContainerName = "";
+          if (tabContainerNo == 0) {
+            tabContainerName = "firefox-default";
+          } else {
+            tabContainerName = "firefox-container-" + tabContainerNo;
+
+            // Add tabContainerName to usedWorkspacesNumber.
+            if (!usedWorkspacesNumber.includes(tabContainerName)) {
+              usedWorkspacesNumber.push(tabContainerNo);
+            }
+          }
+
+          let tabObj = {
+            url: tabUrl,
+            title: tabTitle,
+            cookieStoreId: tabContainerName,
+          };
+
+          backupData.windows[0].pinnedTabs.push(tabObj);
+        }
+      }
+    }
+
+    // Write backupData to JSON file.
+    // Save backupData to JSON file. This file is can be used for restore Workspaces & Tabs.
+    // Save to Desktop.
+    let path = PathUtils.join(
+      Services.dirsvc.get("Desk", Ci.nsIFile).path,
+      "floorp-workspace-backup-panorama.json"
+    );
+    IOUtils.writeJSON(path, backupData);
+  },
+};
+
+async function getBase64DataFromPng(iconURL) {
+  return new Promise((resolve, reject) => {
+    let xhr = new XMLHttpRequest();
+
+    if (iconURL.endsWith(".png")) {
+      xhr.open("GET", iconURL, true);
+      xhr.responseType = "arraybuffer";
+
+      xhr.onload = function () {
+        if (xhr.status == 200) {
+          let imgData = new Uint8Array(xhr.response);
+          let base64Data = arrayBufferToBase64(imgData);
+          let imageDataUri = "data:image/png;base64," + base64Data;
+
+          resolve(imageDataUri);
+        } else {
+          reject(new Error("Failed to fetch PNG image"));
+        }
+      };
+
+      xhr.send();
+
+      function arrayBufferToBase64(buffer) {
+        var binary = "";
+        var bytes = new Uint8Array(buffer);
+        var len = bytes.byteLength;
+        for (var i = 0; i < len; i++) {
+          binary += String.fromCharCode(bytes[i]);
+        }
+        return btoa(binary);
+      }
+    } else {
+      xhr.open("GET", iconURL, true);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+          if (xhr.status == 200) {
+            let svgData = xhr.responseText;
+
+            let base64Data = btoa(svgData);
+            let imageDataUri = "data:image/svg+xml;base64," + base64Data;
+
+            resolve(imageDataUri);
+          } else {
+            reject(new Error("Failed to fetch SVG image"));
+          }
+        }
+      };
+
+      xhr.send();
+    }
+  });
+}
+
+
 // If you want to enable workspaces by default, Remove these lines. "checkTabGroupAddonInstalledAndStartWorkspace();" is enough.
 const tempDisabled = "floorp.browser.workspaces.disabledBySystem";
 function disableWorkspacesByDefaultCheck() {
@@ -1875,3 +2299,8 @@ function disableWorkspacesByDefaultCheck() {
 }
 
 disableWorkspacesByDefaultCheck();
+
+Services.obs.addObserver(
+  workspacesMigtation.createSTGBackupFileObject,
+  "migrationFromFloorpToSTG"
+);

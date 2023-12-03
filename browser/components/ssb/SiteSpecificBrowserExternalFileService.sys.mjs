@@ -5,24 +5,24 @@
 export const EXPORTED_SYMBOLS = ["SiteSpecificBrowserExternalFileService"];
 
 export const SiteSpecificBrowserExternalFileService = {
-  get _saveFile() {
-    return PathUtils.join(PathUtils.profileDir, "ssb.json");
+  get _ssbStoreFile() {
+    return PathUtils.join(PathUtils.profileDir, "ssb", "ssb.json");
   },
 
   async getCurrentSsbData() {
-    let fileExists = await IOUtils.exists(this._saveFile);
+    let fileExists = await IOUtils.exists(this._ssbStoreFile);
     if (!fileExists) {
-      IOUtils.writeJSON(this._saveFile, {});
+      IOUtils.writeJSON(this._ssbStoreFile, {});
       return {};
     }
 
-    let result = await IOUtils.readJSON(this._saveFile);
+    let result = await IOUtils.readJSON(this._ssbStoreFile);
 
     return result;
   },
 
   async saveSsbData(ssbData) {
-    await IOUtils.writeJSON(this._saveFile, ssbData);
+    await IOUtils.writeJSON(this._ssbStoreFile, ssbData);
   },
 
   async removeSsbData(ssbId) {

@@ -25,6 +25,7 @@ Preferences.addAll([
   { id: WorkspaceUtils.workspacesPreferences.WORKSPACE_MANAGE_ON_BMS_PREF, type: "bool" },
   { id: WorkspaceUtils.workspacesPreferences.WORKSPACE_SHOW_WORKSPACE_NAME_PREF, type: "bool" },
   { id: WorkspaceUtils.workspacesPreferences.WORKSPACE_CHANGE_WORKSPACE_WITH_DEFAULT_KEY_PREF, type: "bool"},
+  { id: "floorp.extensions.STG.like.floorp.workspaces.enabled", type: "bool" },
 ])
 
 function convertToDateAndTime(timestamp) {
@@ -66,6 +67,19 @@ const gWorkspacesPane = {
 
     const resetButton = document.getElementById("reset-workspaces-button");
     resetButton.addEventListener("command", resetWorkspaces);
+
+    const createSTGBackupButton = document.getElementById("workspaces-removed-migrate-to-STG-button");
+    createSTGBackupButton.addEventListener("command", () => {
+      Services.obs.notifyObservers([], "migrationFromFloorpToSTG");
+    });
+
+    let urlTarget = document.getElementById("workspaces-removed-learning-more");
+    let currentUILanguage = Services.locale.appLocaleAsBCP47;
+    if (currentUILanguage == "ja") {
+      urlTarget.setAttribute("href", "https://blog.ablaze.one/3665/2023-11-17/");
+    } else {
+      urlTarget.setAttribute("href", "https://blog.ablaze.one/3672/2023-11-17/");
+    }
 
     // get workspace backups.
     const file = FileUtils.getFile("ProfD", ["floorp-workspace-backup.json"]);

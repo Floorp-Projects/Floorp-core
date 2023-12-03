@@ -20,6 +20,26 @@
 ## Some elements share id & with notes.inc.xhtml
 <groupbox data-category="paneWorkspaces" hidden="true">
   <vbox class="contentPane">
+## workspace will removed at Floorp 12.0. So we need create warning message.
+    <vbox class="info-box-container" id="workspaces-removed-warning-container">
+      <html:h2 data-l10n-id="workspaces-removed-title" id="workspaces-removed-title"/>
+      <description class="info-box" data-l10n-id="workspaces-removed-warning">
+        <label is="text-link" href="" data-l10n-name="workspaces-removed-learning-more" id="workspaces-removed-learning-more"/>
+      </description>
+    </vbox>
+    <html:h2 data-l10n-id="workspaces-removed-migration-tools-title" id="workspaces-removed-migration-tools-title"/>
+      <checkbox preference="floorp.extensions.STG.like.floorp.workspaces.enabled"
+                data-l10n-id="STG-smilar-workspaces-option"/>
+      <description class="info-box indent tip-caption" data-l10n-id="workspaces-removed-migration-tools" id="workspaces-removed-migration-tools-description"/>
+      <hbox>
+        <label data-l10n-id="workspaces-removed-migration-tools-label"/>
+        <spacer flex="1"/>
+        <button id="workspaces-removed-migrate-to-STG-button"
+                is="highlightable-button"
+                class="accessory-button"
+                data-l10n-id="workspaces-removed-migrate-to-STG-button"/>
+    </hbox>
+
     <html:h1 data-l10n-id="floorp-workspaces-title"/>
     <checkbox preference="floorp.browser.workspace.closePopupAfterClick"
               data-l10n-id="change-to-close-workspace-popup-option"/>
