@@ -369,7 +369,7 @@ async function createTabContextElement(document_) {
         window_.TabContextMenu.contextTab.isTabSleepExcludeTab =
             !window_.TabContextMenu.contextTab.isTabSleepExcludeTab;
     });
-    tabSleepExcludeTab.addEventListener("popupshowing", async function(e) {
+    tabContextMenu.addEventListener("popupshowing", async function(e) {
         let window_ = e.currentTarget.ownerGlobal;
         e.currentTarget.querySelector("#context_tabSleepExcludeTab").setAttribute(
             "checked",
