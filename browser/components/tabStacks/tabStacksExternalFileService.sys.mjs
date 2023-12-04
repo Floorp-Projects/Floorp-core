@@ -33,6 +33,7 @@ export const tabStacksExternalFileService = {
     
         let json = await IOUtils.readJSON(this._tabStacksStoreFile);
         let result = json.windows[windowId] || {};
+        delete json.windows[windowId]?.preferences;
         return result;
     },
 
@@ -49,12 +50,16 @@ export const tabStacksExternalFileService = {
 
     async getSelectedTabStackId(windowId) {
         let tabStacksData = await this.getWindowTabStacksData(windowId);
-        for (let tabStackId in tabStacksData) {
-            let tabStack = tabStacksData[tabStackId];
-            if (tabStack.selected) {
-                return tabStackId;
-            }
+        let preferences = tabStacksData.preferences || {};
+        if (preferences.selectedTabStack) {
+            return preferences.selectedTabStackId;
         }
+
+        let defaultTabStackId = await this.getDefaultTabStackId(windowId);
+        if (defaultTabStackId) {
+            return defaultTabStackId;
+        }
+
         return null;
     },
     

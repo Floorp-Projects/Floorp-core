@@ -76,6 +76,7 @@ let gTabStack = {
     let tabStackId = await tabStacksExternalFileService.getSelectedTabStackId(
       windowId
     );
+
     if (tabStackId == null) {
       let id = await tabStacksExternalFileService.getDefaultTabStackId(
         windowId
@@ -242,7 +243,7 @@ let gTabStack = {
         tabStackId !== null &&
         tabStackId !== undefined
       ) {
-        tab.tabStackId = tab.tabStackId;
+        // do nothing
     } else {
         let tabStackId = await gTabStack.getCurrentTabStackId();
         tab.tabStackId = tabStackId;

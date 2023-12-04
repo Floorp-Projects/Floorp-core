@@ -15,7 +15,7 @@ export const TabStacksToolbarService = {
                   <hbox id="tabStacksToolbarContent" align="center" flex="1" class="statusbar-padding"/>
 
                   <toolbarbutton id="tabStacksCreateNewTabStackButton" class="toolbarbutton-1 chromeclass-toolbar-additional" label="Create new tab stack" tooltiptext="Create new tab stack"
-                                 oncommand="tabStacksService.createNewTabStack();" />
+                                 oncommand="gTabStack.createNoNameTabStack();" />
                   <toolbarbutton id="tabStacksManageTabStacksButton" class="toolbarbutton-1 chromeclass-toolbar-additional" label="Manage tab stacks" tooltiptext="Manage tab stacks"
                                  oncommand="tabStacksService.openTabStacksManager();" />
       </toolbar>`,
@@ -73,12 +73,13 @@ export const TabStacksToolbarService = {
 
      async getAllTabStacksBlockElements(windowId) {
         let tabStacksData = await tabStacksExternalFileService.getWindowTabStacksData(windowId);
-        delete tabStacksData.defaultTabStack;
+        let selectedTabStackId = await tabStacksExternalFileService.getSelectedTabStackId(windowId);
 
         let tabStackBlockElements = [];
         for (let tabStackId in tabStacksData) {
             let tabStack = tabStacksData[tabStackId];
-            tabStackBlockElements.push(this.tabStackBlockElement(tabStackId, tabStack.name, tabStack.selected));
+            let selected = tabStackId == selectedTabStackId;
+            tabStackBlockElements.push(this.tabStackBlockElement(tabStackId, tabStack.name, selected));
         }
         return tabStackBlockElements;
      }

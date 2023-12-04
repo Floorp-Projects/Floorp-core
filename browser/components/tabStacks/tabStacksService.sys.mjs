@@ -104,10 +104,9 @@ export const tabStacksService = {
         windowId
       );
     tabStacksData.preferences = {
-      selectedTabStack: tabStackId,
+      selectedTabStackId: tabStackId,
     }
 
-    console.log(tabStacksData);
     await lazy.tabStacksExternalFileService.saveTabStacksData(
       tabStacksData,
       windowId

@@ -169,7 +169,7 @@ pref("floorp.user.js.customize", "");
 pref("browser.ssb.enabled", true);
 
 // Tab Stack
-pref("floorp.browser.tabstacks.enabled", false);
+pref("floorp.browser.tabstacks.enabled", true);
 
 /*----------------------------------------------------------------------------------------------------------------------------------*/
 
