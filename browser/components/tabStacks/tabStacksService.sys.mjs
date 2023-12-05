@@ -5,7 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 export const EXPORTED_SYMBOLS = [
-  "tabStacksService", "tabStacksPreferences", "TabStacksGroupService"
+  "tabStacksService",
+  "tabStacksPreferences",
+  "TabStacksGroupService",
 ];
 
 const lazy = {};
@@ -28,16 +30,13 @@ export const tabStacksService = {
 
   async createTabStack(name, windowId, defaultTabStack) {
     let tabStacksData =
-      await lazy.tabStacksExternalFileService.getWindowTabStacksData(
-        windowId
-      );
+      await lazy.tabStacksExternalFileService.getWindowTabStacksData(windowId);
     let tabStackId = generateUuid();
 
     tabStacksData[tabStackId] = {
       name,
       tabs: [],
       defaultTabStack: defaultTabStack || false,
-      selected: false,
       id: tabStackId,
     };
     await lazy.tabStacksExternalFileService.saveTabStacksData(
@@ -48,9 +47,7 @@ export const tabStacksService = {
 
   async deleteTabStack(tabStackId, windowId) {
     let tabStacksData =
-      await lazy.tabStacksExternalFileService.getWindowTabStacksData(
-        windowId
-      );
+      await lazy.tabStacksExternalFileService.getWindowTabStacksData(windowId);
     delete tabStacksData[tabStackId];
     await lazy.tabStacksExternalFileService.saveTabStacksData(
       tabStacksData,
@@ -60,9 +57,7 @@ export const tabStacksService = {
 
   async renameTabStack(tabStackId, newName, windowId) {
     let tabStacksData =
-      await lazy.tabStacksExternalFileService.getWindowTabStacksData(
-        windowId
-      );
+      await lazy.tabStacksExternalFileService.getWindowTabStacksData(windowId);
     tabStacksData[tabStackId].name = newName;
     await lazy.tabStacksExternalFileService.saveTabStacksData(
       tabStacksData,
@@ -72,9 +67,7 @@ export const tabStacksService = {
 
   async addTabToTabStack(tabStackId, tabs, windowId) {
     let tabStacksData =
-      await lazy.tabStacksExternalFileService.getWindowTabStacksData(
-        windowId
-      );
+      await lazy.tabStacksExternalFileService.getWindowTabStacksData(windowId);
     for (let tab of tabs) {
       tabStacksData[tabStackId].tabs.push(tab.tabStackId);
     }
@@ -86,12 +79,10 @@ export const tabStacksService = {
 
   async setDefaultTabStack(tabStackId, windowId) {
     let tabStacksData =
-      await lazy.tabStacksExternalFileService.getWindowTabStacksData(
-        windowId
-      );
+      await lazy.tabStacksExternalFileService.getWindowTabStacksData(windowId);
     tabStacksData.preferences = {
       defaultTabStack: tabStackId,
-    }
+    };
     await lazy.tabStacksExternalFileService.saveTabStacksData(
       tabStacksData,
       windowId
@@ -100,18 +91,19 @@ export const tabStacksService = {
 
   async setSelectTabStack(tabStackId, windowId) {
     let tabStacksData =
-      await lazy.tabStacksExternalFileService.getWindowTabStacksData(
-        windowId
-      );
-    tabStacksData.preferences = {
-      selectedTabStackId: tabStackId,
+      await lazy.tabStacksExternalFileService.getWindowTabStacksData(windowId);
+
+    if (!tabStacksData.preferences) {
+      tabStacksData.preferences = {};
     }
+
+    tabStacksData.preferences.selectedTabStackId = tabStackId;
 
     await lazy.tabStacksExternalFileService.saveTabStacksData(
       tabStacksData,
       windowId
     );
-  }
+  },
 };
 
 export const TabStacksGroupService = {
@@ -128,8 +120,8 @@ export const TabStacksGroupService = {
       tabStacksData,
       windowId
     );
-  }
-}
+  },
+};
 
 export const tabStacksPreferences = {
   TAB_STACKS_ENABLED_PREF: "floorp.browser.tabstacks.enabled",

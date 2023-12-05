@@ -122,6 +122,22 @@ let gTabStack = {
     );
   },
 
+  async saveTabStacksDataWithoutOverwritingPreferences(tabStacksData) {
+    let windowId = this.getCurrentWindowId();
+    await tabStacksExternalFileService.saveTabStacksDataWithoutOverwritingPreferences(
+      tabStacksData,
+      windowId
+    );
+  },
+
+  async saveWindowPreferences(preferences) {
+    let windowId = this.getCurrentWindowId();
+    await tabStacksExternalFileService.saveWindowPreferences(
+      preferences,
+      windowId
+    );
+  },
+
   /* tab attribute */
   getTabStackIdFromAttribute(tab) {
     let tabStackId = tab.getAttribute("tabStackId");
@@ -180,6 +196,9 @@ let gTabStack = {
   async setDefaultTabStack(tabStackId) {
     let windowId = this.getCurrentWindowId();
     await tabStacksService.setDefaultTabStack(tabStackId, windowId);
+
+    // rebuild the tabStacksToolbar
+    gTabStack.functions.rebuildTabStacksToolbar(windowId);
   },
 
   async setSelectTabStack(tabStackId) {
@@ -305,7 +324,9 @@ let gTabStack = {
         tabStacksData[tabStack.id].tabs.push(tabObj);
       }
       // Save tab stacks data
-      await gTabStack.saveTabStacksData(tabStacksData);
+      await gTabStack.saveTabStacksDataWithoutOverwritingPreferences(
+        tabStacksData
+      );
     },
 
     async rebuildTabStacksToolbar() {
@@ -330,6 +351,7 @@ let gTabStack = {
       // Change tab stack
       gTabStack.setSelectTabStack(tabStackId);
       gTabStack.functions.rebuildTabStacksToolbar();
+      gTabStack.functions.checkAllTabsForVisibility();
     },
   },
 };

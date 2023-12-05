@@ -33,8 +33,13 @@ export const tabStacksExternalFileService = {
     
         let json = await IOUtils.readJSON(this._tabStacksStoreFile);
         let result = json.windows[windowId] || {};
-        delete json.windows[windowId]?.preferences;
         return result;
+    },
+
+    async getWindowTabStacksDataWithoutPreferences(windowId) {
+        let tabStacksData = await this.getWindowTabStacksData(windowId);
+        delete tabStacksData.preferences;
+        return tabStacksData;
     },
 
     async getDefaultTabStackId(windowId) {
@@ -51,7 +56,7 @@ export const tabStacksExternalFileService = {
     async getSelectedTabStackId(windowId) {
         let tabStacksData = await this.getWindowTabStacksData(windowId);
         let preferences = tabStacksData.preferences || {};
-        if (preferences.selectedTabStack) {
+        if (preferences.selectedTabStackId) {
             return preferences.selectedTabStackId;
         }
 
@@ -69,4 +74,20 @@ export const tabStacksExternalFileService = {
 
         await IOUtils.writeJSON(this._tabStacksStoreFile, json);
     },
+
+    async saveTabStacksDataWithoutOverwritingPreferences(tabStacksData, windowId) {
+        let json = await IOUtils.readJSON(this._tabStacksStoreFile);
+        let preferences = json.windows[windowId].preferences;
+        json.windows[windowId] = tabStacksData;
+        json.windows[windowId].preferences = preferences;
+
+        await IOUtils.writeJSON(this._tabStacksStoreFile, json);
+    },
+
+    async saveWindowPreferences(preferences, windowId) {
+        let json = await IOUtils.readJSON(this._tabStacksStoreFile);
+        json.windows[windowId].preferences = preferences;
+
+        await IOUtils.writeJSON(this._tabStacksStoreFile, json);
+    }
 }

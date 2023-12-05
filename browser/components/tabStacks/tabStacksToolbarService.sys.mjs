@@ -72,7 +72,7 @@ export const TabStacksToolbarService = {
      },
 
      async getAllTabStacksBlockElements(windowId) {
-        let tabStacksData = await tabStacksExternalFileService.getWindowTabStacksData(windowId);
+        let tabStacksData = await tabStacksExternalFileService.getWindowTabStacksDataWithoutPreferences(windowId);
         let selectedTabStackId = await tabStacksExternalFileService.getSelectedTabStackId(windowId);
 
         let tabStackBlockElements = [];
