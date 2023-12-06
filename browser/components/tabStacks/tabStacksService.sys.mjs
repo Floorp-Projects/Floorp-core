@@ -21,6 +21,14 @@ function generateUuid() {
 }
 
 export const tabStacksService = {
+  get tabStacksTabAttributionId() {
+    return "floorpTabStackId";
+  },
+
+  get tabStackLastShowId() {
+    return "floorpTabStackLastShowId";
+  },
+
   get tabStackEnabled() {
     return Services.prefs.getBoolPref(
       tabStacksPreferences.TAB_STACKS_ENABLED_PREF,

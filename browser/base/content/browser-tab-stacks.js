@@ -25,7 +25,6 @@ let { TabStacksToolbarService } = ChromeUtils.importESModule(
 
 let gTabStack = {
   _initialized: false,
-  _currentWindowId: null,
   _currentTabStackId: null,
 
   /** Elements */
@@ -107,9 +106,11 @@ let gTabStack = {
     return tabStacksData;
   },
 
-  async getAllTabStacksBlockElements () {
+  async getAllTabStacksBlockElements() {
     let windowId = this.getCurrentWindowId();
-    let result = await TabStacksToolbarService.getAllTabStacksBlockElements(windowId);
+    let result = await TabStacksToolbarService.getAllTabStacksBlockElements(
+      windowId
+    );
     return result;
   },
 
@@ -140,18 +141,20 @@ let gTabStack = {
 
   /* tab attribute */
   getTabStackIdFromAttribute(tab) {
-    let tabStackId = tab.getAttribute("tabStackId");
+    let tabStackId = tab.getAttribute(this.tabStacksTabAttributionId);
     return tabStackId;
   },
 
   setTabStackIdToAttribute(tab, tabStackId) {
-    tab.setAttribute("tabStackId", tabStackId);
+    tab.setAttribute(this.tabStacksTabAttributionId, tabStackId);
   },
 
   /* tab stacks remover */
   async removeTabFromTabStack(tabStackId, tab) {
     let tabStacksData = await this.getCurrentTabStacksData();
-    let index = tabStacksData[tabStackId].tabs.indexOf(tab.getAttribute("tabStackId"));
+    let index = tabStacksData[tabStackId].tabs.indexOf(
+      tab.getAttribute(this.tabStacksTabAttributionId)
+    );
     tabStacksData[tabStackId].tabs.splice(index, 1);
     await this.saveTabStacksData(tabStacksData);
   },
@@ -206,12 +209,39 @@ let gTabStack = {
     await tabStacksService.setSelectTabStack(tabStackId, windowId);
   },
 
+  /* tab manager */
+  get tabStacksTabAttributionId() {
+    return tabStacksService.tabStacksTabAttributionId;
+  },
+
+  get tabStackLastShowTabAttributionId() {
+    return tabStacksService.tabStackLastShowId;
+  },
+
+  getTabStackFirstTab(tabStackId) {
+    for (let tab of gBrowser.tabs) {
+      if (tab.getAttribute(this.tabStacksTabAttributionId) == tabStackId) {
+        return tab;
+      }
+    }
+    return null;
+  },
+
+  getTabStackSelectedTab(tabStackId) {
+    for (let tab of gBrowser.tabs) {
+      if (tab.getAttribute(this.tabStackLastShowTabAttributionId) == tabStackId) {
+        return tab;
+      }
+    }
+    return null;
+  },
+
   /* init */
   async init() {
     if (this._initialized) {
       return;
     }
-    
+
     let currentTabStack = await gTabStack.getCurrentTabStack();
     if (!currentTabStack) {
       await gTabStack.createTabStack("Default", true);
@@ -222,17 +252,13 @@ let gTabStack = {
     }
 
     async function checkURLChange() {
-        await gTabStack.functions.checkAllTabsForVisibility();
+      await gTabStack.functions.checkAllTabsForVisibility();
     }
 
     // Use internal APIs to detect when the current tab changes.
     setInterval(checkURLChange, 1000);
 
-    let events = [
-      "TabSelect",
-      "TabPinned",
-      "TabUnpinned",
-    ];
+    let events = ["TabSelect", "TabPinned", "TabUnpinned"];
 
     for (let event of events) {
       gBrowser.tabContainer.addEventListener(
@@ -253,24 +279,13 @@ let gTabStack = {
     styleElement.textContent = TabStacksToolbarService.injectionCSS;
     document.head.appendChild(styleElement);
 
-    let allTabs = gBrowser.tabs;
-    for (let i = 0; i < allTabs.length; i++) {
-      let tab = allTabs[i];
-      let tabStackId = gTabStack.getTabStackIdFromAttribute(tab);
-      if (
-        tabStackId !== "" &&
-        tabStackId !== null &&
-        tabStackId !== undefined
-      ) {
-        // do nothing
-    } else {
-        let tabStackId = await gTabStack.getCurrentTabStackId();
-        tab.tabStackId = tabStackId;
-      }
-    }
-
     // build tab stacks toolbar
     await gTabStack.functions.rebuildTabStacksToolbar();
+    this._currentTabStackId = await gTabStack.getCurrentTabStackId();
+    gTabStack.functions.checkAllTabsForVisibility();
+
+
+    // Initialized complete
     this._initialized = true;
   },
 
@@ -301,13 +316,15 @@ let gTabStack = {
         // Set tabStackId if tabStackId is null
         let tabStackId = gTabStack.getTabStackIdFromAttribute(tabs[i]);
         if (
-         !(tabStackId !== "" &&
-          tabStackId !== null &&
-          tabStackId !== undefined)
+          !(
+            tabStackId !== "" &&
+            tabStackId !== null &&
+            tabStackId !== undefined
+          )
         ) {
-            gTabStack.setTabStackIdToAttribute(tabs[i], currentTabStackId);
+          gTabStack.setTabStackIdToAttribute(tabs[i], currentTabStackId);
         }
-
+        
         let chackedTabStackId = gTabStack.getTabStackIdFromAttribute(tabs[i]);
         if (chackedTabStackId == currentTabStackId) {
           gBrowser.showTab(tabs[i]);
@@ -320,6 +337,26 @@ let gTabStack = {
           tabId: i,
           userContextId: tabs[i].userContextId ? tabs[i].userContextId : 0,
         };
+
+        // Last tab attribute
+        let selectedTab = gBrowser.selectedTab;
+        let legacyTabStackId = gTabStack._currentTabStackId;
+        if (tabs[i] == selectedTab) {
+          // Remove Last tab attribute from another tab
+          let lastShowTabs = document.querySelectorAll(
+            `[${tabStacksService.tabStackLastShowId}="${legacyTabStackId}"]`
+          );
+          console.log(`[${tabStacksService.tabStackLastShowId}="${legacyTabStackId}"]`);
+          console.log(lastShowTabs);
+          for (let i = 0; i < lastShowTabs.length; i++) {
+            lastShowTabs[i].removeAttribute("floorpTabStackLastShowId");
+          }
+
+          tabs[i].setAttribute("floorpTabStackLastShowId", legacyTabStackId);
+          tabObj.lastShow = true;
+        }
+
+
         // Save tab stacks data
         tabStacksData[tabStack.id].tabs.push(tabObj);
       }
@@ -327,6 +364,8 @@ let gTabStack = {
       await gTabStack.saveTabStacksDataWithoutOverwritingPreferences(
         tabStacksData
       );
+
+      gTabStack._currentTabStackId = currentTabStackId;
     },
 
     async rebuildTabStacksToolbar() {
@@ -336,11 +375,11 @@ let gTabStack = {
       }
 
       // Add all tab stacks toolbar
-      let tabStackBlockElements = await gTabStack.getAllTabStacksBlockElements();
+      let tabStackBlockElements =
+        await gTabStack.getAllTabStacksBlockElements();
       for (let tabStackBlockElement of tabStackBlockElements) {
-        let tabStackBlockElementFragment = window.MozXULElement.parseXULToFragment(
-          tabStackBlockElement
-        );
+        let tabStackBlockElementFragment =
+          window.MozXULElement.parseXULToFragment(tabStackBlockElement);
         gTabStack.tabStacksToolbarContent.appendChild(
           tabStackBlockElementFragment
         );
