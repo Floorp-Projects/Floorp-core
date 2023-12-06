@@ -226,12 +226,6 @@ browser.jar:
   skin/classic/browser/lepton/tag.svg                                       (designs/lepton/icons/tag.svg)
   skin/classic/browser/lepton/tool-accessibility.svg                        (designs/lepton/icons/tool-accessibility.svg)
 
-# Lepton Icons
-  skin/classic/browser/lepton-icons/pwa-install.svg                         (icons/pwa-install.svg)
-  skin/classic/browser/lepton-icons/pwa-launch.svg                          (icons/pwa-launch.svg)
-  skin/classic/browser/lepton-icons/pwa-manage.svg                          (icons/pwa-manage.svg)
-  skin/classic/browser/lepton-icons/pwa-remove.svg                          (icons/pwa-remove.svg)
-
 # gnomeUI
 
  skin/classic/browser/gnomeUI/gnomeUI.css                                                      (designs/gnomeUI/gnomeUI.css)
