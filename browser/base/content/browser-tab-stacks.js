@@ -346,8 +346,6 @@ let gTabStack = {
           let lastShowTabs = document.querySelectorAll(
             `[${tabStacksService.tabStackLastShowId}="${legacyTabStackId}"]`
           );
-          console.log(`[${tabStacksService.tabStackLastShowId}="${legacyTabStackId}"]`);
-          console.log(lastShowTabs);
           for (let i = 0; i < lastShowTabs.length; i++) {
             lastShowTabs[i].removeAttribute("floorpTabStackLastShowId");
           }

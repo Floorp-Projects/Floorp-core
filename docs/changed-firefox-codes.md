@@ -174,3 +174,11 @@ changed: "Insert Site Specific Browser codes."
 URL: https://github.com/Floorp-Projects/Floorp/commit/c3041c9aebd207d42e8da75ea298cecd7c573196
 
 ---
+
+18. browser/app/moz.build
+
+**Feature: "Branding"**
+
+changed: "Replace PDF Document icon to Floorp's PDF Document icon."
+
+URL:
