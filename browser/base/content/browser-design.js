@@ -22,8 +22,6 @@ function setBrowserDesign() {
   const themeCSS = {
     ProtonfixUI: `@import url(chrome://browser/skin/protonfix/protonfix.css?${updateNumber});`,
     LeptonUI: `@import url(chrome://browser/skin/lepton/leptonChrome.css?${updateNumber}); @import url(chrome://browser/skin/lepton/leptonContent.css?${updateNumber});`,
-    LeptonUIMultitab: `@import url(chrome://browser/skin/lepton/photonChrome-multitab.css?${updateNumber});
-                       @import url(chrome://browser/skin/lepton/photonContent-multitab.css?${updateNumber});`,
     fluentUI: `@import url(chrome://browser/skin/fluentUI/fluentUI.css);`,
     gnomeUI: `@import url(chrome://browser/skin/gnomeUI/gnomeUI.css);
               `,
@@ -39,9 +37,7 @@ function setBrowserDesign() {
     case 1:
       break;
     case 3:
-      tag.innerText = enableMultitab
-        ? themeCSS.LeptonUIMultitab
-        : themeCSS.LeptonUI;
+      tag.innerText = themeCSS.LeptonUI;
       break;
     case 5:
       if (AppConstants.platform !== "linux") {

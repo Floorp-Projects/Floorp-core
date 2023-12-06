@@ -169,7 +169,7 @@ pref("floorp.user.js.customize", "");
 pref("browser.ssb.enabled", true);
 
 // Tab Stack
-pref("floorp.browser.tabstacks.enabled", true);
+pref("floorp.browser.tabstacks.enabled", false);
 
 /*----------------------------------------------------------------------------------------------------------------------------------*/
 
@@ -297,17 +297,8 @@ pref("floorp.lepton.interface", 2);
 // userchrome.css usercontent.css activate
 pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
 
-// Proton Enabled #127 || Removed at 97 #328 (Maintained for compatibility with ESR)
-pref("browser.proton.enabled", true);
-
 // Fill SVG Color
 pref("svg.context-properties.content.enabled", true);
-
-// CSS Color Mix - 88 Above
-pref("layout.css.color-mix.enabled", true);
-
-// CSS Blur Filter - 88 Above
-pref("layout.css.backdrop-filter.enabled", true);
 
 // Restore Compact Mode - 89 Above
 pref("browser.compactmode.show", true);
@@ -506,7 +497,7 @@ pref("userChrome.rounding.square_tab",           false);
 // pref("userContent.player.ui.twoline",                  true);
 
 // pref("userContent.newTab.hidden_logo",                 true);
-// pref("userContent.newTab.background_image",            true); // Need wallpaper image --uc-newTab-wallpaper: url("../icons/background_image.png");
+// pref("userContent.newTab.background_image",            true); // Need wallpaper image to `userContent.css`. :root { --uc-newTab-wallpaper: url("../icons/background_image.png"); }
 
 // pref("userContent.page.proton_color.dark_blue_accent", true);
 // pref("userContent.page.proton_color.system_accent",    true);
