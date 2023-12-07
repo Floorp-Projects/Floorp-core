@@ -107,7 +107,7 @@ let gFloorpPageAction = {
        </hbox>
        <hbox id="ssb-button-hbox">
         <vbox id="ssb-installing-vbox">
-          <html:img id="ssb-installing-icon" hidden="true" src="file:///C:/Users/surapunoyousei/Downloads/load-33_128.gif" width="48" height="48"/>
+          <html:img id="ssb-installing-icon" hidden="true" src="chrome://browser/skin/installing.gif" width="48" height="48"/>
         </vbox>
         <button id="ssb-app-install-button" class="panel-button ssb-install-buttons" oncommand="gFloorpPageAction.Ssb.onCommand()"/>
         <button id="ssb-app-cancel-button" class="panel-button ssb-install-buttons" data-l10n-id="ssb-app-cancel-button" oncommand="gFloorpPageAction.Ssb.closePopup()"/>

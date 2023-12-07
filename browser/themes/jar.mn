@@ -5,6 +5,9 @@
 browser.jar:
 % skin browser classic/1.0 %skin/classic/browser/
 
+# pwa
+  skin/classic/browser/pwa/installing.gif                                 (designs/pwa/installing.gif)
+
 # QR Code
   skin/classic/browser/QRCode-generater.png                               (icons/QRCode-generater.png)
   skin/classic/browser/floorp-share.svg                                   (icons/floorp-share.svg)
