@@ -218,6 +218,23 @@ let gTabStack = {
     return tabStacksService.tabStackLastShowId;
   },
 
+  createTabForTabStack(tabStackId, url) {
+    if (!url) {
+      let url = Services.prefs.getStringPref(
+        "browser.startup.homepage"
+      );
+    }
+
+    let tab = gBrowser.addTab(url, {
+      skipAnimation: true,
+      inBackground: false,
+      triggeringPrincipal:
+        Services.scriptSecurityManager.getSystemPrincipal(),
+    });
+    this.setTabStackIdToAttribute(tab, tabStackId);
+    return tab;
+  },
+
   getTabStackFirstTab(tabStackId) {
     for (let tab of gBrowser.tabs) {
       if (tab.getAttribute(this.tabStacksTabAttributionId) == tabStackId) {
@@ -263,7 +280,7 @@ let gTabStack = {
     for (let event of events) {
       gBrowser.tabContainer.addEventListener(
         event,
-        gTabStack.functions.rebuildTabStacksToolbar
+        gTabStack.functions.checkAllTabsForVisibility
       );
     }
 
@@ -340,17 +357,17 @@ let gTabStack = {
 
         // Last tab attribute
         let selectedTab = gBrowser.selectedTab;
-        let legacyTabStackId = gTabStack._currentTabStackId;
+        let newTabStackId = await gTabStack.getCurrentTabStackId();
         if (tabs[i] == selectedTab) {
           // Remove Last tab attribute from another tab
           let lastShowTabs = document.querySelectorAll(
-            `[${tabStacksService.tabStackLastShowId}="${legacyTabStackId}"]`
+            `[${tabStacksService.tabStackLastShowId}="${newTabStackId}"]`
           );
           for (let i = 0; i < lastShowTabs.length; i++) {
-            lastShowTabs[i].removeAttribute("floorpTabStackLastShowId");
+            lastShowTabs[i].removeAttribute(tabStacksService.tabStackLastShowId);
           }
 
-          tabs[i].setAttribute("floorpTabStackLastShowId", legacyTabStackId);
+          tabs[i].setAttribute(tabStacksService.tabStackLastShowId, newTabStackId);
           tabObj.lastShow = true;
         }
 
@@ -386,6 +403,17 @@ let gTabStack = {
 
     changeTabStack(tabStackId) {
       // Change tab stack
+      let willChangeTabStackLastShowTab = gTabStack.getTabStackSelectedTab(
+        tabStackId
+      );
+
+      if (willChangeTabStackLastShowTab) {
+        gBrowser.selectedTab = willChangeTabStackLastShowTab;
+      } else {
+        let tab = gTabStack.createTabForTabStack(tabStackId);
+        gBrowser.selectedTab = tab;
+      }
+
       gTabStack.setSelectTabStack(tabStackId);
       gTabStack.functions.rebuildTabStacksToolbar();
       gTabStack.functions.checkAllTabsForVisibility();

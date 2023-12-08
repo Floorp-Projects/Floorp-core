@@ -166,7 +166,11 @@ pref("floorp.browser.splitView.working", false);
 pref("floorp.user.js.customize", "");
 
 // Web apps support
+#ifdef XP_WIN
 pref("browser.ssb.enabled", true);
+#else
+pref("browser.ssb.enabled", false);
+#endif
 
 // Tab Stack
 pref("floorp.browser.tabstacks.enabled", false);
