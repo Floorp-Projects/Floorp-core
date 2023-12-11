@@ -66,7 +66,7 @@ export const TabStacksToolbarService = {
                                class="toolbarbutton-1 chromeclass-toolbar-additional tabStackButton"
                                label="${tabStackName}" tooltiptext="TabStack ${tabStackName}"
                                ${selected ? "selected=\"true\"" : ""}
-                               oncommand="gTabStack.functions.changeTabStack('${tabStackId}');" />
+                               oncommand="gTabStack.changeTabStack('${tabStackId}');" />
                `
      },
 
