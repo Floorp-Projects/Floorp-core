@@ -85,6 +85,33 @@ const gTabStack = {
     }
   },
 
+  async addToolbarTabStackButtonToAppend(tabStackId) {
+    let toolbarTabStackButton = await this.getTabStackBlockElement(
+      tabStackId
+    );
+    let toolbarTabStackButtonFragment =
+      window.MozXULElement.parseXULToFragment(toolbarTabStackButton);
+    this.tabStacksToolbarContent.appendChild(toolbarTabStackButtonFragment);
+  },
+
+  async changeToolbarSelectedTabStackView(tabStackId) {
+    let selectedTabStackToolbarButton = document.querySelector(
+      `.tabStackButton[selected="true"]`
+    );
+
+    if (selectedTabStackToolbarButton) {
+      selectedTabStackToolbarButton.removeAttribute("selected");
+    }
+
+    let tabStackToolbarButton = document.getElementById(
+      `tabStack-${tabStackId}`
+    );
+
+    if (tabStackToolbarButton) {
+      tabStackToolbarButton.setAttribute("selected", true);
+    }
+  },
+
   /* Preferences */
   get tabStackEnabled() {
     return Services.prefs.getBoolPref(
@@ -137,6 +164,15 @@ const gTabStack = {
   async getAllTabStacksBlockElements() {
     let windowId = this.getCurrentWindowId();
     let result = await TabStacksToolbarService.getAllTabStacksBlockElements(
+      windowId
+    );
+    return result;
+  },
+
+  async getTabStackBlockElement(tabStackId) {
+    let windowId = this.getCurrentWindowId();
+    let result = await TabStacksToolbarService.getTabStackBlockElement(
+      tabStackId,
       windowId
     );
     return result;
@@ -195,8 +231,8 @@ const gTabStack = {
   /* tab stacks manager */
   async createTabStack(name, defaultTabStack) {
     let windowId = this.getCurrentWindowId();
-    await tabStacksService.createTabStack(name, windowId, defaultTabStack);
-    this.rebuildTabStacksToolbar();
+    let createdTabStackId = await tabStacksService.createTabStack(name, windowId, defaultTabStack);
+    this.changeTabStack(createdTabStackId, defaultTabStack ? 1 : 2);
   },
 
   async createNoNameTabStack() {
@@ -227,7 +263,7 @@ const gTabStack = {
     gTabStack.rebuildTabStacksToolbar(windowId);
   },
 
-  changeTabStack(tabStackId) {
+  changeTabStack(tabStackId, option) {
     // Change tab stack
     let willChangeTabStackLastShowTab =
       gTabStack.getTabStackSelectedTab(tabStackId);
@@ -240,7 +276,22 @@ const gTabStack = {
     }
 
     gTabStack.setSelectTabStack(tabStackId);
-    gTabStack.rebuildTabStacksToolbar();
+
+    switch (option) {
+      case 1:
+        // rebuild the tabStacksToolbar
+        gTabStack.rebuildTabStacksToolbar();
+        break;
+      case 2:
+        // Append Tab Stacks Toolbar Tab Stack Button
+        gTabStack.addToolbarTabStackButtonToAppend(tabStackId);
+        gTabStack.changeToolbarSelectedTabStackView(tabStackId);
+        break;
+      default:
+        // Change Tab Stacks Toolbar Selected Tab Stack View
+        gTabStack.changeToolbarSelectedTabStackView(tabStackId);
+        break;
+    }
     gTabStack.checkAllTabsForVisibility();
   },
 
@@ -472,7 +523,7 @@ const gTabStack = {
         menuElem.firstChild.remove();
       }
 
-      //Rebuild context menu
+      //create context menu
       let menuItem = window.MozXULElement.parseXULToFragment(`
          <menuitem data-l10n-id="workspace-context-menu-selected-tab" disabled="true"/>
         `);

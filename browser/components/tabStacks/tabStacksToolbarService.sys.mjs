@@ -87,6 +87,14 @@ export const TabStacksToolbarService = {
                `
      },
 
+     async getTabStackBlockElement(tabStackId, windowId) {
+        let tabStacksData = await tabStacksWindowIdUtils.getWindowTabStacksDataWithoutPreferences(windowId);
+        let tabStack = tabStacksData[tabStackId];
+        let selectedTabStackId = await tabStacksWindowIdUtils.getSelectedTabStackId(windowId);
+        let selected = tabStackId == selectedTabStackId;
+        return this.tabStackBlockElement(tabStackId, tabStack.name, selected);
+     },
+
      async getAllTabStacksBlockElements(windowId) {
         let tabStacksData = await tabStacksWindowIdUtils.getWindowTabStacksDataWithoutPreferences(windowId);
         let selectedTabStackId = await tabStacksWindowIdUtils.getSelectedTabStackId(windowId);

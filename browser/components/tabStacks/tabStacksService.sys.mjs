@@ -52,6 +52,7 @@ export const tabStacksService = {
       tabStacksData,
       windowId
     );
+    return tabStackId;
   },
 
   async deleteTabStack(tabStackId, windowId) {
