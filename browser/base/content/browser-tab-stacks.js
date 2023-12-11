@@ -23,6 +23,18 @@ let { TabStacksToolbarService } = ChromeUtils.importESModule(
   "resource:///modules/tabStacksToolbarService.sys.mjs"
 );
 
+let { tabStacksWindowIdUtils } = ChromeUtils.importESModule(
+  "resource:///modules/tabStacksWindowIdUtils.sys.mjs"
+);
+
+let { tabStacksDataSaver } = ChromeUtils.importESModule(
+  "resource:///modules/tabStacksDataSaver.sys.mjs"
+);
+
+
+// global variable
+var gBrowser = window.gBrowser;
+
 let gTabStack = {
   _initialized: false,
   _currentTabStackId: null,
@@ -72,12 +84,12 @@ let gTabStack = {
 
   async getCurrentTabStack() {
     let windowId = this.getCurrentWindowId();
-    let tabStackId = await tabStacksExternalFileService.getSelectedTabStackId(
+    let tabStackId = await tabStacksWindowIdUtils.getSelectedTabStackId(
       windowId
     );
 
     if (tabStackId == null) {
-      let id = await tabStacksExternalFileService.getDefaultTabStackId(
+      let id = await tabStacksWindowIdUtils.getDefaultTabStackId(
         windowId
       );
       let tabStack = await tabStacksIdUtils.getTabStackByIdAndWindowId(
@@ -102,7 +114,7 @@ let gTabStack = {
   async getCurrentTabStacksData() {
     let windowId = this.getCurrentWindowId();
     let tabStacksData =
-      await tabStacksExternalFileService.getWindowTabStacksData(windowId);
+      await tabStacksWindowIdUtils.getWindowTabStacksData(windowId);
     return tabStacksData;
   },
 
@@ -117,7 +129,7 @@ let gTabStack = {
   /* tab stacks saver */
   async saveTabStacksData(tabStacksData) {
     let windowId = this.getCurrentWindowId();
-    await tabStacksExternalFileService.saveTabStacksData(
+    await tabStacksDataSaver.saveTabStacksData(
       tabStacksData,
       windowId
     );
@@ -125,7 +137,7 @@ let gTabStack = {
 
   async saveTabStacksDataWithoutOverwritingPreferences(tabStacksData) {
     let windowId = this.getCurrentWindowId();
-    await tabStacksExternalFileService.saveTabStacksDataWithoutOverwritingPreferences(
+    await tabStacksDataSaver.saveTabStacksDataWithoutOverwritingPreferences(
       tabStacksData,
       windowId
     );
@@ -133,7 +145,7 @@ let gTabStack = {
 
   async saveWindowPreferences(preferences) {
     let windowId = this.getCurrentWindowId();
-    await tabStacksExternalFileService.saveWindowPreferences(
+    await tabStacksDataSaver.saveWindowPreferences(
       preferences,
       windowId
     );
@@ -218,9 +230,18 @@ let gTabStack = {
     return tabStacksService.tabStackLastShowId;
   },
 
+  moveTabToTabStack(tabStackId, tab) {
+    this.setTabStackIdToAttribute(tab, tabStackId);
+    if (tab === gBrowser.selectedTab) {
+      gTabStack.functions.changeTabStack(tabStackId);
+    } else {
+      gTabStack.functions.checkAllTabsForVisibility();
+    }
+  },
+
   createTabForTabStack(tabStackId, url) {
     if (!url) {
-      let url = Services.prefs.getStringPref(
+      url = Services.prefs.getStringPref(
         "browser.startup.homepage"
       );
     }

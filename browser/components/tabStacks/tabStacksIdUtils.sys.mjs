@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /* -*- indent-tabs-mode: nil; js-indent-level: 2 -*-
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -12,16 +11,20 @@ const lazy = {};
 ChromeUtils.defineESModuleGetters(lazy, {
   tabStacksExternalFileService:
     "resource:///modules/tabStacksExternalFileService.sys.mjs",
+  tabStacksWindowIdUtils:
+    "resource:///modules/tabStacksWindowIdUtils.sys.mjs",
+  tabStacksDataSaver:
+    "resource:///modules/tabStacksDataSaver.sys.mjs",
 });
 
 export const tabStacksIdUtils = {
     async getTabStackByIdAndWindowId(tabStackId, windowId) {
-        let tabStacksData = await lazy.tabStacksExternalFileService.getWindowTabStacksData(windowId);
+        let tabStacksData = await lazy.tabStacksWindowIdUtils.getWindowTabStacksData(windowId);
         return tabStacksData[tabStackId];
     },
 
     async getTabStackIdByTab(tab, windowId) {
-        let tabStacksData = await lazy.tabStacksExternalFileService.getWindowTabStacksData(windowId);
+        let tabStacksData = await lazy.tabStacksWindowIdUtils.getWindowTabStacksData(windowId);
         for (let tabStackId in tabStacksData) {
             let tabStack = tabStacksData[tabStackId];
             if (!tabStack.tabs) {
@@ -35,10 +38,15 @@ export const tabStacksIdUtils = {
         return null;
     },
 
+    async getTabStackContainerUserContextId(tabStackId, windowId) {
+        let tabStack = await this.getTabStackByIdAndWindowId(tabStackId, windowId);
+        return tabStack.userContextId;
+    },
+
     async removeTabStackById(tabStackId, windowId) {
-        let tabStacksData = await lazy.tabStacksExternalFileService.getWindowTabStacksData(windowId);
+        let tabStacksData = await lazy.tabStacksWindowIdUtils.getWindowTabStacksData(windowId);
         delete tabStacksData[tabStackId];
-        await lazy.tabStacksExternalFileService.saveTabStacksData(tabStacksData, windowId);
+        await lazy.tabStacksDataSaver.saveTabStacksData(tabStacksData, windowId);
     },
 
     async removeWindowTabStacksDataById(windowId) {

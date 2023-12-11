@@ -1,10 +1,9 @@
-/* eslint-disable no-undef */
 /* -*- indent-tabs-mode: nil; js-indent-level: 2 -*-
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { tabStacksExternalFileService } from "resource:///modules/tabStacksExternalFileService.sys.mjs";
+import { tabStacksWindowIdUtils } from "resource:///modules/tabStacksWindowIdUtils.sys.mjs";
 
 export const EXPORTED_SYMBOLS = ["TabStacksToolbarService"];
 
@@ -72,8 +71,8 @@ export const TabStacksToolbarService = {
      },
 
      async getAllTabStacksBlockElements(windowId) {
-        let tabStacksData = await tabStacksExternalFileService.getWindowTabStacksDataWithoutPreferences(windowId);
-        let selectedTabStackId = await tabStacksExternalFileService.getSelectedTabStackId(windowId);
+        let tabStacksData = await tabStacksWindowIdUtils.getWindowTabStacksDataWithoutPreferences(windowId);
+        let selectedTabStackId = await tabStacksWindowIdUtils.getSelectedTabStackId(windowId);
 
         let tabStackBlockElements = [];
         for (let tabStackId in tabStacksData) {

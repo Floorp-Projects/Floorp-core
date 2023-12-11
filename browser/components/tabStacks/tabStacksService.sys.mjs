@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /* -*- indent-tabs-mode: nil; js-indent-level: 2 -*-
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -12,8 +11,10 @@ export const EXPORTED_SYMBOLS = [
 
 const lazy = {};
 ChromeUtils.defineESModuleGetters(lazy, {
-  tabStacksExternalFileService:
-    "resource:///modules/tabStacksExternalFileService.sys.mjs",
+  tabStacksWindowIdUtils:
+    "resource:///modules/tabStacksWindowIdUtils.sys.mjs",
+  tabStacksDataSaver:
+    "resource:///modules/tabStacksDataSaver.sys.mjs",
 });
 
 function generateUuid() {
@@ -38,7 +39,7 @@ export const tabStacksService = {
 
   async createTabStack(name, windowId, defaultTabStack) {
     let tabStacksData =
-      await lazy.tabStacksExternalFileService.getWindowTabStacksData(windowId);
+      await lazy.tabStacksWindowIdUtils.getWindowTabStacksData(windowId);
     let tabStackId = generateUuid();
 
     tabStacksData[tabStackId] = {
@@ -47,7 +48,7 @@ export const tabStacksService = {
       defaultTabStack: defaultTabStack || false,
       id: tabStackId,
     };
-    await lazy.tabStacksExternalFileService.saveTabStacksData(
+    await lazy.tabStacksDataSaver.saveTabStacksData(
       tabStacksData,
       windowId
     );
@@ -55,9 +56,9 @@ export const tabStacksService = {
 
   async deleteTabStack(tabStackId, windowId) {
     let tabStacksData =
-      await lazy.tabStacksExternalFileService.getWindowTabStacksData(windowId);
+      await lazy.tabStacksWindowIdUtils.getWindowTabStacksData(windowId);
     delete tabStacksData[tabStackId];
-    await lazy.tabStacksExternalFileService.saveTabStacksData(
+    await lazy.tabStacksDataSaver.saveTabStacksData(
       tabStacksData,
       windowId
     );
@@ -65,9 +66,9 @@ export const tabStacksService = {
 
   async renameTabStack(tabStackId, newName, windowId) {
     let tabStacksData =
-      await lazy.tabStacksExternalFileService.getWindowTabStacksData(windowId);
+      await lazy.tabStacksWindowIdUtils.getWindowTabStacksData(windowId);
     tabStacksData[tabStackId].name = newName;
-    await lazy.tabStacksExternalFileService.saveTabStacksData(
+    await lazy.tabStacksDataSaver.saveTabStacksData(
       tabStacksData,
       windowId
     );
@@ -75,11 +76,11 @@ export const tabStacksService = {
 
   async addTabToTabStack(tabStackId, tabs, windowId) {
     let tabStacksData =
-      await lazy.tabStacksExternalFileService.getWindowTabStacksData(windowId);
+      await lazy.tabStacksWindowIdUtils.getWindowTabStacksData(windowId);
     for (let tab of tabs) {
       tabStacksData[tabStackId].tabs.push(tab.tabStackId);
     }
-    await lazy.tabStacksExternalFileService.saveTabStacksData(
+    await lazy.tabStacksDataSaver.saveTabStacksData(
       tabStacksData,
       windowId
     );
@@ -87,11 +88,11 @@ export const tabStacksService = {
 
   async setDefaultTabStack(tabStackId, windowId) {
     let tabStacksData =
-      await lazy.tabStacksExternalFileService.getWindowTabStacksData(windowId);
+      await lazy.tabStacksWindowIdUtils.getWindowTabStacksData(windowId);
     tabStacksData.preferences = {
       defaultTabStack: tabStackId,
     };
-    await lazy.tabStacksExternalFileService.saveTabStacksData(
+    await lazy.tabStacksDataSaver.saveTabStacksData(
       tabStacksData,
       windowId
     );
@@ -99,7 +100,7 @@ export const tabStacksService = {
 
   async setSelectTabStack(tabStackId, windowId) {
     let tabStacksData =
-      await lazy.tabStacksExternalFileService.getWindowTabStacksData(windowId);
+      await lazy.tabStacksWindowIdUtils.getWindowTabStacksData(windowId);
 
     if (!tabStacksData.preferences) {
       tabStacksData.preferences = {};
@@ -107,7 +108,17 @@ export const tabStacksService = {
 
     tabStacksData.preferences.selectedTabStackId = tabStackId;
 
-    await lazy.tabStacksExternalFileService.saveTabStacksData(
+    await lazy.tabStacksDataSaver.saveTabStacksData(
+      tabStacksData,
+      windowId
+    );
+  },
+
+  async setTabStackContainerUserContextId(tabStackId, userContextId, windowId) {
+    let tabStacksData =
+      await lazy.tabStacksWindowIdUtils.getWindowTabStacksData(windowId);
+    tabStacksData[tabStackId].userContextId = userContextId;
+    await lazy.tabStacksDataSaver.saveTabStacksData(
       tabStacksData,
       windowId
     );
@@ -117,14 +128,14 @@ export const tabStacksService = {
 export const TabStacksGroupService = {
   reorderingTabStackGroupBefore(tabStackId, beforeTabStackId, windowId) {
     let tabStacksData =
-      lazy.tabStacksExternalFileService.getWindowTabStacksData(windowId);
+      lazy.tabStacksWindowIdUtils.getWindowTabStacksData(windowId);
     let tabStackIds = Object.keys(tabStacksData);
     let index = tabStackIds.indexOf(tabStackId);
     let beforeIndex = tabStackIds.indexOf(beforeTabStackId);
     tabStackIds.splice(index, 1);
     tabStackIds.splice(beforeIndex, 0, tabStackId);
     tabStacksData[tabStackId].tabs = tabStackIds;
-    lazy.tabStacksExternalFileService.saveTabStacksData(
+    lazy.tabStacksDataSaver.saveTabStacksData(
       tabStacksData,
       windowId
     );
