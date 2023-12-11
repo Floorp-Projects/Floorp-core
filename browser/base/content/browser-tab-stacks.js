@@ -466,24 +466,18 @@ const gTabStack = {
 
   contextMenu: {
     createTabStacksContextMenuItems(event) {
-      let tabStacksData = gTabStack.getCurrentTabStacksData();
-      let tabStacks = tabStacksData.tabStacks;
-      let tabStacksContextMenuItems = [];
-
-      for (let tabStackId in tabStacks) {
-        let tabStack = tabStacks[tabStackId];
-        let tabStackContextMenuItem = {
-          label: tabStack.name,
-          type: "radio",
-          checked: tabStackId == gTabStack._currentTabStackId,
-          click: () => {
-            gTabStack.changeTabStack(tabStackId);
-          },
-        };
-        tabStacksContextMenuItems.push(tabStackContextMenuItem);
+      //delete already exsist items
+      let menuElem = document.getElementById("tab-stacks-toolbar-item-context");
+      while (menuElem.firstChild) {
+        menuElem.firstChild.remove();
       }
 
-      return tabStacksContextMenuItems;
+      //Rebuild context menu
+      let menuItem = window.MozXULElement.parseXULToFragment(`
+         <menuitem data-l10n-id="workspace-context-menu-selected-tab" disabled="true"/>
+        `);
+      let parentElem = document.getElementById("tab-stacks-toolbar-item-context");
+      parentElem.appendChild(menuItem);
     },
   },
 };
