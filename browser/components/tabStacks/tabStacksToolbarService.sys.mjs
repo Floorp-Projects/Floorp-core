@@ -77,6 +77,14 @@ export const TabStacksToolbarService = {
           list-style-image: url("chrome://browser/skin/settings.svg");
         }
      `,
+
+     injectionCSSForArrowScrollBoxShadowDOM: `
+        scrollbox[part="scrollbox"] {
+            overflow-x: scroll !important;
+            scroll-behavior: smooth !important;
+            scrollbar-width: thin !important;
+        }
+      `,
      
      tabStackBlockElement(tabStackId, tabStackName, selected) {
         return `<toolbarbutton id="tabStack-${tabStackId}" context="tab-stacks-toolbar-item-context-menu"

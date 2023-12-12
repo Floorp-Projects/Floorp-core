@@ -86,11 +86,10 @@ const gTabStack = {
   },
 
   async addToolbarTabStackButtonToAppend(tabStackId) {
-    let toolbarTabStackButton = await this.getTabStackBlockElement(
-      tabStackId
+    let toolbarTabStackButton = await this.getTabStackBlockElement(tabStackId);
+    let toolbarTabStackButtonFragment = window.MozXULElement.parseXULToFragment(
+      toolbarTabStackButton
     );
-    let toolbarTabStackButtonFragment =
-      window.MozXULElement.parseXULToFragment(toolbarTabStackButton);
     this.tabStacksToolbarContent.appendChild(toolbarTabStackButtonFragment);
   },
 
@@ -231,7 +230,11 @@ const gTabStack = {
   /* tab stacks manager */
   async createTabStack(name, defaultTabStack) {
     let windowId = this.getCurrentWindowId();
-    let createdTabStackId = await tabStacksService.createTabStack(name, windowId, defaultTabStack);
+    let createdTabStackId = await tabStacksService.createTabStack(
+      name,
+      windowId,
+      defaultTabStack
+    );
     this.changeTabStack(createdTabStackId, defaultTabStack ? 1 : 2);
   },
 
@@ -494,10 +497,19 @@ const gTabStack = {
     this.TabsToolbartoolbarItems.prepend(toolbarElement);
 
     // Add injection CSS
+    let styleElemInjectToToolbar = document.createElement("style");
+    styleElemInjectToToolbar.id = "tabStacksToolbarInjectionCSS";
+    styleElemInjectToToolbar.textContent = TabStacksToolbarService.injectionCSS;
+    document.head.appendChild(styleElemInjectToToolbar);
+
+    // Add injection CSS for Arrowscrollbox Shadow DOM
     let styleElement = document.createElement("style");
-    styleElement.id = "tabStacksToolbarInjectionCSS";
-    styleElement.textContent = TabStacksToolbarService.injectionCSS;
-    document.head.appendChild(styleElement);
+    styleElement.id = "tabStacksToolbarInjectionCSSForArrowScrollBox";
+    styleElement.textContent =
+      TabStacksToolbarService.injectionCSSForArrowScrollBoxShadowDOM;
+    gTabStack.tabStacksToolbarContent.shadowRoot.firstChild.before(
+      styleElement
+    );
 
     // build tab stacks toolbar
     await gTabStack.rebuildTabStacksToolbar();
@@ -527,7 +539,9 @@ const gTabStack = {
       let menuItem = window.MozXULElement.parseXULToFragment(`
          <menuitem data-l10n-id="workspace-context-menu-selected-tab" disabled="true"/>
         `);
-      let parentElem = document.getElementById("tab-stacks-toolbar-item-context");
+      let parentElem = document.getElementById(
+        "tab-stacks-toolbar-item-context"
+      );
       parentElem.appendChild(menuItem);
     },
   },
