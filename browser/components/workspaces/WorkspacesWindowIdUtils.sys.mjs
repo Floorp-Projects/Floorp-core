@@ -51,6 +51,12 @@ export const workspacesWindowIdUtils = {
         return workspacesData;
     },
 
+    async getWindowWorkspacesCount(windowId) {
+        let workspacesData = await this.getWindowWorkspacesData(windowId);
+        let workspacesCount = Object.keys(workspacesData).length;
+        return workspacesCount;
+    },
+
     async getDefaultWorkspaceId(windowId) {
         let workspacesData = await this.getWindowWorkspacesData(windowId);
         for (let workspaceId in workspacesData) {

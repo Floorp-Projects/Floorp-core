@@ -9,15 +9,17 @@ export const EXPORTED_SYMBOLS = ["WorkspacesElementService"];
 
 export const WorkspacesElementService = {
     panelElement:
-      `<panel id="workspacesToolbarButtonPanel" class="browser-toolbar customization-target">
-              <arrowscrollbox id="workspacesPopupContent" align="center" flex="1" orient="vertical"
+      `<panel id="workspacesToolbarButtonPanel" type="arrow" position="bottomright topright">
+          <arrowscrollbox id="workspacesPopupBox" flex="1">
+              <vbox id="workspacesPopupContent" align="center" flex="1" orient="vertical"
                               clicktoscroll="true" class="statusbar-padding" />
               <toolbarbutton id="workspacesCreateNewWorkspaceButton" class="toolbarbutton-1 chromeclass-toolbar-additional"
-                             label="Create new tab stack" tooltiptext="Create new tab stack"
+                             label="Create new Workspace" tooltiptext="Create new Workspace"
                              oncommand="gWorkspaces.createNoNameWorkspace();" />
               <toolbarbutton id="workspacesManageWorkspacesButton" class="toolbarbutton-1 chromeclass-toolbar-additional"
-                             label="Manage tab stacks" tooltiptext="Manage tab stacks"
+                             label="Manage Workspaces" tooltiptext="Manage Workspaces"
                              oncommand="workspacesService.openWorkspacesManager();" />
+          </arrowscrollbox>
         </panel>
         `,
 
@@ -36,6 +38,11 @@ export const WorkspacesElementService = {
         #workspacesPopupContent {
           background: inherit !important;
           overflow: scroll;
+          max-height: 300px;
+          width: 300px;
+          padding: 0px 5px;
+          scroll-behavior: smooth;
+          scrollbar-width: thin;
         }
         #workspacesToolbar {
           background: inherit !important;
@@ -47,13 +54,15 @@ export const WorkspacesElementService = {
           color: var(--tab-text-color) !important;
         }
         .workspaceButton[selected="true"] {
-          background-color: var(--tab-selected-bgcolor, var(--toolbar-bgcolor));
+          background-color: var(--win-hover-bgcolor) !important;
           box-shadow: 0 0 4px rgba(0,0,0,.4);
         }
         .workspaceButton {
           list-style-image: url("chrome://branding/content/icon32.png");
           border-radius: var(--tab-border-radius);
           margin-right: 5px !important;
+          width: -moz-available;
+          min-height: 40px;
         }
         #workspacesCreateNewWorkspaceButton {
           list-style-image: url(chrome://global/skin/icons/plus.svg);

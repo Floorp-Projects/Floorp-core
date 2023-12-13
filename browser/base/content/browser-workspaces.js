@@ -67,14 +67,14 @@ const gWorkspaces = {
     return document.querySelectorAll(".workspaceButton");
   },
 
-  /** Tab Stacks Toolbar */
+  /** Workspaces Toolbar */
   async rebuildWorkspacesToolbar() {
-    // Remove all tab stacks toolbar
+    // Remove all Workspaces toolbar
     while (gWorkspaces.workspaceButtons.length) {
       gWorkspaces.workspacesPopupContent.firstChild.remove();
     }
 
-    // Add all tab stacks toolbar
+    // Add all Workspaces toolbar
     let workspaceBlockElements = await gWorkspaces.getAllWorkspacesBlockElements();
     for (let workspaceBlockElement of workspaceBlockElements) {
       let workspaceBlockElementFragment =
@@ -119,7 +119,7 @@ const gWorkspaces = {
     );
   },
 
-  /* get tab stacks infomation */
+  /* get Workspaces infomation */
   getCurrentWindowId() {
     let windowId = window.windowGlobalChild.outerWindowId;
     return windowId;
@@ -160,6 +160,23 @@ const gWorkspaces = {
     return workspacesData;
   },
 
+  async getCurrentWorkspacesDataWithoutPreferences() {
+    let windowId = this.getCurrentWindowId();
+    let workspacesData =
+      await workspacesWindowIdUtils.getWindowWorkspacesDataWithoutPreferences(
+        windowId
+      );
+    return workspacesData;
+  },
+
+  async getCurrentWorkspacesCount() {
+    let windowId = this.getCurrentWindowId();
+    let workspacesCount = await workspacesWindowIdUtils.getWindowWorkspacesCount(
+      windowId
+    );
+    return workspacesCount;
+  },
+
   async getAllWorkspacesBlockElements() {
     let windowId = this.getCurrentWindowId();
     let result = await WorkspacesElementService.getAllWorkspacesBlockElements(
@@ -177,7 +194,7 @@ const gWorkspaces = {
     return result;
   },
 
-  /* tab stacks saver */
+  /* Workspaces saver */
   async saveWorkspacesData(workspacesData) {
     let windowId = this.getCurrentWindowId();
     await workspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
@@ -206,7 +223,7 @@ const gWorkspaces = {
     tab.setAttribute(this.workspacesTabAttributionId, workspaceId);
   },
 
-  /* tab stacks remover */
+  /* Workspaces remover */
   async removeTabFromWorkspace(workspaceId, tab) {
     let workspacesData = await this.getCurrentWorkspacesData();
     let index = workspacesData[workspaceId].tabs.indexOf(
@@ -227,7 +244,7 @@ const gWorkspaces = {
     await workspacesIdUtils.removeWindowWorkspacesDataById(windowId);
   },
 
-  /* tab stacks manager */
+  /* Workspaces manager */
   async createWorkspace(name, defaultWorkspace) {
     let windowId = this.getCurrentWindowId();
     let createdWorkspaceId = await workspacesService.createWorkspace(
@@ -239,7 +256,7 @@ const gWorkspaces = {
   },
 
   async createNoNameWorkspace() {
-    await this.createWorkspace("New Tab Stack", false);
+    await this.createWorkspace("New Workspace", false);
   },
 
   async addTabToWorkspace(workspaceId, tab) {
@@ -267,7 +284,7 @@ const gWorkspaces = {
   },
 
   changeWorkspace(workspaceId, option) {
-    // Change tab stack
+    // Change Workspace
     let willChangeWorkspaceLastShowTab =
       gWorkspaces.getWorkspaceselectedTab(workspaceId);
 
@@ -282,20 +299,22 @@ const gWorkspaces = {
 
     switch (option) {
       case 1:
-        // rebuild the workspacesToolbar
+        // rebuild the workspaces Toolbar
         gWorkspaces.rebuildWorkspacesToolbar();
         break;
       case 2:
-        // Append Tab Stacks Toolbar Tab Stack Button
+        // Append Workspaces Toolbar Workspace Button
         gWorkspaces.addToolbarWorkspaceButtonToAppend(workspaceId);
         gWorkspaces.changeToolbarSelectedWorkspaceView(workspaceId);
         break;
       default:
-        // Change Tab Stacks Toolbar Selected Tab Stack View
+        // Change Workspaces Toolbar Selected Workspace View
         gWorkspaces.changeToolbarSelectedWorkspaceView(workspaceId);
         break;
     }
     gWorkspaces.checkAllTabsForVisibility();
+
+    // Change displaying Workspace Name
   },
 
   async setSelectWorkspace(workspaceId) {
@@ -394,7 +413,7 @@ const gWorkspaces = {
   /* Visibility Service */
   async checkAllTabsForVisibility() {
     // Check all tabs for visibility
-    // Get Current Tab Stack & Tab Stack Id
+    // Get Current Workspace & Workspace Id
     // Get Current Window Id
 
     let windowId = gWorkspaces.getCurrentWindowId();
@@ -417,10 +436,12 @@ const gWorkspaces = {
       }
 
       let chackedWorkspaceId = gWorkspaces.getWorkspaceIdFromAttribute(tabs[i]);
-      if (chackedWorkspaceId == currentWorkspaceId) {
-        gBrowser.showTab(tabs[i]);
-      } else {
-        gBrowser.hideTab(tabs[i]);
+      if (await gWorkspaces.getCurrentWorkspacesCount() > 1) {
+        if (chackedWorkspaceId == currentWorkspaceId) {
+          gBrowser.showTab(tabs[i]);
+        } else {
+          gBrowser.hideTab(tabs[i]);
+        }
       }
 
       let tabObj = {
@@ -448,10 +469,10 @@ const gWorkspaces = {
         tabObj.lastShow = true;
       }
 
-      // Save tab stacks data
+      // Save Workspaces data
       workspacesData[workspace.id].tabs.push(tabObj);
     }
-    // Save tab stacks data
+    // Save Workspaces data
     await gWorkspaces.saveWorkspacesDataWithoutOverwritingPreferences(
       workspacesData
     );
@@ -469,7 +490,7 @@ const gWorkspaces = {
     if (!currentWorkspace) {
       await gWorkspaces.createWorkspace("Default", true);
 
-      // Set default tab stack
+      // Set default Workspace
       let workspaceId = await gWorkspaces.getCurrentWorkspaceId();
       await gWorkspaces.setSelectWorkspace(workspaceId);
     }
@@ -496,7 +517,7 @@ const gWorkspaces = {
     styleElemInjectToToolbar.textContent = WorkspacesElementService.injectionCSS;
     document.head.appendChild(styleElemInjectToToolbar);
 
-    // build tab stacks toolbar
+    // build Workspaces toolbar
     await this.rebuildWorkspacesToolbar();
     this._currentWorkspaceId = await this.getCurrentWorkspaceId();
     this.checkAllTabsForVisibility();
@@ -507,7 +528,7 @@ const gWorkspaces = {
 
   eventListeners: {
     async onTabBarStateChanged(reason) {
-      // Change tab stacks toolbar visibility
+      // Change Workspaces toolbar visibility
       await gWorkspaces.checkAllTabsForVisibility();
     },
   },
@@ -515,7 +536,7 @@ const gWorkspaces = {
   contextMenu: {
     createWorkspacesContextMenuItems(event) {
       //delete already exsist items
-      let menuElem = document.getElementById("tab-stacks-toolbar-item-context");
+      let menuElem = document.getElementById("workspaces-toolbar-item-context-menu");
       while (menuElem.firstChild) {
         menuElem.firstChild.remove();
       }
@@ -525,7 +546,7 @@ const gWorkspaces = {
          <menuitem data-l10n-id="workspace-context-menu-selected-tab" disabled="true"/>
         `);
       let parentElem = document.getElementById(
-        "tab-stacks-toolbar-item-context"
+        "workspaces-toolbar-item-context-menu"
       );
       parentElem.appendChild(menuItem);
     },
