@@ -12,7 +12,7 @@ browser.jar:
   content/browser/browser-downloadbar.js        (content/browser-downloadbar.js)
   content/browser/browser-favicon-color.js      (content/browser-favicon-color.js)
   content/browser/browser-tabbar.js             (content/browser-tabbar.js)
-  content/browser/browser-tab-stacks.js         (content/browser-tab-stacks.js)
+  content/browser/browser-workspaces.js         (content/browser-workspaces.js)
   content/browser/browser-browserActions.js     (content/browser-browserActions.js)
   content/browser/browser-pageActions-floorp.js        (content/browser-pageActions.js)
   content/browser/browser-pinned-tabs-title.js  (content/browser-pinned-tabs-title.js)

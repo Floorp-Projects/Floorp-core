@@ -5,10 +5,10 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 EXTRA_JS_MODULES += [
-    "tabStacksDataSaver.sys.mjs",
-    "tabStacksExternalFileService.sys.mjs",
-    "tabStacksIdUtils.sys.mjs",
-    "tabStacksService.sys.mjs",
-    "tabStacksToolbarService.sys.mjs",
-    "tabStacksWindowIdUtils.sys.mjs",
+    "workspacesDataSaver.sys.mjs",
+    "WorkspacesElementService.sys.mjs",
+    "workspacesExternalFileService.sys.mjs",
+    "workspacesIdUtils.sys.mjs",
+    "workspacesService.sys.mjs",
+    "workspacesWindowIdUtils.sys.mjs",
 ]

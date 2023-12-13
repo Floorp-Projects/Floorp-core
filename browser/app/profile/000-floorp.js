@@ -173,7 +173,8 @@ pref("browser.ssb.enabled", false);
 #endif
 
 // Tab Stack
-pref("floorp.browser.tabstacks.enabled", false);
+pref("floorp.browser.Workspaces.enabled", false);
+pref("floorp.Workspaces.toolbar.show.scrollbar", false);
 
 /*----------------------------------------------------------------------------------------------------------------------------------*/
 
