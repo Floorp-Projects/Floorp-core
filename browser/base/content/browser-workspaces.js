@@ -3,32 +3,32 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-let { workspacesExternalFileService } = ChromeUtils.importESModule(
-  "resource:///modules/workspacesExternalFileService.sys.mjs"
+let { WorkspacesExternalFileService } = ChromeUtils.importESModule(
+  "resource:///modules/WorkspacesExternalFileService.sys.mjs"
 );
 
-let { workspacesService } = ChromeUtils.importESModule(
-  "resource:///modules/workspacesService.sys.mjs"
+let { WorkspacesService } = ChromeUtils.importESModule(
+  "resource:///modules/WorkspacesService.sys.mjs"
 );
 
 let { workspacesPreferences } = ChromeUtils.importESModule(
-  "resource:///modules/workspacesService.sys.mjs"
+  "resource:///modules/WorkspacesService.sys.mjs"
 );
 
-let { workspacesIdUtils } = ChromeUtils.importESModule(
-  "resource:///modules/workspacesIdUtils.sys.mjs"
+let { WorkspacesIdUtils } = ChromeUtils.importESModule(
+  "resource:///modules/WorkspacesIdUtils.sys.mjs"
 );
 
 let { WorkspacesElementService } = ChromeUtils.importESModule(
   "resource:///modules/WorkspacesElementService.sys.mjs"
 );
 
-let { workspacesWindowIdUtils } = ChromeUtils.importESModule(
-  "resource:///modules/workspacesWindowIdUtils.sys.mjs"
+let { WorkspacesWindowIdUtils } = ChromeUtils.importESModule(
+  "resource:///modules/WorkspacesWindowIdUtils.sys.mjs"
 );
 
-let { workspacesDataSaver } = ChromeUtils.importESModule(
-  "resource:///modules/workspacesDataSaver.sys.mjs"
+let { WorkspacesDataSaver } = ChromeUtils.importESModule(
+  "resource:///modules/WorkspacesDataSaver.sys.mjs"
 );
 
 // global variable
@@ -127,20 +127,20 @@ const gWorkspaces = {
 
   async getCurrentWorkspace() {
     let windowId = this.getCurrentWindowId();
-    let workspaceId = await workspacesWindowIdUtils.getSelectedWorkspaceId(
+    let workspaceId = await WorkspacesWindowIdUtils.getSelectedWorkspaceId(
       windowId
     );
 
     if (workspaceId == null) {
-      let id = await workspacesWindowIdUtils.getDefaultWorkspaceId(windowId);
-      let workspace = await workspacesIdUtils.getWorkspaceByIdAndWindowId(
+      let id = await WorkspacesWindowIdUtils.getDefaultWorkspaceId(windowId);
+      let workspace = await WorkspacesIdUtils.getWorkspaceByIdAndWindowId(
         id,
         windowId
       );
       return workspace;
     }
 
-    let workspace = await workspacesIdUtils.getWorkspaceByIdAndWindowId(
+    let workspace = await WorkspacesIdUtils.getWorkspaceByIdAndWindowId(
       workspaceId,
       windowId
     );
@@ -154,7 +154,7 @@ const gWorkspaces = {
 
   async getCurrentWorkspacesData() {
     let windowId = this.getCurrentWindowId();
-    let workspacesData = await workspacesWindowIdUtils.getWindowWorkspacesData(
+    let workspacesData = await WorkspacesWindowIdUtils.getWindowWorkspacesData(
       windowId
     );
     return workspacesData;
@@ -163,7 +163,7 @@ const gWorkspaces = {
   async getCurrentWorkspacesDataWithoutPreferences() {
     let windowId = this.getCurrentWindowId();
     let workspacesData =
-      await workspacesWindowIdUtils.getWindowWorkspacesDataWithoutPreferences(
+      await WorkspacesWindowIdUtils.getWindowWorkspacesDataWithoutPreferences(
         windowId
       );
     return workspacesData;
@@ -171,7 +171,7 @@ const gWorkspaces = {
 
   async getCurrentWorkspacesCount() {
     let windowId = this.getCurrentWindowId();
-    let workspacesCount = await workspacesWindowIdUtils.getWindowWorkspacesCount(
+    let workspacesCount = await WorkspacesWindowIdUtils.getWindowWorkspacesCount(
       windowId
     );
     return workspacesCount;
@@ -197,12 +197,12 @@ const gWorkspaces = {
   /* Workspaces saver */
   async saveWorkspacesData(workspacesData) {
     let windowId = this.getCurrentWindowId();
-    await workspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
+    await WorkspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
   },
 
   async saveWorkspacesDataWithoutOverwritingPreferences(workspacesData) {
     let windowId = this.getCurrentWindowId();
-    await workspacesDataSaver.saveWorkspacesDataWithoutOverwritingPreferences(
+    await WorkspacesDataSaver.saveWorkspacesDataWithoutOverwritingPreferences(
       workspacesData,
       windowId
     );
@@ -210,7 +210,7 @@ const gWorkspaces = {
 
   async saveWindowPreferences(preferences) {
     let windowId = this.getCurrentWindowId();
-    await workspacesDataSaver.saveWindowPreferences(preferences, windowId);
+    await WorkspacesDataSaver.saveWindowPreferences(preferences, windowId);
   },
 
   /* tab attribute */
@@ -235,19 +235,19 @@ const gWorkspaces = {
 
   async removeWorkspaceById(workspaceId) {
     let windowId = this.getCurrentWindowId();
-    await workspacesIdUtils.removeWorkspaceById(workspaceId, windowId);
+    await WorkspacesIdUtils.removeWorkspaceById(workspaceId, windowId);
     this.removeWorkspaceTabs(workspaceId);
   },
 
   async removeWindowWorkspacesDataById() {
     let windowId = this.getCurrentWindowId();
-    await workspacesIdUtils.removeWindowWorkspacesDataById(windowId);
+    await WorkspacesIdUtils.removeWindowWorkspacesDataById(windowId);
   },
 
   /* Workspaces manager */
   async createWorkspace(name, defaultWorkspace) {
     let windowId = this.getCurrentWindowId();
-    let createdWorkspaceId = await workspacesService.createWorkspace(
+    let createdWorkspaceId = await WorkspacesService.createWorkspace(
       name,
       windowId,
       defaultWorkspace
@@ -267,17 +267,17 @@ const gWorkspaces = {
 
   async deleteWorkspace(workspaceId) {
     let windowId = this.getCurrentWindowId();
-    await workspacesService.deleteWorkspace(workspaceId, windowId);
+    await WorkspacesService.deleteWorkspace(workspaceId, windowId);
   },
 
   async renameWorkspace(workspaceId, newName) {
     let windowId = this.getCurrentWindowId();
-    await workspacesService.renameWorkspace(workspaceId, newName, windowId);
+    await WorkspacesService.renameWorkspace(workspaceId, newName, windowId);
   },
 
   async setDefaultWorkspace(workspaceId) {
     let windowId = this.getCurrentWindowId();
-    await workspacesService.setDefaultWorkspace(workspaceId, windowId);
+    await WorkspacesService.setDefaultWorkspace(workspaceId, windowId);
 
     // rebuild the workspacesToolbar
     gWorkspaces.rebuildWorkspacesToolbar(windowId);
@@ -319,16 +319,16 @@ const gWorkspaces = {
 
   async setSelectWorkspace(workspaceId) {
     let windowId = this.getCurrentWindowId();
-    await workspacesService.setSelectWorkspace(workspaceId, windowId);
+    await WorkspacesService.setSelectWorkspace(workspaceId, windowId);
   },
 
   /* tab manager */
   get workspacesTabAttributionId() {
-    return workspacesService.workspacesTabAttributionId;
+    return WorkspacesService.workspacesTabAttributionId;
   },
 
   get workspaceLastShowTabAttributionId() {
-    return workspacesService.workspaceLastShowId;
+    return WorkspacesService.workspaceLastShowId;
   },
 
   moveTabToWorkspace(workspaceId, tab) {
@@ -394,7 +394,7 @@ const gWorkspaces = {
   async getWorkspaceContainerUserContextId(workspaceId) {
     let windowId = this.getCurrentWindowId();
     let userContextId =
-      await workspacesIdUtils.getWorkspaceContainerUserContextId(
+      await WorkspacesIdUtils.getWorkspaceContainerUserContextId(
         workspaceId,
         windowId
       );
@@ -403,7 +403,7 @@ const gWorkspaces = {
 
   async setWorkspaceContainerUserContextId(workspaceId, userContextId) {
     let windowId = this.getCurrentWindowId();
-    await workspacesService.setWorkspaceContainerUserContextId(
+    await WorkspacesService.setWorkspaceContainerUserContextId(
       workspaceId,
       userContextId,
       windowId
@@ -418,7 +418,7 @@ const gWorkspaces = {
 
     let windowId = gWorkspaces.getCurrentWindowId();
     // Remove all tab infomation from json
-    await workspacesIdUtils.removeWindowTabsDataById(windowId);
+    await WorkspacesIdUtils.removeWindowTabsDataById(windowId);
 
     let currentWorkspaceId = await gWorkspaces.getCurrentWorkspaceId();
     let workspace = await gWorkspaces.getCurrentWorkspace();
@@ -456,14 +456,14 @@ const gWorkspaces = {
       if (tabs[i] == selectedTab) {
         // Remove Last tab attribute from another tab
         let lastShowTabs = document.querySelectorAll(
-          `[${workspacesService.workspaceLastShowId}="${newWorkspaceId}"]`
+          `[${WorkspacesService.workspaceLastShowId}="${newWorkspaceId}"]`
         );
         for (let i = 0; i < lastShowTabs.length; i++) {
-          lastShowTabs[i].removeAttribute(workspacesService.workspaceLastShowId);
+          lastShowTabs[i].removeAttribute(WorkspacesService.workspaceLastShowId);
         }
 
         tabs[i].setAttribute(
-          workspacesService.workspaceLastShowId,
+          WorkspacesService.workspaceLastShowId,
           newWorkspaceId
         );
         tabObj.lastShow = true;

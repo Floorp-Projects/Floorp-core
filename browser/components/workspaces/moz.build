@@ -5,10 +5,10 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 EXTRA_JS_MODULES += [
-    "workspacesDataSaver.sys.mjs",
+    "WorkspacesDataSaver.sys.mjs",
     "WorkspacesElementService.sys.mjs",
-    "workspacesExternalFileService.sys.mjs",
-    "workspacesIdUtils.sys.mjs",
-    "workspacesService.sys.mjs",
-    "workspacesWindowIdUtils.sys.mjs",
+    "WorkspacesExternalFileService.sys.mjs",
+    "WorkspacesIdUtils.sys.mjs",
+    "WorkspacesService.sys.mjs",
+    "WorkspacesWindowIdUtils.sys.mjs",
 ]

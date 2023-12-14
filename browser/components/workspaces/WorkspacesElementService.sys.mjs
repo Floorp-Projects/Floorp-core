@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { workspacesWindowIdUtils } from "resource:///modules/workspacesWindowIdUtils.sys.mjs";
+import { WorkspacesWindowIdUtils } from "resource:///modules/WorkspacesWindowIdUtils.sys.mjs";
 
 export const EXPORTED_SYMBOLS = ["WorkspacesElementService"];
 
@@ -18,7 +18,7 @@ export const WorkspacesElementService = {
                              oncommand="gWorkspaces.createNoNameWorkspace();" />
               <toolbarbutton id="workspacesManageWorkspacesButton" class="toolbarbutton-1 chromeclass-toolbar-additional"
                              label="Manage Workspaces" tooltiptext="Manage Workspaces"
-                             oncommand="workspacesService.openWorkspacesManager();" />
+                             oncommand="WorkspacesService.openWorkspacesManager();" />
           </arrowscrollbox>
         </panel>
         `,
@@ -83,16 +83,16 @@ export const WorkspacesElementService = {
      },
 
      async getWorkspaceBlockElement(workspaceId, windowId) {
-        let workspacesData = await workspacesWindowIdUtils.getWindowWorkspacesDataWithoutPreferences(windowId);
+        let workspacesData = await WorkspacesWindowIdUtils.getWindowWorkspacesDataWithoutPreferences(windowId);
         let workspace = workspacesData[workspaceId];
-        let selectedWorkspaceId = await workspacesWindowIdUtils.getSelectedWorkspaceId(windowId);
+        let selectedWorkspaceId = await WorkspacesWindowIdUtils.getSelectedWorkspaceId(windowId);
         let selected = workspaceId == selectedWorkspaceId;
         return this.workspaceBlockElement(workspaceId, workspace.name, selected);
      },
 
      async getAllWorkspacesBlockElements(windowId) {
-        let workspacesData = await workspacesWindowIdUtils.getWindowWorkspacesDataWithoutPreferences(windowId);
-        let selectedWorkspaceId = await workspacesWindowIdUtils.getSelectedWorkspaceId(windowId);
+        let workspacesData = await WorkspacesWindowIdUtils.getWindowWorkspacesDataWithoutPreferences(windowId);
+        let selectedWorkspaceId = await WorkspacesWindowIdUtils.getSelectedWorkspaceId(windowId);
 
         let workspaceBlockElements = [];
         for (let workspaceId in workspacesData) {

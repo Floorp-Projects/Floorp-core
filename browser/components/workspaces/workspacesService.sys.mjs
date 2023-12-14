@@ -4,24 +4,24 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 export const EXPORTED_SYMBOLS = [
-  "workspacesService",
+  "WorkspacesService",
   "workspacesPreferences",
   "WorkspacesGroupService",
 ];
 
 const lazy = {};
 ChromeUtils.defineESModuleGetters(lazy, {
-  workspacesWindowIdUtils:
-    "resource:///modules/workspacesWindowIdUtils.sys.mjs",
-  workspacesDataSaver:
-    "resource:///modules/workspacesDataSaver.sys.mjs",
+  WorkspacesWindowIdUtils:
+    "resource:///modules/WorkspacesWindowIdUtils.sys.mjs",
+  WorkspacesDataSaver:
+    "resource:///modules/WorkspacesDataSaver.sys.mjs",
 });
 
 function generateUuid() {
   return Services.uuid.generateUUID().toString();
 }
 
-export const workspacesService = {
+export const WorkspacesService = {
   get workspacesTabAttributionId() {
     return "floorpWorkspaceId";
   },
@@ -39,7 +39,7 @@ export const workspacesService = {
 
   async createWorkspace(name, windowId, defaultWorkspace) {
     let workspacesData =
-      await lazy.workspacesWindowIdUtils.getWindowWorkspacesData(windowId);
+      await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
     let workspaceId = generateUuid();
 
     workspacesData[workspaceId] = {
@@ -48,7 +48,7 @@ export const workspacesService = {
       defaultWorkspace: defaultWorkspace || false,
       id: workspaceId,
     };
-    await lazy.workspacesDataSaver.saveWorkspacesData(
+    await lazy.WorkspacesDataSaver.saveWorkspacesData(
       workspacesData,
       windowId
     );
@@ -57,9 +57,9 @@ export const workspacesService = {
 
   async deleteWorkspace(workspaceId, windowId) {
     let workspacesData =
-      await lazy.workspacesWindowIdUtils.getWindowWorkspacesData(windowId);
+      await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
     delete workspacesData[workspaceId];
-    await lazy.workspacesDataSaver.saveWorkspacesData(
+    await lazy.WorkspacesDataSaver.saveWorkspacesData(
       workspacesData,
       windowId
     );
@@ -67,9 +67,9 @@ export const workspacesService = {
 
   async renameWorkspace(workspaceId, newName, windowId) {
     let workspacesData =
-      await lazy.workspacesWindowIdUtils.getWindowWorkspacesData(windowId);
+      await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
     workspacesData[workspaceId].name = newName;
-    await lazy.workspacesDataSaver.saveWorkspacesData(
+    await lazy.WorkspacesDataSaver.saveWorkspacesData(
       workspacesData,
       windowId
     );
@@ -77,11 +77,11 @@ export const workspacesService = {
 
   async addTabToWorkspace(workspaceId, tabs, windowId) {
     let workspacesData =
-      await lazy.workspacesWindowIdUtils.getWindowWorkspacesData(windowId);
+      await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
     for (let tab of tabs) {
       workspacesData[workspaceId].tabs.push(tab.workspaceId);
     }
-    await lazy.workspacesDataSaver.saveWorkspacesData(
+    await lazy.WorkspacesDataSaver.saveWorkspacesData(
       workspacesData,
       windowId
     );
@@ -89,11 +89,11 @@ export const workspacesService = {
 
   async setDefaultWorkspace(workspaceId, windowId) {
     let workspacesData =
-      await lazy.workspacesWindowIdUtils.getWindowWorkspacesData(windowId);
+      await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
     workspacesData.preferences = {
       defaultWorkspace: workspaceId,
     };
-    await lazy.workspacesDataSaver.saveWorkspacesData(
+    await lazy.WorkspacesDataSaver.saveWorkspacesData(
       workspacesData,
       windowId
     );
@@ -101,7 +101,7 @@ export const workspacesService = {
 
   async setSelectWorkspace(workspaceId, windowId) {
     let workspacesData =
-      await lazy.workspacesWindowIdUtils.getWindowWorkspacesData(windowId);
+      await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
 
     if (!workspacesData.preferences) {
       workspacesData.preferences = {};
@@ -109,7 +109,7 @@ export const workspacesService = {
 
     workspacesData.preferences.selectedWorkspaceId = workspaceId;
 
-    await lazy.workspacesDataSaver.saveWorkspacesData(
+    await lazy.WorkspacesDataSaver.saveWorkspacesData(
       workspacesData,
       windowId
     );
@@ -117,9 +117,9 @@ export const workspacesService = {
 
   async setWorkspaceContainerUserContextId(workspaceId, userContextId, windowId) {
     let workspacesData =
-      await lazy.workspacesWindowIdUtils.getWindowWorkspacesData(windowId);
+      await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
     workspacesData[workspaceId].userContextId = userContextId;
-    await lazy.workspacesDataSaver.saveWorkspacesData(
+    await lazy.WorkspacesDataSaver.saveWorkspacesData(
       workspacesData,
       windowId
     );
@@ -129,14 +129,14 @@ export const workspacesService = {
 export const WorkspacesGroupService = {
   reorderingWorkspacesGroupBefore(workspaceId, beforeWorkspaceId, windowId) {
     let workspacesData =
-      lazy.workspacesWindowIdUtils.getWindowWorkspacesData(windowId);
+      lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
     let workspaceIds = Object.keys(workspacesData);
     let index = workspaceIds.indexOf(workspaceId);
     let beforeIndex = workspaceIds.indexOf(beforeWorkspaceId);
     workspaceIds.splice(index, 1);
     workspaceIds.splice(beforeIndex, 0, workspaceId);
     workspacesData[workspaceId].tabs = workspaceIds;
-    lazy.workspacesDataSaver.saveWorkspacesData(
+    lazy.WorkspacesDataSaver.saveWorkspacesData(
       workspacesData,
       windowId
     );

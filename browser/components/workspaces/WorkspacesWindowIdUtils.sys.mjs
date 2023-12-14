@@ -4,18 +4,18 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
  export const EXPORTED_SYMBOLS = [
-    "workspacesWindowIdUtils"
+    "WorkspacesWindowIdUtils"
 ];
 
 const lazy = {};
 ChromeUtils.defineESModuleGetters(lazy, {
-  workspacesExternalFileService:
-    "resource:///modules/workspacesExternalFileService.sys.mjs",
+  WorkspacesExternalFileService:
+    "resource:///modules/WorkspacesExternalFileService.sys.mjs",
 });
 
-export const workspacesWindowIdUtils = {
+export const WorkspacesWindowIdUtils = {
     get _workspacesStoreFile() {
-        return lazy.workspacesExternalFileService._workspacesStoreFile 
+        return lazy.WorkspacesExternalFileService._workspacesStoreFile 
     },
 
     async getAllWindowAndWorkspacesData() {

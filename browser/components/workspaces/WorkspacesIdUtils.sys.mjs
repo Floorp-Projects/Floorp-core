@@ -4,27 +4,27 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 export const EXPORTED_SYMBOLS = [
-    "workspacesIdUtils"
+    "WorkspacesIdUtils"
 ];
 
 const lazy = {};
 ChromeUtils.defineESModuleGetters(lazy, {
-  workspacesExternalFileService:
-    "resource:///modules/workspacesExternalFileService.sys.mjs",
-  workspacesWindowIdUtils:
-    "resource:///modules/workspacesWindowIdUtils.sys.mjs",
-  workspacesDataSaver:
-    "resource:///modules/workspacesDataSaver.sys.mjs",
+  WorkspacesExternalFileService:
+    "resource:///modules/WorkspacesExternalFileService.sys.mjs",
+  WorkspacesWindowIdUtils:
+    "resource:///modules/WorkspacesWindowIdUtils.sys.mjs",
+  WorkspacesDataSaver:
+    "resource:///modules/WorkspacesDataSaver.sys.mjs",
 });
 
-export const workspacesIdUtils = {
+export const WorkspacesIdUtils = {
     async getWorkspaceByIdAndWindowId(workspaceId, windowId) {
-        let workspacesData = await lazy.workspacesWindowIdUtils.getWindowWorkspacesData(windowId);
+        let workspacesData = await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
         return workspacesData[workspaceId];
     },
 
     async getWorkspaceIdByTab(tab, windowId) {
-        let workspacesData = await lazy.workspacesWindowIdUtils.getWindowWorkspacesData(windowId);
+        let workspacesData = await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
         for (let workspaceId in workspacesData) {
             let workspace = workspacesData[workspaceId];
             if (!workspace.tabs) {
@@ -44,20 +44,20 @@ export const workspacesIdUtils = {
     },
 
     async removeWorkspaceById(workspaceId, windowId) {
-        let workspacesData = await lazy.workspacesWindowIdUtils.getWindowWorkspacesData(windowId);
+        let workspacesData = await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
         delete workspacesData[workspaceId];
-        await lazy.workspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
+        await lazy.WorkspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
     },
 
     async removeWindowWorkspacesDataById(windowId) {
-        let json = await IOUtils.readJSON(lazy.workspacesExternalFileService._workspacesStoreFile);
+        let json = await IOUtils.readJSON(lazy.WorkspacesExternalFileService._workspacesStoreFile);
         delete json.windows[windowId];
 
-        await IOUtils.writeJSON(lazy.workspacesExternalFileService._workspacesStoreFile, json);
+        await IOUtils.writeJSON(lazy.WorkspacesExternalFileService._workspacesStoreFile, json);
     },
 
     async removeWindowTabsDataById(windowId) { 
-        let json = await IOUtils.readJSON(lazy.workspacesExternalFileService._workspacesStoreFile);
+        let json = await IOUtils.readJSON(lazy.WorkspacesExternalFileService._workspacesStoreFile);
         let windowWorkspacesData = json.windows[windowId];
         for (let workspaceId in windowWorkspacesData) {
             let workspace = windowWorkspacesData[workspaceId];
@@ -67,6 +67,6 @@ export const workspacesIdUtils = {
             }
         }
 
-        await IOUtils.writeJSON(lazy.workspacesExternalFileService._workspacesStoreFile, json);
+        await IOUtils.writeJSON(lazy.WorkspacesExternalFileService._workspacesStoreFile, json);
     }
 };
