@@ -9,17 +9,19 @@ export const EXPORTED_SYMBOLS = ["WorkspacesElementService"];
 
 export const WorkspacesElementService = {
     panelElement:
-      `<panel id="workspacesToolbarButtonPanel" type="arrow" position="bottomright topright">
-          <arrowscrollbox id="workspacesPopupBox" flex="1">
-              <vbox id="workspacesPopupContent" align="center" flex="1" orient="vertical"
-                              clicktoscroll="true" class="statusbar-padding" />
-              <toolbarbutton id="workspacesCreateNewWorkspaceButton" class="toolbarbutton-1 chromeclass-toolbar-additional"
-                             label="Create new Workspace" tooltiptext="Create new Workspace"
-                             oncommand="gWorkspaces.createNoNameWorkspace();" />
-              <toolbarbutton id="workspacesManageWorkspacesButton" class="toolbarbutton-1 chromeclass-toolbar-additional"
-                             label="Manage Workspaces" tooltiptext="Manage Workspaces"
-                             oncommand="WorkspacesService.openWorkspacesManager();" />
-          </arrowscrollbox>
+      `<panel id="workspacesToolbarButtonPanel" type="arrow" position="bottom top">
+          <vbox id="workspacesToolbarButtonPanelBox">
+            <arrowscrollbox id="workspacesPopupBox" flex="1">
+                <vbox id="workspacesPopupContent" align="center" flex="1" orient="vertical"
+                                clicktoscroll="true" class="statusbar-padding" />
+                <toolbarbutton id="workspacesCreateNewWorkspaceButton" class="toolbarbutton-1 chromeclass-toolbar-additional"
+                               label="Create new Workspace" tooltiptext="Create new Workspace"
+                               oncommand="gWorkspaces.createNoNameWorkspace();" />
+                <toolbarbutton id="workspacesManageWorkspacesButton" class="toolbarbutton-1 chromeclass-toolbar-additional"
+                               label="Manage Workspaces" tooltiptext="Manage Workspaces"
+                               oncommand="WorkspacesService.openWorkspacesManager();" />
+            </arrowscrollbox>
+          </vbox>
         </panel>
         `,
 
@@ -70,6 +72,29 @@ export const WorkspacesElementService = {
         #workspacesManageWorkspacesButton {
           list-style-image: url("chrome://browser/skin/settings.svg");
         }
+        #workspaces-toolbar-button {
+          list-style-image: url("chrome://browser/skin/workspace-floorp.png");
+          border-radius: 0px !important;
+        }
+        #workspaces-toolbar-button:hover {
+          background-color: var(--toolbarbutton-hover-background) !important;
+        }
+        #workspaces-toolbar-button[open="true"],
+        #workspaces-toolbar-button:hover:active {
+          background-color: var(--toolbarbutton-active-background) !important;
+        }
+        #workspaces-toolbar-button > label {
+          display: inherit !important;
+        }
+        #workspaces-toolbar-button > * {
+          background-color: unset !important;
+          background-image: unset !important;
+          background: unset !important;
+        }
+        .workspaceSeparator {
+          margin: 5px 0px !important;
+          width: -moz-available;
+        }
      `,
 
      
@@ -79,6 +104,7 @@ export const WorkspacesElementService = {
                                label="${workspaceName}" tooltiptext="Workspace ${workspaceName}"
                                ${selected ? "selected=\"true\"" : ""}
                                oncommand="gWorkspaces.changeWorkspace('${workspaceId}');" />
+                <toolbarseparator class="toolbarbutton-1 chromeclass-toolbar-additional workspaceSeparator" />
                `
      },
 
