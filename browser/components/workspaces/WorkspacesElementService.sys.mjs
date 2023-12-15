@@ -9,7 +9,7 @@ export const EXPORTED_SYMBOLS = ["WorkspacesElementService"];
 
 export const WorkspacesElementService = {
     panelElement:
-      `<panel id="workspacesToolbarButtonPanel" type="arrow" position="bottom top">
+      `<panel id="workspacesToolbarButtonPanel" type="arrow" position="bottom top" onpopupshowing="gWorkspaces.rebuildWorkspacesToolbar();">
           <vbox id="workspacesToolbarButtonPanelBox">
             <arrowscrollbox id="workspacesPopupBox" flex="1">
                 <vbox id="workspacesPopupContent" align="center" flex="1" orient="vertical"
@@ -126,7 +126,6 @@ export const WorkspacesElementService = {
                                label="${workspaceName}" tooltiptext="Workspace ${workspaceName}"
                                ${selected ? "selected=\"true\"" : ""}
                                oncommand="gWorkspaces.changeWorkspace('${workspaceId}');" />
-                <toolbarseparator class="toolbarbutton-1 chromeclass-toolbar-additional workspaceSeparator" />
                `
      },
 

@@ -173,8 +173,7 @@ pref("browser.ssb.enabled", false);
 #endif
 
 // Workspace
-pref("floorp.browser.Workspaces.enabled", false);
-pref("floorp.Workspaces.toolbar.show.scrollbar", false);
+pref("floorp.browser.Workspaces.enabled", true);
 
 /*----------------------------------------------------------------------------------------------------------------------------------*/
 

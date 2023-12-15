@@ -38,6 +38,11 @@ export const WorkspacesIdUtils = {
         return null;
     },
 
+    async workspaceIdExists(workspaceId, windowId) {
+        let workspacesData = await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
+        return workspacesData.hasOwnProperty(workspaceId);
+    },
+
     async getWorkspaceContainerUserContextId(workspaceId, windowId) {
         let workspace = await this.getWorkspaceByIdAndWindowId(workspaceId, windowId);
         return workspace.userContextId;

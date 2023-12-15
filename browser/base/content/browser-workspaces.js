@@ -37,6 +37,8 @@ var gBrowser = window.gBrowser;
 const gWorkspaces = {
   _initialized: false,
   _currentWorkspaceId: null,
+  _popuppanelNotFound: false,
+  _workspacesTemporarilyDisabled: false,
 
   /** Elements */
   get titlebar() {
@@ -69,6 +71,12 @@ const gWorkspaces = {
 
   /** Workspaces Toolbar */
   async rebuildWorkspacesToolbar() {
+    if(!gWorkspaces.workspacesPopupContent) {
+      gWorkspaces._popuppanelNotFound = true;
+      return;
+    } 
+    gWorkspaces._popuppanelNotFound = false;
+
     // Remove all Workspaces toolbar
     while (gWorkspaces.workspaceButtons.length) {
       gWorkspaces.workspacesPopupContent.firstChild.remove();
@@ -121,7 +129,7 @@ const gWorkspaces = {
 
   /* get Workspaces infomation */
   getCurrentWindowId() {
-    let windowId = window.windowGlobalChild.outerWindowId;
+    let windowId = window.getWorkspaceID();
     return windowId;
   },
 
@@ -245,14 +253,14 @@ const gWorkspaces = {
   },
 
   /* Workspaces manager */
-  async createWorkspace(name, defaultWorkspace) {
+  async createWorkspace(name, defaultWorkspace, addNewTab) {
     let windowId = this.getCurrentWindowId();
     let createdWorkspaceId = await WorkspacesService.createWorkspace(
       name,
       windowId,
       defaultWorkspace
     );
-    this.changeWorkspace(createdWorkspaceId, defaultWorkspace ? 1 : 2);
+    this.changeWorkspace(createdWorkspaceId, defaultWorkspace ? 1 : 2, addNewTab);
   },
 
   async createNoNameWorkspace() {
@@ -315,6 +323,15 @@ const gWorkspaces = {
     gWorkspaces.checkAllTabsForVisibility();
 
     // Change displaying Workspace Name
+  },
+
+  async workspaceIdExists(workspaceId) {
+    let windowId = this.getCurrentWindowId();
+    let result = await WorkspacesIdUtils.workspaceIdExists(
+      workspaceId,
+      windowId
+    );
+    return result;
   },
 
   async setSelectWorkspace(workspaceId) {
@@ -430,7 +447,7 @@ const gWorkspaces = {
       // Set workspaceId if workspaceId is null
       let workspaceId = gWorkspaces.getWorkspaceIdFromAttribute(tabs[i]);
       if (
-        !(workspaceId !== "" && workspaceId !== null && workspaceId !== undefined)
+        !(workspaceId !== "" && workspaceId !== null && workspaceId !== undefined && !gWorkspaces.workspaceIdExists(workspaceId))
       ) {
         gWorkspaces.setWorkspaceIdToAttribute(tabs[i], currentWorkspaceId);
       }
@@ -487,8 +504,8 @@ const gWorkspaces = {
     }
 
     let currentWorkspace = await gWorkspaces.getCurrentWorkspace();
-    if (!currentWorkspace) {
-      await gWorkspaces.createWorkspace("Default", true);
+    if (!currentWorkspace || currentWorkspace == null || currentWorkspace == undefined) {
+      await gWorkspaces.createWorkspace("Default", true, false);
 
       // Set default Workspace
       let workspaceId = await gWorkspaces.getCurrentWorkspaceId();
@@ -518,7 +535,9 @@ const gWorkspaces = {
     document.head.appendChild(styleElemInjectToToolbar);
 
     // build Workspaces toolbar
-    await this.rebuildWorkspacesToolbar();
+    await gWorkspaces.rebuildWorkspacesToolbar();
+
+    // Set current Workspace Id
     this._currentWorkspaceId = await this.getCurrentWorkspaceId();
     this.checkAllTabsForVisibility();
 
