@@ -14,13 +14,16 @@ export const WorkspacesElementService = {
             <arrowscrollbox id="workspacesPopupBox" flex="1">
                 <vbox id="workspacesPopupContent" align="center" flex="1" orient="vertical"
                                 clicktoscroll="true" class="statusbar-padding" />
-                <toolbarbutton id="workspacesCreateNewWorkspaceButton" class="toolbarbutton-1 chromeclass-toolbar-additional"
-                               label="Create new Workspace" tooltiptext="Create new Workspace"
-                               oncommand="gWorkspaces.createNoNameWorkspace();" />
-                <toolbarbutton id="workspacesManageWorkspacesButton" class="toolbarbutton-1 chromeclass-toolbar-additional"
-                               label="Manage Workspaces" tooltiptext="Manage Workspaces"
-                               oncommand="WorkspacesService.openWorkspacesManager();" />
             </arrowscrollbox>
+            <toolbarseparator class="toolbarbutton-1 chromeclass-toolbar-additional" id="workspacesPopupSeparator" />
+            <hbox id="workspacesPopupFooter" align="center" pack="center">
+              <toolbarbutton id="workspacesCreateNewWorkspaceButton" class="toolbarbutton-1 chromeclass-toolbar-additional"
+                           label="New Workspace..." tooltiptext="Create new Workspace"
+                           oncommand="gWorkspaces.createNoNameWorkspace();" />
+              <toolbarbutton id="workspacesManageWorkspacesButton" class="toolbarbutton-1 chromeclass-toolbar-additional"
+                           label="Manage Workspaces" tooltiptext="Manage Workspaces"
+                           oncommand="WorkspacesService.openWorkspacesManager();" />
+            </hbox>
           </vbox>
         </panel>
         `,
@@ -66,9 +69,6 @@ export const WorkspacesElementService = {
           width: -moz-available;
           min-height: 40px;
         }
-        #workspacesCreateNewWorkspaceButton {
-          list-style-image: url(chrome://global/skin/icons/plus.svg);
-        }
         #workspacesManageWorkspacesButton {
           list-style-image: url("chrome://browser/skin/settings.svg");
         }
@@ -94,6 +94,28 @@ export const WorkspacesElementService = {
         .workspaceSeparator {
           margin: 5px 0px !important;
           width: -moz-available;
+        }
+        #workspacesCreateNewWorkspaceButton {
+          list-style-image: url(chrome://global/skin/icons/plus.svg);
+          width: -moz-available;
+          border-radius: var(--tab-border-radius);
+        }
+        #workspacesCreateNewWorkspaceButton:hover {
+          background-color: var(--toolbarbutton-hover-background) !important;
+        }
+        #workspacesCreateNewWorkspaceButton:hover:active {
+          background-color: var(--toolbarbutton-active-background) !important;
+        }
+        #workspacesCreateNewWorkspaceButton > * {
+          background-color: unset !important;
+          background-image: unset !important;
+          background: unset !important;
+        }
+        #workspacesCreateNewWorkspaceButton > label {
+          display: inherit;
+        }
+        #workspacesPopupSeparator {
+          margin: 10px 0px !important;
         }
      `,
 
