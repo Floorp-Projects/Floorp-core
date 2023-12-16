@@ -129,7 +129,7 @@ const gWorkspaces = {
 
   /* get Workspaces infomation */
   getCurrentWindowId() {
-    let windowId = window.getWorkspaceID();
+    let windowId = window.windowGlobalChild.innerWindowId; /* todo: windowGlobalChild is not defined */
     return windowId;
   },
 
