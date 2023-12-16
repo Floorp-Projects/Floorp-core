@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
     SessionStore.promiseInitialized.then(() => {
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-UI-customizing-menu.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-tabbar.js", this);
-        Services.scriptloader.loadSubScript("chrome://browser/content/browser-tab-stacks.js", this);
+        Services.scriptloader.loadSubScript("chrome://browser/content/browser-workspaces.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-verticaltabs.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-flex-order.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-ssb-manager.js", this);

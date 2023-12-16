@@ -125,3 +125,41 @@ if (
 ) {
   profileManager();
 }
+
+async function workspacesToolbarButton() {
+  let { WorkspacesElementService } = ChromeUtils.importESModule(
+    "resource:///modules/WorkspacesElementService.sys.mjs"
+  );
+  
+  const widgetId = "workspaces-toolbar-button";
+  const widget = CustomizableUI.getWidget(widgetId);
+  if (widget && widget.type !== "custom") {
+    return;
+  }
+  const l10n = new Localization(["browser/floorp.ftl", "branding/brand.ftl"]);
+  const l10nText = await l10n.formatValue("workspaces-toolbar-button");
+  CustomizableUI.createWidget({
+    id: widgetId,
+    type: "button",
+    label: l10nText,
+    tooltiptext: l10nText,
+    onCreated(aNode) {
+      aNode.setAttribute("type", "menu");
+      const popup = window.MozXULElement.parseXULToFragment(WorkspacesElementService.panelElement);
+      aNode.appendChild(popup);
+    },
+    onCommand() {
+      const panel = document.getElementById("workspacesToolbarButtonPanel");
+      panel.openPopup(
+        document.getElementById("workspaces-toolbar-button"),
+        "bottomright topright",
+        0,
+        0,
+        false,
+        false
+      );
+    },
+  });
+}
+
+workspacesToolbarButton();
