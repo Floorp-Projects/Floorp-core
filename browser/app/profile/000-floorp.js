@@ -174,7 +174,7 @@ pref("browser.ssb.enabled", false);
 #endif
 
 // Workspace
-pref("floorp.browser.Workspaces.enabled", true);
+pref("floorp.browser.Workspaces.enabled", false);
 
 /*----------------------------------------------------------------------------------------------------------------------------------*/
 

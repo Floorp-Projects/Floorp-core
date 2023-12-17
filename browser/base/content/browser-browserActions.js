@@ -161,5 +161,3 @@ async function workspacesToolbarButton() {
     },
   });
 }
-
-workspacesToolbarButton();

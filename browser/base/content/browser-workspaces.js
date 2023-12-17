@@ -520,6 +520,17 @@ var gWorkspaces = {
       return;
     }
 
+    if (!this.workspaceEnabled) {
+      return;
+    }
+
+    // toolbar button
+    // eslint-disable-next-line no-undef
+    workspacesToolbarButton();
+
+    // Initialized complete
+    this._initialized = true;
+
     let currentWorkspace = await gWorkspaces.getCurrentWorkspace();
     if (!currentWorkspace || currentWorkspace == null || currentWorkspace == undefined) {
       await gWorkspaces.createWorkspace("Default", true, false);
@@ -557,9 +568,6 @@ var gWorkspaces = {
     // Set current Workspace Id
     this._currentWorkspaceId = await this.getCurrentWorkspaceId();
     this.checkAllTabsForVisibility();
-
-    // Initialized complete
-    this._initialized = true;
   },
 
   eventListeners: {
@@ -589,10 +597,9 @@ var gWorkspaces = {
   },
 };
 
-if (gWorkspaces.workspaceEnabled) {
-  window.SessionStore.promiseInitialized.then(() => {
-    window.setTimeout(() => {
-      gWorkspaces.init();
-    }, 2000);
-  });
-}
+
+window.SessionStore.promiseInitialized.then(() => {
+  window.setTimeout(() => {
+    gWorkspaces.init();
+  }, 2000);
+});
