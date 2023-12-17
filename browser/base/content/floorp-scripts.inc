@@ -9,6 +9,7 @@ var { FloorpAppConstants } = ChromeUtils.importESModule(
     "resource:///modules/FloorpAppConstants.sys.mjs"
 );
 
+Services.scriptloader.loadSubScript("chrome://browser/content/browser-workspaces.js", this);
 Services.scriptloader.loadSubScript("chrome://browser/content/browser-command.js", this);
 Services.scriptloader.loadSubScript("chrome://browser/content/browser-overrides.js", this);
 Services.scriptloader.loadSubScript("chrome://browser/content/browser-design.js", this);
@@ -16,7 +17,6 @@ Services.scriptloader.loadSubScript("chrome://browser/content/browser-rest-mode.
 
 // This function is called when the floorp browser window is loaded. needs Delay.
 document.addEventListener("DOMContentLoaded", () => {
-
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-context-menu.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-manager-sidebar.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-preferences.js", this);
@@ -39,7 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
     SessionStore.promiseInitialized.then(() => {
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-UI-customizing-menu.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-tabbar.js", this);
-        Services.scriptloader.loadSubScript("chrome://browser/content/browser-workspaces.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-verticaltabs.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-flex-order.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-ssb-manager.js", this);

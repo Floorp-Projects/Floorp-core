@@ -7,6 +7,7 @@ export const EXPORTED_SYMBOLS = [
   "WorkspacesService",
   "workspacesPreferences",
   "WorkspacesGroupService",
+  "WorkspacesWindowUuidService",
 ];
 
 const lazy = {};
@@ -145,4 +146,10 @@ export const WorkspacesGroupService = {
 
 export const workspacesPreferences = {
   TAB_STACKS_ENABLED_PREF: "floorp.browser.Workspaces.enabled",
+};
+
+export const WorkspacesWindowUuidService = {
+  getGeneratedUuid() {
+    return generateUuid();
+  }
 };

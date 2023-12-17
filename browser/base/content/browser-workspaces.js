@@ -3,39 +3,54 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-let { WorkspacesExternalFileService } = ChromeUtils.importESModule(
+var { WorkspacesExternalFileService } = ChromeUtils.importESModule(
   "resource:///modules/WorkspacesExternalFileService.sys.mjs"
 );
 
-let { WorkspacesService } = ChromeUtils.importESModule(
+var { WorkspacesService } = ChromeUtils.importESModule(
   "resource:///modules/WorkspacesService.sys.mjs"
 );
 
-let { workspacesPreferences } = ChromeUtils.importESModule(
+var { workspacesPreferences } = ChromeUtils.importESModule(
   "resource:///modules/WorkspacesService.sys.mjs"
 );
 
-let { WorkspacesIdUtils } = ChromeUtils.importESModule(
+var { WorkspacesWindowUuidService } = ChromeUtils.importESModule(
+  "resource:///modules/WorkspacesService.sys.mjs"
+);
+
+var { WorkspacesIdUtils } = ChromeUtils.importESModule(
   "resource:///modules/WorkspacesIdUtils.sys.mjs"
 );
 
-let { WorkspacesElementService } = ChromeUtils.importESModule(
+var { WorkspacesElementService } = ChromeUtils.importESModule(
   "resource:///modules/WorkspacesElementService.sys.mjs"
 );
 
-let { WorkspacesWindowIdUtils } = ChromeUtils.importESModule(
+var { WorkspacesWindowIdUtils } = ChromeUtils.importESModule(
   "resource:///modules/WorkspacesWindowIdUtils.sys.mjs"
 );
 
-let { WorkspacesDataSaver } = ChromeUtils.importESModule(
+var { WorkspacesDataSaver } = ChromeUtils.importESModule(
   "resource:///modules/WorkspacesDataSaver.sys.mjs"
+);
+
+var { XPCOMUtils } = ChromeUtils.importESModule(
+  "resource://gre/modules/XPCOMUtils.sys.mjs"
+);
+
+XPCOMUtils.defineLazyScriptGetter(
+  this,
+  "gWorkspacesWindowUtils",
+  "chrome://browser/content/browser-workspaces.js"
 );
 
 // global variable
 var gBrowser = window.gBrowser;
 
-const gWorkspaces = {
+var gWorkspaces = {
   _initialized: false,
+  _windowId: null,
   _currentWorkspaceId: null,
   _popuppanelNotFound: false,
   _workspacesTemporarilyDisabled: false,
@@ -129,7 +144,11 @@ const gWorkspaces = {
 
   /* get Workspaces infomation */
   getCurrentWindowId() {
-    let windowId = window.windowGlobalChild.innerWindowId; /* todo: windowGlobalChild is not defined */
+    let windowId = gWorkspaces._windowId;
+    if (windowId == null) {
+      windowId = WorkspacesWindowUuidService.getGeneratedUuid();
+      gWorkspaces._windowId = windowId;
+    }
     return windowId;
   },
 
@@ -321,8 +340,6 @@ const gWorkspaces = {
         break;
     }
     gWorkspaces.checkAllTabsForVisibility();
-
-    // Change displaying Workspace Name
   },
 
   async workspaceIdExists(workspaceId) {
@@ -447,7 +464,7 @@ const gWorkspaces = {
       // Set workspaceId if workspaceId is null
       let workspaceId = gWorkspaces.getWorkspaceIdFromAttribute(tabs[i]);
       if (
-        !(workspaceId !== "" && workspaceId !== null && workspaceId !== undefined && !gWorkspaces.workspaceIdExists(workspaceId))
+        !(workspaceId !== "" && workspaceId !== null && workspaceId !== undefined)
       ) {
         gWorkspaces.setWorkspaceIdToAttribute(tabs[i], currentWorkspaceId);
       }
@@ -573,5 +590,9 @@ const gWorkspaces = {
 };
 
 if (gWorkspaces.workspaceEnabled) {
-  gWorkspaces.init();
+  window.SessionStore.promiseInitialized.then(() => {
+    window.setTimeout(() => {
+      gWorkspaces.init();
+    }, 2000);
+  });
 }
