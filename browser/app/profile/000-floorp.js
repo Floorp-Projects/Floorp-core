@@ -157,9 +157,6 @@ pref("floorp.browser.profile-manager.enabled", true);
 // [実験] 新しいタブのオーバーライド
 pref("floorp.newtab.overrides.newtaburl", "");
 
-//Portable
-pref("floorp.portable.isUpdate", false);
-
 // Split View
 pref("floorp.browser.splitView.working", false);
 
