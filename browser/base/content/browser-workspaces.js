@@ -279,11 +279,11 @@ var gWorkspaces = {
       windowId,
       defaultWorkspace
     );
-    this.changeWorkspace(createdWorkspaceId, defaultWorkspace ? 1 : 2, addNewTab);
+    this.changeWorkspace(createdWorkspaceId, defaultWorkspace ? 1 : 2, addNewTab ? addNewTab : false);
   },
 
   async createNoNameWorkspace() {
-    await this.createWorkspace("New Workspace", false);
+    await this.createWorkspace("New Workspace", false, true);
   },
 
   async addTabToWorkspace(workspaceId, tab) {
@@ -310,14 +310,14 @@ var gWorkspaces = {
     gWorkspaces.rebuildWorkspacesToolbar(windowId);
   },
 
-  changeWorkspace(workspaceId, option) {
+  changeWorkspace(workspaceId, option, addNewTab = true) {
     // Change Workspace
     let willChangeWorkspaceLastShowTab =
       gWorkspaces.getWorkspaceselectedTab(workspaceId);
 
     if (willChangeWorkspaceLastShowTab) {
       gBrowser.selectedTab = willChangeWorkspaceLastShowTab;
-    } else {
+    } else if (addNewTab) {
       let tab = gWorkspaces.createTabForWorkspace(workspaceId);
       gBrowser.selectedTab = tab;
     }
@@ -457,6 +457,7 @@ var gWorkspaces = {
     let currentWorkspaceId = await gWorkspaces.getCurrentWorkspaceId();
     let workspace = await gWorkspaces.getCurrentWorkspace();
     let workspacesData = await gWorkspaces.getCurrentWorkspacesData();
+    let workspacesCount = await gWorkspaces.getCurrentWorkspacesCount();
 
     // Check all tabs for visibility
     let tabs = gBrowser.tabs;
@@ -470,7 +471,7 @@ var gWorkspaces = {
       }
 
       let chackedWorkspaceId = gWorkspaces.getWorkspaceIdFromAttribute(tabs[i]);
-      if (await gWorkspaces.getCurrentWorkspacesCount() > 1) {
+      if (workspacesCount > 1) {
         if (chackedWorkspaceId == currentWorkspaceId) {
           gBrowser.showTab(tabs[i]);
         } else {
@@ -486,18 +487,18 @@ var gWorkspaces = {
 
       // Last tab attribute
       let selectedTab = gBrowser.selectedTab;
-      let newWorkspaceId = await gWorkspaces.getCurrentWorkspaceId();
+      let newWorkspaceId = currentWorkspaceId;
       if (tabs[i] == selectedTab) {
         // Remove Last tab attribute from another tab
         let lastShowTabs = document.querySelectorAll(
-          `[${WorkspacesService.workspaceLastShowId}="${newWorkspaceId}"]`
+          `[${this.workspaceLastShowTabAttributionId}="${newWorkspaceId}"]`
         );
         for (let i = 0; i < lastShowTabs.length; i++) {
-          lastShowTabs[i].removeAttribute(WorkspacesService.workspaceLastShowId);
+          lastShowTabs[i].removeAttribute(this.workspaceLastShowTabAttributionId);
         }
 
         tabs[i].setAttribute(
-          WorkspacesService.workspaceLastShowId,
+          this.workspaceLastShowTabAttributionId,
           newWorkspaceId
         );
         tabObj.lastShow = true;
