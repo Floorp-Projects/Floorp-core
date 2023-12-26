@@ -149,7 +149,8 @@ async function workspacesToolbarButton() {
       aNode.appendChild(popup);
     },
     onCommand() {
-      const panel = document.getElementById("workspacesToolbarButtonPanel");
+      let currentWindow = Services.wm.getMostRecentWindow("navigator:browser");
+      const panel = currentWindow.document.getElementById("workspacesToolbarButtonPanel");
       panel.openPopup(
         document.getElementById("workspaces-toolbar-button"),
         "bottomright topright",
