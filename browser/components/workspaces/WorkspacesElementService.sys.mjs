@@ -18,10 +18,10 @@ export const WorkspacesElementService = {
             <toolbarseparator class="toolbarbutton-1 chromeclass-toolbar-additional" id="workspacesPopupSeparator" />
             <hbox id="workspacesPopupFooter" align="center" pack="center">
               <toolbarbutton id="workspacesCreateNewWorkspaceButton" class="toolbarbutton-1 chromeclass-toolbar-additional"
-                           label="New Workspace..." tooltiptext="Create new Workspace"
+                           label="New Workspace..." tooltiptext="Create new Workspace" context="tab-stacks-toolbar-item-context-menu"
                            oncommand="gWorkspaces.createNoNameWorkspace();" />
               <toolbarbutton id="workspacesManageWorkspacesButton" class="toolbarbutton-1 chromeclass-toolbar-additional"
-                           label="Manage Workspaces" tooltiptext="Manage Workspaces"
+                           label="Manage Workspaces" tooltiptext="Manage Workspaces" context="tab-stacks-toolbar-item-context-menu"
                            oncommand="WorkspacesService.openWorkspacesManager();" />
             </hbox>
           </vbox>
@@ -33,7 +33,7 @@ export const WorkspacesElementService = {
 
      
      workspaceBlockElement(workspaceId, workspaceName, selected) {
-        return `<toolbarbutton id="workspace-${workspaceId}" context="tab-stacks-toolbar-item-context-menu"
+        return `<toolbarbutton id="workspace-${workspaceId}" context="workspaces-toolbar-item-context-menu"
                                class="toolbarbutton-1 chromeclass-toolbar-additional workspaceButton"
                                label="${workspaceName}" tooltiptext="Workspace ${workspaceName}"
                                ${selected ? "selected=\"true\"" : ""}

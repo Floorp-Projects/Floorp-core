@@ -86,10 +86,10 @@ var gWorkspaces = {
 
   /** Workspaces Toolbar */
   async rebuildWorkspacesToolbar() {
-    if(!gWorkspaces.workspacesPopupContent) {
+    if (!gWorkspaces.workspacesPopupContent) {
       gWorkspaces._popuppanelNotFound = true;
       return;
-    } 
+    }
     gWorkspaces._popuppanelNotFound = false;
 
     // Remove all Workspaces toolbar
@@ -98,7 +98,8 @@ var gWorkspaces = {
     }
 
     // Add all Workspaces toolbar
-    let workspaceBlockElements = await gWorkspaces.getAllWorkspacesBlockElements();
+    let workspaceBlockElements =
+      await gWorkspaces.getAllWorkspacesBlockElements();
     for (let workspaceBlockElement of workspaceBlockElements) {
       let workspaceBlockElementFragment =
         window.MozXULElement.parseXULToFragment(workspaceBlockElement);
@@ -109,10 +110,11 @@ var gWorkspaces = {
   },
 
   async addToolbarWorkspaceButtonToAppend(workspaceId) {
-    let toolbarWorkspaceButton = await this.getWorkspaceBlockElement(workspaceId);
-    let toolbarWorkspaceButtonFragment = window.MozXULElement.parseXULToFragment(
-      toolbarWorkspaceButton
+    let toolbarWorkspaceButton = await this.getWorkspaceBlockElement(
+      workspaceId
     );
+    let toolbarWorkspaceButtonFragment =
+      window.MozXULElement.parseXULToFragment(toolbarWorkspaceButton);
     this.workspacesPopupContent.appendChild(toolbarWorkspaceButtonFragment);
   },
 
@@ -198,9 +200,8 @@ var gWorkspaces = {
 
   async getCurrentWorkspacesCount() {
     let windowId = this.getCurrentWindowId();
-    let workspacesCount = await WorkspacesWindowIdUtils.getWindowWorkspacesCount(
-      windowId
-    );
+    let workspacesCount =
+      await WorkspacesWindowIdUtils.getWindowWorkspacesCount(windowId);
     return workspacesCount;
   },
 
@@ -279,7 +280,11 @@ var gWorkspaces = {
       windowId,
       defaultWorkspace
     );
-    this.changeWorkspace(createdWorkspaceId, defaultWorkspace ? 1 : 2, addNewTab ? addNewTab : false);
+    this.changeWorkspace(
+      createdWorkspaceId,
+      defaultWorkspace ? 1 : 2,
+      addNewTab ? addNewTab : false
+    );
   },
 
   async createNoNameWorkspace() {
@@ -295,6 +300,9 @@ var gWorkspaces = {
   async deleteWorkspace(workspaceId) {
     let windowId = this.getCurrentWindowId();
     await WorkspacesService.deleteWorkspace(workspaceId, windowId);
+    this.removeWorkspaceTabs(workspaceId);
+    this.changeWorkspace(await WorkspacesWindowIdUtils.getDefaultWorkspaceId(windowId));
+    this.rebuildWorkspacesToolbar();
   },
 
   async renameWorkspace(workspaceId, newName) {
@@ -465,7 +473,11 @@ var gWorkspaces = {
       // Set workspaceId if workspaceId is null
       let workspaceId = gWorkspaces.getWorkspaceIdFromAttribute(tabs[i]);
       if (
-        !(workspaceId !== "" && workspaceId !== null && workspaceId !== undefined)
+        !(
+          workspaceId !== "" &&
+          workspaceId !== null &&
+          workspaceId !== undefined
+        )
       ) {
         gWorkspaces.setWorkspaceIdToAttribute(tabs[i], currentWorkspaceId);
       }
@@ -494,7 +506,9 @@ var gWorkspaces = {
           `[${this.workspaceLastShowTabAttributionId}="${newWorkspaceId}"]`
         );
         for (let i = 0; i < lastShowTabs.length; i++) {
-          lastShowTabs[i].removeAttribute(this.workspaceLastShowTabAttributionId);
+          lastShowTabs[i].removeAttribute(
+            this.workspaceLastShowTabAttributionId
+          );
         }
 
         tabs[i].setAttribute(
@@ -533,7 +547,11 @@ var gWorkspaces = {
     this._initialized = true;
 
     let currentWorkspace = await gWorkspaces.getCurrentWorkspace();
-    if (!currentWorkspace || currentWorkspace == null || currentWorkspace == undefined) {
+    if (
+      !currentWorkspace ||
+      currentWorkspace == null ||
+      currentWorkspace == undefined
+    ) {
       await gWorkspaces.createWorkspace("Default", true, false);
 
       // Set default Workspace
@@ -560,7 +578,8 @@ var gWorkspaces = {
     // Add injection CSS
     let styleElemInjectToToolbar = document.createElement("style");
     styleElemInjectToToolbar.id = "workspacesInjectionCSS";
-    styleElemInjectToToolbar.textContent = WorkspacesElementService.injectionCSS;
+    styleElemInjectToToolbar.textContent =
+      WorkspacesElementService.injectionCSS;
     document.head.appendChild(styleElemInjectToToolbar);
 
     // build Workspaces toolbar
@@ -569,6 +588,9 @@ var gWorkspaces = {
     // Set current Workspace Id
     this._currentWorkspaceId = await this.getCurrentWorkspaceId();
     this.checkAllTabsForVisibility();
+
+    // Create Context Menu
+    this.contextMenu.createWorkspacesTabContextMenuItems();
   },
 
   eventListeners: {
@@ -579,25 +601,44 @@ var gWorkspaces = {
   },
 
   contextMenu: {
-    createWorkspacesContextMenuItems(event) {
+    async createWorkspacesContextMenuItems(event) {
       //delete already exsist items
-      let menuElem = document.getElementById("workspaces-toolbar-item-context-menu");
+      let menuElem = document.getElementById(
+        "workspaces-toolbar-item-context-menu"
+      );
       while (menuElem.firstChild) {
         menuElem.firstChild.remove();
       }
 
+      let contextWorkspaceId = event.explicitOriginalTarget.id.replace("workspace-", "");
+      let defaultWorkspaceId = await WorkspacesWindowIdUtils.getDefaultWorkspaceId(gWorkspaces.getCurrentWindowId());
+      let isDefaultWorkspace = contextWorkspaceId == defaultWorkspaceId;
+
       //create context menu
       let menuItem = window.MozXULElement.parseXULToFragment(`
-         <menuitem data-l10n-id="workspace-context-menu-selected-tab" disabled="true"/>
+          <menuitem data-l10n-id="select-this-workspace" label="Select Workspace" accesskey="S" oncommand="gWorkspaces.contextMenu.selectWorkspace('${contextWorkspaceId}')"></menuitem>
+          <menuitem data-l10n-id="rename-this-workspace" label="Rename Workspace" accesskey="R" oncommand="gWorkspaces.contextMenu.renameWorkspace('${contextWorkspaceId}')"></menuitem>
+          <menuitem data-l10n-id="delete-this-workspace" label="Delete Workspace" accesskey="D" ${isDefaultWorkspace ? 'disabled="true"' : ""} oncommand="gWorkspaces.deleteWorkspace('${contextWorkspaceId}')"></menuitem>
+          <menuitem data-l10n-id="manage-this-workspaces" label="Manage Workspaces" accesskey="M" oncommand="gWorkspaces.contextMenu.manageWorkspaces('${contextWorkspaceId}')"></menuitem>
         `);
       let parentElem = document.getElementById(
         "workspaces-toolbar-item-context-menu"
       );
       parentElem.appendChild(menuItem);
     },
+
+    createWorkspacesTabContextMenuItems(event) {
+      const beforeElem = document.getElementById("context_moveTabOptions");
+      const menuitemElem = window.MozXULElement.parseXULToFragment(`
+      <menu id="context_MoveTabToOtherWorkspace" data-l10n-id="move-tab-another-workspace" accesskey="D">
+          <menupopup id="workspacesTabContextMenu"
+                     onpopupshowing="gWorkspaces.contextMenu.createWorkspacesContextMenuItems(event)"/>
+      </menu>
+      `);
+      beforeElem.before(menuitemElem);
+    },
   },
 };
-
 
 window.SessionStore.promiseInitialized.then(() => {
   window.setTimeout(() => {
