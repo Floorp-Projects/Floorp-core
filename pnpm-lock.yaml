@@ -39,8 +39,8 @@ devDependencies:
     specifier: ^3.4.6
     version: 3.4.6(typescript@5.3.3)
   xpidl2dts:
-    specifier: file:tools/xpidl2dts@0.1.0
-    version: file:tools/xpidl2dts@0.1.0
+    specifier: file:tools/xpidl2dts@0.2.0
+    version: file:tools/xpidl2dts@0.2.0
 
 packages:
 
@@ -2739,8 +2739,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  file:tools/xpidl2dts@0.1.0:
-    resolution: {directory: tools/xpidl2dts@0.1.0, type: directory}
+  file:tools/xpidl2dts@0.2.0:
+    resolution: {directory: tools/xpidl2dts@0.2.0, type: directory}
     name: xpidl2dts
     dependencies:
       fast-glob: 3.3.2

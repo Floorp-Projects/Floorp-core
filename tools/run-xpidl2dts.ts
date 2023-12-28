@@ -6,27 +6,31 @@ const main = async () => {
     "../..",
     [
       "xpcom",
-      "netwerk",
-      "dom/interfaces/security",
-      "dom/base",
-      "dom/interfaces/base",
-      "uriloader",
-      "services",
-      "widget",
-      "image",
-      "layout",
-      "js",
-      "toolkit",
-      "caps",
+			"netwerk",
+			"dom",
+			"uriloader",
+			"services",
+			"widget",
+			"image",
+			"layout",
+			"js",
+			"toolkit",
+			"caps",
+			"intl",
+			"storage",
+			"xpfe",
+			"docshell",
+			"modules/libpref",
+			"tools/profiler/gecko",
     ],
-    "./xpidl2dts@0.1.0/dist"
+    "./xpidl2dts@0.2.0/dist"
   );
 
   await fs.rm("../@types/firefox", { recursive: true });
-  await fs.cp("./xpidl2dts@0.1.0/dist/p", "../@types/firefox", {
+  await fs.cp("./xpidl2dts@0.2.0/dist/p", "../@types/firefox", {
     recursive: true,
   });
-  fs.rm("./xpidl2dts@0.1.0/dist", { recursive: true });
+  fs.rm("./xpidl2dts@0.2.0/dist", { recursive: true });
 };
 
 main();

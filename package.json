@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "pnpm run:xpidl2dts && pnpm format:xpidl2dts",
+    "gen": "pnpm run:xpidl2dts && pnpm format:xpidl2dts",
     "run:xpidl2dts": "cd ./tools && tsx run-xpidl2dts.ts & cd ..",
     "format:xpidl2dts": "prettier --write @types/firefox/**/*.d.ts --ignore-path \"\""
   },
@@ -24,7 +24,7 @@
     "tsx": "^4.7.0",
     "typescript": "^5.3.3",
     "typescript-transform-paths": "^3.4.6",
-    "xpidl2dts": "file:tools/xpidl2dts@0.1.0"
+    "xpidl2dts": "file:tools/xpidl2dts@0.2.0"
   },
   "private": true
 }

@@ -1,2 +1,2 @@
-/@types/firefox/
+/@types/firefox/**/*
 /node_modules/

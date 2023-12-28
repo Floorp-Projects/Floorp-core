@@ -6,9 +6,7 @@ function main() {
 		[
 			"xpcom",
 			"netwerk",
-			"dom/interfaces/security",
-			"dom/base",
-			"dom/interfaces/base",
+			"dom",
 			"uriloader",
 			"services",
 			"widget",
@@ -17,6 +15,12 @@ function main() {
 			"js",
 			"toolkit",
 			"caps",
+			"intl",
+			"storage",
+			"xpfe",
+			"docshell",
+			"modules/libpref",
+			"tools/profiler/gecko",
 		],
 		"./dist",
 	);

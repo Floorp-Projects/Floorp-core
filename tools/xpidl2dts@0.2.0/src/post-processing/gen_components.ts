@@ -1,5 +1,9 @@
 import path from "path";
-import { AUTO_GENERATED_COMMENT, ObjMetadata } from "../defines.js";
+import {
+	AUTO_GENERATED_COMMENT,
+	ObjMetadata,
+	ServicesConst,
+} from "../defines.js";
 import * as fs from "fs/promises";
 
 export async function writeComponents(
@@ -70,6 +74,26 @@ export async function writeComponents(
 			.replaceAll(/\\/g, "/")}"\n`;
 		imports += import_interface;
 	}
+
+	const ServicesMap = new Map<string, string[]>();
+
+	for (const [idlIntf, jsIntf] of Object.entries(ServicesConst)) {
+		const tmp = ServicesMap.get(jsIntf);
+		if (tmp) {
+			tmp.push(idlIntf);
+		} else {
+			ServicesMap.set(jsIntf, [idlIntf]);
+		}
+	}
+
+	let Services = "";
+	for (const [jsIntf, idlIntf] of ServicesMap.entries()) {
+		Services += `${jsIntf}: ${idlIntf
+			.map((v) => {
+				return `_${v}`;
+			})
+			.join("&")};\n`;
+	}
 	const src = `
 ${AUTO_GENERATED_COMMENT}
 ${imports}
@@ -97,7 +121,7 @@ QueryInterface: (
 ${exports}
 }
 
-declare var Components_Utils: _nsIXPCComponents_Utils;
+declare const Components_Utils: _nsIXPCComponents_Utils;
 
 interface _lfoClass {
   createInstance: <I extends Components_Interfaces, V extends hasLfoName>(
@@ -131,11 +155,17 @@ interface Components extends _nsIXPCComponents {
   readonly classes: Components_Classes;
 }
 
+
+interface Services {
+${Services}
+}
+
 declare global {
   const Components: Components;
   const Cc: Components_Classes;
   const Cu: typeof Components_Utils;
   const Ci: lfoCi;
+	const Services: Services;
 }
   `;
 	fs.writeFile(filePath, src.trim());

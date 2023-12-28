@@ -5,7 +5,8 @@
   },
   "compilerOptions": {
     "target": "es2017",
-    "module": "commonjs",
+    "module": "ESNext",
+    "moduleDetection": "force",
     "allowJs": true,
     "declaration": true,
     "emitDeclarationOnly": true,
