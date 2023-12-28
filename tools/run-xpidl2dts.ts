@@ -6,27 +6,31 @@ const main = async () => {
     "../..",
     [
       "xpcom",
-			"netwerk",
-			"dom",
-			"uriloader",
-			"services",
-			"widget",
-			"image",
-			"layout",
-			"js",
-			"toolkit",
-			"caps",
-			"intl",
-			"storage",
-			"xpfe",
-			"docshell",
-			"modules/libpref",
-			"tools/profiler/gecko",
+      "netwerk",
+      "dom",
+      "uriloader",
+      "services",
+      "widget",
+      "image",
+      "layout",
+      "js",
+      "toolkit",
+      "caps",
+      "intl",
+      "storage",
+      "xpfe",
+      "docshell",
+      "modules/libpref",
+      "tools/profiler/gecko",
     ],
     "./xpidl2dts@0.2.0/dist"
   );
 
-  await fs.rm("../@types/firefox", { recursive: true });
+  try {
+    await fs.access("../@types/firefox");
+    await fs.rm("../@types/firefox", { recursive: true });
+  } catch {}
+
   await fs.cp("./xpidl2dts@0.2.0/dist/p", "../@types/firefox", {
     recursive: true,
   });
