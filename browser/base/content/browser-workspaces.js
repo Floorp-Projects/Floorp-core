@@ -109,6 +109,19 @@ var gWorkspaces = {
     }
   },
 
+  async rebuildWorkspacesLabels() {
+    let workspacesData = await this.getCurrentWorkspacesData();
+    for (let workspaceId in workspacesData) {
+      let workspace = workspacesData[workspaceId];
+      let workspaceToolbarButton = document.getElementById(
+        `workspace-${workspaceId}`
+      );
+      if (workspaceToolbarButton) {
+        workspaceToolbarButton.setAttribute("label", workspace.name);
+      }
+    }
+  },
+
   async addToolbarWorkspaceButtonToAppend(workspaceId) {
     let toolbarWorkspaceButton = await this.getWorkspaceBlockElement(
       workspaceId
@@ -178,6 +191,9 @@ var gWorkspaces = {
 
   async getCurrentWorkspaceId() {
     let currentWorkspace = await this.getCurrentWorkspace();
+    if (!currentWorkspace) {
+      return null;
+    }
     return currentWorkspace.id;
   },
 
@@ -216,6 +232,15 @@ var gWorkspaces = {
   async getWorkspaceBlockElement(workspaceId) {
     let windowId = this.getCurrentWindowId();
     let result = await WorkspacesElementService.getWorkspaceBlockElement(
+      workspaceId,
+      windowId
+    );
+    return result;
+  },
+
+  async getWorkspaceById(workspaceId) {
+    let windowId = this.getCurrentWindowId();
+    let result = await WorkspacesIdUtils.getWorkspaceByIdAndWindowId(
       workspaceId,
       windowId
     );
@@ -301,7 +326,9 @@ var gWorkspaces = {
     let windowId = this.getCurrentWindowId();
     await WorkspacesService.deleteWorkspace(workspaceId, windowId);
     this.removeWorkspaceTabs(workspaceId);
-    this.changeWorkspace(await WorkspacesWindowIdUtils.getDefaultWorkspaceId(windowId));
+    this.changeWorkspace(
+      await WorkspacesWindowIdUtils.getDefaultWorkspaceId(windowId)
+    );
     this.rebuildWorkspacesToolbar();
   },
 
@@ -429,6 +456,65 @@ var gWorkspaces = {
       if (tab.getAttribute(this.workspacesTabAttributionId) == workspaceId) {
         gBrowser.removeTab(tab);
       }
+    }
+  },
+
+  /* Popup functions */
+  async renameWorkspaceOnWorkspacesPopup(workspaceId) {
+    let workspaceToolbarButtonElem = document.getElementById(
+      `workspace-${workspaceId}`
+    );
+    let textareaElem = window.MozXULElement.parseXULToFragment(`
+      <html:input type="text" class="workspaceNameInput" id="workspaceNameInput-${workspaceId}" spellcheck="false"
+                  minlength="1" maxlength="30" size="35" placeholder="Enter Workspace Name"
+      />
+    `);
+
+    workspaceToolbarButtonElem.appendChild(textareaElem);
+
+    let inputElem = document.getElementById(
+      `workspaceNameInput-${workspaceId}`
+    );
+
+    // Focus on input
+    inputElem.focus();
+
+    // If Enter key is pressed, rename workspace
+    inputElem.addEventListener("keydown", onEnterKeyIsPressed);
+
+    function onEnterKeyIsPressed(event) {
+      if (event.key == "Enter") {
+        let inputElem = event.target;
+        let workspaceId = inputElem.id.replace("workspaceNameInput-", "");
+        let workspaceToolbarButtonElem = document.getElementById(
+          `workspace-${workspaceId}`
+        );
+        gWorkspaces.renameWorkspace(workspaceId, inputElem.value);
+        workspaceToolbarButtonElem.setAttribute("label", inputElem.value);
+        inputElem.remove();
+      } else if (event.key == "Escape") {
+        let inputElem = event.target;
+        inputElem.remove();
+      }
+    }
+  },
+
+  async renameWorkspaceWithCreatePrompt(workspaceId) {
+    let prompts = Services.prompt;
+    let workspace = await gWorkspaces.getWorkspaceById(workspaceId);
+    let input = { value: workspace.name };
+    let result = await prompts.prompt(
+      window,
+      "Rename Workspace",
+      "Enter Workspace Name.\nMost characters and symbols can be used.",
+      input,
+      null,
+      { value: 0 }
+    );
+
+    if (result) {
+      await gWorkspaces.renameWorkspace(workspaceId, input.value);
+      gWorkspaces.rebuildWorkspacesLabels();
     }
   },
 
@@ -610,15 +696,23 @@ var gWorkspaces = {
         menuElem.firstChild.remove();
       }
 
-      let contextWorkspaceId = event.explicitOriginalTarget.id.replace("workspace-", "");
-      let defaultWorkspaceId = await WorkspacesWindowIdUtils.getDefaultWorkspaceId(gWorkspaces.getCurrentWindowId());
+      let contextWorkspaceId = event.explicitOriginalTarget.id.replace(
+        "workspace-",
+        ""
+      );
+      let defaultWorkspaceId =
+        await WorkspacesWindowIdUtils.getDefaultWorkspaceId(
+          gWorkspaces.getCurrentWindowId()
+        );
       let isDefaultWorkspace = contextWorkspaceId == defaultWorkspaceId;
 
       //create context menu
       let menuItem = window.MozXULElement.parseXULToFragment(`
           <menuitem data-l10n-id="select-this-workspace" label="Select Workspace" accesskey="S" oncommand="gWorkspaces.contextMenu.selectWorkspace('${contextWorkspaceId}')"></menuitem>
-          <menuitem data-l10n-id="rename-this-workspace" label="Rename Workspace" accesskey="R" oncommand="gWorkspaces.contextMenu.renameWorkspace('${contextWorkspaceId}')"></menuitem>
-          <menuitem data-l10n-id="delete-this-workspace" label="Delete Workspace" accesskey="D" ${isDefaultWorkspace ? 'disabled="true"' : ""} oncommand="gWorkspaces.deleteWorkspace('${contextWorkspaceId}')"></menuitem>
+          <menuitem data-l10n-id="rename-this-workspace" label="Rename Workspace" accesskey="R" oncommand="gWorkspaces.renameWorkspaceWithCreatePrompt('${contextWorkspaceId}')"></menuitem>
+          <menuitem data-l10n-id="delete-this-workspace" label="Delete Workspace" accesskey="D" ${
+            isDefaultWorkspace ? 'disabled="true"' : ""
+          } oncommand="gWorkspaces.deleteWorkspace('${contextWorkspaceId}')"></menuitem>
           <menuitem data-l10n-id="manage-this-workspaces" label="Manage Workspaces" accesskey="M" oncommand="gWorkspaces.contextMenu.manageWorkspaces('${contextWorkspaceId}')"></menuitem>
         `);
       let parentElem = document.getElementById(
