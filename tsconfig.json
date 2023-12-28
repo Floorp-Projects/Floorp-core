@@ -1,7 +1,7 @@
 {
   "typeAcquisition": {
     "enable": true,
-    "include": ["@types/global.d.ts"]
+    "include": ["./@types/index.d.ts"]
   },
   "compilerOptions": {
     "target": "es2017",
