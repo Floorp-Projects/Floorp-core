@@ -485,7 +485,7 @@ var gWorkspaces = {
     }
   },
 
-  /* Popup functions */
+  /* Popup & dialog functions */
 
   async renameWorkspaceWithCreatePrompt(workspaceId) {
     let prompts = Services.prompt;
@@ -503,6 +503,35 @@ var gWorkspaces = {
     if (result) {
       await gWorkspaces.renameWorkspace(workspaceId, input.value);
       gWorkspaces.rebuildWorkspacesLabels();
+    }
+  },
+
+  async manageWorkspaceFromDialog(workspaceId = null) {
+    if (!workspaceId) {
+      workspaceId = await gWorkspaces.getDefaultWorkspaceId();
+    }
+
+    let parentWindow = window;
+    let object = { workspaceId };
+    if (
+      parentWindow?.document.documentURI ==
+      "chrome://browser/content/hiddenWindowMac.xhtml"
+    ) {
+      parentWindow = null;
+    }
+    if (parentWindow?.gDialogBox) {
+      parentWindow.gDialogBox.open(
+        "chrome://browser/content/preferences/dialogs/manageWorkspace.xhtml",
+        object
+      );
+    } else {
+      Services.ww.openWindow(
+        parentWindow,
+        "chrome://browser/content/preferences/dialogs/manageWorkspace.xhtml",
+        null,
+        "chrome,titlebar,dialog,centerscreen,modal",
+        object
+      );
     }
   },
 

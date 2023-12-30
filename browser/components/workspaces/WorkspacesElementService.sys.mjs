@@ -22,7 +22,7 @@ export const WorkspacesElementService = {
                            oncommand="gWorkspaces.createNoNameWorkspace();" />
               <toolbarbutton id="workspacesManageWorkspacesButton" class="toolbarbutton-1 chromeclass-toolbar-additional"
                            label="Manage Workspaces" tooltiptext="Manage Workspaces" context="tab-stacks-toolbar-item-context-menu"
-                           oncommand="WorkspacesService.openWorkspacesManager();" />
+                           oncommand="gWorkspaces.manageWorkspaceFromDialog();" />
             </hbox>
           </vbox>
         </panel>
