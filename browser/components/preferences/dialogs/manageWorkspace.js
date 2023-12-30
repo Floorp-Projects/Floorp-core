@@ -105,8 +105,6 @@ async function setPref() {
   const icon = document.getElementById("iconName").value;
   const container = document.getElementById("containerName").value;
 
-  console.log("workspaceId", workspaceId, "icon", icon, "container", container);
-
   await win.gWorkspaces.setWorkspaceContainerUserContextIdAndIcon(
     workspaceId,
     container,

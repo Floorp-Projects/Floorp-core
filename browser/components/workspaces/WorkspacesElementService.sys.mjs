@@ -36,7 +36,7 @@ export const WorkspacesElementService = {
         return `<toolbarbutton id="workspace-${workspaceId}" context="workspaces-toolbar-item-context-menu"
                                class="toolbarbutton-1 chromeclass-toolbar-additional workspaceButton"
                                label="${workspaceName}" tooltiptext="Workspace ${workspaceName}"
-                               ${selected ? "selected=\"true\"" : ""}
+                               ${selected ? "selected=\"true\"" : ""} workspaceId="${workspaceId}"
                                oncommand="gWorkspaces.changeWorkspace('${workspaceId}');" />
                `
      },

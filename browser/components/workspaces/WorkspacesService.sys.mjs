@@ -9,6 +9,7 @@ export const EXPORTED_SYMBOLS = [
   "WorkspacesGroupService",
   "WorkspacesWindowUuidService",
   "workspaceIcons",
+  "getWorkspaceIconUrl",
 ];
 
 const lazy = {};
@@ -158,6 +159,13 @@ export const workspaceIcons = new Set([
   "tree",
   "chill",
 ]);
+
+export function getWorkspaceIconUrl(icon) {
+  if (!workspaceIcons.has(icon) || icon == undefined) {
+    return "chrome://browser/skin/workspace-icons/fingerprint.svg";
+  }
+  return `chrome://browser/skin/workspace-icons/${icon}.svg`;
+}
 
 export const workspacesPreferences = {
   TAB_STACKS_ENABLED_PREF: "floorp.browser.Workspaces.enabled",

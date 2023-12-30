@@ -11,6 +11,10 @@ var { WorkspacesService } = ChromeUtils.importESModule(
   "resource:///modules/WorkspacesService.sys.mjs"
 );
 
+var { getWorkspaceIconUrl } = ChromeUtils.importESModule(
+  "resource:///modules/WorkspacesService.sys.mjs"
+);
+
 var { workspacesPreferences } = ChromeUtils.importESModule(
   "resource:///modules/WorkspacesService.sys.mjs"
 );
@@ -68,6 +72,10 @@ var gWorkspaces = {
     return document.getElementById("workspacesToolbarButtonPanel");
   },
 
+  get workspacesToolbarButton() {
+    return document.getElementById("workspaces-toolbar-button");
+  },
+
   get workspacesPopupContent() {
     return document.getElementById("workspacesPopupContent");
   },
@@ -107,6 +115,8 @@ var gWorkspaces = {
         workspaceBlockElementFragment
       );
     }
+
+    await this.updateToolbarButtonAndPopupContentIconAndLabel(await this.getCurrentWorkspaceId());
   },
 
   async rebuildWorkspacesLabels() {
@@ -146,6 +156,30 @@ var gWorkspaces = {
 
     if (workspaceToolbarButton) {
       workspaceToolbarButton.setAttribute("selected", true);
+    }
+
+    await this.updateToolbarButtonAndPopupContentIconAndLabel(workspaceId);
+  },
+
+  async updateToolbarButtonAndPopupContentIconAndLabel(workspaceId) {
+    let workspace = await this.getWorkspaceById(workspaceId);
+    this.workspacesToolbarButton.setAttribute("label", workspace.name);
+    this.workspacesToolbarButton.style.listStyleImage = `url(${getWorkspaceIconUrl(
+      workspace.icon
+    )})`;
+
+    let popupElements = document.getElementsByClassName(
+      "workspaceButton"
+    );
+
+    for (let popupElement of popupElements) {
+      let workspaceId = popupElement.getAttribute("workspaceId");
+      let workspace = await this.getWorkspaceById(workspaceId);
+
+      popupElement.setAttribute("label", workspace.name);
+      popupElement.style.listStyleImage = `url(${getWorkspaceIconUrl(
+        workspace.icon
+      )})`;
     }
   },
 
@@ -389,6 +423,8 @@ var gWorkspaces = {
       case 1:
         // rebuild the workspaces Toolbar
         gWorkspaces.rebuildWorkspacesToolbar();
+        gWorkspaces.changeToolbarSelectedWorkspaceView(workspaceId);
+        gWorkspaces.updateToolbarButtonAndPopupContentIconAndLabel(workspaceId);
         break;
       case 2:
         // Append Workspaces Toolbar Workspace Button
@@ -582,6 +618,8 @@ var gWorkspaces = {
       icon,
       windowId
     );
+
+    this.updateToolbarButtonAndPopupContentIconAndLabel(workspaceId);
   },
 
   /* Visibility Service */
@@ -721,8 +759,79 @@ var gWorkspaces = {
     this._currentWorkspaceId = await this.getCurrentWorkspaceId();
     this.checkAllTabsForVisibility();
 
+    // set selected Workspace
+    this.changeToolbarSelectedWorkspaceView(this._currentWorkspaceId);
+
     // Create Context Menu
     this.contextMenu.createWorkspacesTabContextMenuItems();
+    
+    // Override the default newtab opening position in tabbar.
+    //copy from browser.js (./browser/base/content/browser.js)
+    // eslint-disable-next-line no-undef
+    BrowserOpenTab = async function ({ event, url = BROWSER_NEW_TAB_URL } = {}) {
+      let relatedToCurrent = false; //"relatedToCurrent" decide where to open the new tab. Default work as last tab (right side). Floorp use this.
+      let where = "tab";
+      let currentWorkspaceContextId = await gWorkspaces.getWorkspaceContainerUserContextId(
+        await gWorkspaces.getCurrentWorkspaceId()
+      );
+      let _OPEN_NEW_TAB_POSITION_PREF = Services.prefs.getIntPref(
+        "floorp.browser.tabs.openNewTabPosition"
+      );
+    
+      switch (_OPEN_NEW_TAB_POSITION_PREF) {
+        case 0:
+          // Open the new tab as unrelated to the current tab.
+          relatedToCurrent = false;
+          break;
+        case 1:
+          // Open the new tab as related to the current tab.
+          relatedToCurrent = true;
+          break;
+        default:
+          if (event) {
+            // eslint-disable-next-line no-undef
+            where = whereToOpenLink(event, false, true);
+            switch (where) {
+              case "tab":
+              case "tabshifted":
+                // When accel-click or middle-click are used, open the new tab as
+                // related to the current tab.
+                relatedToCurrent = true;
+                break;
+              case "current":
+                where = "tab";
+                break;
+            }
+          }
+      }
+    
+      //Wrote by Mozilla(Firefox)
+      // A notification intended to be useful for modular peformance tracking
+      // starting as close as is reasonably possible to the time when the user
+      // expressed the intent to open a new tab.  Since there are a lot of
+      // entry points, this won't catch every single tab created, but most
+      // initiated by the user should go through here.
+      //
+      // Note 1: This notification gets notified with a promise that resolves
+      //         with the linked browser when the tab gets created
+      // Note 2: This is also used to notify a user that an extension has changed
+      //         the New Tab page.
+      Services.obs.notifyObservers(
+        {
+          wrappedJSObject: new Promise(resolve => {
+            // eslint-disable-next-line no-undef
+            openTrustedLinkIn(url, where, {
+              relatedToCurrent,
+              resolveOnNewTabCreated: resolve,
+              userContextId: gWorkspaces.workspaceEnabled
+                ? currentWorkspaceContextId
+                : 0,
+            });
+          }),
+        },
+        "browser-open-newtab-start"
+      );
+    };
   },
 
   eventListeners: {
