@@ -57,6 +57,7 @@ var gWorkspaces = {
   _windowId: null,
   _currentWorkspaceId: null,
   _popuppanelNotFound: false,
+  _workspaceManageOnBMSMode: false,
   _workspacesTemporarilyDisabled: false,
 
   /** Elements */
@@ -116,7 +117,9 @@ var gWorkspaces = {
       );
     }
 
-    await this.updateToolbarButtonAndPopupContentIconAndLabel(await this.getCurrentWorkspaceId());
+    await this.updateToolbarButtonAndPopupContentIconAndLabel(
+      await this.getCurrentWorkspaceId()
+    );
   },
 
   async rebuildWorkspacesLabels() {
@@ -134,7 +137,8 @@ var gWorkspaces = {
 
   async addToolbarWorkspaceButtonToAppend(workspaceId) {
     let toolbarWorkspaceButton = await this.getWorkspaceBlockElement(
-      workspaceId
+      workspaceId,
+      this._workspaceManageOnBMSMode
     );
     let toolbarWorkspaceButtonFragment =
       window.MozXULElement.parseXULToFragment(toolbarWorkspaceButton);
@@ -168,9 +172,7 @@ var gWorkspaces = {
       workspace.icon
     )})`;
 
-    let popupElements = document.getElementsByClassName(
-      "workspaceButton"
-    );
+    let popupElements = document.getElementsByClassName("workspaceButton");
 
     for (let popupElement of popupElements) {
       let workspaceId = popupElement.getAttribute("workspaceId");
@@ -181,6 +183,24 @@ var gWorkspaces = {
         workspace.icon
       )})`;
     }
+  },
+
+  enableWorkspacesManageOnBMSMode() {
+    let bmsSidebar = document.getElementById("sidebar-select-box");
+    bmsSidebar.prepend(this.workspacesPopupContent);
+
+    const CSS = WorkspacesElementService.manageOnBmsInjectionCSS;
+    document.head.appendChild(document.createElement("style")).textContent = CSS;
+    for (let workspaceButton of this.workspaceButtons) {
+      workspaceButton.classList.add("sidepanel-icon");
+    }
+
+    let spacerElem = window.MozXULElement.parseXULToFragment(WorkspacesElementService.workspaceSpacerElement);
+    this.workspacesPopupContent.after(spacerElem);
+    this.workspacesPopupContent.after(document.getElementById("workspacesCreateNewWorkspaceButton"));
+    document.getElementById("workspacesCreateNewWorkspaceButton").classList.add("sidepanel-icon");
+
+    this._workspaceManageOnBMSMode = true;
   },
 
   /* Preferences */
@@ -276,7 +296,8 @@ var gWorkspaces = {
   async getAllWorkspacesBlockElements() {
     let windowId = this.getCurrentWindowId();
     let result = await WorkspacesElementService.getAllWorkspacesBlockElements(
-      windowId
+      windowId,
+      this._workspaceManageOnBMSMode
     );
     return result;
   },
@@ -285,7 +306,8 @@ var gWorkspaces = {
     let windowId = this.getCurrentWindowId();
     let result = await WorkspacesElementService.getWorkspaceBlockElement(
       workspaceId,
-      windowId
+      windowId,
+      this._workspaceManageOnBMSMode,
     );
     return result;
   },
@@ -764,20 +786,25 @@ var gWorkspaces = {
 
     // Create Context Menu
     this.contextMenu.createWorkspacesTabContextMenuItems();
-    
+
     // Override the default newtab opening position in tabbar.
     //copy from browser.js (./browser/base/content/browser.js)
     // eslint-disable-next-line no-undef
-    BrowserOpenTab = async function ({ event, url = BROWSER_NEW_TAB_URL } = {}) {
+    BrowserOpenTab = async function ({
+      event,
+      // eslint-disable-next-line no-undef
+      url = BROWSER_NEW_TAB_URL,
+    } = {}) {
       let relatedToCurrent = false; //"relatedToCurrent" decide where to open the new tab. Default work as last tab (right side). Floorp use this.
       let where = "tab";
-      let currentWorkspaceContextId = await gWorkspaces.getWorkspaceContainerUserContextId(
-        await gWorkspaces.getCurrentWorkspaceId()
-      );
+      let currentWorkspaceContextId =
+        await gWorkspaces.getWorkspaceContainerUserContextId(
+          await gWorkspaces.getCurrentWorkspaceId()
+        );
       let _OPEN_NEW_TAB_POSITION_PREF = Services.prefs.getIntPref(
         "floorp.browser.tabs.openNewTabPosition"
       );
-    
+
       switch (_OPEN_NEW_TAB_POSITION_PREF) {
         case 0:
           // Open the new tab as unrelated to the current tab.
@@ -804,7 +831,7 @@ var gWorkspaces = {
             }
           }
       }
-    
+
       //Wrote by Mozilla(Firefox)
       // A notification intended to be useful for modular peformance tracking
       // starting as close as is reasonably possible to the time when the user
@@ -863,12 +890,11 @@ var gWorkspaces = {
 
       //create context menu
       let menuItem = window.MozXULElement.parseXULToFragment(`
-          <menuitem data-l10n-id="select-this-workspace" label="Select Workspace" accesskey="S" oncommand="gWorkspaces.contextMenu.selectWorkspace('${contextWorkspaceId}')"></menuitem>
           <menuitem data-l10n-id="rename-this-workspace" label="Rename Workspace" accesskey="R" oncommand="gWorkspaces.renameWorkspaceWithCreatePrompt('${contextWorkspaceId}')"></menuitem>
           <menuitem data-l10n-id="delete-this-workspace" label="Delete Workspace" accesskey="D" ${
             isDefaultWorkspace ? 'disabled="true"' : ""
           } oncommand="gWorkspaces.deleteWorkspace('${contextWorkspaceId}')"></menuitem>
-          <menuitem data-l10n-id="manage-this-workspaces" label="Manage Workspaces" accesskey="M" oncommand="gWorkspaces.contextMenu.manageWorkspaces('${contextWorkspaceId}')"></menuitem>
+          <menuitem data-l10n-id="manage-this-workspaces" label="Manage Workspaces" accesskey="M" oncommand="gWorkspaces.manageWorkspaceFromDialog('${contextWorkspaceId}')"></menuitem>
         `);
       let parentElem = document.getElementById(
         "workspaces-toolbar-item-context-menu"
