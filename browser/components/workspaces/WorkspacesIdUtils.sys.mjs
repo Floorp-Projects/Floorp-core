@@ -47,6 +47,11 @@ export const WorkspacesIdUtils = {
         let workspace = await this.getWorkspaceByIdAndWindowId(workspaceId, windowId);
         return workspace.userContextId;
     },
+    
+    async getWorkspaceIcon(workspaceId, windowId) {
+        let workspace = await this.getWorkspaceByIdAndWindowId(workspaceId, windowId);
+        return workspace.icon;
+    },
 
     async removeWorkspaceById(workspaceId, windowId) {
         let workspacesData = await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);

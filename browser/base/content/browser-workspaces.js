@@ -221,6 +221,24 @@ var gWorkspaces = {
     return workspacesCount;
   },
 
+  async getDefaultWorkspace() {
+    let windowId = this.getCurrentWindowId();
+    let defaultWorkspaceId =
+      await WorkspacesWindowIdUtils.getDefaultWorkspaceId(windowId);
+    let defaultWorkspace = await WorkspacesIdUtils.getWorkspaceByIdAndWindowId(
+      defaultWorkspaceId,
+      windowId
+    );
+    return defaultWorkspace;
+  },
+
+  async getDefaultWorkspaceId() {
+    let windowId = this.getCurrentWindowId();
+    let defaultWorkspaceId =
+      await WorkspacesWindowIdUtils.getDefaultWorkspaceId(windowId);
+    return defaultWorkspaceId;
+  },
+
   async getAllWorkspacesBlockElements() {
     let windowId = this.getCurrentWindowId();
     let result = await WorkspacesElementService.getAllWorkspacesBlockElements(
@@ -259,6 +277,11 @@ var gWorkspaces = {
       workspacesData,
       windowId
     );
+  },
+
+  async saveWorkspaceData(workspaceData) {
+    let windowId = this.getCurrentWindowId();
+    await WorkspacesDataSaver.saveWorkspaceData(workspaceData, windowId);
   },
 
   async saveWindowPreferences(preferences) {
@@ -324,11 +347,14 @@ var gWorkspaces = {
 
   async deleteWorkspace(workspaceId) {
     let windowId = this.getCurrentWindowId();
+    let currentWorkspaceId = await this.getCurrentWorkspaceId();
     await WorkspacesService.deleteWorkspace(workspaceId, windowId);
     this.removeWorkspaceTabs(workspaceId);
-    this.changeWorkspace(
-      await WorkspacesWindowIdUtils.getDefaultWorkspaceId(windowId)
-    );
+    if (workspaceId == currentWorkspaceId) {
+      this.changeWorkspace(
+        await WorkspacesWindowIdUtils.getDefaultWorkspaceId(windowId)
+      );
+    }
     this.rebuildWorkspacesToolbar();
   },
 
@@ -460,44 +486,6 @@ var gWorkspaces = {
   },
 
   /* Popup functions */
-  async renameWorkspaceOnWorkspacesPopup(workspaceId) {
-    let workspaceToolbarButtonElem = document.getElementById(
-      `workspace-${workspaceId}`
-    );
-    let textareaElem = window.MozXULElement.parseXULToFragment(`
-      <html:input type="text" class="workspaceNameInput" id="workspaceNameInput-${workspaceId}" spellcheck="false"
-                  minlength="1" maxlength="30" size="35" placeholder="Enter Workspace Name"
-      />
-    `);
-
-    workspaceToolbarButtonElem.appendChild(textareaElem);
-
-    let inputElem = document.getElementById(
-      `workspaceNameInput-${workspaceId}`
-    );
-
-    // Focus on input
-    inputElem.focus();
-
-    // If Enter key is pressed, rename workspace
-    inputElem.addEventListener("keydown", onEnterKeyIsPressed);
-
-    function onEnterKeyIsPressed(event) {
-      if (event.key == "Enter") {
-        let inputElem = event.target;
-        let workspaceId = inputElem.id.replace("workspaceNameInput-", "");
-        let workspaceToolbarButtonElem = document.getElementById(
-          `workspace-${workspaceId}`
-        );
-        gWorkspaces.renameWorkspace(workspaceId, inputElem.value);
-        workspaceToolbarButtonElem.setAttribute("label", inputElem.value);
-        inputElem.remove();
-      } else if (event.key == "Escape") {
-        let inputElem = event.target;
-        inputElem.remove();
-      }
-    }
-  },
 
   async renameWorkspaceWithCreatePrompt(workspaceId) {
     let prompts = Services.prompt;
@@ -518,6 +506,21 @@ var gWorkspaces = {
     }
   },
 
+  /* workspace icon Service */
+  async getWorkspaceIcon(workspaceId) {
+    let windowId = this.getCurrentWindowId();
+    let icon = await WorkspacesIdUtils.getWorkspaceIconByIdAndWindowId(
+      workspaceId,
+      windowId
+    );
+    return icon;
+  },
+
+  async setWorkspaceIcon(workspaceId, icon) {
+    let windowId = this.getCurrentWindowId();
+    await WorkspacesService.setWorkspaceIcon(workspaceId, icon, windowId);
+  },
+
   /* userContext Service */
   async getWorkspaceContainerUserContextId(workspaceId) {
     let windowId = this.getCurrentWindowId();
@@ -534,6 +537,20 @@ var gWorkspaces = {
     await WorkspacesService.setWorkspaceContainerUserContextId(
       workspaceId,
       userContextId,
+      windowId
+    );
+  },
+
+  async setWorkspaceContainerUserContextIdAndIcon(
+    workspaceId,
+    userContextId,
+    icon
+  ) {
+    let windowId = this.getCurrentWindowId();
+    await WorkspacesService.setWorkspaceContainerUserContextIdAndIcon(
+      workspaceId,
+      userContextId,
+      icon,
       windowId
     );
   },

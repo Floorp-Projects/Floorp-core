@@ -8,14 +8,14 @@ export const EXPORTED_SYMBOLS = [
   "workspacesPreferences",
   "WorkspacesGroupService",
   "WorkspacesWindowUuidService",
+  "workspaceIcons",
 ];
 
 const lazy = {};
 ChromeUtils.defineESModuleGetters(lazy, {
   WorkspacesWindowIdUtils:
     "resource:///modules/WorkspacesWindowIdUtils.sys.mjs",
-  WorkspacesDataSaver:
-    "resource:///modules/WorkspacesDataSaver.sys.mjs",
+  WorkspacesDataSaver: "resource:///modules/WorkspacesDataSaver.sys.mjs",
 });
 
 function generateUuid() {
@@ -49,10 +49,7 @@ export const WorkspacesService = {
       defaultWorkspace: defaultWorkspace || false,
       id: workspaceId,
     };
-    await lazy.WorkspacesDataSaver.saveWorkspacesData(
-      workspacesData,
-      windowId
-    );
+    await lazy.WorkspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
     return workspaceId;
   },
 
@@ -60,20 +57,14 @@ export const WorkspacesService = {
     let workspacesData =
       await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
     delete workspacesData[workspaceId];
-    await lazy.WorkspacesDataSaver.saveWorkspacesData(
-      workspacesData,
-      windowId
-    );
+    await lazy.WorkspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
   },
 
   async renameWorkspace(workspaceId, newName, windowId) {
     let workspacesData =
       await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
     workspacesData[workspaceId].name = newName;
-    await lazy.WorkspacesDataSaver.saveWorkspacesData(
-      workspacesData,
-      windowId
-    );
+    await lazy.WorkspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
   },
 
   async addTabToWorkspace(workspaceId, tabs, windowId) {
@@ -82,10 +73,7 @@ export const WorkspacesService = {
     for (let tab of tabs) {
       workspacesData[workspaceId].tabs.push(tab.workspaceId);
     }
-    await lazy.WorkspacesDataSaver.saveWorkspacesData(
-      workspacesData,
-      windowId
-    );
+    await lazy.WorkspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
   },
 
   async setDefaultWorkspace(workspaceId, windowId) {
@@ -94,10 +82,7 @@ export const WorkspacesService = {
     workspacesData.preferences = {
       defaultWorkspace: workspaceId,
     };
-    await lazy.WorkspacesDataSaver.saveWorkspacesData(
-      workspacesData,
-      windowId
-    );
+    await lazy.WorkspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
   },
 
   async setSelectWorkspace(workspaceId, windowId) {
@@ -110,20 +95,33 @@ export const WorkspacesService = {
 
     workspacesData.preferences.selectedWorkspaceId = workspaceId;
 
-    await lazy.WorkspacesDataSaver.saveWorkspacesData(
-      workspacesData,
-      windowId
-    );
+    await lazy.WorkspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
   },
 
-  async setWorkspaceContainerUserContextId(workspaceId, userContextId, windowId) {
+  async setWorkspaceContainerUserContextIdAndIcon(workspaceId, userContextId, icon, windowId) {
     let workspacesData =
       await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
     workspacesData[workspaceId].userContextId = userContextId;
-    await lazy.WorkspacesDataSaver.saveWorkspacesData(
-      workspacesData,
-      windowId
-    );
+    workspacesData[workspaceId].icon = icon;
+    await lazy.WorkspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
+  },
+
+  async setWorkspaceIcon(workspaceId, icon, windowId) {
+    let workspacesData =
+      await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
+    workspacesData[workspaceId].icon = icon;
+    await lazy.WorkspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
+  },
+
+  async setWorkspaceContainerUserContextId(
+    workspaceId,
+    userContextId,
+    windowId
+  ) {
+    let workspacesData =
+      await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
+    workspacesData[workspaceId].userContextId = userContextId;
+    await lazy.WorkspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
   },
 };
 
@@ -137,12 +135,29 @@ export const WorkspacesGroupService = {
     workspaceIds.splice(index, 1);
     workspaceIds.splice(beforeIndex, 0, workspaceId);
     workspacesData[workspaceId].tabs = workspaceIds;
-    lazy.WorkspacesDataSaver.saveWorkspacesData(
-      workspacesData,
-      windowId
-    );
+    lazy.WorkspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
   },
 };
+
+export const workspaceIcons = new Set([
+  "briefcase",
+  "cart",
+  "circle",
+  "compass",
+  "dollar",
+  "fence",
+  "fingerprint",
+  "gift",
+  "vacation",
+  "food",
+  "fruit",
+  "gear",
+  "pet",
+  "question",
+  "star",
+  "tree",
+  "chill",
+]);
 
 export const workspacesPreferences = {
   TAB_STACKS_ENABLED_PREF: "floorp.browser.Workspaces.enabled",
@@ -151,5 +166,5 @@ export const workspacesPreferences = {
 export const WorkspacesWindowUuidService = {
   getGeneratedUuid() {
     return generateUuid();
-  }
+  },
 };
