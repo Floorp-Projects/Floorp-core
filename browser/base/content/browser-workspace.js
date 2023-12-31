@@ -2278,7 +2278,6 @@ function disableWorkspacesByDefaultCheck() {
   }
 }
 
-disableWorkspacesByDefaultCheck();
 
 Services.obs.addObserver(
   workspacesMigtation.createSTGBackupFileObject,

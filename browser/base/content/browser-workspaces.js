@@ -7,6 +7,10 @@ var { WorkspacesExternalFileService } = ChromeUtils.importESModule(
   "resource:///modules/WorkspacesExternalFileService.sys.mjs"
 );
 
+var { WorkspacesMigratorUtils } = ChromeUtils.importESModule(
+  "resource:///modules/WorkspacesMigratorUtils.sys.mjs"
+);
+
 var { WorkspacesService } = ChromeUtils.importESModule(
   "resource:///modules/WorkspacesService.sys.mjs"
 );
@@ -167,21 +171,23 @@ var gWorkspaces = {
 
   async updateToolbarButtonAndPopupContentIconAndLabel(workspaceId) {
     let workspace = await this.getWorkspaceById(workspaceId);
-    this.workspacesToolbarButton.setAttribute("label", workspace.name);
-    this.workspacesToolbarButton.style.listStyleImage = `url(${getWorkspaceIconUrl(
-      workspace.icon
-    )})`;
-
-    let popupElements = document.getElementsByClassName("workspaceButton");
-
-    for (let popupElement of popupElements) {
-      let workspaceId = popupElement.getAttribute("workspaceId");
-      let workspace = await this.getWorkspaceById(workspaceId);
-
-      popupElement.setAttribute("label", workspace.name);
-      popupElement.style.listStyleImage = `url(${getWorkspaceIconUrl(
+    if (this.workspacesToolbarButton) {
+      this.workspacesToolbarButton.setAttribute("label", workspace.name);
+      this.workspacesToolbarButton.style.listStyleImage = `url(${getWorkspaceIconUrl(
         workspace.icon
       )})`;
+
+      let popupElements = document.getElementsByClassName("workspaceButton");
+
+      for (let popupElement of popupElements) {
+        let workspaceId = popupElement.getAttribute("workspaceId");
+        let workspace = await this.getWorkspaceById(workspaceId);
+
+        popupElement.setAttribute("label", workspace.name);
+        popupElement.style.listStyleImage = `url(${getWorkspaceIconUrl(
+          workspace.icon
+        )})`;
+      }
     }
   },
 
@@ -190,15 +196,22 @@ var gWorkspaces = {
     bmsSidebar.prepend(this.workspacesPopupContent);
 
     const CSS = WorkspacesElementService.manageOnBmsInjectionCSS;
-    document.head.appendChild(document.createElement("style")).textContent = CSS;
+    document.head.appendChild(document.createElement("style")).textContent =
+      CSS;
     for (let workspaceButton of this.workspaceButtons) {
       workspaceButton.classList.add("sidepanel-icon");
     }
 
-    let spacerElem = window.MozXULElement.parseXULToFragment(WorkspacesElementService.workspaceSpacerElement);
+    let spacerElem = window.MozXULElement.parseXULToFragment(
+      WorkspacesElementService.workspaceSpacerElement
+    );
     this.workspacesPopupContent.after(spacerElem);
-    this.workspacesPopupContent.after(document.getElementById("workspacesCreateNewWorkspaceButton"));
-    document.getElementById("workspacesCreateNewWorkspaceButton").classList.add("sidepanel-icon");
+    this.workspacesPopupContent.after(
+      document.getElementById("workspacesCreateNewWorkspaceButton")
+    );
+    document
+      .getElementById("workspacesCreateNewWorkspaceButton")
+      .classList.add("sidepanel-icon");
 
     this._workspaceManageOnBMSMode = true;
   },
@@ -307,7 +320,7 @@ var gWorkspaces = {
     let result = await WorkspacesElementService.getWorkspaceBlockElement(
       workspaceId,
       windowId,
-      this._workspaceManageOnBMSMode,
+      this._workspaceManageOnBMSMode
     );
     return result;
   },
@@ -393,12 +406,6 @@ var gWorkspaces = {
 
   async createNoNameWorkspace() {
     await this.createWorkspace("New Workspace", false, true);
-  },
-
-  async addTabToWorkspace(workspaceId, tab) {
-    let workspacesData = await this.getCurrentWorkspacesData();
-    workspacesData[workspaceId].tabs.push(tab.workspaceId);
-    await this.saveWorkspacesData(workspacesData);
   },
 
   async deleteWorkspace(workspaceId) {
@@ -739,6 +746,13 @@ var gWorkspaces = {
     this._initialized = true;
 
     let currentWorkspace = await gWorkspaces.getCurrentWorkspace();
+
+    // Check Workspaces Need migrate from Legacy Workspaces
+    await WorkspacesMigratorUtils.importDataFromLegacyWorkspaces(
+      gBrowser.tabs,
+      this.getCurrentWindowId()
+    );
+
     if (
       !currentWorkspace ||
       currentWorkspace == null ||

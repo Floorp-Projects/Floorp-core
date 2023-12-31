@@ -68,15 +68,6 @@ export const WorkspacesService = {
     await lazy.WorkspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
   },
 
-  async addTabToWorkspace(workspaceId, tabs, windowId) {
-    let workspacesData =
-      await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
-    for (let tab of tabs) {
-      workspacesData[workspaceId].tabs.push(tab.workspaceId);
-    }
-    await lazy.WorkspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
-  },
-
   async setDefaultWorkspace(workspaceId, windowId) {
     let workspacesData =
       await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);

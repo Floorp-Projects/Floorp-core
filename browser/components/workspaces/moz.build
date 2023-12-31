@@ -9,6 +9,7 @@ EXTRA_JS_MODULES += [
     "WorkspacesElementService.sys.mjs",
     "WorkspacesExternalFileService.sys.mjs",
     "WorkspacesIdUtils.sys.mjs",
+    "WorkspacesMigratorUtils.sys.mjs",
     "WorkspacesService.sys.mjs",
     "WorkspacesWindowIdUtils.sys.mjs",
 ]
