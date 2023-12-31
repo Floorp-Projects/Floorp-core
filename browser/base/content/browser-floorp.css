@@ -689,6 +689,9 @@ toolbar #workspace-button:not([disabled="true"], [checked], [open], :active):hov
 #workspaces-toolbar-button > label {
   display: inherit !important;
 }
+toolbarpaletteitem #workspaces-toolbar-button > label {
+  display: none !important;
+}
 #workspaces-toolbar-button > * {
   background-color: unset !important;
   background-image: unset !important;
