@@ -10,38 +10,25 @@
 #verticaltab-splitter {
   display: none !important;
 }
-  
+
 /*shared*/
-#TabsToolbar-customization-target {
-  position: relative !important;
-  clip-path: inset(0) !important;
-  z-index: 1 !important;
-  transition-delay: 0.2s !important;
-}
-  
 :root {
-  --default-vertitaltab-width: 45px;
+  --default-verticaltab-width: 45px;
   --hoverd-verticaltab-width: 20em;
 }
 
 :root[uidensity=compact]{
-  --default-vertitaltab-width: 35px !important;
+  --default-verticaltab-width: 35px !important;
 }
 
 :root[uidensity=touch]{
-  --default-vertitaltab-width: 60px !important;
-}
-  
-/*close*/
-#TabsToolbar {
-  --hovering-verticaltab-width: calc( var(--default-vertitaltab-width) + 12px);
-  width: var(--default-vertitaltab-width) !important;
-  transition-delay: 0.2s !important;
+  --default-verticaltab-width: 60px !important;
 }
 
-#TabsToolbar:not(:hover) #tabbrowser-tabs[closebuttons="activetab"] .tabbrowser-tab:not([visuallyselected]) .tab-content[class] > .tab-close-button[class] {
-  display: none !important;
-  visibility: hidden !important;
+/*close*/
+#TabsToolbar {
+  width: var(--default-verticaltab-width) !important;
+  transition-delay: 0.2s !important;
 }
 
 #TabsToolbar:not(:hover) #tabbrowser-tabs[closebuttons="activetab"] .tabbrowser-tab .tab-content[class] > .tab-close-button[class] {
@@ -53,41 +40,31 @@
   display: none !important;
 }
 
-#TabsToolbar:not(:hover) #TabsToolbar-customization-target > .toolbarbutton-1 > .toolbarbutton-text {
+#TabsToolbar-customization-target:not(:hover) > .toolbarbutton-1 > .toolbarbutton-text {
   display: none !important;
-}
-
-#TabsToolbar:not(:hover) .tab-icon-stack {
-  padding-left: 10px;
-}
-
-#TabsToolbar:not(:hover) .tab-content {
-  --inline-tab-padding:0px !important;
-  padding-inline: 0px !important;
 }
 
 #sidebar-box .tabbrowser-tab{
   margin-right: 1px !important;
   margin-left: 1px !important;
 }
-  
+
 /*open*/
 #TabsToolbar:hover {
-  --hovering-verticaltab-width: var(--hoverd-verticaltab-width) !important; 
   transition: all 200ms !important;
   transition-delay: 0.2s !important;
   z-index: 100 !important;
   width: 250px !important;
 }
-  
+
 /*left*/
 #TabsToolbar:not([positionend="true"]):hover {
-  margin-right: calc((var(--hoverd-verticaltab-width) - var(--default-vertitaltab-width) + 10px) * -1) !important;
+  margin-right: calc((var(--hoverd-verticaltab-width) - var(--default-verticaltab-width) + 10px) * -1) !important;
 }
-  
+
 /*right*/
 #TabsToolbar[positionend="true"]:hover {
-  margin-left: calc((var(--hoverd-verticaltab-width) - var(--default-vertitaltab-width) + 10px) * -1) !important;
+  margin-left: calc((var(--hoverd-verticaltab-width) - var(--default-verticaltab-width) + 10px) * -1) !important;
 }
   
 /* if tab doesn't have an icon, make sure it still has tab icon */

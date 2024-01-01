@@ -3,6 +3,7 @@
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #tabbrowser-arrowscrollbox-periphery {
+  display: block !important;
   width: -moz-available;
   margin-top: 0.5em;
 }
@@ -10,6 +11,11 @@
 #tabs-newtab-button {
   display: flex !important;
   width: -moz-available;
+  border-radius: 5px;
+  position: unset;
+  appearance: inherit;
+  margin-left: 5px !important;
+  margin-right: 5px !important;
 }
 
 #tabs-newtab-button:hover {
@@ -20,23 +26,15 @@
   background: var(--toolbarbutton-active-background);
 }
 
-#tabs-newtab-button {
-  border-radius: 5px;
-}
-
-#tabs-newtab-button {
-  width: -moz-available;
-  position: unset;
-  appearance: inherit;
-  margin-left: 5px !important;
-  margin-right: 5px !important;
-}
-
 #tabs-newtab-button > .toolbarbutton-icon {
   background-color: unset !important;
   background: none !important;
 }
 
-#tabbrowser-arrowscrollbox-periphery {
-  display: block !important;
+#tabs-newtab-button > .toolbarbutton-text {
+    display: none !important;
+}
+
+#new-tab-button {
+    display: none !important;
 }
