@@ -82,25 +82,16 @@ function setBrowserDesign() {
   }
 }
 
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
-    setBrowserDesign();
-    Services.prefs.addObserver(
-      "floorp.browser.user.interface",
-      setBrowserDesign
-    );
-    Services.prefs.addObserver(
-      "floorp.fluerial.roundVerticalTabs",
-      setBrowserDesign
-    );
-    Services.obs.addObserver(setBrowserDesign, "update-photon-pref");
-    Services.obs.addObserver(setPhotonUI, "set-photon-ui");
-    Services.obs.addObserver(setLeptonUI, "set-lepton-ui");
-    Services.obs.addObserver(setProtonFixUI, "set-protonfix-ui");
-  },
-  { once: true }
+setBrowserDesign();
+Services.prefs.addObserver("floorp.browser.user.interface", setBrowserDesign);
+Services.prefs.addObserver(
+  "floorp.fluerial.roundVerticalTabs",
+  setBrowserDesign
 );
+Services.obs.addObserver(setBrowserDesign, "update-photon-pref");
+Services.obs.addObserver(setPhotonUI, "set-photon-ui");
+Services.obs.addObserver(setLeptonUI, "set-lepton-ui");
+Services.obs.addObserver(setProtonFixUI, "set-protonfix-ui");
 
 function setPhotonUI() {
   Services.prefs.setIntPref("floorp.lepton.interface", 1);
