@@ -57,9 +57,9 @@
   appearance: inherit !important;
   border-radius: 5px;
   height: 25px;
+  margin: 5px;
   margin-left: 8px !important;
   margin-right: 5px !important;
-  margin: 5px;
   padding: 0 !important;
 }
 
@@ -177,4 +177,3 @@
   display: none;
   transition: opacity 0.3s ease-in-out;
 }
-

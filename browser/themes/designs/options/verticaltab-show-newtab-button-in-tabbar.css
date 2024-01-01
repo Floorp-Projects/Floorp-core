@@ -27,8 +27,8 @@
 }
 
 #tabs-newtab-button > .toolbarbutton-icon {
-  background-color: unset !important;
   background: none !important;
+  background-color: unset !important;
 }
 
 #tabs-newtab-button > .toolbarbutton-text {
