@@ -21,6 +21,21 @@ function setWorkspaceLabel() {
   customizeTarget.before(workspaceButton);
 }
 
+
+function changeXULElementTagName(oldElement, newTagName) {
+  const newElement = document.createElement(newTagName);
+
+  const attrs = oldElement.attributes;
+  for (let i = 0; i < attrs.length; i++) {
+    newElement.setAttribute(attrs[i].name, attrs[i].value);
+  }
+
+  while (oldElement.firstChild) {
+    newElement.appendChild(oldElement.firstChild);
+  }
+  oldElement.parentNode.replaceChild(newElement, oldElement);
+}
+
 function checkBrowserIsStartup() {
   const browserWindows = Services.wm.getEnumerator("navigator:browser");
 
@@ -205,15 +220,42 @@ function setVerticalTabs() {
           arrowscrollbox.shadowRoot.querySelector(".scrollbox-clip"),
           "style"
         );
-        elem.textContent = `scrollbox[part="scrollbox"] {
-          overflow-y: scroll;
-          scrollbar-width: thin;
-        }`;
+        elem.textContent = `
+          scrollbox[part="scrollbox"],
+          vbox[part="scrollbox"] {
+            overflow-y: scroll;
+            overflow-x: hidden;
+            scrollbar-width: thin;
+          }`;
+        elem.setAttribute("class", "floorp-vtscrollbar");
+        arrowscrollbox.shadowRoot.querySelector(
+          ".scrollbox-clip[part='scrollbox-clip']"
+        ).style.overflowY = "scroll";
+      } else {
+        let elem = arrowscrollbox.shadowRoot.createElementAndAppendChildAt(
+          arrowscrollbox.shadowRoot.querySelector(".scrollbox-clip"),
+          "style"
+        );
+        elem.textContent = `
+          scrollbox[part="scrollbox"],
+          vbox[part="scrollbox"] {
+            overflow-y: scroll;
+            scrollbar-width: none;
+          }`;
         elem.setAttribute("class", "floorp-vtscrollbar");
         arrowscrollbox.shadowRoot.querySelector(
           ".scrollbox-clip[part='scrollbox-clip']"
         ).style.overflowY = "scroll";
       }
+        
+
+      changeXULElementTagName(
+        arrowscrollbox.shadowRoot.querySelector(
+          "scrollbox[part='scrollbox']"
+        ),
+        "vbox"
+      );
+
     }, 1000);
   } else {
     // TODO: Re-implement the vertical tab bar. This code is not working.
@@ -253,6 +295,19 @@ function setVerticalTabs() {
     arrowscrollbox.shadowRoot.querySelector(
       ".scrollbox-clip[part='scrollbox-clip']"
     ).style.overflowY = ""
+
+    arrowscrollbox.shadowRoot.querySelectorAll(".floorp-vtscrollbar").forEach(
+      function (elem) {
+        elem.remove();
+      }
+    );
+
+    changeXULElementTagName(
+      arrowscrollbox.shadowRoot.querySelector(
+        "scrollbox[part='scrollbox']"
+      ),
+      "scrollbox"
+    );
   }
 }
 

@@ -264,21 +264,40 @@ observePreference("floorp.verticaltab.show.scrollbar", function (event) {
   if (Services.prefs.getIntPref("floorp.tabbar.style", false) != 2) {
     return;
   }
+  
+  arrowscrollbox.shadowRoot.querySelectorAll(".floorp-vtscrollbar").forEach(
+    function (elem) {
+      elem.remove();
+    }
+  );
+
   if (event.prefValue) {
     let elem = arrowscrollbox.shadowRoot.createElementAndAppendChildAt(
       arrowscrollbox.shadowRoot.querySelector(".scrollbox-clip"),
       "style"
     );
     elem.textContent = `scrollbox[part="scrollbox"] {
-      overflow-y: scroll;
-      scrollbar-width: thin;
-    }`;
+      scrollbox[part="scrollbox"],
+      vbox[part="scrollbox"] {
+        overflow-y: scroll;
+        overflow-x: hidden;
+        scrollbar-width: thin;
+      }`;
     elem.setAttribute("class", "floorp-vtscrollbar");
-  } else {
-    arrowscrollbox.shadowRoot.querySelectorAll(".floorp-vtscrollbar").forEach(
-      function (elem) {
-        elem.remove();
-      }
+  }  else {
+    let elem = arrowscrollbox.shadowRoot.createElementAndAppendChildAt(
+      arrowscrollbox.shadowRoot.querySelector(".scrollbox-clip"),
+      "style"
     );
+    elem.textContent = `
+      scrollbox[part="scrollbox"],
+      vbox[part="scrollbox"] {
+        overflow-y: scroll;
+        scrollbar-width: none;
+      }`;
+    elem.setAttribute("class", "floorp-vtscrollbar");
+    arrowscrollbox.shadowRoot.querySelector(
+      ".scrollbox-clip[part='scrollbox-clip']"
+    ).style.overflowY = "scroll";
   }
 });
