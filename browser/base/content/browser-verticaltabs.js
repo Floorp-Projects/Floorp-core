@@ -25,6 +25,10 @@ function setWorkspaceLabel() {
 function changeXULElementTagName(oldElement, newTagName) {
   const newElement = document.createElement(newTagName);
 
+  if (!oldElement) {
+    return;
+  }
+
   const attrs = oldElement.attributes;
   for (let i = 0; i < attrs.length; i++) {
     newElement.setAttribute(attrs[i].name, attrs[i].value);
@@ -53,6 +57,9 @@ function checkBrowserIsStartup() {
 
 function toggleCustomizeModeVerticaltabStyle() {
   let customizationContainer = document.getElementById("nav-bar");
+  let arrowscrollbox = document.getElementById(
+    "tabbrowser-arrowscrollbox"
+  );
   let observer = new MutationObserver(function (mutations) {
     mutations.forEach(function (mutation) {
       if (mutation.target.getAttribute("customizing") == "true") {
@@ -62,6 +69,7 @@ function toggleCustomizeModeVerticaltabStyle() {
         );
         Services.prefs.setIntPref("floorp.tabbar.style", 0);
         Services.prefs.setIntPref(tabbarContents.tabbarDisplayStylePref, 0);
+        arrowscrollbox.hidden = true;
       } else {
         Services.prefs.setBoolPref(
           "floorp.browser.tabs.verticaltab.temporary.disabled",
@@ -69,6 +77,7 @@ function toggleCustomizeModeVerticaltabStyle() {
         );
         Services.prefs.setIntPref("floorp.tabbar.style", 2);
         Services.prefs.setIntPref(tabbarContents.tabbarDisplayStylePref, 2);
+        arrowscrollbox.hidden = false;
       }
     });
   });
@@ -304,7 +313,7 @@ function setVerticalTabs() {
 
     changeXULElementTagName(
       arrowscrollbox.shadowRoot.querySelector(
-        "scrollbox[part='scrollbox']"
+        "vbox[part='scrollbox']"
       ),
       "scrollbox"
     );
