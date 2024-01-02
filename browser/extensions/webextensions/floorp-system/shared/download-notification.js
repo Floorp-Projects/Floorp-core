@@ -1,8 +1,8 @@
-/*
-1: ダウンロード開始だけ通知
-2: ダウンロード完了だけ通知
-3: ダウンロード開始と完了、両方通知
-*/
+/* -*- indent-tabs-mode: nil; js-indent-level: 2 -*-
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 const DOWNLOAD_NOTIFICATION_PREF = "floorp.download.notification";
 
 browser.downloads.onCreated.addListener(async file => {
@@ -41,6 +41,11 @@ browser.downloads.onChanged.addListener(async file => {
   let pref = String(
     await browser.aboutConfigPrefs.getPref(DOWNLOAD_NOTIFICATION_PREF)
   );
+
+  if (!file.state) {
+    return;
+  }
+
   if (file.state.current == "complete" && (pref === "2" || pref === "3")) {
     let download = await browser.downloads.search({ id: file.id });
     browser.notifications.create({
