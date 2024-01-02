@@ -7,14 +7,6 @@
     "message": "Checking for Updates",
     "description": "browserActionのタイトル"
   },
-  "start": {
-    "message": "Starting Download",
-    "description": "ダウンロード開始"
-  },
-  "finish": {
-    "message": "Download Finished!",
-    "description": "ダウンロード完了"
-  },
   "notificationTitle": {
     "message": "Update notification",
     "description": "Title"
