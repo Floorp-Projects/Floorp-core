@@ -158,6 +158,10 @@
   min-width: -moz-available !important;
 }
 
+#tabbrowser-tabs[orient="vertical"] .tabbrowser-tab[context="tabContextMenu"] {
+  margin-block: 0px !important;
+}
+
 #verticaltab-splitter {
   background: var(--toolbar-bgcolor);
   width: 2px;

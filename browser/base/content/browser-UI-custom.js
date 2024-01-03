@@ -276,8 +276,8 @@ observePreference("floorp.verticaltab.show.scrollbar", function (event) {
       arrowscrollbox.shadowRoot.querySelector(".scrollbox-clip"),
       "style"
     );
-    elem.textContent = `scrollbox[part="scrollbox"] {
-      scrollbox[part="scrollbox"],
+    elem.textContent = `
+      scrollbox[part="scrollbox"], 
       vbox[part="scrollbox"] {
         overflow-y: scroll;
         overflow-x: hidden;
