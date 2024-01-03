@@ -543,7 +543,8 @@ toolbar #workspace-button:not([disabled="true"], [checked], [open], :active):hov
 }
 
 #new-tab-button > .toolbarbutton-icon {
-  width: 22px !important;
+  width: 26px !important;
+  height: 26px !important;
 }
 
 /* Progressive Web Apps */
