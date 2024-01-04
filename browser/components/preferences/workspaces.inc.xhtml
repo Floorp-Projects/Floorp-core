@@ -20,25 +20,6 @@
 ## Some elements share id & with notes.inc.xhtml
 <groupbox data-category="paneWorkspaces" hidden="true">
   <vbox class="contentPane">
-    <vbox hidden="true" class="info-box-container" id="workspaces-removed-warning-container">
-      <html:h2 data-l10n-id="workspaces-removed-title" id="workspaces-removed-title"/>
-      <description class="info-box" data-l10n-id="workspaces-removed-warning">
-        <label is="text-link" href="" data-l10n-name="workspaces-removed-learning-more" id="workspaces-removed-learning-more"/>
-      </description>
-    </vbox>
-    <html:h2 data-l10n-id="workspaces-removed-migration-tools-title" hidden="true" id="workspaces-removed-migration-tools-title"/>
-    <checkbox hidden="true" preference="floorp.extensions.STG.like.floorp.workspaces.enabled"
-              data-l10n-id="STG-smilar-workspaces-option"/>
-    <description hidden="true" class="info-box indent tip-caption" data-l10n-id="workspaces-removed-migration-tools" id="workspaces-removed-migration-tools-description"/>
-    <hbox hidden="true" id="workspaces-removed-migration-tools-box">
-      <label data-l10n-id="workspaces-removed-migration-tools-label"/>
-      <spacer flex="1"/>
-      <button id="workspaces-removed-migrate-to-STG-button"
-              is="highlightable-button"
-              class="accessory-button"
-              data-l10n-id="workspaces-removed-migrate-to-STG-button"/>
-    </hbox>
-
     <html:h1 data-l10n-id="floorp-workspaces-title"/>
     <checkbox preference="floorp.browser.workspace.closePopupAfterClick"
               data-l10n-id="change-to-close-workspace-popup-option"/>
@@ -46,39 +27,6 @@
               data-l10n-id="show-workspace-name-option"/>
     <checkbox preference="floorp.browser.workspace.manageOnBMS" class="needreboot"
               data-l10n-id="manage-workspace-on-bms-option"/>
-    <checkbox preference="floorp.browser.workspace.changeWorkspaceWithDefaultKey"
-              data-l10n-id="change-workspace-with-default-key-option"/>
-
-    <html:h2 data-l10n-id="workspaces-reset-title"/>
-    <description class="indent tip-caption" data-l10n-id="workspaces-reset-description"/>
-    <hbox>
-      <label data-l10n-id="workspaces-reset-label"/>
-      <spacer flex="1"/>
-      <button id="reset-workspaces-button"
-              is="highlightable-button"
-              class="accessory-button"
-              data-l10n-id="workspaces-reset-button"/>
-    </hbox>
-
-    <html:h2 data-l10n-id="workspaces-manage-title"/>
-    <description class="indent tip-caption" data-l10n-id="workspaces-manage-description"/>
-    <hbox>
-      <label data-l10n-id="workspaces-manage-label"/>
-      <spacer flex="1"/>
-      <button id="manageWorkspace-button"
-              is="highlightable-button"
-              class="accessory-button"
-              data-l10n-id="workspaces-manage-button"/>
-    </hbox>
-
-
-
-    <html:h2 data-l10n-id="workspaces-backup-discription"/>
-    <richlistbox id="workspaces-backup-list" flex="1" class="backup-list">
-    <richlistitem>
-      <label id="backuped-time-label" class="backuped-time-label" data-l10n-id="backuped-time"/>
-    </richlistitem>
-   </richlistbox>
   </vbox>
 </groupbox>
 

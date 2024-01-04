@@ -126,11 +126,8 @@ pref("floorp.browser.workspace.tabs.state", "[]");
 pref("floorp.browser.workspace.current", "");
 pref("floorp.browser.workspace.all", "");
 pref("floorp.browser.workspace.tab.enabled",true);
-pref("floorp.browser.workspace.closePopupAfterClick", false);
 pref("floorp.browser.workspace.info", "[]");
 pref("floorp.browser.workspace.changeWorkspaceWithDefaultKey", true);
-pref("floorp.browser.workspace.manageOnBMS", false);
-pref("floorp.browser.workspace.showWorkspaceName", true);
 pref("floorp.browser.workspace.backuped", false);
 pref("floorp.browser.workspace.container.userContextId", 0);
 //temp
@@ -171,7 +168,10 @@ pref("browser.ssb.enabled", false);
 #endif
 
 // Workspace
-pref("floorp.browser.Workspaces.enabled", false);
+pref("floorp.browser.workspaces.enabled", false);
+pref("floorp.browser.workspace.manageOnBMS", false);
+pref("floorp.browser.workspace.closePopupAfterClick", false);
+pref("floorp.browser.workspace.showWorkspaceName", true);
 
 /*----------------------------------------------------------------------------------------------------------------------------------*/
 
