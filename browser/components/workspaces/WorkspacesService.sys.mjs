@@ -165,9 +165,11 @@ export function getWorkspaceIconUrl(icon) {
 
 export const workspacesPreferences = {
   TAB_STACKS_ENABLED_PREF: "floorp.browser.workspaces.enabled",
-  WORKSPACE_CLOSE_POPUP_AFTER_CLICK_PREF: "floorp.browser.workspace.closePopupAfterClick",
+  WORKSPACE_CLOSE_POPUP_AFTER_CLICK_PREF:
+    "floorp.browser.workspace.closePopupAfterClick",
   WORKSPACE_MANAGE_ON_BMS_PREF: "floorp.browser.workspace.manageOnBMS",
-  WORKSPACE_SHOW_WORKSPACE_NAME_PREF: "floorp.browser.workspace.showWorkspaceName",
+  WORKSPACE_SHOW_WORKSPACE_NAME_PREF:
+    "floorp.browser.workspace.showWorkspaceName",
 };
 
 export const WorkspacesWindowUuidService = {

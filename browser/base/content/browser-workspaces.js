@@ -3,10 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-var { WorkspacesExternalFileService } = ChromeUtils.importESModule(
-  "resource:///modules/WorkspacesExternalFileService.sys.mjs"
-);
-
 var { WorkspacesMigratorUtils } = ChromeUtils.importESModule(
   "resource:///modules/WorkspacesMigratorUtils.sys.mjs"
 );
@@ -95,6 +91,11 @@ var gWorkspaces = {
 
   get workspaceButtons() {
     return document.querySelectorAll(".workspaceButton");
+  },
+
+  get l10n() {
+    const l10n = new Localization(["browser/floorp.ftl", "branding/brand.ftl"], true);
+    return l10n;
   },
 
   /** Workspaces Toolbar */
@@ -558,8 +559,8 @@ var gWorkspaces = {
     let input = { value: workspace.name };
     let result = await prompts.prompt(
       window,
-      "Rename Workspace",
-      "Enter Workspace Name.\nMost characters and symbols can be used.",
+      this.l10n.formatValueSync("rename-workspace-prompt-title"),
+      this.l10n.formatValueSync("rename-workspace-prompt-text"),
       input,
       null,
       { value: 0 }
@@ -758,7 +759,7 @@ var gWorkspaces = {
       currentWorkspace == null ||
       currentWorkspace == undefined
     ) {
-      await gWorkspaces.createWorkspace("Default", true, false);
+      await gWorkspaces.createWorkspace(this.l10n.formatValueSync("workspace-default-name"), true, false);
 
       // Set default Workspace
       let workspaceId = await gWorkspaces.getCurrentWorkspaceId();
@@ -904,11 +905,11 @@ var gWorkspaces = {
 
       //create context menu
       let menuItem = window.MozXULElement.parseXULToFragment(`
-          <menuitem data-l10n-id="rename-this-workspace" label="Rename Workspace" accesskey="R" oncommand="gWorkspaces.renameWorkspaceWithCreatePrompt('${contextWorkspaceId}')"></menuitem>
-          <menuitem data-l10n-id="delete-this-workspace" label="Delete Workspace" accesskey="D" ${
+          <menuitem data-l10n-id="rename-this-workspace" accesskey="R" oncommand="gWorkspaces.renameWorkspaceWithCreatePrompt('${contextWorkspaceId}')"></menuitem>
+          <menuitem data-l10n-id="delete-this-workspace" accesskey="D" ${
             isDefaultWorkspace ? 'disabled="true"' : ""
           } oncommand="gWorkspaces.deleteWorkspace('${contextWorkspaceId}')"></menuitem>
-          <menuitem data-l10n-id="manage-this-workspaces" label="Manage Workspaces" accesskey="M" oncommand="gWorkspaces.manageWorkspaceFromDialog('${contextWorkspaceId}')"></menuitem>
+          <menuitem data-l10n-id="manage-this-workspaces" oncommand="gWorkspaces.manageWorkspaceFromDialog('${contextWorkspaceId}')"></menuitem>
         `);
       let parentElem = document.getElementById(
         "workspaces-toolbar-item-context-menu"

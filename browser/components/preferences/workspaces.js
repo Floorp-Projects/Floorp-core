@@ -9,23 +9,30 @@ var { workspacesPreferences } = ChromeUtils.importESModule(
   "resource:///modules/WorkspacesService.sys.mjs"
 );
 
-
 XPCOMUtils.defineLazyGetter(this, "L10n", () => {
-  return new Localization(["branding/brand.ftl", "browser/floorp", ]);
+  return new Localization(["branding/brand.ftl", "browser/floorp"]);
 });
 
 Preferences.addAll([
-  { id: workspacesPreferences.WORKSPACE_CLOSE_POPUP_AFTER_CLICK_PREF, type: "bool" },
+  {
+    id: workspacesPreferences.WORKSPACE_CLOSE_POPUP_AFTER_CLICK_PREF,
+    type: "bool",
+  },
   { id: workspacesPreferences.WORKSPACE_MANAGE_ON_BMS_PREF, type: "bool" },
-  { id: workspacesPreferences.WORKSPACE_SHOW_WORKSPACE_NAME_PREF, type: "bool" },
-])
+  {
+    id: workspacesPreferences.WORKSPACE_SHOW_WORKSPACE_NAME_PREF,
+    type: "bool",
+  },
+]);
 
 const gWorkspacesPane = {
   _pane: null,
   init() {
     this._pane = document.getElementById("paneWorkspaces");
-    document.getElementById("backtogeneral-workspaces").addEventListener("command", () => {
-      gotoPref("general")
-    });
-  },  
+    document
+      .getElementById("backtogeneral-workspaces")
+      .addEventListener("command", () => {
+        gotoPref("general");
+      });
+  },
 };
