@@ -1,2 +1,3 @@
 /@types/firefox/**/*
 /node_modules/
+/dist/

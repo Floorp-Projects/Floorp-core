@@ -5,11 +5,13 @@
   },
   "compilerOptions": {
     "target": "es2017",
-    "module": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "moduleDetection": "force",
     "allowJs": true,
     "declaration": true,
     "emitDeclarationOnly": true,
+    "allowSyntheticDefaultImports": true,
 
     "paths": {
       "@xpcom/*": ["./@types/firefox/xpcom/*"],
