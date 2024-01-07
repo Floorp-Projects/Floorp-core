@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import * as showdown from "chrome://floorp/content/third_party/showdown.js";
+/// <reference types="../../../../third_party/@types/showdown/index.d.ts" />
 
 document.addEventListener("DOMContentLoaded", async function () {
   // const showdown = await import(
@@ -214,6 +214,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   function showMarkDownPreview() {
     const memo = memoInput.value;
     if (!memo == "") {
+
+      
       HTMLPreview.style.display = "block";
       memoInput.style.display = "none";
       memoSave.style.display = "none";
