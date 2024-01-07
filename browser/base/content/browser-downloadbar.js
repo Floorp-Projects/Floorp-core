@@ -127,6 +127,19 @@ if (
     #show-downloads-button:active {
       background-color: var(--toolbarbutton-active-background);
     }
+    #downloadsSummary {
+      background: transparent !important;
+      border-top: 0px !important;
+    }
+    #downloadsFooter {
+      margin-right: 0.5em !important;
+    }
+    #downloadsFooter:not([showingsummary]) {
+      display: none;
+    }
+    #downloadsFooter:hover {
+      background-color: var(--panel-item-hover-bgcolor);
+    }
     `;
     document.head.appendChild(Tag);
 
