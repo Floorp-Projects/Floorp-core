@@ -39,10 +39,9 @@ let gFloorpPageAction = {
       </panel>
      </hbox>
     `),
-    onPopupShowing() {
-      Services.scriptloader.loadSubScript(
-        "chrome://browser/content/qr-code-styling/qr-code-styling.js",
-        window
+    async onPopupShowing() {
+      const { default: QRCodeStyling } = await import(
+        "chrome://browser/content/floorp/third_party/qr-code-styling.js"
       );
 
       let currentTab = gBrowser.selectedTab;
@@ -119,13 +118,15 @@ let gFloorpPageAction = {
 
     async onCommand() {
       gSsbChromeManager.functions.installOrRunCurrentPageAsSsb(true);
-      
+
       // Show installing gif
       let installingGif = document.getElementById("ssb-installing-icon");
       installingGif?.removeAttribute("hidden");
 
       // Hide install button
-      let installButtons = document.getElementsByClassName("ssb-install-buttons");
+      let installButtons = document.getElementsByClassName(
+        "ssb-install-buttons"
+      );
       for (let installButton of installButtons) {
         installButton?.setAttribute("hidden", true);
       }
@@ -138,7 +139,9 @@ let gFloorpPageAction = {
       installingGif?.setAttribute("hidden", true);
 
       // Hide install button
-      let installButtons = document.getElementsByClassName("ssb-install-buttons");
+      let installButtons = document.getElementsByClassName(
+        "ssb-install-buttons"
+      );
       for (let installButton of installButtons) {
         installButton?.removeAttribute("hidden");
       }
