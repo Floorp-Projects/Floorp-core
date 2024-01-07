@@ -27,12 +27,16 @@ if (
     document
       .getElementById("appcontent")
       .appendChild(document.getElementById("downloadsPanel"));
+    document
+      .getElementById("downloadsFooter")
+      .appendChild(document.getElementById("downloadsSummary"));
     document.getElementById("downloadsPanel").style.display = "block";
     document.getElementById("downloadsPanel").hidden = false;
-
+    document.querySelector("#downloadsFooter > stack").remove();
     changeXULElementTagName("downloadsPanel", "vbox");
     changeXULElementTagName("downloadsPanel-multiView", "vbox");
     changeXULElementTagName("downloadsPanel-mainView", "vbox");
+    changeXULElementTagName("downloadsFooter", "richlistitem");
 
     const elem = document.createElement("div");
     elem.id = "close";
@@ -128,6 +132,7 @@ if (
 
     //delete all downloads button
 
+    const downloadsFooterButtonElem = document.getElementById("downloadsFooter");
     const hideAllDownloadButtonElem = window.MozXULElement.parseXULToFragment(`
     <toolbarbutton id="hide-downloads-button" class="toolbarbutton-1" command="downloadsCmd_clearList" data-l10n-id="floorp-delete-all-downloads" />
     `);
@@ -138,9 +143,18 @@ if (
 
     document
       .getElementById("downloadsListBox")
+      .appendChild(downloadsFooterButtonElem);
+    document
+      .getElementById("downloadsListBox")
       .appendChild(showAllDownloadTextAndButtonElem);
     document
       .getElementById("downloadsListBox")
       .appendChild(hideAllDownloadButtonElem);
   }, 1000);
+  const scrollElem = document.getElementById("downloadsListBox");
+  scrollElem.addEventListener("wheel", (e) => {
+    if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
+      e.preventDefault();
+    scrollElem.scrollLeft += e.deltaY*8;
+  });
 }
