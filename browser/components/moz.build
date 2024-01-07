@@ -28,7 +28,6 @@ EXTRA_JS_MODULES += [
     "PortableUpdate.sys.mjs",
     "PrivateContainer.sys.mjs",
     "userjsUtils.sys.mjs",
-    "WorkspaceUtils.sys.mjs",
 ]
 
 DEFINES["TOPOBJDIR"] = TOPOBJDIR

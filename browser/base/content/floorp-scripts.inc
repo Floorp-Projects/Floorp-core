@@ -19,7 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-context-menu.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-manager-sidebar.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-preferences.js", this);
-    Services.scriptloader.loadSubScript("chrome://browser/content/browser-workspace.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-pageActions-floorp.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-private-container.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-statusbar.js", this);
