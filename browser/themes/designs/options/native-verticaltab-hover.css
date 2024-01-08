@@ -39,11 +39,23 @@
 }
 
 #TabsToolbar:not(:hover) .tab-label-container {
-  display: none !important;
+  opacity: 0;
+  visibility: collapse;
+  transition: all 200ms !important;
 }
 
 #TabsToolbar-customization-target:not(:hover) > .toolbarbutton-1 > .toolbarbutton-text {
-  display: none !important;
+  opacity: 0;
+  visibility: collapse;
+  transition: all 200ms !important;
+}
+
+#TabsToolbar-customization-target:hover > .toolbarbutton-1 > .toolbarbutton-text {
+  transition-delay: 0.2s !important;
+}
+
+#TabsToolbar-customization-target > #alltabs-button > .toolbarbutton-badge-stack {
+  padding-left: 0px !important;
 }
 
 #sidebar-box .tabbrowser-tab{
