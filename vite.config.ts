@@ -1,6 +1,5 @@
 import { defineConfig } from "vite";
 import path from "path";
-import { genJarManifest } from "./tools/gen-jarmanifest-dist.js";
 
 const r = (str: string): string => {
   return path.resolve(__dirname, str);

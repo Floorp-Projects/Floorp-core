@@ -33,7 +33,7 @@ declare namespace MockedExports {
   }
 
   type Services = {
-    Services: import("firefox").Services;
+    Services: import("./firefox/index.js").Services;
   };
 
   type FileUtils = {
@@ -122,7 +122,8 @@ declare namespace MockedExports {
 
     closeAtomicFileOutputStream: <
       Stream extends
-        import("firefox").Components_Interfaces["nsISafeOutputStream"] & any,
+        import("./firefox/index.js").Components_Interfaces["nsISafeOutputStream"] &
+          any,
     >(
       stream: Stream
     ) => void;
@@ -133,7 +134,8 @@ declare namespace MockedExports {
      */
     closeSafeFileOutputStream: <
       Stream extends
-        import("firefox").Components_Interfaces["nsISafeOutputStream"] & any,
+        import("./firefox/index.js").Components_Interfaces["nsISafeOutputStream"] &
+          any,
     >(
       stream: Stream
     ) => void;
@@ -247,7 +249,7 @@ declare namespace MockedExports {
   type SetPref<T> = (prefName: string, value?: T) => T;
 
   type PrefObserverFunction = (
-    aSubject: import("./firefox/modules/libpref/nsIPrefBranch").nsIPrefBranch,
+    aSubject: import("./firefox/modules/libpref/nsIPrefBranch.js").nsIPrefBranch,
     aTopic: "nsPref:changed",
     aData: string
   ) => unknown;

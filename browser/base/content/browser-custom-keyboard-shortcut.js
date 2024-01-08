@@ -7,14 +7,16 @@
 const CustomKeyboardShortcutUtils = ChromeUtils.importESModule(
   "resource:///modules/CustomKeyboardShortcutUtils.sys.mjs"
 );
-var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
-
-const keyboradShortcutConfig = JSON.parse(
-  Services.prefs.getStringPref(
-    CustomKeyboardShortcutUtils.SHORTCUT_KEY_AND_ACTION_PREF,
-    ""
-  )
+const { Services } = ChromeUtils.importESModule(
+  "resource://gre/modules/Services.jsm"
 );
+
+// const keyboradShortcutConfig = JSON.parse(
+//   Services.prefs.getStringPref(
+//     CustomKeyboardShortcutUtils.SHORTCUT_KEY_AND_ACTION_PREF,
+//     ""
+//   )
+// );
 
 const buildShortCutkeyFunctions = {
   init() {
@@ -48,11 +50,11 @@ const buildShortCutkeyFunctions = {
       return;
     }
 
-    for (let shortcutObj of keyboradShortcutConfig) {
-      let name = shortcutObj.actionName;
-      let key = shortcutObj.key;
-      let keyCode = shortcutObj.keyCode;
-      let modifiers = shortcutObj.modifiers;
+    for (const shortcutObj of keyboradShortcutConfig) {
+      const name = shortcutObj.actionName;
+      const key = shortcutObj.key;
+      const keyCode = shortcutObj.keyCode;
+      const modifiers = shortcutObj.modifiers;
 
       if ((key && name) || (keyCode && name)) {
         buildShortCutkeyFunctions.buildShortCutkeyFunction(
@@ -68,7 +70,7 @@ const buildShortCutkeyFunctions = {
   },
 
   buildShortCutkeyFunction(name, key, keyCode, modifiers) {
-    let functionCode =
+    const functionCode =
       CustomKeyboardShortcutUtils.keyboradShortcutActions[name][0];
     if (!functionCode) {
       return;
@@ -78,34 +80,34 @@ const buildShortCutkeyFunctions = {
     modifiers = modifiers.replace(/ /g, "");
 
     let keyElement = window.MozXULElement.parseXULToFragment(`
-            <key id="${name}" class="floorpCustomShortcutKey"
-                 modifiers="${modifiers}"
-                 key="${key}"
-                 oncommand="${functionCode}"
-             />
-         `);
+			<key id="${name}" class="floorpCustomShortcutKey"
+				modifiers="${modifiers}"
+				key="${key}"
+				oncommand="${functionCode}"
+			/>
+		`);
 
     if (keyCode) {
       keyElement = window.MozXULElement.parseXULToFragment(`
-           <key id="${name}" class="floorpCustomShortcutKey"
-                oncommand="${functionCode}"
-                keycode="${keyCode}"
-             />`);
+				<key id="${name}" class="floorpCustomShortcutKey"
+					oncommand="${functionCode}"
+					keycode="${keyCode}"
+				/>`);
     }
 
     document.getElementById("mainKeyset").appendChild(keyElement);
   },
 
   removeAlreadyExistShortCutkeys() {
-    let mainKeyset = document.getElementById("mainKeyset");
+    const mainKeyset = document.getElementById("mainKeyset");
     while (mainKeyset.firstChild) {
       mainKeyset.firstChild.remove();
     }
   },
 
   disableAllCustomKeyShortcut() {
-    let keyElems = document.querySelector("#mainKeyset").childNodes;
-    for (let keyElem of keyElems) {
+    const keyElems = document.querySelector("#mainKeyset").childNodes;
+    for (const keyElem of keyElems) {
       if (!keyElem.classList.contains("floorpCustomShortcutKey")) {
         keyElem.setAttribute("disabled", true);
       }
@@ -113,30 +115,30 @@ const buildShortCutkeyFunctions = {
   },
 
   disableAllCustomKeyShortcutElemets() {
-    let keyElems = document.querySelectorAll(".floorpCustomShortcutKey");
-    for (let keyElem of keyElems) {
+    const keyElems = document.querySelectorAll(".floorpCustomShortcutKey");
+    for (const keyElem of keyElems) {
       keyElem.remove();
     }
   },
 
   enableAllCustomKeyShortcutElemets() {
-    let keyElems = document.querySelectorAll(".floorpCustomShortcutKey");
-    for (let keyElem of keyElems) {
+    const keyElems = document.querySelectorAll(".floorpCustomShortcutKey");
+    for (const keyElem of keyElems) {
       keyElem.removeAttribute("disabled");
     }
   },
 
   removeCustomKeyShortcutElemets() {
-    let keyElems = document.querySelectorAll(".floorpCustomShortcutKey");
-    for (let keyElem of keyElems) {
+    const keyElems = document.querySelectorAll(".floorpCustomShortcutKey");
+    for (const keyElem of keyElems) {
       keyElem.remove();
     }
   },
 };
 
-let customActionsFunctions = {
+const customActionsFunctions = {
   evalCustomeActionWithNum(num) {
-    let action = Services.prefs.getStringPref(
+    const action = Services.prefs.getStringPref(
       `floorp.custom.shortcutkeysAndActions.customAction${num}`
     );
     Function(action)();

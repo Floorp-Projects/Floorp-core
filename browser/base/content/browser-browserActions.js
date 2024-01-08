@@ -7,9 +7,9 @@
 const { CustomizableUI } = ChromeUtils.importESModule(
   "resource:///modules/CustomizableUI.sys.mjs"
 );
-const { SessionStore } = ChromeUtils.import(
-  "resource:///modules/sessionstore/SessionStore.jsm"
-);
+// const { SessionStore } = ChromeUtils.import(
+// 	"resource:///modules/sessionstore/SessionStore.jsm",
+// );
 
 async function UCTFirst() {
   const widgetId = "undo-closed-tab";
@@ -127,10 +127,10 @@ if (
 }
 
 async function workspacesToolbarButton() {
-  let { WorkspacesElementService } = ChromeUtils.importESModule(
+  const { WorkspacesElementService } = ChromeUtils.importESModule(
     "resource:///modules/WorkspacesElementService.sys.mjs"
   );
-  
+
   const widgetId = "workspaces-toolbar-button";
   const widget = CustomizableUI.getWidget(widgetId);
   if (widget && widget.type !== "custom") {
@@ -145,12 +145,17 @@ async function workspacesToolbarButton() {
     tooltiptext: l10nText,
     onCreated(aNode) {
       aNode.setAttribute("type", "menu");
-      const popup = window.MozXULElement.parseXULToFragment(WorkspacesElementService.panelElement);
+      const popup = window.MozXULElement.parseXULToFragment(
+        WorkspacesElementService.panelElement
+      );
       aNode.appendChild(popup);
     },
     onCommand() {
-      let currentWindow = Services.wm.getMostRecentWindow("navigator:browser");
-      const panel = currentWindow.document.getElementById("workspacesToolbarButtonPanel");
+      const currentWindow =
+        Services.wm.getMostRecentWindow("navigator:browser");
+      const panel = currentWindow.document.getElementById(
+        "workspacesToolbarButtonPanel"
+      );
       panel.openPopup(
         document.getElementById("workspaces-toolbar-button"),
         "bottomright topright",

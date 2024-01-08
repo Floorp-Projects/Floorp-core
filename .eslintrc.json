@@ -1,22 +1,36 @@
 {
-  "plugins": ["mozilla", "@typescript-eslint", "import"],
+  "plugins": ["@typescript-eslint", "import"],
   "overrides": [
     {
-      "files": ["browser/base/content/**/*.mjs"],
+      "files": ["@types/*"],
+      "rules": {
+        "@typescript-eslint/no-explicit-any": "off",
+        "no-var": "off"
+      }
+    },
+    {
+      "files": [
+        "browser/base/content/**/*.mjs",
+        "browser/base/content/**/*.js"
+      ],
       "env": {
         "browser": true
         //"mozilla/browser-window": true
       }
     },
     {
-      "files": ["browser/**/*.mjs", "browser/**/*.ts"],
+      "files": ["browser/**/*.mjs", "browser/**/*.ts", "browser/**/*.js"],
 
       "rules": {
         "jsdoc/newline-after-description": "off",
         "no-undef": "error",
         "no-shadow": "off",
         "@typescript-eslint/no-shadow": "error",
-        "prefer-const": "error"
+        "prefer-const": "error",
+        "no-var": "error"
+      },
+      "globals": {
+        "ChromeUtils": "readonly"
       }
     }
   ],
@@ -40,12 +54,9 @@
   },
   "parser": "@typescript-eslint/parser",
   "extends": [
-    "plugin:mozilla/recommended",
     "eslint:recommended",
-    "plugin:mozilla/recommended",
     "plugin:@typescript-eslint/recommended",
     //"plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:import/typescript"
-  ],
-  "plugin": ["mozilla", "import"]
+  ]
 }
