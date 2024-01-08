@@ -41,13 +41,13 @@
 #TabsToolbar:not(:hover) .tab-label-container {
   opacity: 0;
   visibility: collapse;
-  transition: all 200ms !important;
+  transition: all 370ms !important;
 }
 
 #TabsToolbar-customization-target:not(:hover) > .toolbarbutton-1 > .toolbarbutton-text {
   opacity: 0;
   visibility: collapse;
-  transition: all 200ms !important;
+  transition: all 370ms !important;
 }
 
 #TabsToolbar-customization-target:hover > .toolbarbutton-1 > .toolbarbutton-text {
