@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /* -*- indent-tabs-mode: nil; js-indent-level: 2 -*-
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -7,9 +6,7 @@
 const CustomKeyboardShortcutUtils = ChromeUtils.importESModule(
   "resource:///modules/CustomKeyboardShortcutUtils.sys.mjs"
 );
-const { Services } = ChromeUtils.importESModule(
-  "resource://gre/modules/Services.jsm"
-);
+const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 
 // const keyboradShortcutConfig = JSON.parse(
 //   Services.prefs.getStringPref(

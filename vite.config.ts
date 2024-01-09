@@ -5,7 +5,7 @@ const r = (str: string): string => {
   return path.resolve(__dirname, str);
 };
 
-const outDir = r("./dist/browser");
+const outDir = r("./dist");
 
 export default defineConfig({
   build: {
@@ -16,19 +16,30 @@ export default defineConfig({
     assetsInlineLimit: 0,
     manifest: true,
     reportCompressedSize: false,
+    modulePreload: {
+      polyfill: false,
+    },
 
     rollupOptions: {
-      input: {
-        index: path.resolve(__dirname, "browser/base/content/index.ts"),
+      // input: {
+      //   index: path.resolve(__dirname, "browser/base/content/index.ts"),
+      // },
+      // output: {
+      //   dynamicImportInCjs: true,
+      //   format: "es",
+      //   entryFileNames: "[name].js",
+      // },
+      // plugins: [],
+      external(source, importer, isResolved) {
+        // return !source.includes("index.ts");
+        return source.startsWith("chrome://");
       },
-      output: {
-        dynamicImportInCjs: true,
-        format: "es",
-        entryFileNames: "[name].js",
-      },
-      plugins: [],
     },
     minify: false,
+    lib: {
+      entry: [r("browser/base/content/index.ts")],
+      formats: ["es"],
+    },
   },
   plugins: [],
 });

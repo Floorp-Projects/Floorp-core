@@ -23,14 +23,22 @@
 
       "rules": {
         "jsdoc/newline-after-description": "off",
-        "no-undef": "error",
         "no-shadow": "off",
         "@typescript-eslint/no-shadow": "error",
         "prefer-const": "error",
         "no-var": "error"
       },
       "globals": {
-        "ChromeUtils": "readonly"
+        "ChromeUtils": "readonly",
+        "Ci": "readonly",
+        "Components": "readonly",
+        "Services": "readonly",
+        "Cc": "readonly",
+        "PathUtils": "readonly",
+        "Localization": "readonly",
+        "IOUtils": "readonly",
+        "XULBrowserWindow": "readonly",
+        "SessionStore": "readonly"
       }
     }
   ],
@@ -44,7 +52,9 @@
   },
 
   "rules": {
-    "import/no-unresolved": "error"
+    "import/no-unresolved": "error",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "off"
   },
 
   "settings": {

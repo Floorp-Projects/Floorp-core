@@ -24,19 +24,17 @@ browser.jar:
 {slot}
 `;
 
-const outDir = "browser";
-
 export const genJarManifest = async (root: string) => {
   const file = await fs.readFile(root + "/dist/.vite/manifest.json");
   const json = JSON.parse(file.toString()) as Manifest;
-  let fileEntries = [];
+  const fileEntries = [];
   for (const [_, entry] of Object.entries(json)) {
     fileEntries.push(entry.file, entry.file + ".map");
   }
 
   let jar_mn_str = "";
   for (const i of fileEntries) {
-    jar_mn_str += `floorp/${outDir}/${i} (${i})\n`;
+    jar_mn_str += `  floorp/${i} (${i})\n`;
   }
   fs.writeFile(root + "/dist/moz.build", moz_build);
   fs.writeFile(root + "/dist/jar.mn", jar_mn.replace(/{slot}/, jar_mn_str));

@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /* -*- indent-tabs-mode: nil; js-indent-level: 2 -*-
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -126,7 +125,7 @@ if (
   profileManager();
 }
 
-async function workspacesToolbarButton() {
+export async function workspacesToolbarButton() {
   const { WorkspacesElementService } = ChromeUtils.importESModule(
     "resource:///modules/WorkspacesElementService.sys.mjs"
   );

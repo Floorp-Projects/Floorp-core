@@ -2,11 +2,11 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-<script type="module">
-  import "chrome://floorp/content/index.js";
+<script>
+  import("chrome://floorp/content/index.js");
 </script>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
   // "FloorpAppConstants" has build information.
   var { FloorpAppConstants } = ChromeUtils.importESModule(
     "resource:///modules/FloorpAppConstants.sys.mjs"
@@ -122,4 +122,4 @@
     },
     { once: true }
   );
-</script>
+</script> -->
