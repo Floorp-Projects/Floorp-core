@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { initWorkspace } from "./floorp-workspaces.js";
+import { initWorkspaces } from "./floorp-workspaces.js";
 
-initWorkspace();
-console.log("Workspace Init");
+initWorkspaces();
+//console.log("Workspace Init");
 //console.log(window.gWorkspaces);
 
 (async () => {

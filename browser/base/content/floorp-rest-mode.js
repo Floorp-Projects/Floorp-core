@@ -14,6 +14,7 @@ Object.defineProperty(window, "enableRestMode", {
     }
 
     if (selectedTabLocation) {
+      // eslint-disable-next-line no-undef
       openTrustedLinkIn("about:blank", "current");
     }
 
@@ -35,6 +36,7 @@ Object.defineProperty(window, "enableRestMode", {
     document.getElementById("floorp-rest-mode").remove();
 
     if (selectedTabLocation) {
+      // eslint-disable-next-line no-undef
       openTrustedLinkIn(selectedTabLocation, "current");
     }
   },

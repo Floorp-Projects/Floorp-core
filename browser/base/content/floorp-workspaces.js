@@ -926,7 +926,7 @@ const gWorkspaces = {
   },
 };
 
-export function initWorkspace() {
+export function initWorkspaces() {
   Object.defineProperty(window, "gWorkspaces", { value: gWorkspaces });
   window.SessionStore.promiseInitialized.then(() => {
     window.setTimeout(() => {
