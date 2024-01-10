@@ -80,4 +80,10 @@ export const WorkspacesWindowIdUtils = {
 
     return null;
   },
+
+  async getAllWorkspacesId(windowId) {
+    let workspacesData = await this.getWindowWorkspacesDataWithoutPreferences(windowId);
+    let workspacesIds = Object.keys(workspacesData);
+    return workspacesIds;
+  }
 };
