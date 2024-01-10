@@ -28,7 +28,9 @@
 /*close*/
 #TabsToolbar {
   width: var(--default-verticaltab-width) !important;
+  transition: all 200ms !important;
   transition-delay: 0.2s !important;
+  z-index: 100 !important;
 }
 
 #TabsToolbar:not(:hover) #tabbrowser-tabs[closebuttons="activetab"] .tabbrowser-tab .tab-content[class] > .tab-close-button[class] {
@@ -37,11 +39,23 @@
 }
 
 #TabsToolbar:not(:hover) .tab-label-container {
-  display: none !important;
+  opacity: 0;
+  visibility: collapse;
+  transition: all 370ms !important;
 }
 
 #TabsToolbar-customization-target:not(:hover) > .toolbarbutton-1 > .toolbarbutton-text {
-  display: none !important;
+  opacity: 0;
+  visibility: collapse;
+  transition: all 370ms !important;
+}
+
+#TabsToolbar-customization-target:hover > .toolbarbutton-1 > .toolbarbutton-text {
+  transition-delay: 0.2s !important;
+}
+
+#TabsToolbar-customization-target > #alltabs-button > .toolbarbutton-badge-stack {
+  padding-left: 0px !important;
 }
 
 #sidebar-box .tabbrowser-tab{
@@ -51,9 +65,6 @@
 
 /*open*/
 #TabsToolbar:hover {
-  transition: all 200ms !important;
-  transition-delay: 0.2s !important;
-  z-index: 100 !important;
   width: 250px !important;
 }
 

@@ -90,7 +90,12 @@ export const WorkspacesService = {
     await lazy.WorkspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
   },
 
-  async setWorkspaceContainerUserContextIdAndIcon(workspaceId, userContextId, icon, windowId) {
+  async setWorkspaceContainerUserContextIdAndIcon(
+    workspaceId,
+    userContextId,
+    icon,
+    windowId
+  ) {
     let workspacesData =
       await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
     workspacesData[workspaceId].userContextId = userContextId;
@@ -159,7 +164,12 @@ export function getWorkspaceIconUrl(icon) {
 }
 
 export const workspacesPreferences = {
-  TAB_STACKS_ENABLED_PREF: "floorp.browser.Workspaces.enabled",
+  TAB_STACKS_ENABLED_PREF: "floorp.browser.workspaces.enabled",
+  WORKSPACE_CLOSE_POPUP_AFTER_CLICK_PREF:
+    "floorp.browser.workspace.closePopupAfterClick",
+  WORKSPACE_MANAGE_ON_BMS_PREF: "floorp.browser.workspace.manageOnBMS",
+  WORKSPACE_SHOW_WORKSPACE_NAME_PREF:
+    "floorp.browser.workspace.showWorkspaceName",
 };
 
 export const WorkspacesWindowUuidService = {

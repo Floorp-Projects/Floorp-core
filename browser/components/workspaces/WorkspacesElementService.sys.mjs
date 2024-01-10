@@ -17,10 +17,10 @@ export const WorkspacesElementService = {
             <toolbarseparator class="toolbarbutton-1 chromeclass-toolbar-additional" id="workspacesPopupSeparator" />
             <hbox id="workspacesPopupFooter" align="center" pack="center">
               <toolbarbutton id="workspacesCreateNewWorkspaceButton" class="toolbarbutton-1 chromeclass-toolbar-additional"
-                           label="New Workspace..." tooltiptext="Create new Workspace" context="tab-stacks-toolbar-item-context-menu"
+                           data-l10n-id="workspaces-create-new-workspace-button" context="tab-stacks-toolbar-item-context-menu"
                            oncommand="gWorkspaces.createNoNameWorkspace();" />
               <toolbarbutton id="workspacesManageWorkspacesButton" class="toolbarbutton-1 chromeclass-toolbar-additional"
-                           label="Manage Workspaces" tooltiptext="Manage Workspaces" context="tab-stacks-toolbar-item-context-menu"
+                           data-l10n-id="workspaces-manage-workspaces-button" context="tab-stacks-toolbar-item-context-menu"
                            oncommand="gWorkspaces.manageWorkspaceFromDialog();" />
             </hbox>
           </vbox>
@@ -80,7 +80,7 @@ export const WorkspacesElementService = {
                                    ? "sidepanel-icon"
                                    : ""
                                }"
-                               label="${workspaceName}" tooltiptext="Workspace ${workspaceName}"
+                               label="${workspaceName}" tooltiptext="${workspaceName}"
                                ${
                                  selected ? 'selected="true"' : ""
                                } workspaceId="${workspaceId}"
