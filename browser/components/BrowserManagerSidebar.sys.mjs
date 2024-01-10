@@ -7,7 +7,7 @@ export const EXPORTED_SYMBOLS = ["BrowserManagerSidebar"];
 
 const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 
-export let BrowserManagerSidebar = {
+export const BrowserManagerSidebar = {
   STATIC_SIDEBAR_DATA: {
     "floorp//bmt": {
       url: "chrome://browser/content/places/places.xhtml",
@@ -40,8 +40,8 @@ export let BrowserManagerSidebar = {
 
   DEFAULT_WEBPANEL: ["https://translate.google.com", "https://misskey.io"],
   prefsUpdate() {
-    let defaultPref = { data: {}, index: [] };
-    for (let elem in this.STATIC_SIDEBAR_DATA) {
+    const defaultPref = { data: {}, index: [] };
+    for (const elem in this.STATIC_SIDEBAR_DATA) {
       if (this.STATIC_SIDEBAR_DATA[elem].enabled === false) {
         delete this.STATIC_SIDEBAR_DATA[elem];
         continue;
@@ -52,7 +52,7 @@ export let BrowserManagerSidebar = {
       };
       defaultPref.index.push(elem.replace("//", "__"));
     }
-    for (let elem in this.DEFAULT_WEBPANEL) {
+    for (const elem in this.DEFAULT_WEBPANEL) {
       defaultPref.data[`w${elem}`] = { url: this.DEFAULT_WEBPANEL[elem] };
       defaultPref.index.push(`w${elem}`);
     }
@@ -64,11 +64,11 @@ export let BrowserManagerSidebar = {
       );
 
     if (Services.prefs.prefHasUserValue("floorp.browser.sidebar2.data")) {
-      let prefTemp = JSON.parse(
+      const prefTemp = JSON.parse(
         Services.prefs.getStringPref("floorp.browser.sidebar2.data")
       );
-      let setPref = { data: {}, index: [] };
-      for (let elem of prefTemp.index) {
+      const setPref = { data: {}, index: [] };
+      for (const elem of prefTemp.index) {
         setPref.data[elem] = prefTemp.data[elem];
         setPref.index.push(elem);
       }
@@ -86,7 +86,7 @@ export let BrowserManagerSidebar = {
     }
 
     if (sbar_url.startsWith("http://") || sbar_url.startsWith("https://")) {
-      let iconProvider = Services.prefs.getStringPref(
+      const iconProvider = Services.prefs.getStringPref(
         "floorp.browser.sidebar.useIconProvider",
         null
       );
@@ -125,11 +125,11 @@ export let BrowserManagerSidebar = {
             throw new Error(`${response.status} ${response.statusText}`);
           }
 
-          let reader = new FileReader();
+          const reader = new FileReader();
 
-          let blob_data = await response.blob();
+          const blob_data = await response.blob();
 
-          let icon_data_url = await new Promise(resolve => {
+          const icon_data_url = await new Promise(resolve => {
             reader.addEventListener("load", function () {
               resolve(this.result);
             });
@@ -151,17 +151,17 @@ export let BrowserManagerSidebar = {
           elem.style.removeProperty("--BMSIcon");
         });
     } else if (sbar_url.startsWith("moz-extension://")) {
-      let addon_id = new URL(sbar_url).hostname;
-      let addon_base_url = `moz-extension://${addon_id}`;
+      const addon_id = new URL(sbar_url).hostname;
+      const addon_base_url = `moz-extension://${addon_id}`;
       fetch(addon_base_url + "/manifest.json")
         .then(async response => {
           if (response.status !== 200) {
             throw new Error(`${response.status} ${response.statusText}`);
           }
 
-          let addon_manifest = await response.json();
+          const addon_manifest = await response.json();
 
-          let addon_icon_path =
+          const addon_icon_path =
             addon_manifest.icons[
               Math.max(...Object.keys(addon_manifest.icons))
             ];
@@ -169,10 +169,11 @@ export let BrowserManagerSidebar = {
             throw new Error("Icon not found." + addon_manifest.icons);
           }
 
-          let addon_icon_url = addon_icon_path.startsWith("/")
+          const addon_icon_url = addon_icon_path.startsWith("/")
             ? `${addon_base_url}${addon_icon_path}`
             : `${addon_base_url}/${addon_icon_path}`;
 
+          // eslint-disable-next-line no-undef
           if (BROWSER_SIDEBAR_DATA.data[sbar_id.slice(7)].url === sbar_url) {
             // Check that the URL has not changed after the icon is retrieved.
             elem.style.setProperty("--BMSIcon", `url(${addon_icon_url})`);
@@ -187,18 +188,18 @@ export let BrowserManagerSidebar = {
     } else if (sbar_url.startsWith("file://")) {
       elem.style.setProperty("--BMSIcon", `url(moz-icon:${sbar_url}?size=128)`);
     } else if (sbar_url.startsWith("extension")) {
-      let iconURL = sbar_url.split(",")[4];
+      const iconURL = sbar_url.split(",")[4];
       elem.style.setProperty("--BMSIcon", `url(${iconURL})`);
       elem.className += " extension-icon";
-      let listTexts =
+      const listTexts =
         "chrome://browser/content/BMS-extension-needs-white-bg.txt";
       fetch(listTexts)
         .then(response => {
           return response.text();
         })
         .then(text => {
-          let lines = text.split(/\r?\n/);
-          for (let line of lines) {
+          const lines = text.split(/\r?\n/);
+          for (const line of lines) {
             if (line == sbar_url.split(",")[2]) {
               elem.className += " extension-icon-add-white";
               break;
@@ -215,10 +216,10 @@ export let BrowserManagerSidebar = {
     }
   },
   async getAdoonSidebarPage(addonId) {
-    let addonUUID = JSON.parse(
+    const addonUUID = JSON.parse(
       Services.prefs.getStringPref("extensions.webextensions.uuids")
     );
-    let manifestJSON = await (
+    const manifestJSON = await (
       await fetch(`moz-extension://${addonUUID[addonId]}/manifest.json`)
     ).json();
     let toURL = manifestJSON.sidebar_action.default_panel;
@@ -229,9 +230,9 @@ export let BrowserManagerSidebar = {
   },
   addPanel(url, uc) {
     let parentWindow = Services.wm.getMostRecentWindow("navigator:browser");
-    let updateNumberDate = new Date();
-    let updateNumber = `w${updateNumberDate.getFullYear()}${updateNumberDate.getMonth()}${updateNumberDate.getDate()}${updateNumberDate.getHours()}${updateNumberDate.getMinutes()}${updateNumberDate.getSeconds()}`;
-    let object = { new: true, id: updateNumber };
+    const updateNumberDate = new Date();
+    const updateNumber = `w${updateNumberDate.getFullYear()}${updateNumberDate.getMonth()}${updateNumberDate.getDate()}${updateNumberDate.getHours()}${updateNumberDate.getMinutes()}${updateNumberDate.getSeconds()}`;
+    const object = { new: true, id: updateNumber };
     if (url != "") {
       object.url = url;
     }

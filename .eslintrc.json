@@ -9,17 +9,12 @@
       }
     },
     {
-      "files": [
-        "browser/base/content/**/*.mjs",
-        "browser/base/content/**/*.js"
-      ],
+      "files": ["browser/**/*.mjs", "browser/**/*.ts", "browser/**/*.js"],
+
       "env": {
         "browser": true
         //"mozilla/browser-window": true
-      }
-    },
-    {
-      "files": ["browser/**/*.mjs", "browser/**/*.ts", "browser/**/*.js"],
+      },
 
       "rules": {
         "jsdoc/newline-after-description": "off",
@@ -55,7 +50,8 @@
   "rules": {
     "import/no-unresolved": "error",
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": "off"
+    "@typescript-eslint/no-unused-vars": "off",
+    "no-empty": "off"
   },
 
   "settings": {

@@ -753,7 +753,7 @@ const bmsController = {
   if (!(sidebarsplit2.getAttribute("hidden") == "true")) {
     bmsController.controllFunctions.changeVisibleWenpanel();
   }
-  window.bmsController = bmsController;
+  Object.defineProperty(window, "bmsController", { value: bmsController });
 
   if (Services.prefs.getBoolPref("floorp.browser.sidebar2.addons.enabled")) {
     // Browser Manager Sidebar embedded check

@@ -1,3 +1,4 @@
+/* eslint-disable */
 #filter substitution
 #include @TOPOBJDIR@/source-repo.h
 #include @TOPOBJDIR@/buildid.h
@@ -7,5 +8,5 @@
 
 // Immutable for export.
 export var FloorpAppConstants = Object.freeze({
-    
+
 });

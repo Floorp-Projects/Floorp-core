@@ -142,4 +142,8 @@ const customActionsFunctions = {
   },
 };
 
+Object.defineProperty(window, "customActionsFunctions", {
+  value: customActionsFunctions,
+});
+
 buildShortCutkeyFunctions.init();
