@@ -1,5 +1,4 @@
 import * as fs from "fs/promises";
-import path from "path";
 import { Manifest } from "vite";
 
 const moz_build = `
@@ -19,7 +18,7 @@ const jar_mn = `
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-browser.jar:
+floorp.jar:
 % content floorp %floorp/ contentaccessible=yes
 {slot}
 `;
@@ -40,5 +39,7 @@ export const genJarManifest = async (root: string) => {
   fs.writeFile(root + "/dist/jar.mn", jar_mn.replace(/{slot}/, jar_mn_str));
   console.log("build script generated");
 };
-
+import { fileURLToPath } from "url";
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
+process.chdir(__dirname);
 genJarManifest("..");

@@ -38,7 +38,8 @@
         "Localization": "readonly",
         "IOUtils": "readonly",
         "XULBrowserWindow": "readonly",
-        "SessionStore": "readonly"
+        "SessionStore": "readonly",
+        "Cu": "readonly"
       }
     }
   ],

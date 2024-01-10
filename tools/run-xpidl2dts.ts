@@ -36,5 +36,7 @@ const main = async () => {
   });
   fs.rm("./xpidl2dts@0.2.0/dist", { recursive: true });
 };
-
+import { fileURLToPath } from "url";
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
+process.chdir(__dirname);
 main();

@@ -9,27 +9,31 @@ const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 
 // Override Forward & Backward button's custamizeble element.
 //From "browser.js" line 750
-Object.defineProperty(window, "SetClickAndHoldHandlers", function () {
-  // Bug 414797: Clone the back/forward buttons' context menu into both buttons.
-  let popup = document.getElementById("backForwardMenu").cloneNode(true);
-  popup.removeAttribute("id");
-  // Prevent the back/forward buttons' context attributes from being inherited.
-  popup.setAttribute("context", "");
+Object.defineProperty(window, "SetClickAndHoldHandlers", {
+  value: function () {
+    // Bug 414797: Clone the back/forward buttons' context menu into both buttons.
+    let popup = document.getElementById("backForwardMenu").cloneNode(true);
+    popup.removeAttribute("id");
+    // Prevent the back/forward buttons' context attributes from being inherited.
+    popup.setAttribute("context", "");
 
-  const backButton = document.getElementById("back-button");
-  if (backButton != null) {
-    backButton.setAttribute("type", "menu");
-    backButton.prepend(popup);
-    gClickAndHoldListenersOnElement.add(backButton);
-  }
+    const backButton = document.getElementById("back-button");
+    if (backButton != null) {
+      backButton.setAttribute("type", "menu");
+      backButton.prepend(popup);
+      // eslint-disable-next-line no-undef
+      gClickAndHoldListenersOnElement.add(backButton);
+    }
 
-  const forwardButton = document.getElementById("forward-button");
-  if (forwardButton != null) {
-    popup = popup.cloneNode(true);
-    forwardButton.setAttribute("type", "menu");
-    forwardButton.prepend(popup);
-    gClickAndHoldListenersOnElement.add(forwardButton);
-  }
+    const forwardButton = document.getElementById("forward-button");
+    if (forwardButton != null) {
+      popup = popup.cloneNode(true);
+      forwardButton.setAttribute("type", "menu");
+      forwardButton.prepend(popup);
+      // eslint-disable-next-line no-undef
+      gClickAndHoldListenersOnElement.add(forwardButton);
+    }
+  },
 });
 
 // Override the default newtab url in tabbar. If pref seted.
@@ -38,40 +42,48 @@ const newtabOverrideURL = "floorp.newtab.overrides.newtaburl";
 if (Services.prefs.getStringPref(newtabOverrideURL, "") != "") {
   ChromeUtils.import("resource:///modules/AboutNewTab.jsm");
   const newTabURL = Services.prefs.getStringPref(newtabOverrideURL);
+  // eslint-disable-next-line no-undef
   AboutNewTab.newTabURL = newTabURL;
 }
 
 // Override close window function.
 // https://searchfox.org/mozilla-esr115/source/browser/base/content/browser.js#3004
-Object.defineProperty(window, "BrowserTryToCloseWindow", function (event) {
-  const { setTimeout } = ChromeUtils.importESModule(
-    "resource://gre/modules/Timer.sys.mjs"
-  );
-  if (WindowIsClosing(event)) {
-    if (
-      Services.prefs.getBoolPref("floorp.browser.sidebar2.addons.enabled", true)
-    ) {
-      document
-        .querySelectorAll(
-          `.webpanels[src='chrome://browser/content/browser.xhtml']`
+Object.defineProperty(window, "BrowserTryToCloseWindow", {
+  value: function (event) {
+    const { setTimeout } = ChromeUtils.importESModule(
+      "resource://gre/modules/Timer.sys.mjs"
+    );
+    //https://searchfox.org/mozilla-esr115/source/browser/base/content/browser.js#7889
+    // eslint-disable-next-line no-undef
+    if (WindowIsClosing(event)) {
+      if (
+        Services.prefs.getBoolPref(
+          "floorp.browser.sidebar2.addons.enabled",
+          true
         )
-        .forEach(function (e) {
-          e.remove();
-        });
-      setTimeout(function () {
-        console.info("BMS add-on is enabled. delay closing window.");
+      ) {
+        document
+          .querySelectorAll(
+            `.webpanels[src='chrome://browser/content/browser.xhtml']`
+          )
+          .forEach(function (e) {
+            e.remove();
+          });
+        setTimeout(function () {
+          console.info("BMS add-on is enabled. delay closing window.");
+          window.close();
+        }, 500);
+      } else {
         window.close();
-      }, 500);
-    } else {
-      window.close();
-    }
-  } // WindowIsClosing does all the necessary checks
+      }
+    } // WindowIsClosing does all the necessary checks
+  },
 });
 
 // Override the create "browser" element function. Use for "Private Container".
 // https://searchfox.org/mozilla-central/source/browser/base/content/tabbrowser.js#2052
 SessionStore.promiseInitialized.then(() => {
-  gBrowser.createBrowser = function ({
+  window.gBrowser.createBrowser = function ({
     isPreloadBrowser,
     name,
     openWindowInfo,
@@ -125,6 +137,7 @@ SessionStore.promiseInitialized.then(() => {
       b.setAttribute(attribute, defaultBrowserAttributes[attribute]);
     }
 
+    // eslint-disable-next-line no-undef
     if (gMultiProcessBrowser || remoteType) {
       b.setAttribute("maychangeremoteness", "true");
     }

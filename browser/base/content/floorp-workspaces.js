@@ -806,10 +806,8 @@ const gWorkspaces = {
 
     // Override the default newtab opening position in tabbar.
     //copy from browser.js (./browser/base/content/browser.js)
-    Object.defineProperty(
-      window,
-      "BrowserOpenTab",
-      async function ({ event, url = window.BROWSER_NEW_TAB_URL } = {}) {
+    Object.defineProperty(window, "BrowserOpenTab", {
+      value: async function ({ event, url = window.BROWSER_NEW_TAB_URL } = {}) {
         let relatedToCurrent = false; //"relatedToCurrent" decide where to open the new tab. Default work as last tab (right side). Floorp use this.
         let where = "tab";
         const currentWorkspaceContextId =
@@ -871,8 +869,8 @@ const gWorkspaces = {
           },
           "browser-open-newtab-start"
         );
-      }
-    );
+      },
+    });
   },
 
   eventListeners: {
@@ -928,10 +926,11 @@ const gWorkspaces = {
   },
 };
 
-Object.defineProperty(window, "gWorkspaces", gWorkspaces);
-
-window.SessionStore.promiseInitialized.then(() => {
-  window.setTimeout(() => {
-    gWorkspaces.init();
-  }, 2000);
-});
+export function initWorkspace() {
+  Object.defineProperty(window, "gWorkspaces", { value: gWorkspaces });
+  window.SessionStore.promiseInitialized.then(() => {
+    window.setTimeout(() => {
+      gWorkspaces.init();
+    }, 2000);
+  });
+}

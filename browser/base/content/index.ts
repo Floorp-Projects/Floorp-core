@@ -3,10 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import("./floorp-workspaces.js");
-import("./floorp-command.js");
-import("./floorp-override.js");
-import("./floorp-rest-mode.js");
+import { initWorkspace } from "./floorp-workspaces.js";
+
+initWorkspace();
+console.log("Workspace Init");
+//console.log(window.gWorkspaces);
+
+(async () => {
+  // await import("./floorp-workspaces.js");
+  await import("./floorp-command.js");
+  await import("./floorp-override.js");
+  await import("./floorp-rest-mode.js");
+})();
 
 // This function is called when the floorp browser window is loaded. needs Delay.
 document.addEventListener(
@@ -43,6 +51,7 @@ document.addEventListener(
     // If script need more delay, use the following code.
 
     //Lightning Build
+    //@ts-expect-error SessionStore is in firefox-code
     SessionStore.promiseInitialized.then(() => {
       import("./floorp-UI-customizing-menu.js");
 
