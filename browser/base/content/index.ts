@@ -6,6 +6,7 @@
 import { initWorkspaces } from "./floorp-workspaces.js";
 
 initWorkspaces();
+console.log("aaa");
 //console.log("Workspace Init");
 //console.log(window.gWorkspaces);
 

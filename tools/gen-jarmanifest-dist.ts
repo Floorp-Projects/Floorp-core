@@ -24,7 +24,7 @@ floorp.jar:
 `;
 
 export const genJarManifest = async (root: string) => {
-  const file = await fs.readFile(root + "/dist/.vite/manifest.json");
+  const file = await fs.readFile(root + "/.vite/manifest.json");
   const json = JSON.parse(file.toString()) as Manifest;
   const fileEntries = [];
   for (const [_, entry] of Object.entries(json)) {
@@ -35,11 +35,14 @@ export const genJarManifest = async (root: string) => {
   for (const i of fileEntries) {
     jar_mn_str += `  floorp/${i} (${i})\n`;
   }
-  fs.writeFile(root + "/dist/moz.build", moz_build);
-  fs.writeFile(root + "/dist/jar.mn", jar_mn.replace(/{slot}/, jar_mn_str));
+  fs.writeFile(root + "/moz.build", moz_build);
+  fs.writeFile(root + "/jar.mn", jar_mn.replace(/{slot}/, jar_mn_str));
   console.log("build script generated");
 };
-import { fileURLToPath } from "url";
-const __dirname = fileURLToPath(new URL(".", import.meta.url));
-process.chdir(__dirname);
-genJarManifest("..");
+import { fileURLToPath, pathToFileURL } from "url";
+
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+  const __dirname = fileURLToPath(new URL(".", import.meta.url));
+  process.chdir(__dirname);
+  genJarManifest("../dist");
+}

@@ -1,4 +1,5 @@
 import * as fs from "fs/promises";
+import { fileURLToPath, pathToFileURL } from "url";
 import { processAll4Test } from "xpidl2dts";
 
 const main = async () => {
@@ -36,7 +37,9 @@ const main = async () => {
   });
   fs.rm("./xpidl2dts@0.2.0/dist", { recursive: true });
 };
-import { fileURLToPath } from "url";
-const __dirname = fileURLToPath(new URL(".", import.meta.url));
-process.chdir(__dirname);
-main();
+
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+  const __dirname = fileURLToPath(new URL(".", import.meta.url));
+  process.chdir(__dirname);
+  main();
+}
