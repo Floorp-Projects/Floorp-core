@@ -1,23 +1,25 @@
 {
   "typeAcquisition": {
-    "enable": true,
     "include": ["./@types/index.d.ts"]
   },
   "compilerOptions": {
     "target": "es2017",
     "module": "ESNext",
+    "moduleResolution": "bundler",
     "moduleDetection": "force",
     "allowJs": true,
     "declaration": true,
     "emitDeclarationOnly": true,
 
     "paths": {
-      "@xpcom/*": ["./@types/firefox/xpcom/*"],
-      "@third_party/*": ["./third_party/*"],
       "chrome://browser/content/*": ["./browser/base/content/*"],
       "resource:///modules/*": ["./browser/components/*"],
+      //third_party
       "chrome://floorp/content/third_party/qr-code-styling.js": [
-        "./third_party/qr-code-styling@1.5.0/qr-code-styling.js"
+        "./third_party/qr-code-styling@1.5.0/index.d.ts"
+      ],
+      "chrome://floorp/content/third_party/showdown.js": [
+        "./third_party/@types/showdown/index.d.ts"
       ]
     },
     "lib": ["ES2023", "dom"],
@@ -27,8 +29,7 @@
 
       // Transform paths in output .d.ts files (Include this line if you output declarations files)
       { "transform": "typescript-transform-paths", "afterDeclarations": true }
-    ],
-    "typeRoots": ["./@types"]
+    ]
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "browser/locales"]
 }
