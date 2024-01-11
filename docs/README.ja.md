@@ -21,6 +21,6 @@ Floorp 固有のコードを扱います。
 
 [![Link to Floorp Main Repository](./resources/Link2MainRepo.png)](https://github.com/floorp-Projects/Floorp/)
 
-## :star2: 寄与方法
+## :star2: 貢献する
 
 [:open_book: Main リポジトリのドキュメント](https://github.com/floorp-Projects/floorp/#-contributing) をご参照ください。
