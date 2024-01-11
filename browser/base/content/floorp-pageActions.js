@@ -40,7 +40,7 @@ export const gFloorpPageAction = {
       </panel>
     </hbox>
     `),
-    onPopupShowing() {
+    async onPopupShowing() {
       const { default: QRCodeStyling } = await import(
         "chrome://browser/content/floorp/third_party/qr-code-styling.js"
       );
@@ -161,5 +161,3 @@ SessionStore.promiseInitialized.then(() => {
       .before(gFloorpPageAction.Ssb.SsbPageActionButton);
   }
 });
-
-export {};
