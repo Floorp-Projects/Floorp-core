@@ -2,12 +2,14 @@
 
 [![english](./resources/icon-lang-eng.svg)](../README.md) [![korean](./resources/icon-lang-kr.svg)](./README.ko.md)
 
-![Floorp Core](./resources/Floorp_Toolkit.svg)
+<p align="center">
+<img src="./resources/Floorp_Toolkit.svg" width="70%">
 
 <!-- ![heart in kanji](./heart.svg "心") -->
 
 <h3 align="center">Floorp Core</h3>
 <p align="center">Floorpを形成するブラウザーのコア</p>
+</p>
 
 ## :sparkling_heart: Floorp Core
 
@@ -22,12 +24,3 @@ Floorp 固有のコードを扱います。
 ## :star2: 寄与方法
 
 [:open_book: Main リポジトリのドキュメント](https://github.com/floorp-Projects/floorp/#-contributing) をご参照ください。
-
-<style>
-img[alt="Floorp Core"] {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 70%;
-}
-</style>

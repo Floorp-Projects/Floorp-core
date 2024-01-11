@@ -2,12 +2,14 @@
 
 [![japanese](./docs/resources/icon-lang-jp.svg)](./docs/README.ja.md) [![korean](./docs/resources/icon-lang-kr.svg)](./docs/README.ko.md)
 
-![Floorp Core](./docs/resources/Floorp_Toolkit.svg)
+<p align="center">
+<img src="./docs/resources/Floorp_Toolkit.svg" width="70%">
 
 <!-- ![heart in kanji](./heart.svg "心") -->
 
 <h3 align="center">Floorp Core</h3>
 <p align="center">A Browser Core, that shapes the Identity of Floorp</p>
+</p>
 
 ## :sparkling_heart: Floorp Core
 
