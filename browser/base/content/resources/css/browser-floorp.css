@@ -542,10 +542,6 @@ toolbar #workspace-button:not([disabled="true"], [checked], [open], :active):hov
  }
 }
 
-#new-tab-button > .toolbarbutton-icon {
-  width: 22px !important;
-}
-
 /* Progressive Web Apps */
 
 #ssb-box {
@@ -686,7 +682,7 @@ toolbar #workspace-button:not([disabled="true"], [checked], [open], :active):hov
 #workspaces-toolbar-button:hover:active {
   background-color: var(--toolbarbutton-active-background) !important;
 }
-#workspaces-toolbar-button > label {
+#workspaces-toolbar-button[showlabel="true"] > label {
   display: inherit !important;
 }
 toolbarpaletteitem #workspaces-toolbar-button > label {

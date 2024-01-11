@@ -27,6 +27,30 @@ Preferences.addAll([
 var gDesign = {
   _pane: null,
   init() {
+    const needreboot = document.getElementsByClassName("needreboot");
+    for (let i = 0; i < needreboot.length; i++) {
+      if (needreboot[i].getAttribute("rebootELIsSet") == "true") {
+        continue;
+      }
+      needreboot[i].setAttribute("rebootELIsSet", "true");
+      needreboot[i].addEventListener("click", function () {
+        if (!Services.prefs.getBoolPref("floorp.enable.auto.restart", false)) {
+          (async () => {
+            let userConfirm = await confirmRestartPrompt(null)
+            if (userConfirm == CONFIRM_RESTART_PROMPT_RESTART_NOW) {
+              Services.startup.quit(
+                Ci.nsIAppStartup.eAttemptQuit | Ci.nsIAppStartup.eRestart
+              );
+            }
+          })()
+        } else {
+          window.setTimeout(function () {
+            Services.startup.quit(Services.startup.eAttemptQuit | Services.startup.eRestart);
+          }, 500);
+        }
+      });
+    }
+
     this._pane = document.getElementById("paneDesign");
     document.getElementById("leptonButton").addEventListener("click", function () {
       window.location.href = "about:preferences#lepton";

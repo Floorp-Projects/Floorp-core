@@ -6,9 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "gen": "pnpm run:xpidl2dts && pnpm format:xpidl2dts",
-    "run:xpidl2dts": "tsx ./tools/run-xpidl2dts.ts",
-    "format:xpidl2dts": "prettier --write @types/firefox/**/*.d.ts --ignore-path \"\"",
-    "build": "vite build && tsx ./tools/gen-jarmanifest-dist.ts"
+    "run:xpidl2dts": "cd ./tools && tsx run-xpidl2dts.mts & cd ..",
+    "format:xpidl2dts": "prettier --write @types/firefox/**/*.d.ts --ignore-path \"\""
+    "build": "vite build && tsx ./tools/gen-jarmanifest-dist.ts",
   },
   "keywords": [],
   "type": "module",

@@ -42,6 +42,10 @@
     list-style-image: url("chrome://browser/skin/lepton/select-all-on.svg") !important;
   }
 
+  #category-workspaces > .category-icon {
+    list-style-image: url("chrome://browser/skin/window.svg") !important;
+  }
+
   #communityDesc {
     padding: 25px 0px 25px 0px;
   }

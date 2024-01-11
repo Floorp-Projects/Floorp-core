@@ -21,22 +21,6 @@ export const WorkspacesIdUtils = {
     return workspacesData[workspaceId];
   },
 
-  async getWorkspaceIdByTab(tab, windowId) {
-    let workspacesData =
-      await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
-    for (let workspaceId in workspacesData) {
-      let workspace = workspacesData[workspaceId];
-      if (!workspace.tabs) {
-        return null;
-      }
-
-      if (workspace.tabs.includes(tab.workspaceId)) {
-        return workspaceId;
-      }
-    }
-    return null;
-  },
-
   async workspaceIdExists(workspaceId, windowId) {
     let workspacesData =
       await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);

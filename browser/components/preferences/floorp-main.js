@@ -29,6 +29,10 @@ window.addEventListener("pageshow", async function() {
   await gMainPane.initialized;
   const needreboot = document.getElementsByClassName("needreboot");
   for (let i = 0; i < needreboot.length; i++) {
+    if (needreboot[i].getAttribute("rebootELIsSet") == "true") {
+      continue;
+    }
+    needreboot[i].setAttribute("rebootELIsSet", "true");
     needreboot[i].addEventListener("click", function () {
       if (!Services.prefs.getBoolPref("floorp.enable.auto.restart", false)) {
         (async () => {
@@ -89,10 +93,6 @@ window.addEventListener("pageshow", async function() {
 
   document.getElementById("userjsOptionsButton").addEventListener("click", function () {
     window.location.href = "about:preferences#userjs";
-  });
-
-  document.getElementById("floorpWorkspaceSettings").addEventListener("click", function () {
-    window.location.href = "about:preferences#workspaces";
   });
 
   document.getElementById("TabSleepSettings").addEventListener("click", function() {

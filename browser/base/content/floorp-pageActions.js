@@ -41,9 +41,8 @@ export const gFloorpPageAction = {
     </hbox>
     `),
     onPopupShowing() {
-      Services.scriptloader.loadSubScript(
-        "chrome://browser/content/qr-code-styling/qr-code-styling.js",
-        window
+      const { default: QRCodeStyling } = await import(
+        "chrome://browser/content/floorp/third_party/qr-code-styling.js"
       );
 
       const currentTab = window.gBrowser.selectedTab;
