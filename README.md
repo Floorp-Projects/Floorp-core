@@ -8,13 +8,14 @@
 <!-- ![heart in kanji](./heart.svg "心") -->
 
 <h3 align="center">Floorp Core</h3>
-<p align="center">A Browser Core, that shapes the Identity of Floorp</p>
+<p align="center">A browser core that shapes the identity of Floorp.</p>
 </p>
 
 ## :sparkling_heart: Floorp Core
 
-this Repository is Core of Floorp Browser, that handles Floorp-specific code.  
-Pull Requests are welcome!
+This repository is the core of the Floorp Browser, which handles Floorp-specific code. 
+
+Feel free to submit a Pull Request if you have improvements or fixes to propose.
 
 ## :open_file_folder: Main Repository
 
@@ -22,4 +23,4 @@ Pull Requests are welcome!
 
 ## :star2: Contributing
 
-Please reference [:open_book: Document of the Main Repository](https://github.com/floorp-Projects/floorp/#-contributing)
+For more details, kindly refer to our [:open_book: Main Repository Documentation](https://github.com/floorp-Projects/floorp/#-contributing).
