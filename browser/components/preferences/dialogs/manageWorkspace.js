@@ -33,8 +33,11 @@ async function onLoad() {
 
   for (let key in workspaces) {
     const element = window.MozXULElement.parseXULToFragment(`
-        <menuitem label="${workspaces[key].name}" value="${workspaces[key].id}"></menuitem>
+        <menuitem value="${workspaces[key].id}"></menuitem>
       `);
+
+    // against to XSS
+    element.firstElementChild.setAttribute("label", workspaces[key].name);
 
     workspaceSelect.appendChild(element);
   }

@@ -486,6 +486,15 @@ var gWorkspaces = {
       gBrowser.selectedTab = tab;
     }
 
+    // Close workspace popup check
+    if (
+      Services.prefs.getBoolPref(
+        workspacesPreferences.WORKSPACE_CLOSE_POPUP_AFTER_CLICK_PREF
+      )
+    ) {
+      gWorkspaces.workspacesToolbarButton.click();
+    }
+
     gWorkspaces.setSelectWorkspace(workspaceId);
 
     switch (option) {
@@ -812,6 +821,17 @@ var gWorkspaces = {
       workspacesData
     );
 
+    // Workspace toolbar button label visibility
+    if (
+      Services.prefs.getBoolPref(
+        workspacesPreferences.WORKSPACE_SHOW_WORKSPACE_NAME_PREF
+      )
+    ) {
+      gWorkspaces.workspacesToolbarButton.setAttribute("showlabel", true);
+    } else {
+      gWorkspaces.workspacesToolbarButton.removeAttribute("showlabel");
+    }
+
     gWorkspaces._currentWorkspaceId = currentWorkspaceId;
   },
 
@@ -893,7 +913,11 @@ var gWorkspaces = {
     this.contextMenu.createWorkspacesTabContextMenuItems();
 
     // Manage on BMS Sidebar mode
-    if (Services.prefs.getBoolPref(workspacesPreferences.WORKSPACE_MANAGE_ON_BMS_PREF)) {
+    if (
+      Services.prefs.getBoolPref(
+        workspacesPreferences.WORKSPACE_MANAGE_ON_BMS_PREF
+      )
+    ) {
       this.enableWorkspacesManageOnBMSMode();
       this.workspacesPopupContent.removeAttribute("flex");
     }
@@ -1054,7 +1078,7 @@ var gWorkspaces = {
 
         // Against XSS
         menuItem.firstChild.setAttribute("label", name);
-        
+
         let parentElem = document.getElementById("workspacesTabContextMenu");
         parentElem.appendChild(menuItem);
       }
