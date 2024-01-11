@@ -128,6 +128,9 @@ var gWorkspaces = {
     await this.updateToolbarButtonAndPopupContentIconAndLabel(
       await this.getCurrentWorkspaceId()
     );
+
+    // Against XSS
+    this.rebuildWorkspacesLabels();
   },
 
   async rebuildWorkspacesLabels() {
@@ -1045,10 +1048,12 @@ var gWorkspaces = {
         let menuItem = window.MozXULElement.parseXULToFragment(`
           <menuitem id="context_MoveTabToOtherWorkspace"
                     class="menuitem-iconic"
-                    label="${name}"
                     style="list-style-image: url(${getWorkspaceIconUrl(icon)})"
                     oncommand="gWorkspaces.moveTabsToWorkspaceFromTabContextMenu('${workspaceId}')"
         />`);
+
+        // Against XSS
+        menuItem.firstChild.setAttribute("label", name);
         
         let parentElem = document.getElementById("workspacesTabContextMenu");
         parentElem.appendChild(menuItem);

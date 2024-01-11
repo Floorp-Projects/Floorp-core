@@ -80,7 +80,6 @@ export const WorkspacesElementService = {
                                    ? "sidepanel-icon"
                                    : ""
                                }"
-                               label="${workspaceName}" tooltiptext="${workspaceName}"
                                ${
                                  selected ? 'selected="true"' : ""
                                } workspaceId="${workspaceId}"
