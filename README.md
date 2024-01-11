@@ -23,12 +23,3 @@ Pull Requests are welcome!
 ## :star2: Contributing
 
 Please reference [:open_book: Document of the Main Repository](https://github.com/floorp-Projects/floorp/#-contributing)
-
-<style>
-img[alt="Floorp Core"] {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 70%;
-}
-</style>
