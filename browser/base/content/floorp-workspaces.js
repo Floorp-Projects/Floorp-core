@@ -338,6 +338,15 @@ const gWorkspaces = {
     return result;
   },
 
+  async getAllWorkspacesId() {
+    let windowId = this.getCurrentWindowId();
+    let allWorkspacesId = await WorkspacesWindowIdUtils.getAllWorkspacesId(
+      windowId
+    );
+
+    return allWorkspacesId;
+  },
+
   /* Workspaces saver */
   async saveWorkspacesData(workspacesData) {
     const windowId = this.getCurrentWindowId();
@@ -438,6 +447,30 @@ const gWorkspaces = {
     gWorkspaces.rebuildWorkspacesToolbar(windowId);
   },
 
+  async checkWorkspacesHasTab(workspaceId) {
+    for (let tab of gBrowser.tabs) {
+      if (tab.getAttribute(this.workspacesTabAttributionId) == workspaceId) {
+        return true;
+      }
+    }
+    return false;
+  },
+
+  async checkAllWorkspacesHasTab() {
+    let windowId = this.getCurrentWindowId();
+    let allWorkspacesId = await WorkspacesWindowIdUtils.getAllWorkspacesId(
+      windowId
+    );
+
+    for (let workspaceId of allWorkspacesId) {
+      let workspaceHasTab = await this.checkWorkspacesHasTab(workspaceId);
+      if (workspaceHasTab) {
+        return true;
+      }
+    }
+    return false;
+  },
+
   changeWorkspace(workspaceId, option, addNewTab = true) {
     // Change Workspace
     const willChangeWorkspaceLastShowTab =
@@ -447,7 +480,16 @@ const gWorkspaces = {
       window.gBrowser.selectedTab = willChangeWorkspaceLastShowTab;
     } else if (addNewTab) {
       const tab = gWorkspaces.createTabForWorkspace(workspaceId);
-      window.gBrowser.selectedTab = tab;
+      gBrowser.selectedTab = tab;
+    }
+
+    // Close workspace popup check
+    if (
+      Services.prefs.getBoolPref(
+        workspacesPreferences.WORKSPACE_CLOSE_POPUP_AFTER_CLICK_PREF
+      )
+    ) {
+      gWorkspaces.workspacesToolbarButton.click();
     }
 
     gWorkspaces.setSelectWorkspace(workspaceId);
@@ -496,12 +538,43 @@ const gWorkspaces = {
   },
 
   moveTabToWorkspace(workspaceId, tab) {
+    const oldWorkspaceId = this.getWorkspaceIdFromAttribute(tab);
     this.setWorkspaceIdToAttribute(tab, workspaceId);
     if (tab === window.gBrowser.selectedTab) {
-      gWorkspaces.changeWorkspace(workspaceId);
+      gWorkspaces.switchToAnotherWorkspaceTab(oldWorkspaceId,workspaceId);
     } else {
       gWorkspaces.checkAllTabsForVisibility();
     }
+  },
+
+  moveTabsToWorkspace(workspaceId, tabs) {
+    for (let tab of tabs) {
+      this.setWorkspaceIdToAttribute(tab, workspaceId);
+
+      if (tab === gBrowser.selectedTab) {
+        gWorkspaces.changeWorkspace(workspaceId);
+        gWorkspaces.checkAllTabsForVisibility();
+      }
+    }
+
+    gWorkspaces.checkAllTabsForVisibility();
+  },
+
+  moveTabsToWorkspaceFromTabContextMenu(workspaceId) {
+    let reopenedTabs = TabContextMenu.contextTab.multiselected
+      ? gBrowser.selectedTabs
+      : [TabContextMenu.contextTab];
+
+    for (let tab of reopenedTabs) {
+      this.moveTabToWorkspace(workspaceId, tab);
+      if (tab == gBrowser.selectedTab) {
+        this.switchToAnotherWorkspaceTab(workspaceId, tab);
+      }
+
+      gWorkspaces.checkAllTabsForVisibility();
+    }
+
+    gWorkspaces.checkAllTabsForVisibility();
   },
 
   createTabForWorkspace(workspaceId, url) {
@@ -551,6 +624,22 @@ const gWorkspaces = {
       if (tab.getAttribute(this.workspacesTabAttributionId) == workspaceId) {
         window.gBrowser.removeTab(tab);
       }
+    }
+  },
+
+  switchToAnotherWorkspaceTab(workspaceId) {
+    let workspaceTabs = document.querySelectorAll(
+      `[${this.workspacesTabAttributionId}="${workspaceId}"]`
+    );
+
+    if (workspaceTabs.length == 0) {
+      let tab = this.createTabForWorkspace(workspaceId);
+      this.moveTabToWorkspace(workspaceId, tab);
+      gBrowser.selectedTab = tab;
+
+      return;
+    } else {
+      gBrowser.selectedTab = workspaceTabs[0];
     }
   },
 
@@ -729,6 +818,17 @@ const gWorkspaces = {
       workspacesData
     );
 
+    // Workspace toolbar button label visibility
+    if (
+      Services.prefs.getBoolPref(
+        workspacesPreferences.WORKSPACE_SHOW_WORKSPACE_NAME_PREF
+      )
+    ) {
+      gWorkspaces.workspacesToolbarButton.setAttribute("showlabel", true);
+    } else {
+      gWorkspaces.workspacesToolbarButton.removeAttribute("showlabel");
+    }
+
     gWorkspaces._currentWorkspaceId = currentWorkspaceId;
   },
 
@@ -803,6 +903,16 @@ const gWorkspaces = {
 
     // Create Context Menu
     this.contextMenu.createWorkspacesTabContextMenuItems();
+
+    // Manage on BMS Sidebar mode
+    if (
+      Services.prefs.getBoolPref(
+        workspacesPreferences.WORKSPACE_MANAGE_ON_BMS_PREF
+      )
+    ) {
+      this.enableWorkspacesManageOnBMSMode();
+      this.workspacesPopupContent.removeAttribute("flex");
+    }
 
     // Override the default newtab opening position in tabbar.
     //copy from browser.js (./browser/base/content/browser.js)
@@ -914,7 +1024,7 @@ const gWorkspaces = {
       parentElem.appendChild(menuItem);
     },
 
-    createWorkspacesTabContextMenuItems(_event) {
+    createWorkspacesTabContextMenuItems() {
       const beforeElem = document.getElementById("context_moveTabOptions");
       const menuitemElem = window.MozXULElement.parseXULToFragment(`
       <menu id="context_MoveTabToOtherWorkspace" data-l10n-id="move-tab-another-workspace" accesskey="D">
@@ -922,6 +1032,42 @@ const gWorkspaces = {
       </menu>
       `);
       beforeElem.before(menuitemElem);
+    },
+
+    async createTabWorkspacesContextMenuItems() {
+      //delete already exsist items
+      let menuElem = document.getElementById("workspacesTabContextMenu");
+      while (menuElem.firstChild) {
+        menuElem.firstChild.remove();
+      }
+
+      //create context menu
+      let allWorkspacesId = await gWorkspaces.getAllWorkspacesId();
+      for (let workspaceId of allWorkspacesId) {
+        let tabWorkspaceId = gWorkspaces.getWorkspaceIdFromAttribute(
+          TabContextMenu.contextTab
+        );
+
+        if (tabWorkspaceId == workspaceId) {
+          continue;
+        }
+
+        let workspaceData = await gWorkspaces.getWorkspaceById(workspaceId);
+        let name = workspaceData.name;
+        let icon = workspaceData.icon;
+        let menuItem = window.MozXULElement.parseXULToFragment(`
+          <menuitem id="context_MoveTabToOtherWorkspace"
+                    class="menuitem-iconic"
+                    style="list-style-image: url(${getWorkspaceIconUrl(icon)})"
+                    oncommand="gWorkspaces.moveTabsToWorkspaceFromTabContextMenu('${workspaceId}')"
+        />`);
+
+        // Against XSS
+        menuItem.firstChild.setAttribute("label", name);
+
+        let parentElem = document.getElementById("workspacesTabContextMenu");
+        parentElem.appendChild(menuItem);
+      }
     },
   },
 };
