@@ -34,7 +34,3 @@ var gFloorpOnLocationChange = {
 };
 
 gFloorpOnLocationChange.init();
-
-document.addEventListener("floorpOnLocationChangeEvent", function () {
-  console.log(gFloorpOnLocationChange.locationURI.spec);
-});

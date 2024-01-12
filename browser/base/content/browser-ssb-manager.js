@@ -24,35 +24,9 @@ const gSsbChromeManager = {
       return;
     }
 
-    // Use internal APIs to detect when the current tab changes.
-
-    let events = ["TabSelect"];
-
-    for (let event of events) {
-      gBrowser.tabContainer.addEventListener(
-        event,
-        this.eventListeners.onCurrentTabChangedOrLoaded
-      );
-    }
-
-    let count = 0;
-    let currentURL = gBrowser.currentURI.spec;
-
-    function checkURLChange() {
-      const newURL = gBrowser.currentURI.spec;    
-      if (newURL !== currentURL || count < 2) {
-        gSsbChromeManager.eventListeners.onCurrentTabChangedOrLoaded();
-        currentURL = newURL;
-        // try 2 times
-        if (newURL !== currentURL) {
-          count = 0;
-        }
-        count++;
-      }
-    }
-
-    // Use internal APIs to detect when the current tab changes.
-    setInterval(checkURLChange, 2000);
+    document.addEventListener("floorpOnLocationChangeEvent", function () {
+      gSsbChromeManager.eventListeners.onCurrentTabChangedOrLoaded();
+    });
 
     // This is needed to handle the case when the user opens a new tab in the same window.
     window.setTimeout(() => {

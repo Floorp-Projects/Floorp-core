@@ -880,19 +880,9 @@ var gWorkspaces = {
       await gWorkspaces.checkAllTabsForVisibility();
     }
 
-    // Use internal APIs to detect when the current tab changes.
     document.addEventListener("floorpOnLocationChangeEvent", function () {
       onLocationChange();
-    });    
-
-    let events = ["TabSelect", "TabPinned", "TabUnpinned"];
-
-    for (let event of events) {
-      gBrowser.tabContainer.addEventListener(
-        event,
-        gWorkspaces.checkAllTabsForVisibility
-      );
-    }
+    });
 
     // Add injection CSS
     let styleElemInjectToToolbar = document.createElement("style");
