@@ -84,6 +84,18 @@ observePreference("floorp.bookmarks.fakestatus.mode", function (event) {
         document
           .getElementById("fullscreen-and-pointerlock-wrapper")
           .after(document.getElementById("PersonalToolbar"));
+        document.addEventListener("floorpOnLocationChangeEvent", function () {
+          let { AboutNewTab } = ChromeUtils.import("resource:///modules/AboutNewTab.jsm"); 
+          let currentUrl = gFloorpOnLocationChange.locationURI.spec;
+          let newtabUrl = AboutNewTab.newTabURL;
+          let pref = Services.prefs.getStringPref("browser.toolbars.bookmarks.visibility", "always");
+
+          if (currentUrl == newtabUrl && pref == "newtab") {
+            document.getElementById("PersonalToolbar").removeAttribute("collapsed");
+          } else {
+            document.getElementById("PersonalToolbar").setAttribute("collapsed", "true");
+          }
+        });
       },
       event.reason === "init" ? 250 : 1
     );
@@ -145,8 +157,8 @@ observePreference("floorp.navbar.bottom", function (event) {
     // eslint-disable-next-line no-undef
     SessionStore.promiseInitialized.then(() => {
       document
-      .querySelector(".urlbarView")
-      .after(document.getElementById("urlbar-input-container"));
+        .querySelector(".urlbarView")
+        .after(document.getElementById("urlbar-input-container"));
     });
   } else {
     document.getElementById("floorp-navvarcss")?.remove();
@@ -202,16 +214,19 @@ observePreference("floorp.hide.unifiedExtensionsButtton", function (event) {
   }
 });
 
-observePreference("floorp.extensions.STG.like.floorp.workspaces.enabled", function (event) {
-  if (event.prefValue) {
-    let Tag = document.createElement("style");
-    Tag.innerText = `@import url(chrome://browser/skin/options/STG-like-floorp-workspaces.css)`;
-    Tag.id = "floorp-STG-like-floorp-workspaces";
-    document.head.appendChild(Tag);
-  } else {
-    document.getElementById("floorp-STG-like-floorp-workspaces")?.remove();
+observePreference(
+  "floorp.extensions.STG.like.floorp.workspaces.enabled",
+  function (event) {
+    if (event.prefValue) {
+      let Tag = document.createElement("style");
+      Tag.innerText = `@import url(chrome://browser/skin/options/STG-like-floorp-workspaces.css)`;
+      Tag.id = "floorp-STG-like-floorp-workspaces";
+      document.head.appendChild(Tag);
+    } else {
+      document.getElementById("floorp-STG-like-floorp-workspaces")?.remove();
+    }
   }
-});
+);
 
 /*------------------------------------------- sidebar -------------------------------------------*/
 
@@ -257,19 +272,18 @@ observePreference("floorp.verticaltab.show.newtab.button", function (event) {
   }
 });
 
-
 // verticaltab.js has same code
 observePreference("floorp.verticaltab.show.scrollbar", function (event) {
   let arrowscrollbox = document.getElementById("tabbrowser-arrowscrollbox");
   if (Services.prefs.getIntPref("floorp.tabbar.style", false) != 2) {
     return;
   }
-  
-  arrowscrollbox.shadowRoot.querySelectorAll(".floorp-vtscrollbar").forEach(
-    function (elem) {
+
+  arrowscrollbox.shadowRoot
+    .querySelectorAll(".floorp-vtscrollbar")
+    .forEach(function (elem) {
       elem.remove();
-    }
-  );
+    });
 
   if (event.prefValue) {
     let elem = arrowscrollbox.shadowRoot.createElementAndAppendChildAt(
@@ -284,7 +298,7 @@ observePreference("floorp.verticaltab.show.scrollbar", function (event) {
         scrollbar-width: thin;
       }`;
     elem.setAttribute("class", "floorp-vtscrollbar");
-  }  else {
+  } else {
     let elem = arrowscrollbox.shadowRoot.createElementAndAppendChildAt(
       arrowscrollbox.shadowRoot.querySelector(".scrollbox-clip"),
       "style"

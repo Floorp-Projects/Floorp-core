@@ -876,12 +876,14 @@ var gWorkspaces = {
       await gWorkspaces.setSelectWorkspace(workspaceId);
     }
 
-    async function checkURLChange() {
+    async function onLocationChange() {
       await gWorkspaces.checkAllTabsForVisibility();
     }
 
     // Use internal APIs to detect when the current tab changes.
-    setInterval(checkURLChange, 1000);
+    document.addEventListener("floorpOnLocationChangeEvent", function () {
+      onLocationChange();
+    });    
 
     let events = ["TabSelect", "TabPinned", "TabUnpinned"];
 

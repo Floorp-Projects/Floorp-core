@@ -23,6 +23,7 @@ browser.jar:
   content/browser/browser-verticaltabs.css      (content/browser-verticaltabs.css)
   content/browser/browser-verticaltabs.js       (content/browser-verticaltabs.js)
   content/browser/browser-manager-sidebar.js    (content/browser-manager-sidebar.js)
+  content/browser/browser-onlocation-change.js  (content/browser-onlocation-change.js)
   content/browser/browser-floorp.css            (content/browser-floorp.css)
   content/browser/browser-command.js            (content/browser-command.js)
   content/browser/browser-flex-order.js         (content/browser-flex-order.js)

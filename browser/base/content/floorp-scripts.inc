@@ -35,6 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //Lightning Build
     SessionStore.promiseInitialized.then(() => {
+        Services.scriptloader.loadSubScript("chrome://browser/content/browser-onlocation-change.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-UI-customizing-menu.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-tabbar.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-design.js", this);
