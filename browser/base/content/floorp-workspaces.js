@@ -417,7 +417,7 @@ const gWorkspaces = {
   },
 
   async createNoNameWorkspace() {
-    await this.createWorkspace("New Workspace", false, true);
+    await this.createWorkspace(this.l10n.formatValueSync("workspace-default-name"), false, true);
   },
 
   async deleteWorkspace(workspaceId) {

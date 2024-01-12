@@ -653,6 +653,7 @@ toolbar #workspace-button:not([disabled="true"], [checked], [open], :active):hov
 }
 .workspaceButton label,
 .workspaceButton image {
+  margin: auto !important;
   display: inherit !important;
   background-color: unset !important;
   color: var(--tab-text-color) !important;
