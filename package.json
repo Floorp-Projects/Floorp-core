@@ -6,9 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "gen": "pnpm run:xpidl2dts && pnpm format:xpidl2dts",
-    "run:xpidl2dts": "cd ./tools && tsx run-xpidl2dts.mts & cd ..",
+    "run:xpidl2dts": "tsx ./tools/run-xpidl2dts.ts",
     "format:xpidl2dts": "prettier --write @types/firefox/**/*.d.ts --ignore-path \"\"",
-    "build": "vite build && tsx ./tools/gen-jarmanifest-dist.ts"
+    "build": "vite build && tsx ./tools/gen-jarmanifest-dist.ts",
+    "debug": "tsx ./tools/run-debug.ts",
+    "debug:old": "tsx ./tools/run-mach-faster.ts"
   },
   "keywords": [],
   "type": "module",
@@ -16,12 +18,16 @@
   "license": "MPL2.0",
   "devDependencies": {
     "@babel/eslint-parser": "^7.23.3",
+    "@types/node": "^20.11.0",
     "@typescript-eslint/eslint-plugin": "^6.18.0",
     "@typescript-eslint/parser": "^6.18.0",
+    "chokidar": "^3.5.3",
     "eslint": "^8.56.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-mozilla": "^3.3.2",
+    "execa": "^8.0.1",
+    "fast-glob": "^3.3.2",
     "prettier": "^3.1.1",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3",
@@ -29,9 +35,5 @@
     "vite": "^5.0.11",
     "xpidl2dts": "file:tools/xpidl2dts@0.2.0"
   },
-  "private": true,
-  "dependencies": {
-    "@types/node": "^20.11.0",
-    "execa": "^8.0.1"
-  }
+  "private": true
 }

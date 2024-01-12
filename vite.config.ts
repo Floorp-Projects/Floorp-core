@@ -41,5 +41,21 @@ export default defineConfig({
       formats: ["es"],
     },
   },
-  plugins: [],
+  plugins: [
+    // {
+    //   name: "hook",
+    //   enforce: "post",
+    //   configureServer(server) {
+    //     server.
+    //   },
+    //   handleHotUpdate(ctx) {
+    //     ctx.server.close();
+    //     console.log(ctx.modules);
+    //     return [];
+    //   },
+    //   writeBundle(option, bundle) {
+    //     console.log(bundle);
+    //   },
+    // },
+  ],
 });

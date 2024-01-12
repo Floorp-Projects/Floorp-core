@@ -5,8 +5,14 @@
 
 import { initWorkspaces } from "./floorp-workspaces.js";
 
+// const { testStr } = ChromeUtils.importESModule(
+//   "resource:///modules/test.sys.mjs"
+// );
+
+// console.error(testStr());
+
 initWorkspaces();
-console.log("aaa");
+// console.log("aaa");
 //console.log("Workspace Init");
 //console.log(window.gWorkspaces);
 
