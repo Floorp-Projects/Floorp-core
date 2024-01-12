@@ -174,6 +174,9 @@ declare namespace MockedExports {
   }
 
   interface ChromeUtils {
+    generateQI(arg0: string[] | any[]): (
+      aIID: any ///in
+    ) => object;
     /**
      * This function reads the KnownModules and resolves which import to use.
      * If you are getting the TS2345 error:

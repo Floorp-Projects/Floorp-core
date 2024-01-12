@@ -22,7 +22,7 @@ const gSplitView = {
       const browserDocShellIsActiveState = browser.docShellIsActive;
 
       // Check if the a tab is already in split view
-      const tabs = gBrowser.tabs;
+      const tabs = window.gBrowser.tabs;
       for (let i = 0; i < tabs.length; i++) {
         if (tabs[i].hasAttribute("splitView")) {
           gSplitView.Functions.removeSplitView(tabs[i]);
@@ -98,7 +98,7 @@ const gSplitView = {
       gSplitView.Functions.removeRenderLayersEvent();
 
       // set renderLayers to true & Set class to deck-selected
-      gBrowser.selectedTab = tab;
+      window.gBrowser.selectedTab = tab;
     },
 
     getlinkedPanel(id) {
@@ -107,176 +107,176 @@ const gSplitView = {
     },
 
     setRenderLayersEvent() {
-      gBrowser.tabContainer.addEventListener(
+      window.gBrowser.tabContainer.addEventListener(
         "TabOpen",
         gSplitView.Functions.handleTabEvent
       );
-      gBrowser.tabContainer.addEventListener(
+      window.gBrowser.tabContainer.addEventListener(
         "TabClose",
         gSplitView.Functions.handleTabEvent
       );
-      gBrowser.tabContainer.addEventListener(
+      window.gBrowser.tabContainer.addEventListener(
         "TabMove",
         gSplitView.Functions.handleTabEvent
       );
-      gBrowser.tabContainer.addEventListener(
+      window.gBrowser.tabContainer.addEventListener(
         "TabSelect",
         gSplitView.Functions.handleTabEvent
       );
-      gBrowser.tabContainer.addEventListener(
+      window.gBrowser.tabContainer.addEventListener(
         "TabAttrModified",
         gSplitView.Functions.handleTabEvent
       );
 
-      gBrowser.tabContainer.addEventListener(
+      window.gBrowser.tabContainer.addEventListener(
         "TabHide",
         gSplitView.Functions.handleTabEvent
       );
 
-      gBrowser.tabContainer.addEventListener(
+      window.gBrowser.tabContainer.addEventListener(
         "TabShow",
         gSplitView.Functions.handleTabEvent
       );
 
-      gBrowser.tabContainer.addEventListener(
+      window.gBrowser.tabContainer.addEventListener(
         "TabPinned",
         gSplitView.Functions.handleTabEvent
       );
 
-      gBrowser.tabContainer.addEventListener(
+      window.gBrowser.tabContainer.addEventListener(
         "TabUnpinned",
         gSplitView.Functions.handleTabEvent
       );
 
-      gBrowser.tabContainer.addEventListener(
+      window.gBrowser.tabContainer.addEventListener(
         "transitionend",
         gSplitView.Functions.handleTabEvent
       );
 
-      gBrowser.tabContainer.addEventListener(
+      window.gBrowser.tabContainer.addEventListener(
         "dblclick",
         gSplitView.Functions.handleTabEvent
       );
 
-      gBrowser.tabContainer.addEventListener(
+      window.gBrowser.tabContainer.addEventListener(
         "click",
         gSplitView.Functions.handleTabEvent
       );
 
-      gBrowser.tabContainer.addEventListener(
+      window.gBrowser.tabContainer.addEventListener(
         "click",
         gSplitView.Functions.handleTabEvent,
         true
       );
 
-      gBrowser.tabContainer.addEventListener(
+      window.gBrowser.tabContainer.addEventListener(
         "keydown",
         gSplitView.Functions.handleTabEvent,
         { mozSystemGroup: true }
       );
 
-      gBrowser.tabContainer.addEventListener(
+      window.gBrowser.tabContainer.addEventListener(
         "dragstart",
         gSplitView.Functions.handleTabEvent
       );
 
-      gBrowser.tabContainer.addEventListener(
+      window.gBrowser.tabContainer.addEventListener(
         "dragover",
         gSplitView.Functions.handleTabEvent
       );
 
-      gBrowser.tabContainer.addEventListener(
+      window.gBrowser.tabContainer.addEventListener(
         "drop",
         gSplitView.Functions.handleTabEvent
       );
 
-      gBrowser.tabContainer.addEventListener(
+      window.gBrowser.tabContainer.addEventListener(
         "dragend",
         gSplitView.Functions.handleTabEvent
       );
 
-      gBrowser.tabContainer.addEventListener(
+      window.gBrowser.tabContainer.addEventListener(
         "dragleave",
         gSplitView.Functions.handleTabEvent
       );
     },
 
     removeRenderLayersEvent() {
-      gBrowser.tabContainer.removeEventListener(
+      window.gBrowser.tabContainer.removeEventListener(
         "TabOpen",
         gSplitView.Functions.handleTabEvent
       );
-      gBrowser.tabContainer.removeEventListener(
+      window.gBrowser.tabContainer.removeEventListener(
         "TabClose",
         gSplitView.Functions.handleTabEvent
       );
-      gBrowser.tabContainer.removeEventListener(
+      window.gBrowser.tabContainer.removeEventListener(
         "TabMove",
         gSplitView.Functions.handleTabEvent
       );
-      gBrowser.tabContainer.removeEventListener(
+      window.gBrowser.tabContainer.removeEventListener(
         "TabSelect",
         gSplitView.Functions.handleTabEvent
       );
-      gBrowser.tabContainer.removeEventListener(
+      window.gBrowser.tabContainer.removeEventListener(
         "TabAttrModified",
         gSplitView.Functions.handleTabEvent
       );
-      gBrowser.tabContainer.removeEventListener(
+      window.gBrowser.tabContainer.removeEventListener(
         "TabHide",
         gSplitView.Functions.handleTabEvent
       );
-      gBrowser.tabContainer.removeEventListener(
+      window.gBrowser.tabContainer.removeEventListener(
         "TabShow",
         gSplitView.Functions.handleTabEvent
       );
-      gBrowser.tabContainer.removeEventListener(
+      window.gBrowser.tabContainer.removeEventListener(
         "TabPinned",
         gSplitView.Functions.handleTabEvent
       );
-      gBrowser.tabContainer.removeEventListener(
+      window.gBrowser.tabContainer.removeEventListener(
         "TabUnpinned",
         gSplitView.Functions.handleTabEvent
       );
-      gBrowser.tabContainer.removeEventListener(
+      window.gBrowser.tabContainer.removeEventListener(
         "transitionend",
         gSplitView.Functions.handleTabEvent
       );
-      gBrowser.tabContainer.removeEventListener(
+      window.gBrowser.tabContainer.removeEventListener(
         "dblclick",
         gSplitView.Functions.handleTabEvent
       );
-      gBrowser.tabContainer.removeEventListener(
+      window.gBrowser.tabContainer.removeEventListener(
         "click",
         gSplitView.Functions.handleTabEvent
       );
-      gBrowser.tabContainer.removeEventListener(
+      window.gBrowser.tabContainer.removeEventListener(
         "click",
         gSplitView.Functions.handleTabEvent,
         true
       );
-      gBrowser.tabContainer.removeEventListener(
+      window.gBrowser.tabContainer.removeEventListener(
         "keydown",
         gSplitView.Functions.handleTabEvent,
         { mozSystemGroup: true }
       );
-      gBrowser.tabContainer.removeEventListener(
+      window.gBrowser.tabContainer.removeEventListener(
         "dragstart",
         gSplitView.Functions.handleTabEvent
       );
-      gBrowser.tabContainer.removeEventListener(
+      window.gBrowser.tabContainer.removeEventListener(
         "dragover",
         gSplitView.Functions.handleTabEvent
       );
-      gBrowser.tabContainer.removeEventListener(
+      window.gBrowser.tabContainer.removeEventListener(
         "drop",
         gSplitView.Functions.handleTabEvent
       );
-      gBrowser.tabContainer.removeEventListener(
+      window.gBrowser.tabContainer.removeEventListener(
         "dragend",
         gSplitView.Functions.handleTabEvent
       );
-      gBrowser.tabContainer.removeEventListener(
+      window.gBrowser.tabContainer.removeEventListener(
         "dragleave",
         gSplitView.Functions.handleTabEvent
       );
@@ -317,14 +317,14 @@ const gSplitView = {
       }
 
       (function modifyDeckSelectedClass() {
-        const tabs = gBrowser.tabs;
+        const tabs = window.gBrowser.tabs;
         for (let i = 0; i < tabs.length; i++) {
           const panel = gSplitView.Functions.getlinkedPanel(
             tabs[i].linkedPanel
           );
           if (
             tabs[i].hasAttribute("splitView") ||
-            tabs[i] == gBrowser.selectedTab
+            tabs[i] == window.gBrowser.selectedTab
           ) {
             panel?.classList.add("deck-selected");
           } else {
@@ -357,7 +357,7 @@ const gSplitView = {
         }
 
         //Rebuild context menu
-        if (event.target == gBrowser.selectedTab) {
+        if (event.target == window.gBrowser.selectedTab) {
           const menuItem = window.MozXULElement.parseXULToFragment(`
                    <menuitem data-l10n-id="workspace-context-menu-selected-tab" disabled="true"/>
                   `);

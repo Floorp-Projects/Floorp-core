@@ -11,6 +11,9 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "verbatimModuleSyntax": true,
 
     "paths": {
       "chrome://browser/content/*": ["./browser/base/content/*"],

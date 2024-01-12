@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Frog Build Tools build script schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "build": {
+      "type": "object",
+      "properties": {
+        "subprojects": {
+          "type": "array"
+        },
+        "jarmanifest": {
+          "type": "array",
+          "description": "Frog's jar.frog.jsonc files"
+        }
+      }
+    },
+    "mozilla": {
+      "type": "object",
+      "properties": {
+        "xpcom_manifest": {
+          "type": "array"
+        },
+
+        "extra_js_modules": {
+          "type": "object",
+          "properties": {
+            "default": { "type": "array" }
+          },
+          "patternProperties": {
+            "*": { "type": "array" }
+          }
+        },
+        "jar_manifest": {
+          "type": "array",
+          "description": "Mozilla's jar.mn files"
+        }
+      }
+    }
+  },
+  "required": ["mozilla"],
+  "additionalProperties": false
+}

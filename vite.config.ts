@@ -21,15 +21,6 @@ export default defineConfig({
     },
 
     rollupOptions: {
-      // input: {
-      //   index: path.resolve(__dirname, "browser/base/content/index.ts"),
-      // },
-      // output: {
-      //   dynamicImportInCjs: true,
-      //   format: "es",
-      //   entryFileNames: "[name].js",
-      // },
-      // plugins: [],
       external(source, importer, isResolved) {
         // return !source.includes("index.ts");
         return source.startsWith("chrome://");

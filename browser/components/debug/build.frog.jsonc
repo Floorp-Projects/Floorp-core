@@ -1,0 +1,9 @@
+{
+  "$schema": "../../../misc/build.frog.schema.json",
+  "mozilla": {
+    "extra_js_modules": {
+      "default": ["FloorpDebugHandler.sys.mjs"]
+    },
+    "xpcom_manifest": ["components.conf"]
+  }
+}

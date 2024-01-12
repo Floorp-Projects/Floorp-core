@@ -417,7 +417,11 @@ const gWorkspaces = {
   },
 
   async createNoNameWorkspace() {
-    await this.createWorkspace(this.l10n.formatValueSync("workspace-default-name"), false, true);
+    await this.createWorkspace(
+      this.l10n.formatValueSync("workspace-default-name"),
+      false,
+      true
+    );
   },
 
   async deleteWorkspace(workspaceId) {
@@ -447,7 +451,7 @@ const gWorkspaces = {
   },
 
   async checkWorkspacesHasTab(workspaceId) {
-    for (const tab of gBrowser.tabs) {
+    for (const tab of window.gBrowser.tabs) {
       if (tab.getAttribute(this.workspacesTabAttributionId) == workspaceId) {
         return true;
       }
@@ -478,7 +482,7 @@ const gWorkspaces = {
       window.gBrowser.selectedTab = willChangeWorkspaceLastShowTab;
     } else if (addNewTab) {
       const tab = gWorkspaces.createTabForWorkspace(workspaceId);
-      gBrowser.selectedTab = tab;
+      window.gBrowser.selectedTab = tab;
     }
 
     // Close workspace popup check
@@ -549,7 +553,7 @@ const gWorkspaces = {
     for (const tab of tabs) {
       this.setWorkspaceIdToAttribute(tab, workspaceId);
 
-      if (tab === gBrowser.selectedTab) {
+      if (tab === window.gBrowser.selectedTab) {
         gWorkspaces.changeWorkspace(workspaceId);
         gWorkspaces.checkAllTabsForVisibility();
       }
@@ -560,12 +564,12 @@ const gWorkspaces = {
 
   moveTabsToWorkspaceFromTabContextMenu(workspaceId) {
     const reopenedTabs = TabContextMenu.contextTab.multiselected
-      ? gBrowser.selectedTabs
+      ? window.gBrowser.selectedTabs
       : [TabContextMenu.contextTab];
 
     for (const tab of reopenedTabs) {
       this.moveTabToWorkspace(workspaceId, tab);
-      if (tab == gBrowser.selectedTab) {
+      if (tab == window.gBrowser.selectedTab) {
         this.switchToAnotherWorkspaceTab(workspaceId, tab);
       }
 
@@ -633,11 +637,11 @@ const gWorkspaces = {
     if (workspaceTabs.length == 0) {
       const tab = this.createTabForWorkspace(workspaceId);
       this.moveTabToWorkspace(workspaceId, tab);
-      gBrowser.selectedTab = tab;
+      window.gBrowser.selectedTab = tab;
 
       return;
     } else {
-      gBrowser.selectedTab = workspaceTabs[0];
+      window.gBrowser.selectedTab = workspaceTabs[0];
     }
   },
 
