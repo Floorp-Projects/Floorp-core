@@ -9,8 +9,9 @@
     "run:xpidl2dts": "tsx ./tools/run-xpidl2dts.ts",
     "format:xpidl2dts": "prettier --write @types/firefox/**/*.d.ts --ignore-path \"\"",
     "build": "vite build && tsx ./tools/gen-jarmanifest-dist.ts",
+    "build:mach": "pnpm build && tsx ./tools/run-mach-faster.ts",
     "debug": "tsx ./tools/run-debug.ts",
-    "debug:old": "tsx ./tools/run-mach-faster.ts"
+    "debug:mach": "pnpm build && tsx ./tools/run-mach-faster.ts run"
   },
   "keywords": [],
   "type": "module",

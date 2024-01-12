@@ -5,6 +5,17 @@ import { genJarManifest } from "./gen-jarmanifest-dist.js";
 import fg from "fast-glob";
 import chokidar from "chokidar";
 
+if (process.platform !== "win32") {
+  console.warn("\x1b[31mThis Debug Script only supports Windows.");
+  console.warn("\x1b[31mPlease run `pnpm debug:mach` to debug in other OS.");
+  console.warn("\x1b[31m※ Caution :");
+  console.warn("\x1b[31m`pnpm debug:mach` does not have watching mechanism.");
+  console.warn(
+    "\x1b[31mYou should close Floorp and run the script on every change."
+  );
+  process.exit(-1);
+}
+
 console.time("debug");
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
