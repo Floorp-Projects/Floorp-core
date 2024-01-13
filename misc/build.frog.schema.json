@@ -21,7 +21,7 @@
     "mozilla": {
       "type": "object",
       "properties": {
-        "xpcom_manifest": {
+        "xpcom_manifests": {
           "type": "array"
         },
 
@@ -37,7 +37,8 @@
         "jar_manifest": {
           "type": "array",
           "description": "Mozilla's jar.mn files"
-        }
+        },
+        "additionalProperties": false
       }
     }
   },

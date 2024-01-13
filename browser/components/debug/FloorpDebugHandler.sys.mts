@@ -1,15 +1,13 @@
 import type { nsICommandLine } from "../../../@types/firefox/toolkit/components/commandlines/nsICommandLine";
 import type { nsICommandLineHandler } from "../../../@types/firefox/toolkit/components/commandlines/nsICommandLineHandler";
 
-import type {
-  ViteMessage,
-  COM,
-  FloorpMessage,
-} from "../../../misc/debugDefines";
+import type { ViteMessage, FloorpMessage } from "../../../misc/debugDefines";
 export class FloorpDebugCommandlineHandler implements nsICommandLineHandler {
   QueryInterface = ChromeUtils.generateQI([Ci.nsICommandLineHandler]);
 
   handle(aCommandLine: nsICommandLine) {
+    console.log("HANDLE!!!!");
+
     const arg = aCommandLine.handleFlagWithParam("floorp-debug", false);
     if (arg) {
       startViteHandler(Number(arg));

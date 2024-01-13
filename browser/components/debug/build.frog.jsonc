@@ -4,6 +4,6 @@
     "extra_js_modules": {
       "default": ["FloorpDebugHandler.sys.mjs"]
     },
-    "xpcom_manifest": ["components.conf"]
+    "xpcom_manifests": ["components.conf"]
   }
 }

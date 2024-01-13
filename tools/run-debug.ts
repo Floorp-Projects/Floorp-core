@@ -31,8 +31,6 @@ content floorp floorp_symlink/ contentaccessible=yes
 process.chdir(__dirname);
 const dirs = await fs.opendir("../..");
 
-const watcher_vite_manifest = fs.watch("../dist/.vite/manifest.json");
-
 console.timeEnd("debug");
 
 let path = "";
@@ -99,7 +97,7 @@ const watcherModule = chokidar.watch([
     if (process_floorp) {
       console.log("kill floorp");
       doNotExit = true;
-      process_floorp.kill(19);
+      process_floorp.kill(2);
     }
 
     //https://searchfox.org/mozilla-central/rev/961a9e56a0b5fa96ceef22c61c5e75fb6ba53395/python/mozbuild/mozbuild/mach_commands.py#1900
@@ -137,13 +135,6 @@ const watcherModule = chokidar.watch([
     timeout = setTimeout(killAndRun, 500);
     running = false;
   });
-
-  (async () => {
-    for await (const _ of watcher_vite_manifest) {
-      clearTimeout(timeout);
-      timeout = setTimeout(killAndRun, 3000);
-    }
-  })();
 })();
 
 //https://stackoverflow.com/questions/14031763/doing-a-cleanup-action-just-before-node-js-exits

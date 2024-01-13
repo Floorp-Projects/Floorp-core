@@ -1,5 +1,5 @@
 import * as fs from "fs/promises";
-import { Manifest } from "vite";
+import type { Manifest } from "vite";
 
 const moz_build = `
 # ---------------- Floorp AUTO_GENERATED_FILE -----------------------
@@ -9,6 +9,8 @@ const moz_build = `
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 JAR_MANIFESTS += ["jar.mn"]
+XPCOM_MANIFESTS += ["FloorpDebugHandlerComponents.conf"]
+EXTRA_JS_MODULES += ["FloorpDebugHandler.sys.mjs"]
 `;
 
 const jar_mn = `
