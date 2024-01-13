@@ -589,6 +589,14 @@ var gWorkspaces = {
       url = Services.prefs.getStringPref("browser.startup.homepage");
     }
 
+    let tabs = gBrowser.tabs;
+    for (let tab of tabs) {
+      if (!tab.hasAttribute(this.workspacesTabAttributionId)) {
+        this.setWorkspaceIdToAttribute(tab, workspaceId);
+        return tab;
+      }
+    }
+
     let tab = gBrowser.addTab(url, {
       skipAnimation: true,
       inBackground: false,
