@@ -24,14 +24,11 @@ async function startViteHandler(port: number) {
       const mes = JSON.parse(ev.data as string) as ViteMessage;
 
       switch (mes.com) {
-        case "restart": {
+        case "shutdown": {
           const res: FloorpMessage = { com: mes.com, statusCode: "OK" };
           ws.send(JSON.stringify(res));
           ws.close();
-          Services.startup.quit(
-            Services.startup.eForceQuit | Services.startup.eRestart,
-            0
-          );
+          Services.startup.quit(Services.startup.eForceQuit, 0);
         }
       }
     }

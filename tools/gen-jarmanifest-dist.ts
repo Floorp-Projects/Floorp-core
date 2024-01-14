@@ -10,7 +10,7 @@ const moz_build = `
 
 JAR_MANIFESTS += ["jar.mn"]
 XPCOM_MANIFESTS += ["FloorpDebugHandlerComponents.conf"]
-EXTRA_JS_MODULES += ["FloorpDebugHandler.sys.mjs"]
+
 `;
 
 const jar_mn = `
@@ -23,6 +23,9 @@ const jar_mn = `
 floorp.jar:
 % content floorp %floorp/ contentaccessible=yes
 {slot}
+% resource floorp %res/floorp/
+  res/floorp/modules/FloorpDebugHandler.sys.mjs
+  res/floorp/modules/FloorpDebugHandler.sys.mjs.map
 `;
 
 export const genJarManifest = async (root: string) => {
