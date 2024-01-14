@@ -3,7 +3,7 @@
 [![english](./resources/icon-lang-eng.svg)](../README.md) [![japanese](./resources/icon-lang-jp.svg)](./README.ja.md)
 
 <p align="center">
-<img src="./resources/Floorp_Toolkit.svg" width="70%">
+<img src="./resources/Floorp_Toolkit.svg" width="500px">
 
 <!-- ![heart in kanji](./heart.svg "心") -->
 
@@ -18,11 +18,10 @@
 
 > [!Note]
 > 개발자가 일본어 화자이므로, 영어나 일본어가 아닌 요청 및 풀 리퀘스트는 거부됩니다.
-> 참고하시기 바랍니다.
 
 ## :open_file_folder: Main 리포지토리
 
-[![Link to Floorp Main Repository](./resources/Link2MainRepo.png)](https://github.com/floorp-Projects/Floorp/)
+[![Link to Floorp Main Repository](./resources/Link2MainRepo.svg)](https://github.com/floorp-Projects/Floorp/)
 
 ## :star2: 기여 방법
 
