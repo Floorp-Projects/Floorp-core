@@ -107,179 +107,15 @@ const gSplitView = {
     },
 
     setRenderLayersEvent() {
-      window.gBrowser.tabContainer.addEventListener(
-        "TabOpen",
-        gSplitView.Functions.handleTabEvent
-      );
-      window.gBrowser.tabContainer.addEventListener(
-        "TabClose",
-        gSplitView.Functions.handleTabEvent
-      );
-      window.gBrowser.tabContainer.addEventListener(
-        "TabMove",
-        gSplitView.Functions.handleTabEvent
-      );
-      window.gBrowser.tabContainer.addEventListener(
-        "TabSelect",
-        gSplitView.Functions.handleTabEvent
-      );
-      window.gBrowser.tabContainer.addEventListener(
-        "TabAttrModified",
-        gSplitView.Functions.handleTabEvent
-      );
-
-      window.gBrowser.tabContainer.addEventListener(
-        "TabHide",
-        gSplitView.Functions.handleTabEvent
-      );
-
-      window.gBrowser.tabContainer.addEventListener(
-        "TabShow",
-        gSplitView.Functions.handleTabEvent
-      );
-
-      window.gBrowser.tabContainer.addEventListener(
-        "TabPinned",
-        gSplitView.Functions.handleTabEvent
-      );
-
-      window.gBrowser.tabContainer.addEventListener(
-        "TabUnpinned",
-        gSplitView.Functions.handleTabEvent
-      );
-
-      window.gBrowser.tabContainer.addEventListener(
-        "transitionend",
-        gSplitView.Functions.handleTabEvent
-      );
-
-      window.gBrowser.tabContainer.addEventListener(
-        "dblclick",
-        gSplitView.Functions.handleTabEvent
-      );
-
-      window.gBrowser.tabContainer.addEventListener(
-        "click",
-        gSplitView.Functions.handleTabEvent
-      );
-
-      window.gBrowser.tabContainer.addEventListener(
-        "click",
-        gSplitView.Functions.handleTabEvent,
-        true
-      );
-
-      window.gBrowser.tabContainer.addEventListener(
-        "keydown",
-        gSplitView.Functions.handleTabEvent,
-        { mozSystemGroup: true }
-      );
-
-      window.gBrowser.tabContainer.addEventListener(
-        "dragstart",
-        gSplitView.Functions.handleTabEvent
-      );
-
-      window.gBrowser.tabContainer.addEventListener(
-        "dragover",
-        gSplitView.Functions.handleTabEvent
-      );
-
-      window.gBrowser.tabContainer.addEventListener(
-        "drop",
-        gSplitView.Functions.handleTabEvent
-      );
-
-      window.gBrowser.tabContainer.addEventListener(
-        "dragend",
-        gSplitView.Functions.handleTabEvent
-      );
-
-      window.gBrowser.tabContainer.addEventListener(
-        "dragleave",
-        gSplitView.Functions.handleTabEvent
-      );
+      document.addEventListener("floorpOnLocationChangeEvent", function () {
+        gSplitView.Functions.handleTabEvent();
+      });
     },
 
     removeRenderLayersEvent() {
-      window.gBrowser.tabContainer.removeEventListener(
-        "TabOpen",
-        gSplitView.Functions.handleTabEvent
-      );
-      window.gBrowser.tabContainer.removeEventListener(
-        "TabClose",
-        gSplitView.Functions.handleTabEvent
-      );
-      window.gBrowser.tabContainer.removeEventListener(
-        "TabMove",
-        gSplitView.Functions.handleTabEvent
-      );
-      window.gBrowser.tabContainer.removeEventListener(
-        "TabSelect",
-        gSplitView.Functions.handleTabEvent
-      );
-      window.gBrowser.tabContainer.removeEventListener(
-        "TabAttrModified",
-        gSplitView.Functions.handleTabEvent
-      );
-      window.gBrowser.tabContainer.removeEventListener(
-        "TabHide",
-        gSplitView.Functions.handleTabEvent
-      );
-      window.gBrowser.tabContainer.removeEventListener(
-        "TabShow",
-        gSplitView.Functions.handleTabEvent
-      );
-      window.gBrowser.tabContainer.removeEventListener(
-        "TabPinned",
-        gSplitView.Functions.handleTabEvent
-      );
-      window.gBrowser.tabContainer.removeEventListener(
-        "TabUnpinned",
-        gSplitView.Functions.handleTabEvent
-      );
-      window.gBrowser.tabContainer.removeEventListener(
-        "transitionend",
-        gSplitView.Functions.handleTabEvent
-      );
-      window.gBrowser.tabContainer.removeEventListener(
-        "dblclick",
-        gSplitView.Functions.handleTabEvent
-      );
-      window.gBrowser.tabContainer.removeEventListener(
-        "click",
-        gSplitView.Functions.handleTabEvent
-      );
-      window.gBrowser.tabContainer.removeEventListener(
-        "click",
-        gSplitView.Functions.handleTabEvent,
-        true
-      );
-      window.gBrowser.tabContainer.removeEventListener(
-        "keydown",
-        gSplitView.Functions.handleTabEvent,
-        { mozSystemGroup: true }
-      );
-      window.gBrowser.tabContainer.removeEventListener(
-        "dragstart",
-        gSplitView.Functions.handleTabEvent
-      );
-      window.gBrowser.tabContainer.removeEventListener(
-        "dragover",
-        gSplitView.Functions.handleTabEvent
-      );
-      window.gBrowser.tabContainer.removeEventListener(
-        "drop",
-        gSplitView.Functions.handleTabEvent
-      );
-      window.gBrowser.tabContainer.removeEventListener(
-        "dragend",
-        gSplitView.Functions.handleTabEvent
-      );
-      window.gBrowser.tabContainer.removeEventListener(
-        "dragleave",
-        gSplitView.Functions.handleTabEvent
-      );
+      document.removeEventListener("floorpOnLocationChangeEvent", function () {
+        gSplitView.Functions.handleTabEvent();
+      });
     },
 
     handleTabEvent() {
@@ -287,12 +123,8 @@ const gSplitView = {
         return;
       }
 
-      const currentSplitViewTab = document.querySelector(
-        `.tabbrowser-tab[splitView="true"]`
-      );
-      const currentSplitViewPanel = gSplitView.Functions.getlinkedPanel(
-        currentSplitViewTab?.linkedPanel
-      );
+      const currentSplitViewTab = document.querySelector(`.tabbrowser-tab[splitView="true"]`);
+      const currentSplitViewPanel = gSplitView.Functions.getlinkedPanel(currentSplitViewTab?.linkedPanel);
       const currentSplitViewBrowser = currentSplitViewTab?.linkedBrowser;
 
       if (!currentSplitViewBrowser) {
@@ -319,13 +151,8 @@ const gSplitView = {
       (function modifyDeckSelectedClass() {
         const tabs = window.gBrowser.tabs;
         for (let i = 0; i < tabs.length; i++) {
-          const panel = gSplitView.Functions.getlinkedPanel(
-            tabs[i].linkedPanel
-          );
-          if (
-            tabs[i].hasAttribute("splitView") ||
-            tabs[i] == window.gBrowser.selectedTab
-          ) {
+          const panel = gSplitView.Functions.getlinkedPanel(tabs[i].linkedPanel);
+          if (tabs[i].hasAttribute("splitView") || tabs[i] == window.gBrowser.selectedTab) {
             panel?.classList.add("deck-selected");
           } else {
             panel?.classList.remove("deck-selected");

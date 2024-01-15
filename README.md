@@ -3,7 +3,7 @@
 [![japanese](./docs/resources/icon-lang-jp.svg)](./docs/README.ja.md) [![korean](./docs/resources/icon-lang-kr.svg)](./docs/README.ko.md)
 
 <p align="center">
-<img src="./docs/resources/Floorp_Toolkit.svg" width="70%">
+<img src="./docs/resources/Floorp_Toolkit.svg" width="500px">
 
 <!-- ![heart in kanji](./heart.svg "心") -->
 
@@ -19,7 +19,7 @@ Feel free to submit a Pull Request if you have improvements or fixes to propose.
 
 ## :open_file_folder: Main Repository
 
-[![Link to Floorp Main Repository](./docs/resources/Link2MainRepo.png)](https://github.com/floorp-Projects/Floorp/)
+[![Link to Floorp Main Repository](./docs/resources/Link2MainRepo.svg)](https://github.com/floorp-Projects/Floorp/)
 
 ## :star2: Contributing
 

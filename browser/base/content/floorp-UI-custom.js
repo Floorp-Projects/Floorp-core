@@ -9,7 +9,7 @@ const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 const observePreference = function (prefName, callback) {
   let prefValue = Services.prefs.getBoolPref(prefName, false);
 
-  const notifyCallback = reason => {
+  const notifyCallback = (reason) => {
     try {
       callback({
         pref: prefName,
@@ -41,19 +41,16 @@ observePreference("floorp.material.effect.enable", function (event) {
   }
 });
 
-observePreference(
-  "floorp.Tree-type.verticaltab.optimization",
-  function (event) {
-    if (event.prefValue) {
-      const Tag = document.createElement("style");
-      Tag.innerText = `@import url(chrome://browser/skin/options/treestyletab.css)`;
-      Tag.setAttribute("id", "floorp-optimizefortreestyletab");
-      document.head.appendChild(Tag);
-    } else {
-      document.getElementById("floorp-optimizefortreestyletab")?.remove();
-    }
+observePreference("floorp.Tree-type.verticaltab.optimization", function (event) {
+  if (event.prefValue) {
+    const Tag = document.createElement("style");
+    Tag.innerText = `@import url(chrome://browser/skin/options/treestyletab.css)`;
+    Tag.setAttribute("id", "floorp-optimizefortreestyletab");
+    document.head.appendChild(Tag);
+  } else {
+    document.getElementById("floorp-optimizefortreestyletab")?.remove();
   }
-);
+});
 
 observePreference("floorp.optimized.msbutton.ope", function (event) {
   if (event.prefValue) {
@@ -81,22 +78,28 @@ observePreference("floorp.bookmarks.fakestatus.mode", function (event) {
   if (event.prefValue) {
     setTimeout(
       function () {
-        document
-          .getElementById("fullscreen-and-pointerlock-wrapper")
-          .after(document.getElementById("PersonalToolbar"));
+        document.getElementById("fullscreen-and-pointerlock-wrapper").after(document.getElementById("PersonalToolbar"));
+        document.addEventListener("floorpOnLocationChangeEvent", function () {
+          let { AboutNewTab } = ChromeUtils.import("resource:///modules/AboutNewTab.jsm");
+          let currentUrl = gFloorpOnLocationChange.locationURI.spec;
+          let newtabUrl = AboutNewTab.newTabURL;
+          let pref = Services.prefs.getStringPref("browser.toolbars.bookmarks.visibility", "always");
+
+          if (currentUrl == newtabUrl && pref == "newtab") {
+            document.getElementById("PersonalToolbar").removeAttribute("collapsed");
+          } else {
+            document.getElementById("PersonalToolbar").setAttribute("collapsed", "true");
+          }
+        });
       },
       event.reason === "init" ? 250 : 1
     );
   } else if (event.reason === "changed") {
     //Fix for the bug that bookmarksbar is on the navigation toolbar when the pref is cahaned to false
     if (!Services.prefs.getBoolPref("floorp.navbar.bottom", false)) {
-      document
-        .getElementById("navigator-toolbox")
-        .appendChild(document.getElementById("nav-bar"));
+      document.getElementById("navigator-toolbox").appendChild(document.getElementById("nav-bar"));
     }
-    document
-      .getElementById("navigator-toolbox")
-      .appendChild(document.getElementById("PersonalToolbar"));
+    document.getElementById("navigator-toolbox").appendChild(document.getElementById("PersonalToolbar"));
   }
 });
 
@@ -139,31 +142,19 @@ observePreference("floorp.navbar.bottom", function (event) {
     Tag.setAttribute("id", "floorp-navvarcss");
     Tag.innerText = `@import url(chrome://browser/skin/options/navbar-botttom.css)`;
     document.head.appendChild(Tag);
-    document
-      .getElementById("fullscreen-and-pointerlock-wrapper")
-      .after(document.getElementById("nav-bar"));
+    document.getElementById("fullscreen-and-pointerlock-wrapper").after(document.getElementById("nav-bar"));
 
     SessionStore.promiseInitialized.then(() => {
-      document
-        .querySelector(".urlbarView")
-        .after(document.getElementById("urlbar-input-container"));
+      document.querySelector(".urlbarView").after(document.getElementById("urlbar-input-container"));
     });
   } else {
     document.getElementById("floorp-navvarcss")?.remove();
     if (event.reason === "changed") {
       //Fix for the bug that bookmarksbar is on the navigation toolbar when the pref is cahaned to false
-      document
-        .getElementById("navigator-toolbox")
-        .appendChild(document.getElementById("nav-bar"));
-      document
-        .querySelector(".urlbarView")
-        .before(document.getElementById("urlbar-input-container"));
-      if (
-        !Services.prefs.getBoolPref("floorp.bookmarks.fakestatus.mode", false)
-      ) {
-        document
-          .getElementById("navigator-toolbox")
-          .appendChild(document.getElementById("PersonalToolbar"));
+      document.getElementById("navigator-toolbox").appendChild(document.getElementById("nav-bar"));
+      document.querySelector(".urlbarView").before(document.getElementById("urlbar-input-container"));
+      if (!Services.prefs.getBoolPref("floorp.bookmarks.fakestatus.mode", false)) {
+        document.getElementById("navigator-toolbox").appendChild(document.getElementById("PersonalToolbar"));
       }
     }
   }
@@ -202,19 +193,16 @@ observePreference("floorp.hide.unifiedExtensionsButtton", function (event) {
   }
 });
 
-observePreference(
-  "floorp.extensions.STG.like.floorp.workspaces.enabled",
-  function (event) {
-    if (event.prefValue) {
-      const Tag = document.createElement("style");
-      Tag.innerText = `@import url(chrome://browser/skin/options/STG-like-floorp-workspaces.css)`;
-      Tag.id = "floorp-STG-like-floorp-workspaces";
-      document.head.appendChild(Tag);
-    } else {
-      document.getElementById("floorp-STG-like-floorp-workspaces")?.remove();
-    }
+observePreference("floorp.extensions.STG.like.floorp.workspaces.enabled", function (event) {
+  if (event.prefValue) {
+    let Tag = document.createElement("style");
+    Tag.innerText = `@import url(chrome://browser/skin/options/STG-like-floorp-workspaces.css)`;
+    Tag.id = "floorp-STG-like-floorp-workspaces";
+    document.head.appendChild(Tag);
+  } else {
+    document.getElementById("floorp-STG-like-floorp-workspaces")?.remove();
   }
-);
+});
 
 /*------------------------------------------- sidebar -------------------------------------------*/
 
@@ -267,17 +255,12 @@ observePreference("floorp.verticaltab.show.scrollbar", function (event) {
     return;
   }
 
-  arrowscrollbox.shadowRoot
-    .querySelectorAll(".floorp-vtscrollbar")
-    .forEach(function (elem) {
-      elem.remove();
-    });
+  arrowscrollbox.shadowRoot.querySelectorAll(".floorp-vtscrollbar").forEach(function (elem) {
+    elem.remove();
+  });
 
   if (event.prefValue) {
-    const elem = arrowscrollbox.shadowRoot.createElementAndAppendChildAt(
-      arrowscrollbox.shadowRoot.querySelector(".scrollbox-clip"),
-      "style"
-    );
+    const elem = arrowscrollbox.shadowRoot.createElementAndAppendChildAt(arrowscrollbox.shadowRoot.querySelector(".scrollbox-clip"), "style");
     elem.textContent = `
       scrollbox[part="scrollbox"], 
       vbox[part="scrollbox"] {
@@ -287,10 +270,7 @@ observePreference("floorp.verticaltab.show.scrollbar", function (event) {
       }`;
     elem.setAttribute("class", "floorp-vtscrollbar");
   } else {
-    const elem = arrowscrollbox.shadowRoot.createElementAndAppendChildAt(
-      arrowscrollbox.shadowRoot.querySelector(".scrollbox-clip"),
-      "style"
-    );
+    let elem = arrowscrollbox.shadowRoot.createElementAndAppendChildAt(arrowscrollbox.shadowRoot.querySelector(".scrollbox-clip"), "style");
     elem.textContent = `
       scrollbox[part="scrollbox"],
       vbox[part="scrollbox"] {
@@ -298,8 +278,6 @@ observePreference("floorp.verticaltab.show.scrollbar", function (event) {
         scrollbar-width: none;
       }`;
     elem.setAttribute("class", "floorp-vtscrollbar");
-    arrowscrollbox.shadowRoot.querySelector(
-      ".scrollbox-clip[part='scrollbox-clip']"
-    ).style.overflowY = "scroll";
+    arrowscrollbox.shadowRoot.querySelector(".scrollbox-clip[part='scrollbox-clip']").style.overflowY = "scroll";
   }
 });

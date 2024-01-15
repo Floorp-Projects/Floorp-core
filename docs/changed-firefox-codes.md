@@ -182,3 +182,16 @@ URL: https://github.com/Floorp-Projects/Floorp/commit/c3041c9aebd207d42e8da75ea2
 changed: "Replace PDF Document icon to Floorp's PDF Document icon."
 
 URL:
+
+---
+
+19. browser/base/content/browser.js
+
+**Feature: "onLocationChange"**
+
+changed: "Insert onLocationChange codes."
+Line: 5312
+
+URL: [Searchfox](https://searchfox.org/mozilla-central/source/browser/base/content/browser.js#5312)
+
+---
