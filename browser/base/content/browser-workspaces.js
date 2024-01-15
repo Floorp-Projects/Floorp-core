@@ -839,18 +839,21 @@ var gWorkspaces = {
     );
 
     // Workspace toolbar button label visibility
-    if (
-      Services.prefs.getBoolPref(
-        workspacesPreferences.WORKSPACE_SHOW_WORKSPACE_NAME_PREF
-      ) &&
-      gWorkspaces.workspacesToolbarButton
-    ) {
-      gWorkspaces.workspacesToolbarButton.setAttribute("showlabel", true);
-    } else {
-      gWorkspaces.workspacesToolbarButton.removeAttribute("showlabel");
-    }
+    try {
+      if (
+        Services.prefs.getBoolPref(
+          workspacesPreferences.WORKSPACE_SHOW_WORKSPACE_NAME_PREF
+        )
+      ) {
+        gWorkspaces.workspacesToolbarButton?.setAttribute("showlabel", true);
+      } else {
+        gWorkspaces.workspacesToolbarButton?.removeAttribute("showlabel");
+      }
 
-    gWorkspaces._currentWorkspaceId = currentWorkspaceId;
+      gWorkspaces._currentWorkspaceId = currentWorkspaceId;
+    } catch (e) {
+      console.log(e);
+    }
   },
 
   /* init */
@@ -923,14 +926,6 @@ var gWorkspaces = {
     this.contextMenu.createWorkspacesTabContextMenuItems();
 
     // Manage on BMS Sidebar mode
-    if (
-      Services.prefs.getBoolPref(
-        workspacesPreferences.WORKSPACE_MANAGE_ON_BMS_PREF
-      )
-    ) {
-      this.enableWorkspacesManageOnBMSMode();
-      this.workspacesPopupContent.removeAttribute("flex");
-    }
 
     // Override the default newtab opening position in tabbar.
     //copy from browser.js (./browser/base/content/browser.js)

@@ -65,7 +65,12 @@ function getWorkspaceUserContextId(workspaceName) {
 
 export const WorkspacesMigratorUtils = {
   get IsLegacyWorkspaceEnabled() {
-    return Services.prefs.getBoolPref("floorp.browser.workspace.tab.enabled");
+    return Services.prefs.getBoolPref("floorp.browser.workspace.tab.enabled", true);
+  },
+
+  get migrated() {
+    console.log("migrated", Services.prefs.getBoolPref("floorp.browser.workspace.migrated", false));
+    return Services.prefs.getBoolPref("floorp.browser.workspace.migrated", false);
   },
 
   get LegacyWorkspacesData() {
@@ -89,10 +94,6 @@ export const WorkspacesMigratorUtils = {
   },
 
   cleanupLegacyWorkspaces() {
-    if (!this.IsLegacyWorkspaceEnabled) {
-      return;
-    }
-
     Services.prefs.clearUserPref("floorp.browser.workspace.tabs.state");
     Services.prefs.clearUserPref("floorp.browser.workspace.current");
     Services.prefs.setBoolPref("floorp.browser.workspace.tab.enabled", false);
@@ -100,9 +101,12 @@ export const WorkspacesMigratorUtils = {
   },
 
   async importDataFromLegacyWorkspaces(tabs, windowId) {
-    if (!this.IsLegacyWorkspaceEnabled) {
+    if (this.migrated) {
       return;
     }
+
+    // Set migrated flag
+    Services.prefs.setBoolPref("floorp.browser.workspace.migrated", true);
 
     const allWorkspacesName = this.LegacyWorkspacesAllNamesPref;
 
