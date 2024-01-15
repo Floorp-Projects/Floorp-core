@@ -3,7 +3,7 @@
 [![english](./resources/icon-lang-eng.svg)](../README.md) [![korean](./resources/icon-lang-kr.svg)](./README.ko.md)
 
 <p align="center">
-<img src="./resources/Floorp_Toolkit.svg" width="70%">
+<img src="./resources/Floorp_Toolkit.svg" width="500px">
 
 <!-- ![heart in kanji](./heart.svg "心") -->
 
@@ -19,7 +19,7 @@ Floorp 固有のコードを扱います。
 
 ## :open_file_folder: Main リポジトリ
 
-[![Link to Floorp Main Repository](./resources/Link2MainRepo.png)](https://github.com/floorp-Projects/Floorp/)
+[![Link to Floorp Main Repository](./resources/Link2MainRepo.svg)](https://github.com/floorp-Projects/Floorp/)
 
 ## :star2: 貢献する
 
