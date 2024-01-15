@@ -4,19 +4,19 @@ const ua =
 let targetRequestIds = [];
 
 browser.webRequestExt.onBeforeRequest_webpanel_requestId.addListener(
-	function (requestId) {
+	(requestId) => {
 		targetRequestIds.push(requestId);
-		setTimeout(function () {
+		setTimeout(() => {
 			targetRequestIds = targetRequestIds.filter((id) => id !== requestId);
 		}, 180 * 1000);
 	},
 );
 
 browser.webRequest.onBeforeSendHeaders.addListener(
-	function (e) {
+	(e) => {
 		if (targetRequestIds.includes(e.requestId)) {
 			targetRequestIds = targetRequestIds.filter((id) => id !== e.requestId);
-			e.requestHeaders.forEach(function (header) {
+			e.requestHeaders.forEach((header) => {
 				if (header.name.toLowerCase() === "user-agent") {
 					header.value = ua;
 				}

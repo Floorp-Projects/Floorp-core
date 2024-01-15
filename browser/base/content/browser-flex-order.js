@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-let gFlexOrder = {
+const gFlexOrder = {
 	_flexOrderInitialized: false,
 
 	init() {
@@ -26,27 +26,27 @@ let gFlexOrder = {
 	setFlexOrder() {
 		const fxSidebarPosition = "sidebar.position_start";
 		const floorpSidebarPosition = "floorp.browser.sidebar.right";
-		let fxSidebarPositionPref = Services.prefs.getBoolPref(fxSidebarPosition);
-		let floorpSidebarPositionPref = Services.prefs.getBoolPref(
+		const fxSidebarPositionPref = Services.prefs.getBoolPref(fxSidebarPosition);
+		const floorpSidebarPositionPref = Services.prefs.getBoolPref(
 			floorpSidebarPosition,
 		);
-		let verticaltabPositionPref = Services.prefs.getBoolPref(
+		const verticaltabPositionPref = Services.prefs.getBoolPref(
 			"floorp.browser.tabs.verticaltab.right",
 		);
 
-		let fxSidebar = document.getElementById("sidebar-box");
-		let fxSidebarSplitter = document.getElementById("sidebar-splitter");
+		const fxSidebar = document.getElementById("sidebar-box");
+		const fxSidebarSplitter = document.getElementById("sidebar-splitter");
 
-		let floorpSidebar = document.getElementById("sidebar2-box");
-		let floorpSidebarSplitter = document.getElementById("sidebar-splitter2");
-		let floorpSidebarSelectBox = document.getElementById("sidebar-select-box");
+		const floorpSidebar = document.getElementById("sidebar2-box");
+		const floorpSidebarSplitter = document.getElementById("sidebar-splitter2");
+		const floorpSidebarSelectBox = document.getElementById("sidebar-select-box");
 
-		let verticaltabbar = document.getElementById("TabsToolbar");
-		let verticaltabbarSplitter = document.getElementById(
+		const verticaltabbar = document.getElementById("TabsToolbar");
+		const verticaltabbarSplitter = document.getElementById(
 			"verticaltab-splitter",
 		);
 
-		let browserBox = document.getElementById("appcontent");
+		const browserBox = document.getElementById("appcontent");
 
 		// Set flex order to all elements
 		// floorpSidebarSelectBox has to always be the window's last child

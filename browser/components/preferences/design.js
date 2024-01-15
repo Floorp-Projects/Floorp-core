@@ -33,10 +33,10 @@ var gDesign = {
 				continue;
 			}
 			needreboot[i].setAttribute("rebootELIsSet", "true");
-			needreboot[i].addEventListener("click", function () {
+			needreboot[i].addEventListener("click", () => {
 				if (!Services.prefs.getBoolPref("floorp.enable.auto.restart", false)) {
 					(async () => {
-						let userConfirm = await confirmRestartPrompt(null);
+						const userConfirm = await confirmRestartPrompt(null);
 						if (userConfirm == CONFIRM_RESTART_PROMPT_RESTART_NOW) {
 							Services.startup.quit(
 								Ci.nsIAppStartup.eAttemptQuit | Ci.nsIAppStartup.eRestart,
@@ -44,7 +44,7 @@ var gDesign = {
 						}
 					})();
 				} else {
-					window.setTimeout(function () {
+					window.setTimeout(() => {
 						Services.startup.quit(
 							Services.startup.eAttemptQuit | Services.startup.eRestart,
 						);
@@ -56,11 +56,11 @@ var gDesign = {
 		this._pane = document.getElementById("paneDesign");
 		document
 			.getElementById("leptonButton")
-			.addEventListener("click", function () {
+			.addEventListener("click", () => {
 				window.location.href = "about:preferences#lepton";
 			});
 
-		let disableMultirowPref = () => {
+		const disableMultirowPref = () => {
 			let elems = document.getElementsByClassName("multiRowTabs");
 			for (let i = 0; i < elems.length; i++) {
 				elems[i].disabled =
@@ -76,20 +76,20 @@ var gDesign = {
 		Services.prefs.addObserver("floorp.tabbar.style", disableMultirowPref);
 
 		{
-			let prefName = "floorp.browser.tabbar.multirow.max.row";
-			let elem = document.getElementById("MultirowValue");
+			const prefName = "floorp.browser.tabbar.multirow.max.row";
+			const elem = document.getElementById("MultirowValue");
 			elem.value = Services.prefs.getIntPref(prefName, undefined);
-			elem.addEventListener("change", function () {
+			elem.addEventListener("change", () => {
 				Services.prefs.setIntPref(prefName, Number(elem.value));
 			});
-			Services.prefs.addObserver(prefName, function () {
+			Services.prefs.addObserver(prefName, () => {
 				elem.value = Services.prefs.getIntPref(prefName, undefined);
 			});
 		}
 
 		document
 			.getElementById("leptonButton")
-			.addEventListener("click", function () {
+			.addEventListener("click", () => {
 				window.location.href = "about:preferences#lepton";
 			});
 

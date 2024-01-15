@@ -2,7 +2,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-"use strict";
 
 /* global ExtensionAPI, ExtensionCommon, Services, XPCOMUtils */
 
@@ -19,16 +18,16 @@ this.floorpActions = class extends ExtensionAPI {
 					return ExtensionCommon.makeWidgetId(extensionId);
 				},
 				async openInSidebar(sidebarId) {
-					let window = await this._getCurrentWindow();
+					const window = await this._getCurrentWindow();
 					window.SidebarUI.show(sidebarId);
 					console.log(`Open: ${sidebarId}`);
 				},
 				async closeSidebar() {
-					let window = await this._getCurrentWindow();
+					const window = await this._getCurrentWindow();
 					window.SidebarUI.hide();
 				},
 				async openBrowserManagerSidebar() {
-					let window = await this._getCurrentWindow();
+					const window = await this._getCurrentWindow();
 					if (
 						window.document
 							.getElementById("sidebar-splitter2")
@@ -39,7 +38,7 @@ this.floorpActions = class extends ExtensionAPI {
 					}
 				},
 				async closeBrowserManagerSidebar() {
-					let window = await this._getCurrentWindow();
+					const window = await this._getCurrentWindow();
 					if (
 						window.document
 							.getElementById("sidebar-splitter2")
@@ -50,7 +49,7 @@ this.floorpActions = class extends ExtensionAPI {
 					}
 				},
 				async changeBrowserManagerSidebarVisibility() {
-					let window = await this._getCurrentWindow();
+					const window = await this._getCurrentWindow();
 					if (window.bmsController.nowPage != null) {
 						window.bmsController.controllFunctions.changeVisibleWenpanel();
 					}
@@ -62,7 +61,7 @@ this.floorpActions = class extends ExtensionAPI {
 					Services.prefs.setBoolPref("browser.display.statusbar", false);
 				},
 				async toggleStatusbar() {
-					let pref = Services.prefs.getBoolPref(
+					const pref = Services.prefs.getBoolPref(
 						"browser.display.statusbar",
 						false,
 					);

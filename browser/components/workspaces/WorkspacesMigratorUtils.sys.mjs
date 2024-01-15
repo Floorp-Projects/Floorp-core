@@ -24,9 +24,9 @@ function getIconNameByWorkspaceName(workspaceName) {
 	) {
 		return null;
 	}
-	let iconURL = settings[targetWorkspaceNumber][workspaceName].icon;
-	let removeSVG = iconURL.replace("chrome://browser/skin/workspace-icons/", "");
-	let result = removeSVG.replace(".svg", "");
+	const iconURL = settings[targetWorkspaceNumber][workspaceName].icon;
+	const removeSVG = iconURL.replace("chrome://browser/skin/workspace-icons/", "");
+	const result = removeSVG.replace(".svg", "");
 	return result;
 }
 
@@ -97,8 +97,8 @@ export const WorkspacesMigratorUtils = {
 	},
 
 	get LegacyWorkspacesAllNamesPref() {
-		let pref = Services.prefs.getStringPref("floorp.browser.workspace.all");
-		let result = pref.split(",");
+		const pref = Services.prefs.getStringPref("floorp.browser.workspace.all");
+		const result = pref.split(",");
 		return result;
 	},
 

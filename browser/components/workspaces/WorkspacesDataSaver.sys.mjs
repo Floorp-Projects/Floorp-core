@@ -16,14 +16,14 @@ export const WorkspacesDataSaver = {
 	},
 
 	async saveWorkspacesData(workspacesData, windowId) {
-		let json = await IOUtils.readJSON(this._workspacesStoreFile);
+		const json = await IOUtils.readJSON(this._workspacesStoreFile);
 		json.windows[windowId] = workspacesData;
 
 		await IOUtils.writeJSON(this._workspacesStoreFile, json);
 	},
 
 	async saveWorkspaceData(workspaceData, windowId) {
-		let json = await IOUtils.readJSON(this._workspacesStoreFile);
+		const json = await IOUtils.readJSON(this._workspacesStoreFile);
 		json.windows[windowId].workspaces[workspaceData.id] = workspaceData;
 
 		await IOUtils.writeJSON(this._workspacesStoreFile, json);
@@ -33,8 +33,8 @@ export const WorkspacesDataSaver = {
 		workspacesData,
 		windowId,
 	) {
-		let json = await IOUtils.readJSON(this._workspacesStoreFile);
-		let preferences = json.windows[windowId].preferences;
+		const json = await IOUtils.readJSON(this._workspacesStoreFile);
+		const preferences = json.windows[windowId].preferences;
 		json.windows[windowId] = workspacesData;
 		json.windows[windowId].preferences = preferences;
 
@@ -42,7 +42,7 @@ export const WorkspacesDataSaver = {
 	},
 
 	async saveWindowPreferences(preferences, windowId) {
-		let json = await IOUtils.readJSON(this._workspacesStoreFile);
+		const json = await IOUtils.readJSON(this._workspacesStoreFile);
 		json.windows[windowId].preferences = preferences;
 
 		await IOUtils.writeJSON(this._workspacesStoreFile, json);

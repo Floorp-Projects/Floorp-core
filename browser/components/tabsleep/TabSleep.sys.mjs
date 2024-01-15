@@ -56,13 +56,13 @@ const EXCLUDE_URL_PATTERNS = [
 
 const EXCLUDE_URL_PATTERNS_COMPILED = [];
 
-for (let EXCLUDE_URL_PATTERN of EXCLUDE_URL_PATTERNS) {
+for (const EXCLUDE_URL_PATTERN of EXCLUDE_URL_PATTERNS) {
 	EXCLUDE_URL_PATTERNS_COMPILED.push(new RegExp(EXCLUDE_URL_PATTERN));
 }
 
 function getAllTabs() {
 	let tabs = [];
-	for (let win of Services.wm.getEnumerator("navigator:browser")) {
+	for (const win of Services.wm.getEnumerator("navigator:browser")) {
 		if (win.gBrowser && win.gBrowser.tabs) {
 			tabs = tabs.concat(win.gBrowser.tabs);
 		}
@@ -75,7 +75,7 @@ function tabObserve(callback) {
 		callback(event);
 	}
 
-	let statusListener = {
+	const statusListener = {
 		onStateChange(browser, webProgress, request, stateFlags, statusCode) {
 			if (!webProgress.isTopLevel) {
 				return;
@@ -96,7 +96,7 @@ function tabObserve(callback) {
 			}
 
 			if (status) {
-				let nativeTab = browser.ownerGlobal.gBrowser.getTabForBrowser(browser);
+				const nativeTab = browser.ownerGlobal.gBrowser.getTabForBrowser(browser);
 				if (nativeTab) {
 					callback({
 						type: "TabStateChange",
@@ -109,7 +109,7 @@ function tabObserve(callback) {
 		onLocationChange(browser, webProgress, request, locationURI, flags) {
 			if (webProgress.isTopLevel) {
 				// let status = webProgress.isLoadingDocument ? "loading" : "complete";
-				let nativeTab = browser.ownerGlobal.gBrowser.getTabForBrowser(browser);
+				const nativeTab = browser.ownerGlobal.gBrowser.getTabForBrowser(browser);
 				if (nativeTab) {
 					callback({
 						type: "TabLocationChange",
@@ -121,7 +121,7 @@ function tabObserve(callback) {
 		},
 	}; // https://searchfox.org/mozilla-esr102/source/toolkit/components/extensions/parent/ext-tabs-base.js#1413-1448
 
-	for (let domwindow of Services.wm.getEnumerator("navigator:browser")) {
+	for (const domwindow of Services.wm.getEnumerator("navigator:browser")) {
 		domwindow.addEventListener("TabAttrModified", listener);
 		domwindow.addEventListener("TabPinned", listener);
 		domwindow.addEventListener("TabUnpinned", listener);
@@ -136,12 +136,12 @@ function tabObserve(callback) {
 		domwindow.gBrowser.addTabsProgressListener(statusListener);
 	}
 
-	let windowListener = {
+	const windowListener = {
 		onOpenWindow(aXulWin) {
-			let domwindow = aXulWin.docShell.domWindow;
+			const domwindow = aXulWin.docShell.domWindow;
 			domwindow.addEventListener(
 				"load",
-				function () {
+				() => {
 					if (
 						domwindow.location.href === "chrome://browser/content/browser.xhtml"
 					) {
@@ -170,7 +170,7 @@ function tabObserve(callback) {
 			);
 		},
 		onCloseWindow(aWindow) {
-			let domwindow = aWindow.docShell.domWindow;
+			const domwindow = aWindow.docShell.domWindow;
 			if (
 				domwindow.location.href === "chrome://browser/content/browser.xhtml"
 			) {
@@ -201,7 +201,7 @@ function tabObserve(callback) {
 	return {
 		disconnect() {
 			Services.wm.removeListener(windowListener);
-			for (let domwindow of Services.wm.getEnumerator("navigator:browser")) {
+			for (const domwindow of Services.wm.getEnumerator("navigator:browser")) {
 				domwindow.removeEventListener("TabAttrModified", listener);
 				domwindow.removeEventListener("TabPinned", listener);
 				domwindow.removeEventListener("TabUnpinned", listener);
@@ -232,15 +232,15 @@ function enableTabSleep() {
 	}
 	tabSleepEnabled = true;
 	let tabs = getAllTabs();
-	tabObserve_ = tabObserve(function (event) {
+	tabObserve_ = tabObserve((event) => {
 		if (isTestMode) {
 			console.log(`Tab Sleep: event type => ${event.type}`);
 		}
-		let nativeTab = event.target;
-		let currentTime = Date.now();
+		const nativeTab = event.target;
+		const currentTime = Date.now();
 		switch (event.type) {
 			case "TabAttrModified":
-				let changed = event.detail.changed;
+				const changed = event.detail.changed;
 				if (
 					changed.includes("muted") ||
 					changed.includes("soundplaying") ||
@@ -283,7 +283,7 @@ function enableTabSleep() {
 				nativeTab.lastActivity = currentTime;
 				break;
 			case "WindowOpen":
-				for (let nativeTab of event.targets) {
+				for (const nativeTab of event.targets) {
 					if (!tabs.includes(nativeTab)) {
 						tabs.push(nativeTab);
 					}
@@ -291,7 +291,7 @@ function enableTabSleep() {
 				}
 				break;
 			case "WindowClose":
-				for (let nativeTab of event.targets) {
+				for (const nativeTab of event.targets) {
 					tabs = tabs.filter((nativeTab_) => nativeTab_ !== nativeTab);
 				}
 				break;
@@ -301,13 +301,13 @@ function enableTabSleep() {
 		}
 	});
 
-	interval = setInterval(function () {
-		let currentTime = Date.now();
-		let excludeHosts = Services.prefs
+	interval = setInterval(() => {
+		const currentTime = Date.now();
+		const excludeHosts = Services.prefs
 			.getStringPref(TAB_SLEEP_EXCLUDE_HOSTS_PREF, "")
 			.split(",")
 			.map((host) => host.trim());
-		for (let nativeTab of tabs) {
+		for (const nativeTab of tabs) {
 			if (nativeTab.isTabSleepExcludeTab) {
 				continue;
 			}
@@ -346,7 +346,7 @@ function enableTabSleep() {
 			}
 
 			let target = true;
-			for (let EXCLUDE_URL_PATTERN_COMPILED of EXCLUDE_URL_PATTERNS_COMPILED) {
+			for (const EXCLUDE_URL_PATTERN_COMPILED of EXCLUDE_URL_PATTERNS_COMPILED) {
 				if (
 					EXCLUDE_URL_PATTERN_COMPILED.test(
 						nativeTab.linkedBrowser.documentURI.spec,
@@ -365,7 +365,7 @@ function enableTabSleep() {
 					currentTime - nativeTab.lastActivity >
 						TAB_TIMEOUT_MINUTES * 60 * 1000)
 			) {
-				let linkedPanel = nativeTab.linkedPanel;
+				const linkedPanel = nativeTab.linkedPanel;
 				nativeTab.ownerGlobal.gBrowser.discardBrowser(nativeTab);
 				if (isTestMode) {
 					console.log(
@@ -376,7 +376,7 @@ function enableTabSleep() {
 		}
 	}, 30 * 1000);
 
-	for (let window_ of Services.wm.getEnumerator("navigator:browser")) {
+	for (const window_ of Services.wm.getEnumerator("navigator:browser")) {
 		createTabContextElement(window_.document);
 	}
 }
@@ -392,27 +392,27 @@ function disableTabSleep() {
 		clearInterval(interval);
 		interval = null;
 	}
-	for (let window_ of Services.wm.getEnumerator("navigator:browser")) {
+	for (const window_ of Services.wm.getEnumerator("navigator:browser")) {
 		removeTabContextElement(window_.document);
 	}
 }
 
 async function createTabContextElement(document_) {
-	let tabContextMenu = document_.querySelector("#tabContextMenu");
-	let tabSleepExcludeTab = document_.createXULElement("menuitem");
+	const tabContextMenu = document_.querySelector("#tabContextMenu");
+	const tabSleepExcludeTab = document_.createXULElement("menuitem");
 	tabSleepExcludeTab.setAttribute("type", "checkbox");
 	tabSleepExcludeTab.setAttribute("checked", "false");
 	tabSleepExcludeTab.id = "context_tabSleepExcludeTab";
 	tabSleepExcludeTab.label = await L10N.formatValue(
 		"tab-sleep-tab-context-menu-excludetab",
 	);
-	tabSleepExcludeTab.addEventListener("command", function (e) {
-		let window_ = e.currentTarget.ownerGlobal;
+	tabSleepExcludeTab.addEventListener("command", (e) => {
+		const window_ = e.currentTarget.ownerGlobal;
 		window_.TabContextMenu.contextTab.isTabSleepExcludeTab =
 			!window_.TabContextMenu.contextTab.isTabSleepExcludeTab;
 	});
-	tabContextMenu.addEventListener("popupshowing", async function (e) {
-		let window_ = e.currentTarget.ownerGlobal;
+	tabContextMenu.addEventListener("popupshowing", async (e) => {
+		const window_ = e.currentTarget.ownerGlobal;
 		e.currentTarget
 			.querySelector("#context_tabSleepExcludeTab")
 			.setAttribute(
@@ -429,8 +429,8 @@ function removeTabContextElement(document_) {
 	document_.querySelector("#context_tabSleepExcludeTab")?.remove();
 }
 
-let seenDocuments = new WeakSet();
-let documentObserver = {
+const seenDocuments = new WeakSet();
+const documentObserver = {
 	observe(doc) {
 		if (
 			ExtensionCommon.instanceOf(doc, "HTMLDocument") &&
@@ -440,10 +440,10 @@ let documentObserver = {
 			if (!isEnabled) {
 				return;
 			}
-			let window_ = doc.defaultView;
-			let document_ = window_.document;
-			let uriObj = Services.io.newURI(window_.location.href);
-			let uriWithoutQueryRef = uriObj.prePath + uriObj.filePath;
+			const window_ = doc.defaultView;
+			const document_ = window_.document;
+			const uriObj = Services.io.newURI(window_.location.href);
+			const uriWithoutQueryRef = uriObj.prePath + uriObj.filePath;
 			if (uriWithoutQueryRef == "chrome://browser/content/browser.xhtml") {
 				createTabContextElement(document_);
 			}
@@ -459,18 +459,18 @@ Services.obs.addObserver(documentObserver, "chrome-document-interactive");
 		false,
 	);
 
-	let systemMemory = Services.sysinfo.getProperty("memsize");
-	let systemMemoryGB = systemMemory / 1024 / 1024 / 1024;
+	const systemMemory = Services.sysinfo.getProperty("memsize");
+	const systemMemoryGB = systemMemory / 1024 / 1024 / 1024;
 	if (isTestMode) {
 		console.log(`Tab Sleep: System Memory (GB) => ${systemMemoryGB}`);
 	}
 
-	let tabTimeoutMinutesDefault = Math.floor(systemMemoryGB * 5);
+	const tabTimeoutMinutesDefault = Math.floor(systemMemoryGB * 5);
 	Services.prefs
 		.getDefaultBranch(null)
 		.setIntPref(TAB_SLEEP_TAB_TIMEOUT_MINUTES_PREF, tabTimeoutMinutesDefault);
 
-	let timeoutMinutesPrefHandle = function () {
+	const timeoutMinutesPrefHandle = () => {
 		TAB_TIMEOUT_MINUTES = Services.prefs.getIntPref(
 			TAB_SLEEP_TAB_TIMEOUT_MINUTES_PREF,
 			tabTimeoutMinutesDefault,
@@ -489,7 +489,7 @@ Services.obs.addObserver(documentObserver, "chrome-document-interactive");
 		enableTabSleep();
 	}
 
-	Services.prefs.addObserver(TAB_SLEEP_ENABLED_PREF, function () {
+	Services.prefs.addObserver(TAB_SLEEP_ENABLED_PREF, () => {
 		isEnabled = Services.prefs.getBoolPref(TAB_SLEEP_ENABLED_PREF, false);
 		if (isEnabled) {
 			enableTabSleep();
@@ -498,7 +498,7 @@ Services.obs.addObserver(documentObserver, "chrome-document-interactive");
 		}
 	});
 
-	Services.prefs.addObserver(TAB_SLEEP_TESTMODE_ENABLED_PREF, function () {
+	Services.prefs.addObserver(TAB_SLEEP_TESTMODE_ENABLED_PREF, () => {
 		isTestMode = Services.prefs.getBoolPref(
 			TAB_SLEEP_TESTMODE_ENABLED_PREF,
 			false,

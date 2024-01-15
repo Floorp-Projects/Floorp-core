@@ -12,7 +12,7 @@ var { SiteSpecificBrowser } = ChromeUtils.importESModule(
 	"resource:///modules/SiteSpecificBrowserService.sys.mjs",
 );
 
-let gSsbSupport = {
+const gSsbSupport = {
 	_initialized: false,
 
 	get ssbWindowId() {
@@ -48,7 +48,7 @@ let gSsbSupport = {
 	},
 
 	async getSsbObj(id) {
-		let result = await SiteSpecificBrowser.load(id);
+		const result = await SiteSpecificBrowser.load(id);
 		return result;
 	},
 
@@ -72,7 +72,7 @@ let gSsbSupport = {
 	},
 
 	async init() {
-		let styleElement = document.createElement("style");
+		const styleElement = document.createElement("style");
 		styleElement.id = "ssb-support";
 		styleElement.textContent = `@import url("chrome://browser/content/browser-ssb-support.css");`;
 		document.head.appendChild(styleElement);

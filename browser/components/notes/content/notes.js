@@ -5,11 +5,11 @@
 
 /// <reference types="../../../../third_party/@types/showdown/index.d.ts" />
 
-document.addEventListener("DOMContentLoaded", async function () {
+document.addEventListener("DOMContentLoaded", async () => {
 	// const showdown = await import(
 	//   "chrome://floorp/content/third_party/showdown.js"
 	// );
-	let { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
+	const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 	const memoInput = document.getElementById("memo-input");
 	const memoSave = document.getElementById("memo-save");
 	const memoList = document.getElementById("memo-list");
@@ -114,9 +114,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 	// メモリストのアイテムをクリックしたときの処理
 	function memoListItemClick() {
-		let elements = document.getElementsByClassName("memo-list-item");
+		const elements = document.getElementsByClassName("memo-list-item");
 		for (let i = 0; i < elements.length; i++) {
-			elements[i].addEventListener("click", function () {
+			elements[i].addEventListener("click", () => {
 				memoInput.value = memos.contents[i];
 				memoTitleInput.value = memos.titles[i];
 				setNoteID(i);
@@ -126,8 +126,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 	}
 
 	//メモを削除する
-	deleteMemo.onclick = function () {
-		let openningNoteID = returnNoteID();
+	deleteMemo.onclick = () => {
+		const openningNoteID = returnNoteID();
 		memos.contents.splice(openningNoteID, 1);
 		memos.titles.splice(openningNoteID, 1);
 		Services.prefs.setStringPref(
@@ -142,9 +142,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 	};
 
 	// 新規メモ作成ボタンがクリックされたときの処理
-	createNewMemo.onclick = function () {
+	createNewMemo.onclick = () => {
 		memoInput.value = "";
-		let DefaultNewTitle = l10n.formatValueSync("memo-new-title");
+		const DefaultNewTitle = l10n.formatValueSync("memo-new-title");
 		if (memos.titles.includes(DefaultNewTitle)) {
 			let i = 1;
 			while (memos.titles.includes(DefaultNewTitle + ` (${i})`)) {
@@ -158,12 +158,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 	};
 
 	// メモの保存ボタンがクリックされたときの処理
-	memoSave.onclick = function () {
+	memoSave.onclick = () => {
 		saveNotes();
 	};
 
 	// メモのマークダウンプレビューボタンがクリックされたときの処理
-	memoMarkDownPreViewButton.onclick = function () {
+	memoMarkDownPreViewButton.onclick = () => {
 		if (HTMLPreview.style.display == "none") {
 			showMarkDownPreview();
 		} else {
@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 				"floorp.browser.note.memos",
 				JSON.stringify(memos),
 			);
-			let currentNoteID = memos.contents.length - 1;
+			const currentNoteID = memos.contents.length - 1;
 			setNoteID(currentNoteID);
 		} else {
 			memos.contents[openningNoteID] = memo;

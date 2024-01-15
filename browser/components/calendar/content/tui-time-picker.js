@@ -10,8 +10,7 @@
 	else if (typeof exports === "object") exports["TimePicker"] = factory();
 	else
 		(root["tui"] = root["tui"] || {}), (root["tui"]["TimePicker"] = factory());
-})(window, function () {
-	return /******/ (function (modules) {
+})(window, () => ((modules) => {
 		// webpackBootstrap
 		/******/ // The module cache
 		/******/ var installedModules = {};
@@ -56,7 +55,7 @@
 		/******/ __webpack_require__.c = installedModules;
 		/******/
 		/******/ // define getter function for harmony exports
-		/******/ __webpack_require__.d = function (exports, name, getter) {
+		/******/ __webpack_require__.d = (exports, name, getter) => {
 			/******/ if (!__webpack_require__.o(exports, name)) {
 				/******/ Object.defineProperty(exports, name, {
 					enumerable: true,
@@ -68,7 +67,7 @@
 		};
 		/******/
 		/******/ // define __esModule on exports
-		/******/ __webpack_require__.r = function (exports) {
+		/******/ __webpack_require__.r = (exports) => {
 			/******/ if (typeof Symbol !== "undefined" && Symbol.toStringTag) {
 				/******/ Object.defineProperty(exports, Symbol.toStringTag, {
 					value: "Module",
@@ -84,7 +83,7 @@
 		/******/ // mode & 2: merge all properties of value into the ns
 		/******/ // mode & 4: return value when already ns object
 		/******/ // mode & 8|1: behave like require
-		/******/ __webpack_require__.t = function (value, mode) {
+		/******/ __webpack_require__.t = (value, mode) => {
 			/******/ if (mode & 1) value = __webpack_require__(value);
 			/******/ if (mode & 8) return value;
 			/******/ if (
@@ -105,16 +104,14 @@
 					__webpack_require__.d(
 						ns,
 						key,
-						function (key) {
-							return value[key];
-						}.bind(null, key),
+						((key) => value[key]).bind(null, key),
 					);
 			/******/ return ns;
 			/******/
 		};
 		/******/
 		/******/ // getDefaultExport function for compatibility with non-harmony modules
-		/******/ __webpack_require__.n = function (module) {
+		/******/ __webpack_require__.n = (module) => {
 			/******/ var getter =
 				module && module.__esModule
 					? /******/ function getDefault() {
@@ -129,9 +126,7 @@
 		};
 		/******/
 		/******/ // Object.prototype.hasOwnProperty.call
-		/******/ __webpack_require__.o = function (object, property) {
-			return Object.prototype.hasOwnProperty.call(object, property);
-		};
+		/******/ __webpack_require__.o = (object, property) => Object.prototype.hasOwnProperty.call(object, property);
 		/******/
 		/******/ // __webpack_public_path__
 		/******/ __webpack_require__.p = "dist";
@@ -144,9 +139,8 @@
 		/************************************************************************/
 		/******/ [
 			/* 0 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/* eslint-disable complexity */
+			/***/ (module, exports, __webpack_require__) => {
+								/* eslint-disable complexity */
 				/**
 				 * @fileoverview Returns the first index at which a given element can be found in the array.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
@@ -207,9 +201,8 @@
 				/***/
 			},
 			/* 1 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Execute the provided callback once for each element present in the array(or Array-like object) in ascending order.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -254,9 +247,8 @@
 				/***/
 			},
 			/* 2 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Extend the target object from other objects.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -294,9 +286,8 @@
 				/***/
 			},
 			/* 3 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Check whether the given variable is an instance of Array or not.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -317,9 +308,8 @@
 				/***/
 			},
 			/* 4 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Execute the provided callback once for each property of object(or element of array) which actually exist.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -373,9 +363,8 @@
 				/***/
 			},
 			/* 5 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Check whether the given variable is undefined or not.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -396,9 +385,8 @@
 				/***/
 			},
 			/* 6 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Check whether the given variable is a string or not.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -419,9 +407,8 @@
 				/***/
 			},
 			/* 7 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Convert text by binding expressions with context.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -458,14 +445,12 @@
 				 * @param {RegExp} regexp - regular expression
 				 * @returns {Array.<string>}
 				 */
-				var splitByRegExp = (function () {
+				var splitByRegExp = (() => {
 					if (isValidSplit) {
-						return function (text, regexp) {
-							return text.split(regexp);
-						};
+						return (text, regexp) => text.split(regexp);
 					}
 
-					return function (text, regexp) {
+					return (text, regexp) => {
 						var result = [];
 						var prevIndex = 0;
 						var match, index;
@@ -537,7 +522,7 @@
 					var start = 0;
 
 					// eslint-disable-next-line complexity
-					forEach(sourcesInsideBlock, function (source, index) {
+					forEach(sourcesInsideBlock, (source, index) => {
 						if (source.indexOf("if") === 0) {
 							otherIfCount += 1;
 						} else if (source === "/if") {
@@ -575,7 +560,7 @@
 					var result = false;
 					var compiledSource = "";
 
-					forEach(analyzed.exps, function (exp, index) {
+					forEach(analyzed.exps, (exp, index) => {
 						result = handleExpression(exp, context);
 						if (result) {
 							compiledSource = compile(
@@ -604,7 +589,7 @@
 					var additionalContext = {};
 					var result = "";
 
-					forEach(collection, function (item, key) {
+					forEach(collection, (item, key) => {
 						additionalContext[additionalKey] = key;
 						additionalContext["@this"] = item;
 						extend(context, additionalContext);
@@ -727,7 +712,7 @@
 				 */
 				function executeFunction(helper, argExps, context) {
 					var args = [];
-					forEach(argExps, function (exp) {
+					forEach(argExps, (exp) => {
 						args.push(getValueFromContext(exp, context));
 					});
 
@@ -832,9 +817,8 @@
 				/***/
 			},
 			/* 8 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview This module provides some functions for custom events. And it is implemented in the observer design pattern.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -885,7 +869,7 @@
 				 * model.fire('change');
 				 * alert(model.name); // 'model';
 				 */
-				CustomEvents.mixin = function (func) {
+				CustomEvents.mixin = (func) => {
 					extend(func.prototype, CustomEvents.prototype);
 				};
 
@@ -896,7 +880,7 @@
 				 * @returns {HandlerItem} HandlerItem object
 				 * @private
 				 */
-				CustomEvents.prototype._getHandlerItem = function (handler, context) {
+				CustomEvents.prototype._getHandlerItem = (handler, context) => {
 					var item = { handler: handler };
 
 					if (context) {
@@ -1063,20 +1047,19 @@
 				 *     'play': handler
 				 * }, myObj);
 				 */
-				CustomEvents.prototype.on = function (eventName, handler, context) {
-					var self = this;
+				CustomEvents.prototype.on = function (eventName, handler, context) {;
 
 					if (isString(eventName)) {
 						// [syntax 1, 2]
 						eventName = eventName.split(R_EVENTNAME_SPLIT);
-						forEach(eventName, function (name) {
-							self._bindEvent(name, handler, context);
+						forEach(eventName, (name) => {
+							this._bindEvent(name, handler, context);
 						});
 					} else if (isObject(eventName)) {
 						// [syntax 3, 4]
 						context = handler;
-						forEach(eventName, function (func, name) {
-							self.on(name, func, context);
+						forEach(eventName, (func, name) => {
+							this.on(name, func, context);
 						});
 					}
 				};
@@ -1093,7 +1076,7 @@
 
 					if (isObject(eventName)) {
 						context = handler;
-						forEach(eventName, function (func, name) {
+						forEach(eventName, (func, name) => {
 							self.once(name, func, context);
 						});
 
@@ -1115,7 +1098,7 @@
 				 * @param {function} predicate - function return boolean
 				 * @private
 				 */
-				CustomEvents.prototype._spliceMatches = function (arr, predicate) {
+				CustomEvents.prototype._spliceMatches = (arr, predicate) => {
 					var i = 0;
 					var len;
 
@@ -1138,14 +1121,13 @@
 				 * @returns {function} handler matcher
 				 * @private
 				 */
-				CustomEvents.prototype._matchHandler = function (handler) {
-					var self = this;
+				CustomEvents.prototype._matchHandler = function (handler) {;
 
-					return function (item) {
+					return (item) => {
 						var needRemove = handler === item.handler;
 
 						if (needRemove) {
-							self._forgetContext(item.context);
+							this._forgetContext(item.context);
 						}
 
 						return needRemove;
@@ -1158,14 +1140,13 @@
 				 * @returns {function} object matcher
 				 * @private
 				 */
-				CustomEvents.prototype._matchContext = function (context) {
-					var self = this;
+				CustomEvents.prototype._matchContext = function (context) {;
 
-					return function (item) {
+					return (item) => {
 						var needRemove = context === item.context;
 
 						if (needRemove) {
-							self._forgetContext(item.context);
+							this._forgetContext(item.context);
 						}
 
 						return needRemove;
@@ -1182,16 +1163,15 @@
 				CustomEvents.prototype._matchHandlerAndContext = function (
 					handler,
 					context,
-				) {
-					var self = this;
+				) {;
 
-					return function (item) {
+					return (item) => {
 						var matchHandler = handler === item.handler;
 						var matchContext = context === item.context;
 						var needRemove = matchHandler && matchContext;
 
 						if (needRemove) {
-							self._forgetContext(item.context);
+							this._forgetContext(item.context);
 						}
 
 						return needRemove;
@@ -1204,24 +1184,23 @@
 				 * @param {function} [handler] - handler function
 				 * @private
 				 */
-				CustomEvents.prototype._offByEventName = function (eventName, handler) {
-					var self = this;
+				CustomEvents.prototype._offByEventName = function (eventName, handler) {;
 					var andByHandler = isFunction(handler);
-					var matchHandler = self._matchHandler(handler);
+					var matchHandler = this._matchHandler(handler);
 
 					eventName = eventName.split(R_EVENTNAME_SPLIT);
 
-					forEach(eventName, function (name) {
-						var handlerItems = self._safeEvent(name);
+					forEach(eventName, (name) => {
+						var handlerItems = this._safeEvent(name);
 
 						if (andByHandler) {
-							self._spliceMatches(handlerItems, matchHandler);
+							this._spliceMatches(handlerItems, matchHandler);
 						} else {
-							forEach(handlerItems, function (item) {
-								self._forgetContext(item.context);
+							forEach(handlerItems, (item) => {
+								this._forgetContext(item.context);
 							});
 
-							self.events[name] = [];
+							this.events[name] = [];
 						}
 					});
 				};
@@ -1231,12 +1210,11 @@
 				 * @param {function} handler - handler function
 				 * @private
 				 */
-				CustomEvents.prototype._offByHandler = function (handler) {
-					var self = this;
+				CustomEvents.prototype._offByHandler = function (handler) {;
 					var matchHandler = this._matchHandler(handler);
 
-					forEach(this._safeEvent(), function (handlerItems) {
-						self._spliceMatches(handlerItems, matchHandler);
+					forEach(this._safeEvent(), (handlerItems) => {
+						this._spliceMatches(handlerItems, matchHandler);
 					});
 				};
 
@@ -1246,29 +1224,28 @@
 				 * @param {function} handler - handler function
 				 * @private
 				 */
-				CustomEvents.prototype._offByObject = function (obj, handler) {
-					var self = this;
+				CustomEvents.prototype._offByObject = function (obj, handler) {;
 					var matchFunc;
 
 					if (this._indexOfContext(obj) < 0) {
-						forEach(obj, function (func, name) {
-							self.off(name, func);
+						forEach(obj, (func, name) => {
+							this.off(name, func);
 						});
 					} else if (isString(handler)) {
 						matchFunc = this._matchContext(obj);
 
-						self._spliceMatches(this._safeEvent(handler), matchFunc);
+						this._spliceMatches(this._safeEvent(handler), matchFunc);
 					} else if (isFunction(handler)) {
 						matchFunc = this._matchHandlerAndContext(handler, obj);
 
-						forEach(this._safeEvent(), function (handlerItems) {
-							self._spliceMatches(handlerItems, matchFunc);
+						forEach(this._safeEvent(), (handlerItems) => {
+							this._spliceMatches(handlerItems, matchFunc);
 						});
 					} else {
 						matchFunc = this._matchContext(obj);
 
-						forEach(this._safeEvent(), function (handlerItems) {
-							self._spliceMatches(handlerItems, matchFunc);
+						forEach(this._safeEvent(), (handlerItems) => {
+							this._spliceMatches(handlerItems, matchFunc);
 						});
 					}
 				};
@@ -1414,9 +1391,8 @@
 				/***/
 			},
 			/* 9 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview
 				 * This module provides a function to make a constructor
 				 * that can inherit from the other constructors like the CLASS easily.
@@ -1478,7 +1454,7 @@
 						parent = null;
 					}
 
-					obj = props.init || function () {};
+					obj = props.init || (() => {});
 
 					if (parent) {
 						inherit(obj, parent);
@@ -1499,9 +1475,8 @@
 				/***/
 			},
 			/* 10 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Bind DOM events
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -1545,14 +1520,14 @@
 				 */
 				function on(element, types, handler, context) {
 					if (isString(types)) {
-						forEach(types.split(/\s+/g), function (type) {
+						forEach(types.split(/\s+/g), (type) => {
 							bindEvent(element, type, handler, context);
 						});
 
 						return;
 					}
 
-					forEach(types, function (func, type) {
+					forEach(types, (func, type) => {
 						bindEvent(element, type, func, handler);
 					});
 				}
@@ -1594,7 +1569,7 @@
 					var events = safeEvent(element, type);
 					var existInEvents = false;
 
-					forEach(events, function (obj) {
+					forEach(events, (obj) => {
 						if (obj.handler === handler) {
 							existInEvents = true;
 
@@ -1617,9 +1592,8 @@
 				/***/
 			},
 			/* 11 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Unbind DOM events
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -1658,14 +1632,14 @@
 				 */
 				function off(element, types, handler) {
 					if (isString(types)) {
-						forEach(types.split(/\s+/g), function (type) {
+						forEach(types.split(/\s+/g), (type) => {
 							unbindEvent(element, type, handler);
 						});
 
 						return;
 					}
 
-					forEach(types, function (func, type) {
+					forEach(types, (func, type) => {
 						unbindEvent(element, type, func);
 					});
 				}
@@ -1683,12 +1657,12 @@
 					var index;
 
 					if (!handler) {
-						forEach(events, function (item) {
+						forEach(events, (item) => {
 							removeHandler(element, type, item.wrappedHandler);
 						});
 						events.splice(0, events.length);
 					} else {
-						forEach(events, function (item, idx) {
+						forEach(events, (item, idx) => {
 							if (handler === item.handler) {
 								removeHandler(element, type, item.wrappedHandler);
 								index = idx;
@@ -1722,9 +1696,8 @@
 				/***/
 			},
 			/* 12 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Find parent element recursively
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -1761,9 +1734,8 @@
 				/***/
 			},
 			/* 13 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Remove element from parent node.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -1784,9 +1756,8 @@
 				/***/
 			},
 			/* 14 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Check whether the given variable is a instance of HTMLNode or not.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -1811,9 +1782,8 @@
 				/***/
 			},
 			/* 15 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-
+			/***/ (module, exports, __webpack_require__) => {
+				
 				var inArray = __webpack_require__(0);
 				var forEachArray = __webpack_require__(1);
 				var sendHostname = __webpack_require__(35);
@@ -1830,7 +1800,7 @@
 					 * Returns unique id
 					 * @returns {number}
 					 */
-					getUniqueId: function () {
+					getUniqueId: () => {
 						uniqueId += 1;
 
 						return uniqueId;
@@ -1842,7 +1812,7 @@
 					 * @param {string} format - ex) hh, h, mm, m
 					 * @returns {string}
 					 */
-					formatTime: function (value, format) {
+					formatTime: (value, format) => {
 						var PADDING_ZERO_TYPES = ["hh", "mm"];
 						value = String(value);
 
@@ -1857,7 +1827,7 @@
 					 * @param {number} hour - Original hour
 					 * @returns {number} Converted meridiem hour
 					 */
-					getMeridiemHour: function (hour) {
+					getMeridiemHour: (hour) => {
 						hour %= 12;
 
 						if (hour === 0) {
@@ -1874,7 +1844,7 @@
 					 * @param {number} [step] - Step value
 					 * @returns {Array}
 					 */
-					getRangeArr: function (start, end, step) {
+					getRangeArr: (start, end, step) => {
 						var arr = [];
 						var i;
 
@@ -1901,7 +1871,7 @@
 					 * @param {Array} [target] - Array to fill
 					 * @returns {Array}
 					 */
-					fill: function (start, end, value, target) {
+					fill: (start, end, value, target) => {
 						var arr = target || [];
 						var replaceEnd = Math.min(arr.length - 1, end);
 						var i;
@@ -1923,15 +1893,13 @@
 					 * @returns {HTMLElement} An event target element
 					 */
 
-					getTarget: function (ev) {
-						return ev.target || ev.srcElement;
-					},
+					getTarget: (ev) => ev.target || ev.srcElement,
 
 					/**
 					 * send host name
 					 * @ignore
 					 */
-					sendHostName: function () {
+					sendHostName: () => {
 						sendHostname("time-picker", "UA-129987462-1");
 					},
 
@@ -1966,7 +1934,7 @@
 					 * @param {HTMLInputElement} el target element
 					 * @param {boolean} isDisabled target element
 					 */
-					setDisabled: function (el, isDisabled) {
+					setDisabled: (el, isDisabled) => {
 						el.disabled = isDisabled;
 					},
 				};
@@ -1976,9 +1944,8 @@
 				/***/
 			},
 			/* 16 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Execute the provided callback once for each property of object which actually exist.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -2023,9 +1990,8 @@
 				/***/
 			},
 			/* 17 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Get event collection for specific HTML element
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -2060,9 +2026,8 @@
 				/***/
 			},
 			/* 18 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Get HTML element's design classes.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -2092,9 +2057,8 @@
 				/***/
 			},
 			/* 19 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Set className value
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -2127,9 +2091,8 @@
 				/***/
 			},
 			/* 20 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-
+			/***/ (module, exports, __webpack_require__) => {
+				
 				__webpack_require__(21);
 
 				module.exports = __webpack_require__(22);
@@ -2137,14 +2100,13 @@
 				/***/
 			},
 			/* 21 */
-			/***/ function (module, exports, __webpack_require__) {
+			/***/ (module, exports, __webpack_require__) => {
 				// extracted by mini-css-extract-plugin
 				/***/
 			},
 			/* 22 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-
+			/***/ (module, exports, __webpack_require__) => {
+				
 				var inArray = __webpack_require__(0);
 				var forEachArray = __webpack_require__(1);
 				var CustomEvents = __webpack_require__(8);
@@ -2186,8 +2148,7 @@
 				 * @param {object} options - options
 				 * @returns {object} Merged options
 				 */
-				var mergeDefaultOptions = function (options) {
-					return extend(
+				var mergeDefaultOptions = (options) => extend(
 						{
 							language: "en",
 							initialHour: 0,
@@ -2204,7 +2165,6 @@
 						},
 						options,
 					);
-				};
 
 				/**
 				 * @class
@@ -2556,7 +2516,7 @@
 								disabledHours = this.meridiemableTime(disabledHours);
 							}
 
-							forEachArray(hourItems, function (hour) {
+							forEachArray(hourItems, (hour) => {
 								result.push(inArray(hour, disabledHours) >= 0);
 							});
 
@@ -2575,7 +2535,7 @@
 								endHour = 23;
 							}
 
-							forEachArray(disabledHours, function (hour) {
+							forEachArray(disabledHours, (hour) => {
 								if (hour >= startHour && hour <= endHour) {
 									result.push(hour - diffHour === 0 ? 12 : hour - diffHour);
 								}
@@ -2590,7 +2550,7 @@
 						 * @returns {string}
 						 * @private
 						 */
-						getValidTimeFormat: function (format) {
+						getValidTimeFormat: (format) => {
 							if (!format.match(/^[h]{1,2}:[m]{1,2}$/i)) {
 								return "h:m";
 							}
@@ -2671,7 +2631,7 @@
 						 * @returns {number}
 						 * @private
 						 */
-						to24Hour: function (isPM, hour) {
+						to24Hour: (isPM, hour) => {
 							hour %= 12;
 							if (isPM) {
 								hour += 12;
@@ -2955,9 +2915,7 @@
 									diffFromSelectableMinute =
 										this.disabledMinutes[targetHour]
 											.slice(targetMinuteIndex)
-											.findIndex(function (isMinuteDisabled) {
-												return !isMinuteDisabled;
-											}) * this.minuteStep;
+											.findIndex((isMinuteDisabled) => !isMinuteDisabled) * this.minuteStep;
 
 									targetMinute =
 										diffFromSelectableMinute >= 0
@@ -3046,14 +3004,12 @@
 						 * @returns {boolean} result of time validation
 						 * @private
 						 */
-						isValidTime: function (hour, minute) {
-							return (
+						isValidTime: (hour, minute) => (
 								hour >= START_NUMBER_OF_TIME &&
 								hour <= END_NUMBER_OF_HOUR &&
 								minute >= START_NUMBER_OF_TIME &&
 								minute <= END_NUMBER_OF_MINUTE
-							);
-						},
+							),
 
 						/**
 						 * Compare given time with set time
@@ -3083,7 +3039,7 @@
 						 * @returns {boolean} result of range validation
 						 * @private
 						 */
-						compareTimes: function (begin, end) {
+						compareTimes: (begin, end) => {
 							var first = new Date(0);
 							var second = new Date(0);
 
@@ -3148,9 +3104,8 @@
 				/***/
 			},
 			/* 23 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Check whether the given variable is existing or not.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -3183,9 +3138,8 @@
 				/***/
 			},
 			/* 24 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Check whether the given variable is null or not.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -3206,9 +3160,8 @@
 				/***/
 			},
 			/* 25 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Check whether the given variable is an object or not.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -3229,9 +3182,8 @@
 				/***/
 			},
 			/* 26 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Check whether the given variable is a function or not.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -3252,9 +3204,8 @@
 				/***/
 			},
 			/* 27 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Provide a simple inheritance in prototype-oriented.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -3305,9 +3256,8 @@
 				/***/
 			},
 			/* 28 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Create a new object with the specified prototype object and properties.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -3334,9 +3284,8 @@
 				/***/
 			},
 			/* 29 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Add css class to element
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -3364,7 +3313,7 @@
 					var origin;
 
 					if (classList) {
-						forEach(cssClass, function (name) {
+						forEach(cssClass, (name) => {
 							element.classList.add(name);
 						});
 
@@ -3377,7 +3326,7 @@
 						cssClass = [].concat(origin.split(/\s+/), cssClass);
 					}
 
-					forEach(cssClass, function (cls) {
+					forEach(cssClass, (cls) => {
 						if (inArray(cls, newClass) < 0) {
 							newClass.push(cls);
 						}
@@ -3391,9 +3340,8 @@
 				/***/
 			},
 			/* 30 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Check element match selector
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -3429,9 +3377,8 @@
 				/***/
 			},
 			/* 31 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Transform the Array-like object to Array.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -3465,7 +3412,7 @@
 						arr = Array.prototype.slice.call(arrayLike);
 					} catch (e) {
 						arr = [];
-						forEachArray(arrayLike, function (value) {
+						forEachArray(arrayLike, (value) => {
 							arr.push(value);
 						});
 					}
@@ -3478,9 +3425,8 @@
 				/***/
 			},
 			/* 32 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Remove css class from element
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -3502,7 +3448,7 @@
 					var origin, newClass;
 
 					if (classList) {
-						forEachArray(cssClass, function (name) {
+						forEachArray(cssClass, (name) => {
 							classList.remove(name);
 						});
 
@@ -3511,7 +3457,7 @@
 
 					origin = getClass(element).split(/\s+/);
 					newClass = [];
-					forEachArray(origin, function (name) {
+					forEachArray(origin, (name) => {
 						if (inArray(name, cssClass) < 0) {
 							newClass.push(name);
 						}
@@ -3525,9 +3471,8 @@
 				/***/
 			},
 			/* 33 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Check whether the given variable is a number or not.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -3548,9 +3493,8 @@
 				/***/
 			},
 			/* 34 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-
+			/***/ (module, exports, __webpack_require__) => {
+				
 				var inArray = __webpack_require__(0);
 				var forEachArray = __webpack_require__(1);
 				var CustomEvents = __webpack_require__(8);
@@ -3681,7 +3625,7 @@
 						_getMaxLength: function () {
 							var lengths = [];
 
-							forEachArray(this._items, function (item) {
+							forEachArray(this._items, (item) => {
 								lengths.push(String(item).length);
 							});
 
@@ -3879,9 +3823,8 @@
 				/***/
 			},
 			/* 35 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Send hostname on DOMContentLoaded.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -3937,7 +3880,7 @@
 						new Date().getTime(),
 					);
 
-					setTimeout(function () {
+					setTimeout(() => {
 						if (
 							document.readyState === "interactive" ||
 							document.readyState === "complete"
@@ -3961,9 +3904,8 @@
 				/***/
 			},
 			/* 36 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Request image ping.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -3995,7 +3937,7 @@
 				function imagePing(url, trackingInfo) {
 					var trackingElement = document.createElement("img");
 					var queryString = "";
-					forEachOwnProperties(trackingInfo, function (value, key) {
+					forEachOwnProperties(trackingInfo, (value, key) => {
 						queryString += "&" + key + "=" + value;
 					});
 					queryString = queryString.substring(1);
@@ -4014,12 +3956,11 @@
 				/***/
 			},
 			/* 37 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-
+			/***/ (module, exports, __webpack_require__) => {
+				
 				var template = __webpack_require__(7);
 
-				module.exports = function (context) {
+				module.exports = (context) => {
 					var source =
 						'<div class="tui-timepicker-btn-area">' +
 						'  <input type="text" class="tui-timepicker-spinbox-input"' +
@@ -4041,9 +3982,8 @@
 				/***/
 			},
 			/* 38 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-
+			/***/ (module, exports, __webpack_require__) => {
+				
 				var inArray = __webpack_require__(0);
 				var CustomEvents = __webpack_require__(8);
 				var defineClass = __webpack_require__(9);
@@ -4140,9 +4080,7 @@
 								initialValue: this.getValue(),
 								disabledItems: this._disabledItems,
 								formatTime: util.formatTime,
-								equals: function (a, b) {
-									return a === b;
-								},
+								equals: (a, b) => a === b,
 							};
 
 							if (this._element) {
@@ -4277,12 +4215,11 @@
 				/***/
 			},
 			/* 39 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-
+			/***/ (module, exports, __webpack_require__) => {
+				
 				var template = __webpack_require__(7);
 
-				module.exports = function (context) {
+				module.exports = (context) => {
 					var source =
 						'<select class="tui-timepicker-select" aria-label="Time">' +
 						"  {{each items}}" +
@@ -4300,9 +4237,8 @@
 				/***/
 			},
 			/* 40 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-
+			/***/ (module, exports, __webpack_require__) => {
+				
 				module.exports = {
 					en: {
 						am: "AM",
@@ -4317,12 +4253,11 @@
 				/***/
 			},
 			/* 41 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-
+			/***/ (module, exports, __webpack_require__) => {
+				
 				var template = __webpack_require__(7);
 
-				module.exports = function (context) {
+				module.exports = (context) => {
 					var source =
 						'<div class="tui-timepicker">' +
 						'  <div class="tui-timepicker-body">' +
@@ -4352,12 +4287,11 @@
 				/***/
 			},
 			/* 42 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-
+			/***/ (module, exports, __webpack_require__) => {
+				
 				var template = __webpack_require__(7);
 
-				module.exports = function (context) {
+				module.exports = (context) => {
 					var source =
 						"{{if isSpinbox}}" +
 						'  <div class="tui-timepicker-column tui-timepicker-checkbox tui-timepicker-meridiem">' +
@@ -4406,5 +4340,4 @@
 			},
 			/******/
 		],
-	);
-});
+	));

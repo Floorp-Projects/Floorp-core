@@ -7,7 +7,7 @@
 // This script adds a button & menu to customize toolbar mode.
 // Remove addons button from toolbar toggle button.
 
-let gFloorpCustomizeMode = {
+const gFloorpCustomizeMode = {
 	addElemToCustomizeModeArea(elem, enabled, targetId, type, retry) {
 		if (retry > 3) {
 			throw new Error(
@@ -22,7 +22,7 @@ let gFloorpCustomizeMode = {
 
 		// This code is maybe failed if user doesn"t open customize mode. So we need to retry.
 		try {
-			let button = document.getElementById(targetId);
+			const button = document.getElementById(targetId);
 			if (!button) {
 				throw new Error(
 					`targetElem is not found. targetId: ${targetId}, type: ${type}`,
@@ -40,9 +40,9 @@ let gFloorpCustomizeMode = {
 					break;
 			}
 		} catch (e) {
-			let customizationContainer = document.getElementById("nav-bar");
-			let observer = new MutationObserver(function (mutations) {
-				mutations.forEach(function (mutation) {
+			const customizationContainer = document.getElementById("nav-bar");
+			const observer = new MutationObserver((mutations) => {
+				mutations.forEach((mutation) => {
 					if (mutation.target.getAttribute("customizing") == "true") {
 						gFloorpCustomizeMode.addElemToCustomizeModeArea(
 							elem,
@@ -56,7 +56,7 @@ let gFloorpCustomizeMode = {
 				});
 			});
 
-			let config = { attributes: true };
+			const config = { attributes: true };
 			observer.observe(customizationContainer, config);
 		}
 	},
@@ -67,11 +67,11 @@ let gFloorpCustomizeMode = {
 };
 
 (function addToggleVisibleUnifiedExtensionButton() {
-	let elem = window.MozXULElement.parseXULToFragment(`
+	const elem = window.MozXULElement.parseXULToFragment(`
      <checkbox id="customization-visibility-unified-extensions-button-checkbox" class="customizationmode-checkbox"
                oncommand="gFloorpCustomizeMode.toggleUnifiedExtensionsButton(!this.checked)" data-l10n-id="floorp-customize-mode-unified-extensions-button"
     />`);
-	let enabled = !Services.prefs.getBoolPref(
+	const enabled = !Services.prefs.getBoolPref(
 		"floorp.hide.unifiedExtensionsButtton",
 		false,
 	);

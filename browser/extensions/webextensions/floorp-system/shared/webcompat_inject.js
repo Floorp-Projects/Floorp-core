@@ -26,13 +26,13 @@
 
 	let REGISTED_CONTENT_SCRIPTS = [];
 
-	let regist_webcompat_contentScripts = async function () {
-		let platform = (await browser.runtime.getPlatformInfo()).os;
-		for (let WEBCOMPAT_INJECT of WEBCOMPATS_INJECT) {
+	const regist_webcompat_contentScripts = async () => {
+		const platform = (await browser.runtime.getPlatformInfo()).os;
+		for (const WEBCOMPAT_INJECT of WEBCOMPATS_INJECT) {
 			if (WEBCOMPAT_INJECT.platforms.includes(platform)) {
-				let WEBCOMPAT_INJECT_cloned = Object.assign({}, WEBCOMPAT_INJECT);
+				const WEBCOMPAT_INJECT_cloned = Object.assign({}, WEBCOMPAT_INJECT);
 				delete WEBCOMPAT_INJECT_cloned.platforms;
-				let registeredContentScript = await browser.contentScripts.register(
+				const registeredContentScript = await browser.contentScripts.register(
 					WEBCOMPAT_INJECT_cloned,
 				);
 				REGISTED_CONTENT_SCRIPTS.push(registeredContentScript);
@@ -40,8 +40,8 @@
 		}
 	};
 
-	let unregist_webcompat_contentScripts = async function () {
-		for (let REGISTED_CONTENT_SCRIPT of REGISTED_CONTENT_SCRIPTS) {
+	const unregist_webcompat_contentScripts = async () => {
+		for (const REGISTED_CONTENT_SCRIPT of REGISTED_CONTENT_SCRIPTS) {
 			REGISTED_CONTENT_SCRIPT.unregister();
 		}
 		REGISTED_CONTENT_SCRIPTS = [];
@@ -53,7 +53,7 @@
 		) {
 			await regist_webcompat_contentScripts();
 		}
-		browser.aboutConfigPrefs.onPrefChange.addListener(async function () {
+		browser.aboutConfigPrefs.onPrefChange.addListener(async () => {
 			if (
 				await browser.aboutConfigPrefs.getBoolPref(
 					FLOORP_WEBCOMPAT_ENABLED_PREF,

@@ -21,9 +21,9 @@ if (AppConstants.platform == "win") {
 	});
 }
 
-export let SiteSpecificBrowserIdUtils = {
+export const SiteSpecificBrowserIdUtils = {
 	async runSsbById(id) {
-		let ssb = await lazy.SiteSpecificBrowser.load(id);
+		const ssb = await lazy.SiteSpecificBrowser.load(id);
 		if (!ssb) {
 			return;
 		}
@@ -32,7 +32,7 @@ export let SiteSpecificBrowserIdUtils = {
 	},
 
 	async runSsbByUrlAndId(url, id) {
-		let ssb = await lazy.SiteSpecificBrowser.load(id);
+		const ssb = await lazy.SiteSpecificBrowser.load(id);
 		if (!ssb) {
 			return;
 		}
@@ -42,7 +42,7 @@ export let SiteSpecificBrowserIdUtils = {
 	},
 
 	async getIconBySSBId(id, size) {
-		let ssb = await lazy.SiteSpecificBrowser.load(id);
+		const ssb = await lazy.SiteSpecificBrowser.load(id);
 
 		if (!ssb._iconSizes) {
 			ssb._iconSizes = buildIconList(ssb.manifest.icons);
@@ -63,7 +63,7 @@ export let SiteSpecificBrowserIdUtils = {
 	},
 
 	async uninstallById(id) {
-		let ssb = await lazy.SiteSpecificBrowser.load(id);
+		const ssb = await lazy.SiteSpecificBrowser.load(id);
 
 		if (AppConstants.platform == "win") {
 			await lazy.WindowsSupport.uninstall(ssb);
@@ -83,18 +83,18 @@ export let SiteSpecificBrowserIdUtils = {
 		const { SiteSpecificBrowserExternalFileService } = ChromeUtils.import(
 			"resource:///modules/SiteSpecificBrowserExternalFileService.jsm",
 		);
-		let ssbData =
+		const ssbData =
 			await SiteSpecificBrowserExternalFileService.getCurrentSsbData();
 
 		// check start with url
-		for (let key in ssbData) {
+		for (const key in ssbData) {
 			if (key == uri) {
 				return ssbData[key];
 			}
 		}
 
 		// Search for host
-		for (let key in ssbData) {
+		for (const key in ssbData) {
 			if (uri.startsWith(key)) {
 				return ssbData[key];
 			}
@@ -106,18 +106,18 @@ export let SiteSpecificBrowserIdUtils = {
 
 function createSsbWidow(ssb) {
 	if (ssb) {
-		let browserWindowFeatures =
+		const browserWindowFeatures =
 			"chrome,location=yes,centerscreen,dialog=no,resizable=yes,scrollbars=yes";
 		//"chrome,location=yes,centerscreen,dialog=no,resizable=yes,scrollbars=yes";
 
-		let args = Cc["@mozilla.org/supports-string;1"].createInstance(
+		const args = Cc["@mozilla.org/supports-string;1"].createInstance(
 			Ci.nsISupportsString,
 		);
 
 		// URL
 		args.data = `${ssb.startURI},${ssb.id},?FloorpEnableSSBWindow=true`;
 
-		let win = Services.ww.openWindow(
+		const win = Services.ww.openWindow(
 			null,
 			AppConstants.BROWSER_CHROME_URL,
 			"_blank",
@@ -132,11 +132,11 @@ function createSsbWidow(ssb) {
 }
 
 function buildIconList(icons) {
-	let iconList = [];
+	const iconList = [];
 
-	for (let icon of icons) {
-		for (let sizeSpec of icon.sizes) {
-			let size =
+	for (const icon of icons) {
+		for (const sizeSpec of icon.sizes) {
+			const size =
 				sizeSpec == "any" ? Number.MAX_SAFE_INTEGER : parseInt(sizeSpec);
 
 			iconList.push({

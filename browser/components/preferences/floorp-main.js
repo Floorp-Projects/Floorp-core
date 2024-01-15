@@ -27,7 +27,7 @@ Preferences.addAll([
 
 window.addEventListener(
 	"pageshow",
-	async function () {
+	async () => {
 		await gMainPane.initialized;
 		const needreboot = document.getElementsByClassName("needreboot");
 		for (let i = 0; i < needreboot.length; i++) {
@@ -35,10 +35,10 @@ window.addEventListener(
 				continue;
 			}
 			needreboot[i].setAttribute("rebootELIsSet", "true");
-			needreboot[i].addEventListener("click", function () {
+			needreboot[i].addEventListener("click", () => {
 				if (!Services.prefs.getBoolPref("floorp.enable.auto.restart", false)) {
 					(async () => {
-						let userConfirm = await confirmRestartPrompt(null);
+						const userConfirm = await confirmRestartPrompt(null);
 						if (userConfirm == CONFIRM_RESTART_PROMPT_RESTART_NOW) {
 							Services.startup.quit(
 								Ci.nsIAppStartup.eAttemptQuit | Ci.nsIAppStartup.eRestart,
@@ -46,7 +46,7 @@ window.addEventListener(
 						}
 					})();
 				} else {
-					window.setTimeout(function () {
+					window.setTimeout(() => {
 						Services.startup.quit(
 							Services.startup.eAttemptQuit | Services.startup.eRestart,
 						);
@@ -56,13 +56,13 @@ window.addEventListener(
 		}
 
 		{
-			let prefName = "browser.tabs.tabMinWidth";
-			let elem = document.getElementById("tabWidthValue");
+			const prefName = "browser.tabs.tabMinWidth";
+			const elem = document.getElementById("tabWidthValue");
 			elem.value = Services.prefs.getIntPref(prefName, undefined);
-			elem.addEventListener("change", function () {
+			elem.addEventListener("change", () => {
 				Services.prefs.setIntPref(prefName, Number(elem.value));
 			});
-			Services.prefs.addObserver(prefName, function () {
+			Services.prefs.addObserver(prefName, () => {
 				elem.value = Services.prefs.getIntPref(prefName, undefined);
 			});
 		}
@@ -77,40 +77,40 @@ window.addEventListener(
 			}
 
 			setOverrideUA();
-			let prefName = "floorp.general.useragent.override";
-			let elem = document.getElementById("customUsergent");
+			const prefName = "floorp.general.useragent.override";
+			const elem = document.getElementById("customUsergent");
 			elem.value = Services.prefs.getStringPref(prefName, undefined);
 
-			elem.addEventListener("change", function () {
+			elem.addEventListener("change", () => {
 				Services.prefs.setStringPref(prefName, elem.value);
 				Services.prefs.setStringPref(
 					"general.useragent.override",
 					Services.prefs.getCharPref("floorp.general.useragent.override"),
 				);
 			});
-			Services.prefs.addObserver(prefName, function () {
+			Services.prefs.addObserver(prefName, () => {
 				elem.value = Services.prefs.getStringPref(prefName, undefined);
 			});
 		}
-		document.getElementById("floorpUAs").addEventListener("click", function () {
+		document.getElementById("floorpUAs").addEventListener("click", () => {
 			setOverrideUA();
 		});
 
 		document
 			.getElementById("backUpNotesOption")
-			.addEventListener("click", function () {
+			.addEventListener("click", () => {
 				window.location.href = "about:preferences#notes";
 			});
 
 		document
 			.getElementById("userjsOptionsButton")
-			.addEventListener("click", function () {
+			.addEventListener("click", () => {
 				window.location.href = "about:preferences#userjs";
 			});
 
 		document
 			.getElementById("TabSleepSettings")
-			.addEventListener("click", function () {
+			.addEventListener("click", () => {
 				gSubDialog.open(
 					"chrome://browser/content/preferences/dialogs/tabsleep.xhtml",
 					undefined,
@@ -127,14 +127,14 @@ window.addEventListener(
 		addonStatus("{506e023c-7f2b-40a3-8066-bc5deb40aebe}", "aboutMouseGesture");
 		addonStatus("{036a55b4-5e72-4d05-a06c-cba2dfcc134a}", "TWS-box");
 
-		Services.prefs.addObserver("toolkit.tabbox.switchByScrolling", function () {
-			let isEnabled = Services.prefs.getBoolPref(
+		Services.prefs.addObserver("toolkit.tabbox.switchByScrolling", () => {
+			const isEnabled = Services.prefs.getBoolPref(
 				"toolkit.tabbox.switchByScrolling",
 			);
-			let tabscrollReverse = document.querySelector(
+			const tabscrollReverse = document.querySelector(
 				'[preference="floorp.tabscroll.reverse"]',
 			);
-			let tabscrollWrap = document.querySelector(
+			const tabscrollWrap = document.querySelector(
 				'[preference="floorp.tabscroll.wrap"]',
 			);
 			if (isEnabled) {
@@ -162,9 +162,9 @@ window.addEventListener(
 			const prefNameNightly = `${basePrefName}.nightly`;
 			const prefNameVersion = `${basePrefName}.${appVersion}`;
 			const prefName = isNightlyPref ? prefNameNightly : prefNameVersion;
-			let elem = document.getElementById("disableExtensionCheckCompatibility");
+			const elem = document.getElementById("disableExtensionCheckCompatibility");
 			elem.checked = !Services.prefs.getBoolPref(prefName, true);
-			elem.addEventListener("command", function () {
+			elem.addEventListener("command", () => {
 				Services.prefs.setBoolPref(prefNameNightly, !elem.checked);
 				for (let minor = 0; minor <= 15; minor++) {
 					Services.prefs.setBoolPref(
@@ -173,7 +173,7 @@ window.addEventListener(
 					);
 				}
 			});
-			Services.prefs.addObserver(prefName, function () {
+			Services.prefs.addObserver(prefName, () => {
 				elem.checked = !Services.prefs.getBoolPref(prefName, true);
 			});
 		}
@@ -188,14 +188,14 @@ window.addEventListener(
 		}
 
 		// Version Injections
-		let versionElem = document.getElementById("updateAppInfo");
-		let versionElemL10nArgs = JSON.parse(
+		const versionElem = document.getElementById("updateAppInfo");
+		const versionElemL10nArgs = JSON.parse(
 			versionElem.getAttribute("data-l10n-args"),
 		);
-		let floorpVersion = versionElemL10nArgs.version;
-		let firefoxInsideVersion = Services.appinfo.version;
+		const floorpVersion = versionElemL10nArgs.version;
+		const firefoxInsideVersion = Services.appinfo.version;
 
-		let injectedObj = {
+		const injectedObj = {
 			version: `${floorpVersion} | Firefox: ${firefoxInsideVersion}`,
 		};
 
@@ -207,7 +207,7 @@ window.addEventListener(
 // Optimize for portable version
 if (Services.prefs.getBoolPref("floorp.isPortable", false)) {
 	// https://searchfox.org/mozilla-esr102/source/browser/components/preferences/main.js#1306-1311
-	getShellService = function () {};
+	getShellService = () => {};
 
 	const portableCSSElem = document.createElement("style");
 	portableCSSElem.id = "portableCSS";

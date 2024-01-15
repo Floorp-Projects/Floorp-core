@@ -7,7 +7,7 @@ export const EXPORTED_SYMBOLS = [];
 
 import { ActorManagerParent } from "resource://gre/modules/ActorManagerParent.sys.mjs";
 
-export let JSWINDOWACTORS = {
+export const JSWINDOWACTORS = {
 	AboutCalendar: {
 		parent: {
 			esModuleURI: "resource:///actors/AboutCalendarParent.sys.mjs",

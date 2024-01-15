@@ -21,7 +21,7 @@ const win = Services.wm.getMostRecentWindow("navigator:browser");
 
 async function onLoad() {
 	// set Title
-	let winElem = document.documentElement;
+	const winElem = document.documentElement;
 	document.l10n.setAttributes(winElem, "workspace-customize");
 
 	// Workspace Menu Items
@@ -30,7 +30,7 @@ async function onLoad() {
 	const workspaceSelect = document.getElementById("workspacesPopup");
 	const workspaceNameLabel = document.getElementById("workspaceName");
 
-	for (let key in workspaces) {
+	for (const key in workspaces) {
 		const element = window.MozXULElement.parseXULToFragment(`
         <menuitem value="${workspaces[key].id}"></menuitem>
       `);
@@ -45,7 +45,7 @@ async function onLoad() {
 	const iconSelect = document.getElementById("workspacesIconSelectPopup");
 	const iconNameLabel = document.getElementById("iconName");
 
-	for (let icon of workspaceIcons) {
+	for (const icon of workspaceIcons) {
 		const element = window.MozXULElement.parseXULToFragment(`
         <menuitem data-l10n-id="workspace-icon-${icon}" value="${icon}"
                   style="list-style-image: url(chrome://browser/skin/workspace-icons/${icon}.svg);"
@@ -68,13 +68,13 @@ async function onLoad() {
 	containerSelect.appendChild(noContainer);
 	containerNameLabel.value = "0";
 
-	for (let container of currentContainers) {
+	for (const container of currentContainers) {
 		const element = window.MozXULElement.parseXULToFragment(`
         <menuitem label="${container.name}" value="${container.userContextId}"></menuitem>
       `);
 
 		if (container.l10nID) {
-			let labelName = ContextualIdentityService.getUserContextLabel(
+			const labelName = ContextualIdentityService.getUserContextLabel(
 				container.userContextId,
 			);
 			element.firstElementChild.setAttribute("label", labelName);

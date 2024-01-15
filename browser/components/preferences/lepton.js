@@ -69,7 +69,7 @@ var gLeptonPane = {
 
 		document
 			.getElementById("backtogeneral")
-			.addEventListener("command", function () {
+			.addEventListener("command", () => {
 				gotoPref("design");
 			});
 		document
@@ -81,7 +81,7 @@ var gLeptonPane = {
 		document
 			.getElementById("protonfix-design-mode")
 			.addEventListener("click", setProtonFixUI, false);
-		let targets = document.getElementsByClassName("photonCheckbox");
+		const targets = document.getElementsByClassName("photonCheckbox");
 		for (let i = 0; i < targets.length; i++) {
 			targets[i].addEventListener(
 				"click",

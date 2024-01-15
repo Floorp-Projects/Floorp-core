@@ -3,7 +3,7 @@ const window_ = window.wrappedJSObject.window;
 const browser_ = window.wrappedJSObject.browser;
 
 if (browser_.runtime.id == "{506e023c-7f2b-40a3-8066-bc5deb40aebe}") {
-	let gesturefyController = {
+	const gesturefyController = {
 		commandsId: [
 			"open-bookmarks-sidebar",
 			"open-history-sidebar",
@@ -19,9 +19,9 @@ if (browser_.runtime.id == "{506e023c-7f2b-40a3-8066-bc5deb40aebe}") {
 		],
 		commandSettings: {
 			"open-extension-sidebar": {
-				UI: function () {
+				UI: () => {
 					let extensionList = "";
-					let valueJSON = JSON.parse(
+					const valueJSON = JSON.parse(
 						document
 							.querySelector("#gesturePopupCommandSelect")
 							.getAttribute("value") ?? `{"settings":{"extensionId":""}}`,
@@ -44,7 +44,7 @@ if (browser_.runtime.id == "{506e023c-7f2b-40a3-8066-bc5deb40aebe}") {
 					} else {
 						isInSidebar = true;
 					}
-					for (let elem of gesturefyController.extensionsInSidebar) {
+					for (const elem of gesturefyController.extensionsInSidebar) {
 						if (selectedExtension == elem.id) {
 							isInSidebar = true;
 							extensionList += `<option value="${elem.id}" selected>${elem.title}</option>`;
@@ -67,7 +67,7 @@ if (browser_.runtime.id == "{506e023c-7f2b-40a3-8066-bc5deb40aebe}") {
       </div>
         `;
 				},
-				submit: function () {
+				submit: () => {
 					gesturefyController.closeCommandPanel("open-extension-sidebar", {
 						extensionId: gesturefyController.commandList.querySelector(
 							"#open-extension-sidebar-extension",
@@ -76,7 +76,7 @@ if (browser_.runtime.id == "{506e023c-7f2b-40a3-8066-bc5deb40aebe}") {
 				},
 			},
 		},
-		makeSettingPage: function (id) {
+		makeSettingPage: (id) => {
 			const templateFragment = gesturefyController.settingHeader();
 			const settingsHeading =
 				templateFragment.getElementById("settingsHeading");
@@ -87,7 +87,7 @@ if (browser_.runtime.id == "{506e023c-7f2b-40a3-8066-bc5deb40aebe}") {
 				"settingsScrollContainer",
 			);
 			// eslint-disable-next-line no-unsanitized/method
-			let settingContentPage = document.createRange().createContextualFragment(`
+			const settingContentPage = document.createRange().createContextualFragment(`
       <form id="settingsForm">
       <div class="cb-setting">
         <span class="cb-setting-name">${
@@ -128,7 +128,7 @@ if (browser_.runtime.id == "{506e023c-7f2b-40a3-8066-bc5deb40aebe}") {
 		thereIsNotOverlay: true,
 		thereIsSetting: false,
 		extensionsInSidebar: null,
-		slideBack: function () {
+		slideBack: () => {
 			const commandsMain =
 				gesturefyController.commandList.getElementById("commandsMain");
 			document.querySelector("#gesturePopupCommandSelect")._scrollPosition =
@@ -175,7 +175,7 @@ if (browser_.runtime.id == "{506e023c-7f2b-40a3-8066-bc5deb40aebe}") {
 			currentPanel.classList.add("cb-slide-right");
 			newPanel.classList.remove("cb-slide-left");
 		},
-		settingHeader: function () {
+		settingHeader: () => {
 			const templateFragment = document.createRange().createContextualFragment(`
       <div id="settingsPanel" class="cb-panel">
         <div class="cb-head">
@@ -196,33 +196,33 @@ if (browser_.runtime.id == "{506e023c-7f2b-40a3-8066-bc5deb40aebe}") {
 			return templateFragment;
 		},
 		createCommandListItem(id) {
-			let returnItem = document.createElement("li");
+			const returnItem = document.createElement("li");
 			returnItem.id = "gf-floorp-" + id;
 			returnItem.classList.add("cb-command-item");
 			returnItem.onclick = this.clickCommandList;
 			returnItem.onmouseleave = this.commandMouseLeave;
 			returnItem.onmouseenter = this.commandMouseEnter;
 
-			let nameElemBase = document.createElement("div");
+			const nameElemBase = document.createElement("div");
 			nameElemBase.classList.add("cb-command-container");
 
-			let nameElem = document.createElement("span");
+			const nameElem = document.createElement("span");
 			nameElem.textContent = this.l10n["gf-floorp-" + id + "-name"];
 			nameElem.classList.add("cb-command-name");
 			nameElemBase.appendChild(nameElem);
 
 			if (id in this.commandSettings) {
-				let settingElem = document.createElement("span");
+				const settingElem = document.createElement("span");
 				settingElem.classList.add("cb-command-settings-icon");
 				nameElemBase.appendChild(settingElem);
 			}
 
 			returnItem.appendChild(nameElemBase);
 
-			let descriptionElemBase = document.createElement("div");
+			const descriptionElemBase = document.createElement("div");
 			descriptionElemBase.classList.add("cb-command-info");
 
-			let descriptionElem = document.createElement("span");
+			const descriptionElem = document.createElement("span");
 			descriptionElem.textContent =
 				this.l10n["gf-floorp-" + id + "-description"];
 			descriptionElem.classList.add("cb-command-description");
@@ -498,7 +498,7 @@ if (browser_.runtime.id == "{506e023c-7f2b-40a3-8066-bc5deb40aebe}") {
 			}
 		},
 		observerCommandSelectFunction() {
-			let valueJSON = JSON.parse(
+			const valueJSON = JSON.parse(
 				document
 					.querySelector("#gesturePopupCommandSelect")
 					.getAttribute("value") ?? `{"settings":{"extensionId":""}}`,
@@ -508,14 +508,14 @@ if (browser_.runtime.id == "{506e023c-7f2b-40a3-8066-bc5deb40aebe}") {
 					null &&
 				this.commandList.querySelector("#FloorpCommands") == null
 			) {
-				let baseElem = this.commandList.querySelector(
+				const baseElem = this.commandList.querySelector(
 					`#commandsScrollContainer`,
 				);
 
-				let rootUl = document.createElement("ul");
+				const rootUl = document.createElement("ul");
 				rootUl.id = "FloorpCommands";
 				rootUl.classList.add("cb-command-group");
-				for (let elem of this.commandsId) {
+				for (const elem of this.commandsId) {
 					rootUl.appendChild(this.createCommandListItem(elem));
 				}
 				baseElem.appendChild(rootUl);
@@ -601,11 +601,11 @@ if (browser_.runtime.id == "{506e023c-7f2b-40a3-8066-bc5deb40aebe}") {
 			console.log(i);
 		}
 
-		let l10nArr = await browser.runtime.sendMessage({
+		const l10nArr = await browser.runtime.sendMessage({
 			data: gesturefyController.l10nArg,
 			type: "l10n",
 		});
-		let l10nTexts = {};
+		const l10nTexts = {};
 		for (let i = 0; i < l10nArr.length; i++) {
 			l10nTexts[gesturefyController.l10nArg.text[i]] = l10nArr[i];
 		}

@@ -443,10 +443,10 @@ export const keyCodesList = {
 export const keyboradShortcutFunctions = {
 	preferencesFunctions: {
 		addKeyForShortcutAction(actionName, key, keyCode, modifiers) {
-			let keysState = JSON.parse(
+			const keysState = JSON.parse(
 				Services.prefs.getStringPref(SHORTCUT_KEY_AND_ACTION_PREF),
 			);
-			let keyState = {
+			const keyState = {
 				actionName,
 				key: key ? key : "",
 				keyCode: keyCode ? keyCode : "",
@@ -472,10 +472,10 @@ export const keyboradShortcutFunctions = {
 		},
 
 		removeKeyboradShortcutByAllNames(actionName, key, keyCode, modifiers) {
-			let keysState = JSON.parse(
+			const keysState = JSON.parse(
 				Services.prefs.getStringPref(SHORTCUT_KEY_AND_ACTION_PREF),
 			);
-			let newKeysState = keysState.filter((keyState) => {
+			const newKeysState = keysState.filter((keyState) => {
 				return !(
 					keyState.actionName === actionName &&
 					keyState.key === key &&
@@ -489,10 +489,10 @@ export const keyboradShortcutFunctions = {
 			);
 		},
 		removeKeyboradShortcutByActionName(actionName) {
-			let keysState = JSON.parse(
+			const keysState = JSON.parse(
 				Services.prefs.getStringPref(SHORTCUT_KEY_AND_ACTION_PREF),
 			);
-			let newKeysState = keysState.filter((keyState) => {
+			const newKeysState = keysState.filter((keyState) => {
 				return !(keyState.actionName === actionName);
 			});
 			Services.prefs.setStringPref(
@@ -504,8 +504,8 @@ export const keyboradShortcutFunctions = {
 
 	getInfoFunctions: {
 		getAllActionType() {
-			let result = [];
-			for (let actionName in keyboradShortcutActions) {
+			const result = [];
+			for (const actionName in keyboradShortcutActions) {
 				if (!result.includes(keyboradShortcutActions[actionName][2])) {
 					result.push(keyboradShortcutActions[actionName][2]);
 				}
@@ -518,8 +518,8 @@ export const keyboradShortcutFunctions = {
 		},
 
 		getkeyboradShortcutActionsByType(type) {
-			let result = [];
-			for (let actionName in keyboradShortcutActions) {
+			const result = [];
+			for (const actionName in keyboradShortcutActions) {
 				if (keyboradShortcutActions[actionName][2] === type) {
 					result.push(actionName);
 				}
@@ -528,16 +528,16 @@ export const keyboradShortcutFunctions = {
 		},
 
 		getkeyboradShortcutActions() {
-			let result = [];
-			for (let actionName in keyboradShortcutActions) {
+			const result = [];
+			for (const actionName in keyboradShortcutActions) {
 				result.push(actionName);
 			}
 			return result;
 		},
 
 		getAllActionLocalizations() {
-			let result = [];
-			for (let actionName in keyboradShortcutActions) {
+			const result = [];
+			for (const actionName in keyboradShortcutActions) {
 				result.push(
 					keyboradShortcutFunctions.getInfoFunctions.getFluentLocalization(
 						actionName,
@@ -548,10 +548,10 @@ export const keyboradShortcutFunctions = {
 		},
 
 		getKeyForShortcutAction(actionName) {
-			let keysState = JSON.parse(
+			const keysState = JSON.parse(
 				Services.prefs.getStringPref(SHORTCUT_KEY_AND_ACTION_PREF),
 			);
-			let exsitKey = keysState.find(
+			const exsitKey = keysState.find(
 				(keyState) => keyState.actionName === actionName,
 			);
 			if (exsitKey) {
@@ -561,27 +561,27 @@ export const keyboradShortcutFunctions = {
 		},
 
 		getAllExsitKeys() {
-			let keysState = JSON.parse(
+			const keysState = JSON.parse(
 				Services.prefs.getStringPref(SHORTCUT_KEY_AND_ACTION_PREF),
 			);
 			return keysState;
 		},
 
 		getAllExsitActionsName() {
-			let result = [];
-			let configs =
+			const result = [];
+			const configs =
 				keyboradShortcutFunctions.getInfoFunctions.getAllExsitKeys();
-			for (let config of configs) {
+			for (const config of configs) {
 				result.push(config.actionName);
 			}
 			return result;
 		},
 
 		actionIsExsit(actionName) {
-			let keysState = JSON.parse(
+			const keysState = JSON.parse(
 				Services.prefs.getStringPref(SHORTCUT_KEY_AND_ACTION_PREF),
 			);
-			let exsitKey = keysState.find(
+			const exsitKey = keysState.find(
 				(keyState) => keyState.actionName === actionName,
 			);
 			if (exsitKey) {
@@ -591,10 +591,10 @@ export const keyboradShortcutFunctions = {
 		},
 
 		getActionKey(actionName) {
-			let keysState = JSON.parse(
+			const keysState = JSON.parse(
 				Services.prefs.getStringPref(SHORTCUT_KEY_AND_ACTION_PREF),
 			);
-			let exsitKey = keysState.find(
+			const exsitKey = keysState.find(
 				(keyState) => keyState.actionName === actionName,
 			);
 			if (exsitKey) {
@@ -612,11 +612,11 @@ export const keyboradShortcutFunctions = {
 		},
 
 		getActionNameByKey(key, keyCode, modifiers) {
-			let keysState = JSON.parse(
+			const keysState = JSON.parse(
 				Services.prefs.getStringPref(SHORTCUT_KEY_AND_ACTION_PREF),
 			);
-			let result = [];
-			for (let keyState of keysState) {
+			const result = [];
+			for (const keyState of keysState) {
 				if (
 					keyState.key === key &&
 					keyState.keyCode === keyCode &&
@@ -631,8 +631,8 @@ export const keyboradShortcutFunctions = {
 
 	modifiersListFunctions: {
 		getModifiersList() {
-			let result = [];
-			for (let modifier in modifiersList) {
+			const result = [];
+			for (const modifier in modifiersList) {
 				result.push(modifier);
 			}
 			return result;
@@ -640,15 +640,15 @@ export const keyboradShortcutFunctions = {
 
 		// Not recommended to use
 		getKeyIsModifier(key, keyCode) {
-			let modifiersList =
+			const modifiersList =
 				keyboradShortcutFunctions.modifiersListFunctions.getModifiersList();
 			return modifiersList.includes(key) || modifiersList.includes(keyCode);
 		},
 
 		// Not recommended to use
 		conversionToXULModifiers(modifiers) {
-			let result = [];
-			for (let modifier of modifiers) {
+			const result = [];
+			for (const modifier of modifiers) {
 				result.push(modifiersList[modifier][1]);
 			}
 			return result;
@@ -657,8 +657,8 @@ export const keyboradShortcutFunctions = {
 
 	keyCodesListFunctions: {
 		getKeyCodesList() {
-			let result = [];
-			for (let keyCode in keyCodesList) {
+			const result = [];
+			for (const keyCode in keyCodesList) {
 				result.push(keyCode);
 			}
 			return result;

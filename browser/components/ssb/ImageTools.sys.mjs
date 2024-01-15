@@ -37,7 +37,7 @@ export const ImageTools = {
 				return;
 			}
 
-			let channel = lazy.NetUtil.newChannel({
+			const channel = lazy.NetUtil.newChannel({
 				uri: dataURI,
 				loadUsingSystemPrincipal: true,
 			});
@@ -62,7 +62,7 @@ export const ImageTools = {
 
 	scaleImage(container, width, height) {
 		return new Promise((resolve, reject) => {
-			let stream = lazy.ImgTools.encodeScaledImage(
+			const stream = lazy.ImgTools.encodeScaledImage(
 				container,
 				"image/png",
 				width,
@@ -81,17 +81,17 @@ export const ImageTools = {
 				);
 			}
 
-			let binaryStream = Cc["@mozilla.org/binaryinputstream;1"].createInstance(
+			const binaryStream = Cc["@mozilla.org/binaryinputstream;1"].createInstance(
 				Ci.nsIBinaryInputStream,
 			);
 			binaryStream.setInputStream(stream);
 
-			let buffers = [];
-			let callback = () => {
+			const buffers = [];
+			const callback = () => {
 				try {
-					let available = binaryStream.available();
+					const available = binaryStream.available();
 					if (available) {
-						let buffer = new ArrayBuffer(available);
+						const buffer = new ArrayBuffer(available);
 						binaryStream.readArrayBuffer(available, buffer);
 						buffers.push(buffer);
 
@@ -116,8 +116,8 @@ export const ImageTools = {
 
 	saveIcon(container, width, height, target) {
 		return new Promise((resolve, reject) => {
-			let output = lazy.FileUtils.openFileOutputStream(target);
-			let stream = lazy.ImgTools.encodeScaledImage(
+			const output = lazy.FileUtils.openFileOutputStream(target);
+			const stream = lazy.ImgTools.encodeScaledImage(
 				container,
 				"image/vnd.microsoft.icon",
 				width,

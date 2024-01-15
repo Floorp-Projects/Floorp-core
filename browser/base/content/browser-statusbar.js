@@ -46,7 +46,7 @@ CustomizableUI.registerToolbarNode(document.getElementById("statusBar"));
 document.body.appendChild(document.getElementById("statusBar"));
 
 //menuitem for status bar
-let contextMenu = document.createXULElement("menuitem");
+const contextMenu = document.createXULElement("menuitem");
 contextMenu.setAttribute("data-l10n-id", "status-bar");
 contextMenu.setAttribute("type", "checkbox");
 contextMenu.id = "toggle_statusBar";
@@ -59,14 +59,14 @@ document.getElementById("toolbarItemsMenuSeparator").after(contextMenu);
 
 //observe menuitem
 function changeStatusbarVisibility() {
-	let checked =
+	const checked =
 		document.getElementById("toggle_statusBar").getAttribute("checked") ==
 		"true";
 	Services.prefs.setBoolPref("browser.display.statusbar", checked);
 }
 
 function showStatusbar() {
-	let statuspanel_label = document.getElementById("statuspanel-label");
+	const statuspanel_label = document.getElementById("statuspanel-label");
 	document.getElementById("statusBarCSS")?.remove();
 	document.getElementById("status-text").style.overflow = "hidden";
 	document.getElementById("status-text").appendChild(statuspanel_label);
@@ -74,8 +74,8 @@ function showStatusbar() {
 }
 
 function hideStatusbar() {
-	let statuspanel_label = document.getElementById("statuspanel-label");
-	let Tag = document.createElement("style");
+	const statuspanel_label = document.getElementById("statuspanel-label");
+	const Tag = document.createElement("style");
 	Tag.setAttribute("id", "statusBarCSS");
 	Tag.innerText = hideedStatusBar;
 	document

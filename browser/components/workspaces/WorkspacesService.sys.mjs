@@ -40,9 +40,9 @@ export const WorkspacesService = {
 	},
 
 	async createWorkspace(name, windowId, defaultWorkspace) {
-		let workspacesData =
+		const workspacesData =
 			await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
-		let workspaceId = generateUuid();
+		const workspaceId = generateUuid();
 
 		workspacesData[workspaceId] = {
 			name,
@@ -55,21 +55,21 @@ export const WorkspacesService = {
 	},
 
 	async deleteWorkspace(workspaceId, windowId) {
-		let workspacesData =
+		const workspacesData =
 			await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
 		delete workspacesData[workspaceId];
 		await lazy.WorkspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
 	},
 
 	async renameWorkspace(workspaceId, newName, windowId) {
-		let workspacesData =
+		const workspacesData =
 			await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
 		workspacesData[workspaceId].name = newName;
 		await lazy.WorkspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
 	},
 
 	async setDefaultWorkspace(workspaceId, windowId) {
-		let workspacesData =
+		const workspacesData =
 			await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
 		workspacesData.preferences = {
 			defaultWorkspace: workspaceId,
@@ -78,7 +78,7 @@ export const WorkspacesService = {
 	},
 
 	async setSelectWorkspace(workspaceId, windowId) {
-		let workspacesData =
+		const workspacesData =
 			await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
 
 		if (!workspacesData.preferences) {
@@ -96,7 +96,7 @@ export const WorkspacesService = {
 		icon,
 		windowId,
 	) {
-		let workspacesData =
+		const workspacesData =
 			await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
 		workspacesData[workspaceId].userContextId = userContextId;
 		workspacesData[workspaceId].icon = icon;
@@ -104,7 +104,7 @@ export const WorkspacesService = {
 	},
 
 	async setWorkspaceIcon(workspaceId, icon, windowId) {
-		let workspacesData =
+		const workspacesData =
 			await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
 		workspacesData[workspaceId].icon = icon;
 		await lazy.WorkspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
@@ -115,7 +115,7 @@ export const WorkspacesService = {
 		userContextId,
 		windowId,
 	) {
-		let workspacesData =
+		const workspacesData =
 			await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
 		workspacesData[workspaceId].userContextId = userContextId;
 		await lazy.WorkspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
@@ -124,11 +124,11 @@ export const WorkspacesService = {
 
 export const WorkspacesGroupService = {
 	reorderingWorkspacesGroupBefore(workspaceId, beforeWorkspaceId, windowId) {
-		let workspacesData =
+		const workspacesData =
 			lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
-		let workspaceIds = Object.keys(workspacesData);
-		let index = workspaceIds.indexOf(workspaceId);
-		let beforeIndex = workspaceIds.indexOf(beforeWorkspaceId);
+		const workspaceIds = Object.keys(workspacesData);
+		const index = workspaceIds.indexOf(workspaceId);
+		const beforeIndex = workspaceIds.indexOf(beforeWorkspaceId);
 		workspaceIds.splice(index, 1);
 		workspaceIds.splice(beforeIndex, 0, workspaceId);
 		workspacesData[workspaceId].tabs = workspaceIds;

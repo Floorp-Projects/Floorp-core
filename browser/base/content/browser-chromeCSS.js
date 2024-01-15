@@ -43,9 +43,9 @@ var { AppConstants } = ChromeUtils.import(
 // プロファイルフォルダのパス
 const PROFILE_DIR = Services.dirsvc.get("ProfD", Ci.nsIFile).path;
 
-(function () {
+(() => {
 	// 起動時に他の窓がある（２窓目の）場合は抜ける
-	let list = Services.wm.getEnumerator("navigator:browser");
+	const list = Services.wm.getEnumerator("navigator:browser");
 	while (list.hasMoreElements()) {
 		if (list.getNext() != window) {
 			return;
@@ -64,7 +64,7 @@ const PROFILE_DIR = Services.dirsvc.get("ProfD", Ci.nsIFile).path;
 		readCSS: {},
 
 		getCSSFolder() {
-			let result = PathUtils.join(
+			const result = PathUtils.join(
 				Services.prefs.getStringPref("UserCSSLoader.FOLDER", "") ||
 					PathUtils.join(
 						Services.dirsvc.get("ProfD", Ci.nsIFile).path,
@@ -115,7 +115,7 @@ const PROFILE_DIR = Services.dirsvc.get("ProfD", Ci.nsIFile).path;
 		},
 		uninit() {
 			const dis = [];
-			for (let x of Object.keys(this.readCSS)) {
+			for (const x of Object.keys(this.readCSS)) {
 				if (!this.readCSS[x].enabled) {
 					dis.push(x);
 				}
@@ -239,7 +239,7 @@ const PROFILE_DIR = Services.dirsvc.get("ProfD", Ci.nsIFile).path;
 
 			event.preventDefault();
 			event.stopPropagation();
-			let label = event.currentTarget.getAttribute("label");
+			const label = event.currentTarget.getAttribute("label");
 
 			if (event.button == 1) {
 				this.toggle(label);
@@ -296,9 +296,9 @@ const PROFILE_DIR = Services.dirsvc.get("ProfD", Ci.nsIFile).path;
 				return shiftJISString;
 			}
 
-			let l10n = new Localization(["browser/floorp.ftl"], true);
+			const l10n = new Localization(["browser/floorp.ftl"], true);
 			const editor = Services.prefs.getStringPref("view_source.editor.path");
-			let textEditorPath = { value: "" };
+			const textEditorPath = { value: "" };
 
 			async function getEditorPath() {
 				let editorPath = "";
@@ -324,7 +324,7 @@ const PROFILE_DIR = Services.dirsvc.get("ProfD", Ci.nsIFile).path;
 				return editorPath;
 			}
 
-			let setPathPromise = new Promise((resolve) => {
+			const setPathPromise = new Promise((resolve) => {
 				if (editor == "") {
 					getEditorPath().then((path) => {
 						textEditorPath.value = path;
@@ -355,7 +355,7 @@ const PROFILE_DIR = Services.dirsvc.get("ProfD", Ci.nsIFile).path;
 			});
 		},
 		async create(aLeafName) {
-			let l10n = new Localization(["browser/floorp.ftl"], true);
+			const l10n = new Localization(["browser/floorp.ftl"], true);
 			if (!aLeafName) {
 				aLeafName = prompt(
 					l10n.formatValueSync("please-enter-filename"),
@@ -373,7 +373,7 @@ const PROFILE_DIR = Services.dirsvc.get("ProfD", Ci.nsIFile).path;
 			if (!/\.css$/.test(aLeafName)) {
 				aLeafName += ".css";
 			}
-			let file = UCL.getCSSFolder() + aLeafName;
+			const file = UCL.getCSSFolder() + aLeafName;
 			await IOUtils.writeUTF8(file, "");
 			this.edit(file);
 		},
@@ -401,7 +401,7 @@ const PROFILE_DIR = Services.dirsvc.get("ProfD", Ci.nsIFile).path;
 		},
 		set enabled(isEnable) {
 			this._enabled = isEnable;
-			let uri = Services.io.newFileURI(FileUtils.File(this.path));
+			const uri = Services.io.newFileURI(FileUtils.File(this.path));
 			IOUtils.exists(this.path).then((value) => {
 				if (value && isEnable) {
 					if (this.sss.sheetRegistered(uri, this.SHEET)) {

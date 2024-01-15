@@ -54,7 +54,7 @@ function handleMessage(message, sender) {
 		const example_obj = {
 			action: "tree-style-tab-open",
 		};
-		let message_obj =
+		const message_obj =
 			typeof message === "string" ? JSON.parse(message) : message;
 		handle_actions(
 			message_obj["action"],

@@ -3,7 +3,7 @@ import w3color from "./w3color.js";
 
 const NS_XHTML = "http://www.w3.org/1999/xhtml";
 const globalSheet = browser.runtime.getURL("browser.css");
-export let defaultOptions = {
+export const defaultOptions = {
 	enableIconColors: false,
 	displayNewtab: true,
 	displayTitlebar: true,
@@ -23,17 +23,17 @@ export let defaultOptions = {
 	userCSSCode: "",
 };
 
-let cachedOptions = {};
+const cachedOptions = {};
 // In currentOptionsSheet we keep track of the dynamic stylesheet that applies
 // options (such as the user font), so that we can unload() the sheet once the
 // options change.
 let currentOptionsSheet = "";
-let iconSheets = new Map();
+const iconSheets = new Map();
 
 function makeDynamicSheet(options) {
 	// User options are applied via a dynamic stylesheet. Doesn't look elegant
 	// but keeps the API small.
-	let rules = `
+	const rules = `
     @import url('${options.userCSS}');
     @import url('data:text/css;base64,${btoa(options.userCSSCode)}');
     @namespace url('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul');
@@ -82,7 +82,7 @@ function makeDynamicSheet(options) {
 // size and can't be drawn on a canvas which we need to extract image data.
 function patchSVGDataURL(url) {
 	let code = atob(url.split(",", 2)[1]);
-	let dom = new DOMParser().parseFromString(code, "image/svg+xml");
+	const dom = new DOMParser().parseFromString(code, "image/svg+xml");
 	if (dom.documentElement.nodeName !== "svg") {
 		// May happen on XML parsing errors
 		throw "Failed to build SVG DOM";
@@ -102,19 +102,19 @@ async function addIconColor(url, urlOrig = null) {
 	) {
 		return;
 	}
-	let img = document.createElementNS(NS_XHTML, "img");
+	const img = document.createElementNS(NS_XHTML, "img");
 	img.addEventListener("load", () => {
 		if (!urlOrig && img.width == 0 && url.startsWith("data:")) {
 			addIconColor(patchSVGDataURL(url), url);
 			return;
 		}
-		let color = iconColor(
+		const color = iconColor(
 			img,
 			Number(cachedOptions.minLightness),
 			Number(cachedOptions.maxLightness),
 		);
 		// We can't access the chrome DOM, so apply each favicon color via stylesheet
-		let sheetText = `data:text/css,tab.tabbrowser-tab[image='${
+		const sheetText = `data:text/css,tab.tabbrowser-tab[image='${
 			urlOrig || url
 		}'] .tab-label { color: ${color} !important; }`;
 		browser.stylesheet.load(sheetText, "AUTHOR_SHEET");
@@ -125,8 +125,8 @@ async function addIconColor(url, urlOrig = null) {
 }
 
 async function addAllIconColors() {
-	let tabs = await browser.tabs.query({});
-	for (let tab of tabs) {
+	const tabs = await browser.tabs.query({});
+	for (const tab of tabs) {
 		if (tab.favIconUrl) {
 			addIconColor(tab.favIconUrl);
 		}
@@ -134,7 +134,7 @@ async function addAllIconColors() {
 }
 
 function removeAllIconColors() {
-	for (let sheet of iconSheets.values()) {
+	for (const sheet of iconSheets.values()) {
 		browser.stylesheet.unload(sheet, "AUTHOR_SHEET");
 	}
 	iconSheets.clear();
@@ -149,8 +149,8 @@ export async function setOptions(options) {
 }
 
 export async function applyOptions() {
-	let options = await getOptions();
-	let theme = await browser.theme.getCurrent();
+	const options = await getOptions();
+	const theme = await browser.theme.getCurrent();
 	if (options.fitLightness !== false) {
 		Object.assign(options, getBestLightnessOptions(theme));
 	}
@@ -158,7 +158,7 @@ export async function applyOptions() {
 	cachedOptions.minLightness = options.minLightness;
 	cachedOptions.maxLightness = options.maxLightness;
 
-	let newOptionsSheet = makeDynamicSheet(options);
+	const newOptionsSheet = makeDynamicSheet(options);
 	if (currentOptionsSheet) {
 		await browser.stylesheet.unload(currentOptionsSheet, "AUTHOR_SHEET");
 	}
@@ -186,7 +186,7 @@ function onFavIconChanged(tabId, changeInfo) {
 export function getBestLightnessOptions(theme) {
 	// Maps theme color properties to whether their lightness corresponds to the
 	// inverted theme lightness, ordered by significance
-	let invertColorMap = {
+	const invertColorMap = {
 		tab_text: true,
 		textcolor: true,
 		tab_selected: false,
@@ -195,19 +195,19 @@ export function getBestLightnessOptions(theme) {
 		bookmark_text: true,
 		toolbar_text: true,
 	};
-	let light = {
+	const light = {
 		minLightness: 0,
 		maxLightness: 52,
 	};
-	let dark = {
+	const dark = {
 		minLightness: 59,
 		maxLightness: 100,
 	};
-	let colors = theme.colors;
+	const colors = theme.colors;
 	if (!colors) {
 		return light;
 	}
-	for (let prop in invertColorMap) {
+	for (const prop in invertColorMap) {
 		if (!colors[prop]) {
 			continue;
 		}
@@ -225,9 +225,9 @@ async function startup() {
 
 	browser.stylesheet.load(globalSheet, "AUTHOR_SHEET");
 	browser.paxmod.load();
-	let options = await getOptions();
-	let newOptions = {};
-	for (let key in defaultOptions) {
+	const options = await getOptions();
+	const newOptions = {};
+	for (const key in defaultOptions) {
 		if (!(key in options)) {
 			newOptions[key] = defaultOptions[key];
 		}
@@ -253,7 +253,7 @@ async function startup() {
 }
 
 (async () => {
-	let enabled = await browser.aboutConfigPrefs.getPref("floorp.tabbar.style");
+	const enabled = await browser.aboutConfigPrefs.getPref("floorp.tabbar.style");
 	if (enabled == 1) {
 		browser.theme.onUpdated.addListener(async (details) => {
 			if (
@@ -266,7 +266,7 @@ async function startup() {
 
 		startup();
 	}
-	browser.aboutConfigPrefs.onPrefChange.addListener(function () {
+	browser.aboutConfigPrefs.onPrefChange.addListener(() => {
 		browser.runtime.reload();
 	}, "floorp.tabbar.style");
 })();

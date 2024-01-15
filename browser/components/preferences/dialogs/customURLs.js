@@ -6,12 +6,12 @@
 const { ContextualIdentityService } = ChromeUtils.import(
 	"resource://gre/modules/ContextualIdentityService.jsm",
 );
-let { BrowserManagerSidebar } = ChromeUtils.importESModule(
+const { BrowserManagerSidebar } = ChromeUtils.importESModule(
 	"resource:///modules/BrowserManagerSidebar.sys.mjs",
 );
 function setTitle() {
-	let params = window.arguments[0] || {};
-	let winElem = document.documentElement;
+	const params = window.arguments[0] || {};
+	const winElem = document.documentElement;
 	if (params.new) {
 		document.l10n.setAttributes(winElem, "bsb-add-title");
 	} else {
@@ -28,7 +28,7 @@ function onLoad() {
 	bsbObject = JSON.parse(
 		Services.prefs.getStringPref(`floorp.browser.sidebar2.data`, undefined),
 	);
-	let paramsTemp = window.arguments[0] || {};
+	const paramsTemp = window.arguments[0] || {};
 	let params = {};
 	if (window.arguments[0].id ?? "" != "") {
 		params = window.arguments[0];
@@ -43,18 +43,18 @@ function onLoad() {
 			"obs-panel-re",
 		);
 	}
-	let panelUserAgent = newPanel
+	const panelUserAgent = newPanel
 		? false
 		: bsbObject.data[panelId].userAgent ?? false;
-	let panelWidth = newPanel ? 0 : bsbObject.data[panelId].width ?? 0;
+	const panelWidth = newPanel ? 0 : bsbObject.data[panelId].width ?? 0;
 
 	document.addEventListener("dialogaccept", setPref);
 
-	let panelUserContext =
+	const panelUserContext =
 		params.userContext ?? (newPanel ? -1 : bsbObject.data[panelId].usercontext);
 
-	for (let elem in BrowserManagerSidebar.STATIC_SIDEBAR_DATA) {
-		let floorpWebpanelMenuitem = document.createXULElement("menuitem");
+	for (const elem in BrowserManagerSidebar.STATIC_SIDEBAR_DATA) {
+		const floorpWebpanelMenuitem = document.createXULElement("menuitem");
 		floorpWebpanelMenuitem.setAttribute("flex", 1);
 		floorpWebpanelMenuitem.setAttribute(
 			"data-l10n-id",
@@ -66,13 +66,13 @@ function onLoad() {
 			.appendChild(floorpWebpanelMenuitem);
 	}
 
-	let url = params.url ?? (newPanel ? "" : bsbObject.data[params.id].url);
+	const url = params.url ?? (newPanel ? "" : bsbObject.data[params.id].url);
 	if (url in BrowserManagerSidebar.STATIC_SIDEBAR_DATA) {
 		document.querySelector("#pageSelect").value = url;
 	} else if (url.startsWith("extension,")) {
-		let haveSidebarPanelExtensionsObjPref =
+		const haveSidebarPanelExtensionsObjPref =
 			"floorp.extensions.webextensions.sidebar-action";
-		let extensionObj = JSON.parse(
+		const extensionObj = JSON.parse(
 			Services.prefs.getStringPref(haveSidebarPanelExtensionsObjPref),
 		);
 		document.querySelector("#pageSelect").value = url;
@@ -89,8 +89,8 @@ function onLoad() {
 	document.querySelector("#widthBox").value = panelWidth;
 
 	let container_label = -1;
-	let container_list = document.querySelector("#userContextPopup");
-	let container_list_base = document.querySelector("#userContext");
+	const container_list = document.querySelector("#userContextPopup");
+	const container_list_base = document.querySelector("#userContext");
 	let menuitem = document.createXULElement("menuitem");
 	container_list_base.value = 0;
 	menuitem.value = 0;
@@ -101,7 +101,7 @@ function onLoad() {
 	menuitem.setAttribute("label", containerName);
 	container_list.appendChild(menuitem);
 
-	for (let elem of ContextualIdentityService.getPublicIdentities()) {
+	for (const elem of ContextualIdentityService.getPublicIdentities()) {
 		menuitem = document.createXULElement("menuitem");
 		menuitem.value = elem.userContextId;
 		menuitem.setAttribute("flex", 1);
@@ -125,20 +125,20 @@ function onLoad() {
 	container_list.parentElement.setAttribute("label", container_label);
 
 	// Sidebar panel extensions
-	let { AddonManager } = ChromeUtils.import(
+	const { AddonManager } = ChromeUtils.import(
 		"resource://gre/modules/AddonManager.jsm",
 	);
-	let haveSidebarPanelExtensionsObjPref =
+	const haveSidebarPanelExtensionsObjPref =
 		"floorp.extensions.webextensions.sidebar-action";
-	let extensionObj = JSON.parse(
+	const extensionObj = JSON.parse(
 		Services.prefs.getStringPref(haveSidebarPanelExtensionsObjPref),
 	);
-	let extensionIDs = Object.keys(extensionObj.data);
+	const extensionIDs = Object.keys(extensionObj.data);
 
-	for (let extensionID of extensionIDs) {
-		AddonManager.getAddonByID(extensionID).then(function (addon) {
+	for (const extensionID of extensionIDs) {
+		AddonManager.getAddonByID(extensionID).then((addon) => {
 			if (addon && addon.isActive) {
-				let menuitem = document.createXULElement("menuitem");
+				const menuitem = document.createXULElement("menuitem");
 				menuitem.value = extensionID;
 				menuitem.setAttribute("flex", 1);
 				menuitem.setAttribute("label", extensionObj.data[addon.id].title);
@@ -183,13 +183,13 @@ function encodeObjectURL(text) {
 }
 
 function setPref() {
-	let page = Number(document.querySelector("#pageSelect").value);
-	let url = document.querySelector(".URLBox").value;
-	let container = Number(document.querySelector("#userContext").value);
-	let userAgent = document.querySelector("#userAgentCheck").checked;
-	let width = Number(document.querySelector("#widthBox").value);
+	const page = Number(document.querySelector("#pageSelect").value);
+	const url = document.querySelector(".URLBox").value;
+	const container = Number(document.querySelector("#userContext").value);
+	const userAgent = document.querySelector("#userAgentCheck").checked;
+	const width = Number(document.querySelector("#widthBox").value);
 
-	let dataObject = {};
+	const dataObject = {};
 	if (page != 0) {
 		dataObject.url = document.querySelector("#pageSelect").value;
 	} else {
@@ -217,9 +217,9 @@ function setPref() {
 }
 
 function setBox() {
-	let style = document.querySelector("#pageSelect").value == 0 ? "" : "hidden";
-	let elems = document.querySelectorAll(".invisible");
-	for (let elem of elems) {
+	const style = document.querySelector("#pageSelect").value == 0 ? "" : "hidden";
+	const elems = document.querySelectorAll(".invisible");
+	for (const elem of elems) {
 		elem.style.visibility = style;
 	}
 }

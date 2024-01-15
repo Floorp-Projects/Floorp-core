@@ -14,8 +14,7 @@
 	else
 		(root["tui"] = root["tui"] || {}),
 			(root["tui"]["DatePicker"] = factory(root["tui"]["TimePicker"]));
-})(window, function (__WEBPACK_EXTERNAL_MODULE__43__) {
-	return /******/ (function (modules) {
+})(window, (__WEBPACK_EXTERNAL_MODULE__43__) => ((modules) => {
 		// webpackBootstrap
 		/******/ // The module cache
 		/******/ var installedModules = {};
@@ -60,7 +59,7 @@
 		/******/ __webpack_require__.c = installedModules;
 		/******/
 		/******/ // define getter function for harmony exports
-		/******/ __webpack_require__.d = function (exports, name, getter) {
+		/******/ __webpack_require__.d = (exports, name, getter) => {
 			/******/ if (!__webpack_require__.o(exports, name)) {
 				/******/ Object.defineProperty(exports, name, {
 					enumerable: true,
@@ -72,7 +71,7 @@
 		};
 		/******/
 		/******/ // define __esModule on exports
-		/******/ __webpack_require__.r = function (exports) {
+		/******/ __webpack_require__.r = (exports) => {
 			/******/ if (typeof Symbol !== "undefined" && Symbol.toStringTag) {
 				/******/ Object.defineProperty(exports, Symbol.toStringTag, {
 					value: "Module",
@@ -88,7 +87,7 @@
 		/******/ // mode & 2: merge all properties of value into the ns
 		/******/ // mode & 4: return value when already ns object
 		/******/ // mode & 8|1: behave like require
-		/******/ __webpack_require__.t = function (value, mode) {
+		/******/ __webpack_require__.t = (value, mode) => {
 			/******/ if (mode & 1) value = __webpack_require__(value);
 			/******/ if (mode & 8) return value;
 			/******/ if (
@@ -109,16 +108,14 @@
 					__webpack_require__.d(
 						ns,
 						key,
-						function (key) {
-							return value[key];
-						}.bind(null, key),
+						((key) => value[key]).bind(null, key),
 					);
 			/******/ return ns;
 			/******/
 		};
 		/******/
 		/******/ // getDefaultExport function for compatibility with non-harmony modules
-		/******/ __webpack_require__.n = function (module) {
+		/******/ __webpack_require__.n = (module) => {
 			/******/ var getter =
 				module && module.__esModule
 					? /******/ function getDefault() {
@@ -133,9 +130,7 @@
 		};
 		/******/
 		/******/ // Object.prototype.hasOwnProperty.call
-		/******/ __webpack_require__.o = function (object, property) {
-			return Object.prototype.hasOwnProperty.call(object, property);
-		};
+		/******/ __webpack_require__.o = (object, property) => Object.prototype.hasOwnProperty.call(object, property);
 		/******/
 		/******/ // __webpack_public_path__
 		/******/ __webpack_require__.p = "dist";
@@ -148,9 +143,8 @@
 		/************************************************************************/
 		/******/ [
 			/* 0 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview
 				 * This module provides a function to make a constructor
 				 * that can inherit from the other constructors like the CLASS easily.
@@ -212,7 +206,7 @@
 						parent = null;
 					}
 
-					obj = props.init || function () {};
+					obj = props.init || (() => {});
 
 					if (parent) {
 						inherit(obj, parent);
@@ -233,9 +227,8 @@
 				/***/
 			},
 			/* 1 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Constants of date-picker
 				 */
 
@@ -274,9 +267,8 @@
 				/***/
 			},
 			/* 2 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Execute the provided callback once for each element present in the array(or Array-like object) in ascending order.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -321,9 +313,8 @@
 				/***/
 			},
 			/* 3 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/* eslint-disable complexity */
+			/***/ (module, exports, __webpack_require__) => {
+								/* eslint-disable complexity */
 				/**
 				 * @fileoverview Returns the first index at which a given element can be found in the array.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
@@ -384,9 +375,8 @@
 				/***/
 			},
 			/* 4 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Utils for Datepicker component
 				 */
 
@@ -402,25 +392,21 @@
 					 * @param {Event} ev Event object
 					 * @returns {HTMLElement} An event target element
 					 */
-					getTarget: function (ev) {
-						return ev.target || ev.srcElement;
-					},
+					getTarget: (ev) => ev.target || ev.srcElement,
 
 					/**
 					 * Return the same element with an element or a matched element searched by a selector.
 					 * @param {HTMLElement|string} param HTMLElement or selector
 					 * @returns {HTMLElement} A matched element
 					 */
-					getElement: function (param) {
-						return isHTMLNode(param) ? param : document.querySelector(param);
-					},
+					getElement: (param) => isHTMLNode(param) ? param : document.querySelector(param),
 
 					/**
 					 * Get a selector of the element.
 					 * @param {HTMLElement} elem An element
 					 * @returns {string}
 					 */
-					getSelector: function (elem) {
+					getSelector: (elem) => {
 						var selector = "";
 						if (elem.id) {
 							selector = "#" + elem.id;
@@ -435,7 +421,7 @@
 					 * Create an unique id.
 					 * @returns {number}
 					 */
-					generateId: function () {
+					generateId: () => {
 						currentId += 1;
 
 						return currentId;
@@ -447,10 +433,10 @@
 					 * @param {function} iteratee - iteratee callback function
 					 * @returns {Array}
 					 */
-					filter: function (arr, iteratee) {
+					filter: (arr, iteratee) => {
 						var result = [];
 
-						forEachArray(arr, function (item) {
+						forEachArray(arr, (item) => {
 							if (iteratee(item)) {
 								result.push(item);
 							}
@@ -463,7 +449,7 @@
 					 * Send hostname for GA
 					 * @ignore
 					 */
-					sendHostName: function () {
+					sendHostName: () => {
 						sendHostname("date-picker", "UA-129987462-1");
 					},
 				};
@@ -473,9 +459,8 @@
 				/***/
 			},
 			/* 5 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Utils for DatePicker component
 				 */
 
@@ -500,7 +485,7 @@
 					 * @param {number} month A month
 					 * @returns {number} Weeks count (4~6)
 					 **/
-					getWeeksCount: function (year, month) {
+					getWeeksCount: (year, month) => {
 						var firstDay = utils.getFirstDay(year, month),
 							lastDate = utils.getLastDayInMonth(year, month);
 
@@ -511,9 +496,7 @@
 					 * @param {Date} date - Date instance
 					 * @returns {boolean}
 					 */
-					isValidDate: function (date) {
-						return isDate(date) && !isNaN(date.getTime());
-					},
+					isValidDate: (date) => isDate(date) && !isNaN(date.getTime()),
 
 					/**
 					 * Get which day is first by parameters that include year and month information.
@@ -521,9 +504,7 @@
 					 * @param {number} month A month
 					 * @returns {number} (0~6)
 					 */
-					getFirstDay: function (year, month) {
-						return new Date(year, month - 1, 1).getDay();
-					},
+					getFirstDay: (year, month) => new Date(year, month - 1, 1).getDay(),
 
 					/**
 					 * Get timestamp of the first day.
@@ -531,9 +512,7 @@
 					 * @param {number} month A month
 					 * @returns {number} timestamp
 					 */
-					getFirstDayTimestamp: function (year, month) {
-						return new Date(year, month, 1).getTime();
-					},
+					getFirstDayTimestamp: (year, month) => new Date(year, month, 1).getTime(),
 
 					/**
 					 * Get last date by parameters that include year and month information.
@@ -541,9 +520,7 @@
 					 * @param {number} month A month
 					 * @returns {number} (1~31)
 					 */
-					getLastDayInMonth: function (year, month) {
-						return new Date(year, month, 0).getDate();
-					},
+					getLastDayInMonth: (year, month) => new Date(year, month, 0).getDate(),
 
 					/**
 					 * Chagne number 0~9 to '00~09'
@@ -554,7 +531,7 @@
 					 *  dateUtil.prependLeadingZero(9); //  '09'
 					 *  dateUtil.prependLeadingZero(12); //  '12'
 					 */
-					prependLeadingZero: function (number) {
+					prependLeadingZero: (number) => {
 						var prefix = "";
 
 						if (number < 10) {
@@ -569,7 +546,7 @@
 					 * @param {number} hour - Original hour
 					 * @returns {number} Converted meridiem hour
 					 */
-					getMeridiemHour: function (hour) {
+					getMeridiemHour: (hour) => {
 						hour %= 12;
 
 						if (hour === 0) {
@@ -586,7 +563,7 @@
 					 * @throws Will throw an error if the defaultNumber is invalid.
 					 * @returns {number}
 					 */
-					getSafeNumber: function (any, defaultNumber) {
+					getSafeNumber: (any, defaultNumber) => {
 						if (isNaN(defaultNumber) || !isNumber(defaultNumber)) {
 							throw Error("The defaultNumber must be a valid number.");
 						}
@@ -605,7 +582,7 @@
 					 * @param {number} dayNumber - Day number (0: sunday, 1: monday, ....)
 					 * @returns {number}
 					 */
-					getDateOfWeek: function (year, month, weekNumber, dayNumber) {
+					getDateOfWeek: (year, month, weekNumber, dayNumber) => {
 						var firstDayOfMonth = new Date(year, month - 1).getDay();
 						var dateOffset = firstDayOfMonth - dayNumber - 1;
 
@@ -618,7 +595,7 @@
 					 * @param {number} end - End value
 					 * @returns {Array}
 					 */
-					getRangeArr: function (start, end) {
+					getRangeArr: (start, end) => {
 						var arr = [];
 						var i;
 
@@ -642,7 +619,7 @@
 					 * @throws {Error}
 					 * @returns {Date}
 					 */
-					cloneWithStartOf: function (date, type) {
+					cloneWithStartOf: (date, type) => {
 						type = type || TYPE_DATE;
 						date = new Date(date);
 
@@ -672,7 +649,7 @@
 					 * @throws {Error}
 					 * @returns {Date}
 					 */
-					cloneWithEndOf: function (date, type) {
+					cloneWithEndOf: (date, type) => {
 						type = type || TYPE_DATE;
 						date = new Date(date);
 
@@ -702,7 +679,7 @@
 					 * @param {string} [cmpLevel] - Comparing level
 					 * @returns {number}
 					 */
-					compare: function (dateA, dateB, cmpLevel) {
+					compare: (dateA, dateB, cmpLevel) => {
 						var aTimestamp, bTimestamp;
 
 						if (!(utils.isValidDate(dateA) && utils.isValidDate(dateB))) {
@@ -731,9 +708,7 @@
 					 * @param {string} [cmpLevel] - Comparing level
 					 * @returns {boolean}
 					 */
-					isSame: function (dateA, dateB, cmpLevel) {
-						return utils.compare(dateA, dateB, cmpLevel) === 0;
-					},
+					isSame: (dateA, dateB, cmpLevel) => utils.compare(dateA, dateB, cmpLevel) === 0,
 
 					/**
 					 * Returns whether the target is in range
@@ -743,12 +718,10 @@
 					 * @param {string} [cmpLevel = TYPE_DATE] - Comparing level
 					 * @returns {boolean}
 					 */
-					inRange: function (start, end, target, cmpLevel) {
-						return (
+					inRange: (start, end, target, cmpLevel) => (
 							utils.compare(start, target, cmpLevel) < 1 &&
 							utils.compare(end, target, cmpLevel) > -1
-						);
-					},
+						),
 				};
 
 				module.exports = utils;
@@ -756,9 +729,8 @@
 				/***/
 			},
 			/* 6 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Check whether the given variable is an instance of Array or not.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -779,9 +751,8 @@
 				/***/
 			},
 			/* 7 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Extend the target object from other objects.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -819,9 +790,8 @@
 				/***/
 			},
 			/* 8 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview This module provides some functions for custom events. And it is implemented in the observer design pattern.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -872,7 +842,7 @@
 				 * model.fire('change');
 				 * alert(model.name); // 'model';
 				 */
-				CustomEvents.mixin = function (func) {
+				CustomEvents.mixin = (func) => {
 					extend(func.prototype, CustomEvents.prototype);
 				};
 
@@ -883,7 +853,7 @@
 				 * @returns {HandlerItem} HandlerItem object
 				 * @private
 				 */
-				CustomEvents.prototype._getHandlerItem = function (handler, context) {
+				CustomEvents.prototype._getHandlerItem = (handler, context) => {
 					var item = { handler: handler };
 
 					if (context) {
@@ -1050,20 +1020,19 @@
 				 *     'play': handler
 				 * }, myObj);
 				 */
-				CustomEvents.prototype.on = function (eventName, handler, context) {
-					var self = this;
+				CustomEvents.prototype.on = function (eventName, handler, context) {;
 
 					if (isString(eventName)) {
 						// [syntax 1, 2]
 						eventName = eventName.split(R_EVENTNAME_SPLIT);
-						forEach(eventName, function (name) {
-							self._bindEvent(name, handler, context);
+						forEach(eventName, (name) => {
+							this._bindEvent(name, handler, context);
 						});
 					} else if (isObject(eventName)) {
 						// [syntax 3, 4]
 						context = handler;
-						forEach(eventName, function (func, name) {
-							self.on(name, func, context);
+						forEach(eventName, (func, name) => {
+							this.on(name, func, context);
 						});
 					}
 				};
@@ -1080,7 +1049,7 @@
 
 					if (isObject(eventName)) {
 						context = handler;
-						forEach(eventName, function (func, name) {
+						forEach(eventName, (func, name) => {
 							self.once(name, func, context);
 						});
 
@@ -1102,7 +1071,7 @@
 				 * @param {function} predicate - function return boolean
 				 * @private
 				 */
-				CustomEvents.prototype._spliceMatches = function (arr, predicate) {
+				CustomEvents.prototype._spliceMatches = (arr, predicate) => {
 					var i = 0;
 					var len;
 
@@ -1125,14 +1094,13 @@
 				 * @returns {function} handler matcher
 				 * @private
 				 */
-				CustomEvents.prototype._matchHandler = function (handler) {
-					var self = this;
+				CustomEvents.prototype._matchHandler = function (handler) {;
 
-					return function (item) {
+					return (item) => {
 						var needRemove = handler === item.handler;
 
 						if (needRemove) {
-							self._forgetContext(item.context);
+							this._forgetContext(item.context);
 						}
 
 						return needRemove;
@@ -1145,14 +1113,13 @@
 				 * @returns {function} object matcher
 				 * @private
 				 */
-				CustomEvents.prototype._matchContext = function (context) {
-					var self = this;
+				CustomEvents.prototype._matchContext = function (context) {;
 
-					return function (item) {
+					return (item) => {
 						var needRemove = context === item.context;
 
 						if (needRemove) {
-							self._forgetContext(item.context);
+							this._forgetContext(item.context);
 						}
 
 						return needRemove;
@@ -1169,16 +1136,15 @@
 				CustomEvents.prototype._matchHandlerAndContext = function (
 					handler,
 					context,
-				) {
-					var self = this;
+				) {;
 
-					return function (item) {
+					return (item) => {
 						var matchHandler = handler === item.handler;
 						var matchContext = context === item.context;
 						var needRemove = matchHandler && matchContext;
 
 						if (needRemove) {
-							self._forgetContext(item.context);
+							this._forgetContext(item.context);
 						}
 
 						return needRemove;
@@ -1191,24 +1157,23 @@
 				 * @param {function} [handler] - handler function
 				 * @private
 				 */
-				CustomEvents.prototype._offByEventName = function (eventName, handler) {
-					var self = this;
+				CustomEvents.prototype._offByEventName = function (eventName, handler) {;
 					var andByHandler = isFunction(handler);
-					var matchHandler = self._matchHandler(handler);
+					var matchHandler = this._matchHandler(handler);
 
 					eventName = eventName.split(R_EVENTNAME_SPLIT);
 
-					forEach(eventName, function (name) {
-						var handlerItems = self._safeEvent(name);
+					forEach(eventName, (name) => {
+						var handlerItems = this._safeEvent(name);
 
 						if (andByHandler) {
-							self._spliceMatches(handlerItems, matchHandler);
+							this._spliceMatches(handlerItems, matchHandler);
 						} else {
-							forEach(handlerItems, function (item) {
-								self._forgetContext(item.context);
+							forEach(handlerItems, (item) => {
+								this._forgetContext(item.context);
 							});
 
-							self.events[name] = [];
+							this.events[name] = [];
 						}
 					});
 				};
@@ -1218,12 +1183,11 @@
 				 * @param {function} handler - handler function
 				 * @private
 				 */
-				CustomEvents.prototype._offByHandler = function (handler) {
-					var self = this;
+				CustomEvents.prototype._offByHandler = function (handler) {;
 					var matchHandler = this._matchHandler(handler);
 
-					forEach(this._safeEvent(), function (handlerItems) {
-						self._spliceMatches(handlerItems, matchHandler);
+					forEach(this._safeEvent(), (handlerItems) => {
+						this._spliceMatches(handlerItems, matchHandler);
 					});
 				};
 
@@ -1233,29 +1197,28 @@
 				 * @param {function} handler - handler function
 				 * @private
 				 */
-				CustomEvents.prototype._offByObject = function (obj, handler) {
-					var self = this;
+				CustomEvents.prototype._offByObject = function (obj, handler) {;
 					var matchFunc;
 
 					if (this._indexOfContext(obj) < 0) {
-						forEach(obj, function (func, name) {
-							self.off(name, func);
+						forEach(obj, (func, name) => {
+							this.off(name, func);
 						});
 					} else if (isString(handler)) {
 						matchFunc = this._matchContext(obj);
 
-						self._spliceMatches(this._safeEvent(handler), matchFunc);
+						this._spliceMatches(this._safeEvent(handler), matchFunc);
 					} else if (isFunction(handler)) {
 						matchFunc = this._matchHandlerAndContext(handler, obj);
 
-						forEach(this._safeEvent(), function (handlerItems) {
-							self._spliceMatches(handlerItems, matchFunc);
+						forEach(this._safeEvent(), (handlerItems) => {
+							this._spliceMatches(handlerItems, matchFunc);
 						});
 					} else {
 						matchFunc = this._matchContext(obj);
 
-						forEach(this._safeEvent(), function (handlerItems) {
-							self._spliceMatches(handlerItems, matchFunc);
+						forEach(this._safeEvent(), (handlerItems) => {
+							this._spliceMatches(handlerItems, matchFunc);
 						});
 					}
 				};
@@ -1401,9 +1364,8 @@
 				/***/
 			},
 			/* 9 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Execute the provided callback once for each property of object(or element of array) which actually exist.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -1457,9 +1419,8 @@
 				/***/
 			},
 			/* 10 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Default locale texts
 				 */
 
@@ -1561,9 +1522,8 @@
 				/***/
 			},
 			/* 11 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Convert text by binding expressions with context.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -1600,14 +1560,12 @@
 				 * @param {RegExp} regexp - regular expression
 				 * @returns {Array.<string>}
 				 */
-				var splitByRegExp = (function () {
+				var splitByRegExp = (() => {
 					if (isValidSplit) {
-						return function (text, regexp) {
-							return text.split(regexp);
-						};
+						return (text, regexp) => text.split(regexp);
 					}
 
-					return function (text, regexp) {
+					return (text, regexp) => {
 						var result = [];
 						var prevIndex = 0;
 						var match, index;
@@ -1679,7 +1637,7 @@
 					var start = 0;
 
 					// eslint-disable-next-line complexity
-					forEach(sourcesInsideBlock, function (source, index) {
+					forEach(sourcesInsideBlock, (source, index) => {
 						if (source.indexOf("if") === 0) {
 							otherIfCount += 1;
 						} else if (source === "/if") {
@@ -1717,7 +1675,7 @@
 					var result = false;
 					var compiledSource = "";
 
-					forEach(analyzed.exps, function (exp, index) {
+					forEach(analyzed.exps, (exp, index) => {
 						result = handleExpression(exp, context);
 						if (result) {
 							compiledSource = compile(
@@ -1746,7 +1704,7 @@
 					var additionalContext = {};
 					var result = "";
 
-					forEach(collection, function (item, key) {
+					forEach(collection, (item, key) => {
 						additionalContext[additionalKey] = key;
 						additionalContext["@this"] = item;
 						extend(context, additionalContext);
@@ -1869,7 +1827,7 @@
 				 */
 				function executeFunction(helper, argExps, context) {
 					var args = [];
-					forEach(argExps, function (exp) {
+					forEach(argExps, (exp) => {
 						args.push(getValueFromContext(exp, context));
 					});
 
@@ -1974,9 +1932,8 @@
 				/***/
 			},
 			/* 12 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Check whether the given variable is undefined or not.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -1997,9 +1954,8 @@
 				/***/
 			},
 			/* 13 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Check whether the given variable is a string or not.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -2020,9 +1976,8 @@
 				/***/
 			},
 			/* 14 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Remove element from parent node.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -2043,9 +1998,8 @@
 				/***/
 			},
 			/* 15 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Check whether the given variable is a number or not.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -2066,9 +2020,8 @@
 				/***/
 			},
 			/* 16 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Add css class to element
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -2096,7 +2049,7 @@
 					var origin;
 
 					if (classList) {
-						forEach(cssClass, function (name) {
+						forEach(cssClass, (name) => {
 							element.classList.add(name);
 						});
 
@@ -2109,7 +2062,7 @@
 						cssClass = [].concat(origin.split(/\s+/), cssClass);
 					}
 
-					forEach(cssClass, function (cls) {
+					forEach(cssClass, (cls) => {
 						if (inArray(cls, newClass) < 0) {
 							newClass.push(cls);
 						}
@@ -2123,9 +2076,8 @@
 				/***/
 			},
 			/* 17 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Get HTML element's design classes.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -2155,9 +2107,8 @@
 				/***/
 			},
 			/* 18 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Remove css class from element
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -2179,7 +2130,7 @@
 					var origin, newClass;
 
 					if (classList) {
-						forEachArray(cssClass, function (name) {
+						forEachArray(cssClass, (name) => {
 							classList.remove(name);
 						});
 
@@ -2188,7 +2139,7 @@
 
 					origin = getClass(element).split(/\s+/);
 					newClass = [];
-					forEachArray(origin, function (name) {
+					forEachArray(origin, (name) => {
 						if (inArray(name, cssClass) < 0) {
 							newClass.push(name);
 						}
@@ -2202,9 +2153,8 @@
 				/***/
 			},
 			/* 19 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Set mouse-touch event
 				 */
 
@@ -2217,11 +2167,9 @@
 					 * @type {boolean} Whether using Mobile browser
 					 * @private
 					 */
-					_isMobile: (function () {
-						return /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(
+					_isMobile: (() => /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(
 							navigator.userAgent,
-						);
-					})(),
+						))(),
 
 					/**
 					 * Return a matched event type by a mouse event type
@@ -2268,9 +2216,8 @@
 				/***/
 			},
 			/* 20 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Layer base
 				 */
 
@@ -2391,9 +2338,8 @@
 				/***/
 			},
 			/* 21 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview DatePicker component
 				 */
 
@@ -2456,7 +2402,7 @@
 				 * @param {object} option - DatePicker option
 				 * @returns {object}
 				 */
-				var mergeDefaultOption = function (option) {
+				var mergeDefaultOption = (option) => {
 					option = extend(
 						{
 							language: DEFAULT_LANGUAGE_TYPE,
@@ -3246,7 +3192,7 @@
 						 * @param {boolean} shouldShow - Condition
 						 * @private
 						 */
-						_setDisplay: function (el, shouldShow) {
+						_setDisplay: (el, shouldShow) => {
 							if (el) {
 								if (shouldShow) {
 									removeClass(el, CLASS_NAME_HIDDEN);
@@ -3346,7 +3292,7 @@
 						 */
 						setRanges: function (ranges) {
 							var result = [];
-							forEachArray(ranges, function (range) {
+							forEachArray(ranges, (range) => {
 								var start = new Date(range[0]).getTime();
 								var end = new Date(range[1]).getTime();
 
@@ -3932,9 +3878,8 @@
 				/***/
 			},
 			/* 22 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Check whether the given variable is an object or not.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -3955,9 +3900,8 @@
 				/***/
 			},
 			/* 23 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Execute the provided callback once for each property of object which actually exist.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -4002,9 +3946,8 @@
 				/***/
 			},
 			/* 24 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Set className value
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -4037,9 +3980,8 @@
 				/***/
 			},
 			/* 25 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Find parent element recursively
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -4076,9 +4018,8 @@
 				/***/
 			},
 			/* 26 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Get data value from data-attribute
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -4105,9 +4046,8 @@
 				/***/
 			},
 			/* 27 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Check element has specific css class
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -4139,9 +4079,8 @@
 				/***/
 			},
 			/* 28 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Check whether the given variable is an instance of Date or not.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -4162,9 +4101,8 @@
 				/***/
 			},
 			/* 29 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Calendar component
 				 */
 
@@ -4396,11 +4334,9 @@
 						 * @returns {boolean}
 						 * @private
 						 */
-						_isValidType: function (type) {
-							return (
+						_isValidType: (type) => (
 								type === TYPE_DATE || type === TYPE_MONTH || type === TYPE_YEAR
-							);
-						},
+							),
 
 						/**
 						 * @param {Date} date - Date to draw
@@ -4697,9 +4633,8 @@
 				/***/
 			},
 			/* 30 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Date <-> Text formatting module
 				 */
 
@@ -4847,11 +4782,9 @@
 							var matchedKeys = this._rawStr.match(rFormableKeys);
 							var keyOrder = [];
 
-							matchedKeys = util.filter(matchedKeys, function (key) {
-								return key[0] !== "\\";
-							});
+							matchedKeys = util.filter(matchedKeys, (key) => key[0] !== "\\");
 
-							forEachArray(matchedKeys, function (key, index) {
+							forEachArray(matchedKeys, (key, index) => {
 								if (!/m/i.test(key)) {
 									key = key.toLowerCase();
 								}
@@ -4893,7 +4826,7 @@
 							}
 
 							// eslint-disable-next-line complexity
-							forEachArray(this._keyOrder, function (name, index) {
+							forEachArray(this._keyOrder, (name, index) => {
 								var value = matched[index + 1];
 
 								if (name === constants.TYPE_MERIDIEM && /[ap]m/i.test(value)) {
@@ -4981,7 +4914,7 @@
 								a: meridiem,
 							};
 
-							return this._rawStr.replace(rFormableKeys, function (key) {
+							return this._rawStr.replace(rFormableKeys, (key) => {
 								if (key[0] === "\\") {
 									return key.substr(1);
 								}
@@ -4997,9 +4930,8 @@
 				/***/
 			},
 			/* 31 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Bind DOM events
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -5043,14 +4975,14 @@
 				 */
 				function on(element, types, handler, context) {
 					if (isString(types)) {
-						forEach(types.split(/\s+/g), function (type) {
+						forEach(types.split(/\s+/g), (type) => {
 							bindEvent(element, type, handler, context);
 						});
 
 						return;
 					}
 
-					forEach(types, function (func, type) {
+					forEach(types, (func, type) => {
 						bindEvent(element, type, func, handler);
 					});
 				}
@@ -5092,7 +5024,7 @@
 					var events = safeEvent(element, type);
 					var existInEvents = false;
 
-					forEach(events, function (obj) {
+					forEach(events, (obj) => {
 						if (obj.handler === handler) {
 							existInEvents = true;
 
@@ -5115,9 +5047,8 @@
 				/***/
 			},
 			/* 32 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Get event collection for specific HTML element
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -5152,9 +5083,8 @@
 				/***/
 			},
 			/* 33 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Unbind DOM events
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -5193,14 +5123,14 @@
 				 */
 				function off(element, types, handler) {
 					if (isString(types)) {
-						forEach(types.split(/\s+/g), function (type) {
+						forEach(types.split(/\s+/g), (type) => {
 							unbindEvent(element, type, handler);
 						});
 
 						return;
 					}
 
-					forEach(types, function (func, type) {
+					forEach(types, (func, type) => {
 						unbindEvent(element, type, func);
 					});
 				}
@@ -5218,12 +5148,12 @@
 					var index;
 
 					if (!handler) {
-						forEach(events, function (item) {
+						forEach(events, (item) => {
 							removeHandler(element, type, item.wrappedHandler);
 						});
 						events.splice(0, events.length);
 					} else {
-						forEach(events, function (item, idx) {
+						forEach(events, (item, idx) => {
 							if (handler === item.handler) {
 								removeHandler(element, type, item.wrappedHandler);
 								index = idx;
@@ -5257,9 +5187,8 @@
 				/***/
 			},
 			/* 34 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview The entry file of DatePicker components
 				 */
 
@@ -5286,9 +5215,7 @@
 				 *    type: 'date'
 				 * });
 				 */
-				DatePicker.createCalendar = function (wrapperElement, options) {
-					return new Calendar(wrapperElement, options);
-				};
+				DatePicker.createCalendar = (wrapperElement, options) => new Calendar(wrapperElement, options);
 
 				/**
 				 * Create a date-range picker.
@@ -5315,18 +5242,15 @@
 				 *     ]
 				 * });
 				 */
-				DatePicker.createRangePicker = function (options) {
-					return new DateRangePicker(options);
-				};
+				DatePicker.createRangePicker = (options) => new DateRangePicker(options);
 
 				module.exports = DatePicker;
 
 				/***/
 			},
 			/* 35 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Provide a simple inheritance in prototype-oriented.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -5377,9 +5301,8 @@
 				/***/
 			},
 			/* 36 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Create a new object with the specified prototype object and properties.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -5406,9 +5329,8 @@
 				/***/
 			},
 			/* 37 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Check whether the given variable is existing or not.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -5441,9 +5363,8 @@
 				/***/
 			},
 			/* 38 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Check whether the given variable is null or not.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -5464,9 +5385,8 @@
 				/***/
 			},
 			/* 39 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Check whether the given variable is a function or not.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -5487,9 +5407,8 @@
 				/***/
 			},
 			/* 40 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Check element match selector
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -5525,9 +5444,8 @@
 				/***/
 			},
 			/* 41 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Transform the Array-like object to Array.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -5561,7 +5479,7 @@
 						arr = Array.prototype.slice.call(arrayLike);
 					} catch (e) {
 						arr = [];
-						forEachArray(arrayLike, function (value) {
+						forEachArray(arrayLike, (value) => {
 							arr.push(value);
 						});
 					}
@@ -5574,9 +5492,8 @@
 				/***/
 			},
 			/* 42 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Convert kebab-case
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -5587,9 +5504,7 @@
 				 * @private
 				 */
 				function convertToKebabCase(key) {
-					return key.replace(/([A-Z])/g, function (match) {
-						return "-" + match.toLowerCase();
-					});
+					return key.replace(/([A-Z])/g, (match) => "-" + match.toLowerCase());
 				}
 
 				module.exports = convertToKebabCase;
@@ -5597,15 +5512,14 @@
 				/***/
 			},
 			/* 43 */
-			/***/ function (module, exports) {
+			/***/ (module, exports) => {
 				module.exports = __WEBPACK_EXTERNAL_MODULE__43__;
 
 				/***/
 			},
 			/* 44 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Calendar Header
 				 */
 
@@ -5769,7 +5683,7 @@
 						 * @returns {string}
 						 * @private
 						 */
-						_getTitleClass: function (type) {
+						_getTitleClass: (type) => {
 							switch (type) {
 								case TYPE_DATE:
 									return CLASS_NAME_TITLE_MONTH;
@@ -5872,12 +5786,11 @@
 				/***/
 			},
 			/* 45 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-
+			/***/ (module, exports, __webpack_require__) => {
+				
 				var template = __webpack_require__(11);
 
-				module.exports = function (context) {
+				module.exports = (context) => {
 					var source =
 						"{{if isDateCalendar}}" +
 						"  {{if showJumpButtons}}" +
@@ -5914,9 +5827,8 @@
 				/***/
 			},
 			/* 46 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Check whether the given variable is a instance of HTMLNode or not.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -5941,9 +5853,8 @@
 				/***/
 			},
 			/* 47 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Send hostname on DOMContentLoaded.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -5999,7 +5910,7 @@
 						new Date().getTime(),
 					);
 
-					setTimeout(function () {
+					setTimeout(() => {
 						if (
 							document.readyState === "interactive" ||
 							document.readyState === "complete"
@@ -6023,9 +5934,8 @@
 				/***/
 			},
 			/* 48 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Request image ping.
 				 * @author NHN FE Development Lab <dl_javascript@nhn.com>
 				 */
@@ -6057,7 +5967,7 @@
 				function imagePing(url, trackingInfo) {
 					var trackingElement = document.createElement("img");
 					var queryString = "";
-					forEachOwnProperties(trackingInfo, function (value, key) {
+					forEachOwnProperties(trackingInfo, (value, key) => {
 						queryString += "&" + key + "=" + value;
 					});
 					queryString = queryString.substring(1);
@@ -6076,9 +5986,8 @@
 				/***/
 			},
 			/* 49 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Calendar body
 				 */
 
@@ -6176,7 +6085,7 @@
 						 * @param {string} language - Language
 						 */
 						changeLanguage: function (language) {
-							this._eachLayer(function (layer) {
+							this._eachLayer((layer) => {
 								layer.changeLanguage(language);
 							});
 						},
@@ -6208,7 +6117,7 @@
 						 * Destory
 						 */
 						destroy: function () {
-							this._eachLayer(function (layer) {
+							this._eachLayer((layer) => {
 								layer.remove();
 							});
 
@@ -6227,9 +6136,8 @@
 				/***/
 			},
 			/* 50 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Date layer
 				 */
 
@@ -6352,7 +6260,7 @@
 						 * @param {Array.<Date>} dates
 						 * @private
 						 */
-						_getWeek: function (currentYear, currentMonth, dates) {
+						_getWeek: (currentYear, currentMonth, dates) => {
 							var firstDateOfCurrentMonth = new Date(
 								currentYear,
 								currentMonth - 1,
@@ -6444,12 +6352,11 @@
 				/***/
 			},
 			/* 51 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-
+			/***/ (module, exports, __webpack_require__) => {
+				
 				var template = __webpack_require__(11);
 
-				module.exports = function (context) {
+				module.exports = (context) => {
 					var source =
 						'<table class="tui-calendar-body-inner" cellspacing="0" cellpadding="0">' +
 						"  <caption><span>Dates</span></caption>" +
@@ -6481,9 +6388,8 @@
 				/***/
 			},
 			/* 52 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Month layer
 				 */
 
@@ -6571,12 +6477,11 @@
 				/***/
 			},
 			/* 53 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-
+			/***/ (module, exports, __webpack_require__) => {
+				
 				var template = __webpack_require__(11);
 
-				module.exports = function (context) {
+				module.exports = (context) => {
 					var source =
 						'<table class="tui-calendar-body-inner">' +
 						"  <caption><span>Months</span></caption>" +
@@ -6608,9 +6513,8 @@
 				/***/
 			},
 			/* 54 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Year layer
 				 */
 
@@ -6648,7 +6552,7 @@
 						 * @returns {object} Template context
 						 * @private
 						 */
-						_makeContext: function (date) {
+						_makeContext: (date) => {
 							var year = date.getFullYear();
 
 							return {
@@ -6690,12 +6594,11 @@
 				/***/
 			},
 			/* 55 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-
+			/***/ (module, exports, __webpack_require__) => {
+				
 				var template = __webpack_require__(11);
 
-				module.exports = function (context) {
+				module.exports = (context) => {
 					var source =
 						'<table class="tui-calendar-body-inner">' +
 						"  <caption><span>Years</span></caption>" +
@@ -6718,9 +6621,8 @@
 				/***/
 			},
 			/* 56 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview RangeModel
 				 */
 
@@ -6873,9 +6775,7 @@
 							);
 
 							// Reduce empty ranges
-							this._ranges = util.filter(this._ranges, function (range) {
-								return !range.isEmpty();
-							});
+							this._ranges = util.filter(this._ranges, (range) => !range.isEmpty());
 						},
 
 						/**
@@ -6906,9 +6806,8 @@
 				/***/
 			},
 			/* 57 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Range (in RangeModel)
 				 */
 
@@ -7025,12 +6924,11 @@
 				/***/
 			},
 			/* 58 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-
+			/***/ (module, exports, __webpack_require__) => {
+				
 				var template = __webpack_require__(11);
 
-				module.exports = function (context) {
+				module.exports = (context) => {
 					var source =
 						'<div class="tui-datepicker">' +
 						"  {{if timePicker}}" +
@@ -7068,9 +6966,8 @@
 				/***/
 			},
 			/* 59 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview DatePicker input(element) component
 				 */
 
@@ -7282,9 +7179,8 @@
 				/***/
 			},
 			/* 60 */
-			/***/ function (module, exports, __webpack_require__) {
-				"use strict";
-				/**
+			/***/ (module, exports, __webpack_require__) => {
+								/**
 				 * @fileoverview Date-Range picker
 				 */
 
@@ -7493,7 +7389,7 @@
 						 * @param {boolean} isInRange - In range
 						 * @private
 						 */
-						_setRangeClass: function (el, isInRange) {
+						_setRangeClass: (el, isInRange) => {
 							if (isInRange) {
 								addClass(el, CLASS_NAME_SELECTED_RANGE);
 							} else {
@@ -7507,7 +7403,7 @@
 						 * @param {boolean} isSelected - Is selected
 						 * @private
 						 */
-						_setSelectedClass: function (el, isSelected) {
+						_setSelectedClass: (el, isSelected) => {
 							if (isSelected) {
 								addClass(el, CLASS_NAME_SELECTED);
 							} else {
@@ -7770,11 +7666,10 @@
 				/***/
 			},
 			/* 61 */
-			/***/ function (module, exports, __webpack_require__) {
+			/***/ (module, exports, __webpack_require__) => {
 				// extracted by mini-css-extract-plugin
 				/***/
 			},
 			/******/
 		],
-	);
-});
+	));

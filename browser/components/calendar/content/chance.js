@@ -3,7 +3,7 @@
 //  (c) 2013 Victor Quinn
 //  Chance may be freely distributed or modified under the MIT license.
 
-(function () {
+(() => {
 	// Constants
 	var MAX_INT = 9007199254740992;
 	var MIN_INT = -MAX_INT;
@@ -92,9 +92,7 @@
 	}
 
 	function range(size) {
-		return Array.apply(null, Array(size)).map(function (_, i) {
-			return i;
-		});
+		return Array.apply(null, Array(size)).map((_, i) => i);
 	}
 
 	function testRange(test, errorMessage) {
@@ -106,7 +104,7 @@
 	/**
 	 * Encode the input string with Base64.
 	 */
-	var base64 = function () {
+	var base64 = () => {
 		throw new Error("No Base64 encoder available.");
 	};
 
@@ -115,9 +113,7 @@
 		if (typeof btoa === "function") {
 			base64 = btoa;
 		} else if (typeof Buffer === "function") {
-			base64 = function (input) {
-				return new Buffer(input).toString("base64");
-			};
+			base64 = (input) => new Buffer(input).toString("base64");
 		}
 	})();
 
@@ -383,16 +379,14 @@
 				}
 			}
 		}
-		var targetPrimes = data.primes.filter(function (prime) {
-			return prime >= options.min && prime <= options.max;
-		});
+		var targetPrimes = data.primes.filter((prime) => prime >= options.min && prime <= options.max);
 		return this.pick(targetPrimes);
 	};
 
 	/**
 	 * Determine whether a given number is prime or not.
 	 */
-	Chance.prototype.is_prime = function (n) {
+	Chance.prototype.is_prime = (n) => {
 		if (n % 1 || n < 2) {
 			return false;
 		}
@@ -492,15 +486,9 @@
 
 	ReplaceToken.prototype = {
 		replacers: {
-			"#": function (chance) {
-				return chance.character({ pool: NUMBERS });
-			},
-			A: function (chance) {
-				return chance.character({ pool: CHARS_UPPER });
-			},
-			a: function (chance) {
-				return chance.character({ pool: CHARS_LOWER });
-			},
+			"#": (chance) => chance.character({ pool: NUMBERS }),
+			A: (chance) => chance.character({ pool: CHARS_UPPER }),
+			a: (chance) => chance.character({ pool: CHARS_LOWER }),
 		},
 
 		substitute: function (chance) {
@@ -568,12 +556,9 @@
 	Chance.prototype.template = function (template) {
 		if (!template) {
 			throw new Error("Template string is required");
-		}
-		var self = this;
+		};
 		return parseTemplate(template)
-			.map(function (token) {
-				return token.substitute(self);
-			})
+			.map((token) => token.substitute(this))
 			.join("");
 	};
 
@@ -604,9 +589,7 @@
 
 	// -- Helpers --
 
-	Chance.prototype.capitalize = function (word) {
-		return word.charAt(0).toUpperCase() + word.substr(1);
-	};
+	Chance.prototype.capitalize = (word) => word.charAt(0).toUpperCase() + word.substr(1);
 
 	Chance.prototype.mixin = function (obj) {
 		for (var func_name in obj) {
@@ -632,9 +615,7 @@
 			"Chance: The first argument must be a function.",
 		);
 
-		var comparator = function (arr, val) {
-			return arr.indexOf(val) !== -1;
-		};
+		var comparator = (arr, val) => arr.indexOf(val) !== -1;
 
 		if (options) {
 			comparator = options.comparator || comparator;
@@ -695,7 +676,7 @@
 	};
 
 	// H/T to SO for this one: http://vq.io/OtUrZ5
-	Chance.prototype.pad = function (number, width, pad) {
+	Chance.prototype.pad = (number, width, pad) => {
 		// Default pad to 0 if none provided
 		pad = pad || "0";
 		// Convert number to a string
@@ -1190,7 +1171,7 @@
 		if (options.nationality === "*") {
 			var allLastNames = [];
 			var lastNames = this.get("lastNames");
-			Object.keys(lastNames).forEach(function (key) {
+			Object.keys(lastNames).forEach((key) => {
 				allLastNames = allLastNames.concat(lastNames[key]);
 			});
 			return this.pick(allLastNames);
@@ -1215,7 +1196,7 @@
 	};
 
 	Chance.prototype.mrz = function (options) {
-		var checkDigit = function (input) {
+		var checkDigit = (input) => {
 			var alpha = "<ABCDEFGHIJKLMNOPQRSTUVWXYXZ".split(""),
 				multipliers = [7, 3, 1],
 				runningTotal = 0;
@@ -1224,7 +1205,7 @@
 				input = input.toString();
 			}
 
-			input.split("").forEach(function (character, idx) {
+			input.split("").forEach((character, idx) => {
 				var pos = alpha.indexOf(character);
 
 				if (pos !== -1) {
@@ -1237,10 +1218,8 @@
 			});
 			return runningTotal % 10;
 		};
-		var generate = function (opts) {
-			var pad = function (length) {
-				return new Array(length + 1).join("<");
-			};
+		var generate = (opts) => {
+			var pad = (length) => new Array(length + 1).join("<");
 			var number = [
 				"P<",
 				opts.issuer,
@@ -1266,28 +1245,26 @@
 					number.substr(44, 10) + number.substr(57, 7) + number.substr(65, 7),
 				)
 			);
-		};
-
-		var that = this;
+		};;
 
 		options = initOptions(options, {
 			first: this.first(),
 			last: this.last(),
 			passportNumber: this.integer({ min: 100000000, max: 999999999 }),
-			dob: (function () {
-				var date = that.birthday({ type: "adult" });
+			dob: (() => {
+				var date = this.birthday({ type: "adult" });
 				return [
 					date.getFullYear().toString().substr(2),
-					that.pad(date.getMonth() + 1, 2),
-					that.pad(date.getDate(), 2),
+					this.pad(date.getMonth() + 1, 2),
+					this.pad(date.getDate(), 2),
 				].join("");
 			})(),
-			expiry: (function () {
+			expiry: (() => {
 				var date = new Date();
 				return [
 					(date.getFullYear() + 5).toString().substr(2),
-					that.pad(date.getMonth() + 1, 2),
-					that.pad(date.getDate(), 2),
+					this.pad(date.getMonth() + 1, 2),
+					this.pad(date.getDate(), 2),
 				].join("");
 			})(),
 			gender: this.gender() === "Female" ? "F" : "M",
@@ -1330,7 +1307,7 @@
 
 	// Return the list of available name prefixes based on supplied gender.
 	// @todo introduce internationalization
-	Chance.prototype.name_prefixes = function (gender) {
+	Chance.prototype.name_prefixes = (gender) => {
 		gender = gender || "all";
 		gender = gender.toLowerCase();
 
@@ -1414,7 +1391,7 @@
 
 	// Return the list of available name suffixes
 	// @todo introduce internationalization
-	Chance.prototype.name_suffixes = function () {
+	Chance.prototype.name_suffixes = () => {
 		var suffixes = [
 			{ name: "Doctor of Osteopathic Medicine", abbreviation: "D.O." },
 			{ name: "Doctor of Philosophy", abbreviation: "Ph.D." },
@@ -1910,8 +1887,7 @@
 		return range + this.rpg("3d10").join(".") + prerelease;
 	};
 
-	Chance.prototype.tlds = function () {
-		return [
+	Chance.prototype.tlds = () => [
 			"com",
 			"org",
 			"edu",
@@ -2170,7 +2146,6 @@
 			"zm",
 			"zw",
 		];
-	};
 
 	Chance.prototype.tld = function () {
 		return this.pick(this.tlds());
@@ -2220,7 +2195,7 @@
 		}
 	};
 
-	Chance.prototype.loremPicsum = function (options) {
+	Chance.prototype.loremPicsum = (options) => {
 		options = initOptions(options, {
 			width: 500,
 			height: 500,
@@ -2439,13 +2414,13 @@
 	};
 
 	Chance.prototype.phone = function (options) {
-		var self = this,
+		var 
 			numPick,
-			ukNum = function (parts) {
+			ukNum = (parts) => {
 				var section = [];
 				//fills the section part of the phone number with random numbers.
-				parts.sections.forEach(function (n) {
-					section.push(self.string({ pool: "0123456789", length: n }));
+				parts.sections.forEach((n) => {
+					section.push(this.string({ pool: "0123456789", length: n }));
 				});
 				return parts.area + section.join(" ");
 			};
@@ -2500,7 +2475,7 @@
 								"82",
 								"83",
 							]) +
-							self.string({ pool: "0123456789", length: 6 }),
+							this.string({ pool: "0123456789", length: 6 }),
 						"02" +
 							this.pick([
 								"14",
@@ -2548,7 +2523,7 @@
 								"98",
 								"99",
 							]) +
-							self.string({ pool: "0123456789", length: 6 }),
+							this.string({ pool: "0123456789", length: 6 }),
 						"03" +
 							this.pick([
 								"10",
@@ -2598,7 +2573,7 @@
 								"89",
 								"90",
 							]) +
-							self.string({ pool: "0123456789", length: 6 }),
+							this.string({ pool: "0123456789", length: 6 }),
 						"04" +
 							this.pick([
 								"11",
@@ -2651,7 +2626,7 @@
 								"97",
 								"98",
 							]) +
-							self.string({ pool: "0123456789", length: 6 }),
+							this.string({ pool: "0123456789", length: 6 }),
 						"05" +
 							this.pick([
 								"08",
@@ -2689,14 +2664,14 @@
 								"90",
 								"94",
 							]) +
-							self.string({ pool: "0123456789", length: 6 }),
-						"09" + self.string({ pool: "0123456789", length: 8 }),
+							this.string({ pool: "0123456789", length: 6 }),
+						"09" + this.string({ pool: "0123456789", length: 8 }),
 					]);
 					phone = options.formatted ? numPick.match(/../g).join(" ") : numPick;
 				} else {
 					numPick =
 						this.pick(["06", "07"]) +
-						self.string({ pool: "0123456789", length: 8 });
+						this.string({ pool: "0123456789", length: 8 });
 					phone = options.formatted ? numPick.match(/../g).join(" ") : numPick;
 				}
 				break;
@@ -2781,39 +2756,39 @@
 					numPick = this.pick([
 						"01" +
 							this.pick(["0", "1", "2", "3", "4", "5", "6", "7", "8"]) +
-							self.string({ pool: "0123456789", length: 7 }),
+							this.string({ pool: "0123456789", length: 7 }),
 						"02" +
 							this.pick(["1", "2", "3", "4", "7", "8"]) +
-							self.string({ pool: "0123456789", length: 7 }),
+							this.string({ pool: "0123456789", length: 7 }),
 						"03" +
 							this.pick(["1", "2", "3", "5", "6", "9"]) +
-							self.string({ pool: "0123456789", length: 7 }),
+							this.string({ pool: "0123456789", length: 7 }),
 						"04" +
 							this.pick(["1", "2", "3", "4", "5", "6", "7", "8", "9"]) +
-							self.string({ pool: "0123456789", length: 7 }),
+							this.string({ pool: "0123456789", length: 7 }),
 						"05" +
 							this.pick(["1", "3", "4", "6", "7", "8"]) +
-							self.string({ pool: "0123456789", length: 7 }),
+							this.string({ pool: "0123456789", length: 7 }),
 					]);
 					phone = options.formatted || numPick;
 				} else {
 					numPick = this.pick([
 						"060" +
 							this.pick(["3", "4", "5", "6", "7", "8", "9"]) +
-							self.string({ pool: "0123456789", length: 6 }),
+							this.string({ pool: "0123456789", length: 6 }),
 						"061" +
 							this.pick(["0", "1", "2", "3", "4", "5", "8"]) +
-							self.string({ pool: "0123456789", length: 6 }),
-						"06" + self.string({ pool: "0123456789", length: 7 }),
+							this.string({ pool: "0123456789", length: 6 }),
+						"06" + this.string({ pool: "0123456789", length: 7 }),
 						"071" +
 							this.pick(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]) +
-							self.string({ pool: "0123456789", length: 6 }),
+							this.string({ pool: "0123456789", length: 6 }),
 						"07" +
 							this.pick(["2", "3", "4", "6", "7", "8", "9"]) +
-							self.string({ pool: "0123456789", length: 7 }),
+							this.string({ pool: "0123456789", length: 7 }),
 						"08" +
 							this.pick(["0", "1", "2", "3", "4", "5"]) +
-							self.string({ pool: "0123456789", length: 7 }),
+							this.string({ pool: "0123456789", length: 7 }),
 					]);
 					phone = options.formatted || numPick;
 				}
@@ -2902,12 +2877,12 @@
 				var prefix;
 				if (options.mobile) {
 					// Brasilian official reference (mobile): http://www.anatel.gov.br/setorregulado/plano-de-numeracao-brasileiro?id=330
-					prefix = "9" + self.string({ pool: "0123456789", length: 4 });
+					prefix = "9" + this.string({ pool: "0123456789", length: 4 });
 				} else {
 					// Brasilian official reference: http://www.anatel.gov.br/setorregulado/plano-de-numeracao-brasileiro?id=331
 					prefix = this.natural({ min: 2000, max: 5999 }).toString();
 				}
-				var mcdu = self.string({ pool: "0123456789", length: 4 });
+				var mcdu = this.string({ pool: "0123456789", length: 4 });
 				phone = options.formatted
 					? "(" + areaCode + ") " + prefix + "-" + mcdu
 					: areaCode + prefix + mcdu;
@@ -3317,12 +3292,10 @@
 	//Return random correct currency exchange pair (e.g. EUR/USD) or array of currency code
 	Chance.prototype.currency_pair = function (returnAsString) {
 		var currencies = this.unique(this.currency, 2, {
-			comparator: function (arr, val) {
-				return arr.reduce(function (acc, item) {
+			comparator: (arr, val) => arr.reduce((acc, item) => {
 					// If a match has been found, short circuit check and just return
 					return acc || item.code === val.code;
-				}, false);
-			},
+				}, false),
 		});
 
 		if (returnAsString) {
@@ -3481,7 +3454,7 @@
 						"Z",
 				  ]) + this.pad(this.natural({ max: 999 }), 3),
 			cf = [],
-			name_generator = function (name, isLast) {
+			name_generator = (name, isLast) => {
 				var temp,
 					return_value = [];
 
@@ -3491,9 +3464,7 @@
 					temp = name
 						.toUpperCase()
 						.split("")
-						.map(function (c) {
-							return "BCDFGHJKLMNPRSTVWZ".indexOf(c) !== -1 ? c : undefined;
-						})
+						.map((c) => "BCDFGHJKLMNPRSTVWZ".indexOf(c) !== -1 ? c : undefined)
 						.join("");
 					if (temp.length > 3) {
 						if (isLast) {
@@ -3507,9 +3478,7 @@
 						temp = name
 							.toUpperCase()
 							.split("")
-							.map(function (c) {
-								return "AEIOU".indexOf(c) !== -1 ? c : undefined;
-							})
+							.map((c) => "AEIOU".indexOf(c) !== -1 ? c : undefined)
 							.join("")
 							.substr(0, 3 - return_value.length);
 					}
@@ -3518,7 +3487,7 @@
 
 				return return_value;
 			},
-			date_generator = function (birthday, gender, that) {
+			date_generator = (birthday, gender, that) => {
 				var lettermonths = [
 					"A",
 					"B",
@@ -3543,7 +3512,7 @@
 					)
 				);
 			},
-			checkdigit_generator = function (cf) {
+			checkdigit_generator = (cf) => {
 				var range1 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
 					range2 = "ABCDEFGHIJABCDEFGHIJKLMNOPQRSTUVWXYZ",
 					evens = "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
@@ -3745,9 +3714,7 @@
 				rolls[i - 1] = this.natural({ min: 1, max: bits[1] });
 			}
 			return typeof options.sum !== "undefined" && options.sum
-				? rolls.reduce(function (p, c) {
-						return p + c;
-				  })
+				? rolls.reduce((p, c) => p + c)
 				: rolls;
 		}
 	};
@@ -3790,7 +3757,7 @@
 		);
 	};
 
-	Chance.prototype.luhn_calculate = function (num) {
+	Chance.prototype.luhn_calculate = (num) => {
 		var digits = num.toString().split("").reverse();
 		var sum = 0;
 		var digit;
@@ -14676,7 +14643,7 @@
 	var o_hasOwnProperty = Object.prototype.hasOwnProperty;
 	var o_keys =
 		Object.keys ||
-		function (obj) {
+		((obj) => {
 			var result = [];
 			for (var key in obj) {
 				if (o_hasOwnProperty.call(obj, key)) {
@@ -14685,7 +14652,7 @@
 			}
 
 			return result;
-		};
+		});
 
 	function _copyObject(source, target) {
 		var keys = o_keys(source);
@@ -14717,9 +14684,7 @@
 	}
 
 	/** Get the data based on key**/
-	Chance.prototype.get = function (name) {
-		return copyObject(data[name]);
-	};
+	Chance.prototype.get = (name) => copyObject(data[name]);
 
 	// Mac Address
 	Chance.prototype.mac_address = function (options) {
@@ -14837,7 +14802,7 @@
 	};
 
 	// Set the data as key and data or the data map
-	Chance.prototype.set = function (name, values) {
+	Chance.prototype.set = (name, values) => {
 		if (typeof name === "string") {
 			data[name] = values;
 		} else {
@@ -14905,13 +14870,9 @@
 
 	// -- End Miscellaneous --
 
-	Chance.prototype.mersenne_twister = function (seed) {
-		return new MersenneTwister(seed);
-	};
+	Chance.prototype.mersenne_twister = (seed) => new MersenneTwister(seed);
 
-	Chance.prototype.blueimp_md5 = function () {
-		return new BlueImpMD5();
-	};
+	Chance.prototype.blueimp_md5 = () => new BlueImpMD5();
 
 	// Mersenne Twister from https://gist.github.com/banksean/300494
 	/*
@@ -15115,7 +15076,7 @@
 	};
 
 	// BlueImp MD5 hashing algorithm from https://github.com/blueimp/JavaScript-MD5
-	var BlueImpMD5 = function () {};
+	var BlueImpMD5 = () => {};
 
 	BlueImpMD5.prototype.VERSION = "1.0.1";
 
@@ -15132,9 +15093,7 @@
 	/*
 	 * Bitwise rotate a 32-bit number to the left.
 	 */
-	BlueImpMD5.prototype.bit_roll = function (num, cnt) {
-		return (num << cnt) | (num >>> (32 - cnt));
-	};
+	BlueImpMD5.prototype.bit_roll = (num, cnt) => (num << cnt) | (num >>> (32 - cnt));
 
 	/*
 	 * These functions implement the five basic operations the algorithm uses.
@@ -15261,7 +15220,7 @@
 	/*
 	 * Convert an array of little-endian words to a string
 	 */
-	BlueImpMD5.prototype.binl2rstr = function (input) {
+	BlueImpMD5.prototype.binl2rstr = (input) => {
 		var i,
 			output = "";
 		for (i = 0; i < input.length * 32; i += 8) {
@@ -15274,7 +15233,7 @@
 	 * Convert a raw string to an array of little-endian words
 	 * Characters >255 have their high-byte silently ignored.
 	 */
-	BlueImpMD5.prototype.rstr2binl = function (input) {
+	BlueImpMD5.prototype.rstr2binl = (input) => {
 		var i,
 			output = [];
 		output[(input.length >> 2) - 1] = undefined;
@@ -15321,7 +15280,7 @@
 	/*
 	 * Convert a raw string to a hex string
 	 */
-	BlueImpMD5.prototype.rstr2hex = function (input) {
+	BlueImpMD5.prototype.rstr2hex = (input) => {
 		var hex_tab = "0123456789abcdef",
 			output = "",
 			x,
@@ -15336,9 +15295,7 @@
 	/*
 	 * Encode a string as utf-8
 	 */
-	BlueImpMD5.prototype.str2rstr_utf8 = function (input) {
-		return unescape(encodeURIComponent(input));
-	};
+	BlueImpMD5.prototype.str2rstr_utf8 = (input) => unescape(encodeURIComponent(input));
 
 	/*
 	 * Take string arguments and return either raw or hex encoded strings
@@ -15382,9 +15339,7 @@
 
 	// Register as an anonymous AMD module
 	if (typeof define === "function" && define.amd) {
-		define([], function () {
-			return Chance;
-		});
+		define([], () => Chance);
 	}
 
 	// if there is a importsScrips object define chance for worker

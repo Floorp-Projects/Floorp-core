@@ -127,7 +127,7 @@ if (
 }
 
 async function workspacesToolbarButton() {
-	let { WorkspacesElementService } = ChromeUtils.importESModule(
+	const { WorkspacesElementService } = ChromeUtils.importESModule(
 		"resource:///modules/WorkspacesElementService.sys.mjs",
 	);
 
@@ -151,7 +151,7 @@ async function workspacesToolbarButton() {
 			aNode.appendChild(popup);
 		},
 		onCommand() {
-			let currentWindow = Services.wm.getMostRecentWindow("navigator:browser");
+			const currentWindow = Services.wm.getMostRecentWindow("navigator:browser");
 			const panel = currentWindow.document.getElementById(
 				"workspacesToolbarButtonPanel",
 			);

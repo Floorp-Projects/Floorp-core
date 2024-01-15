@@ -16,19 +16,19 @@ ChromeUtils.defineESModuleGetters(lazy, {
 
 export const WorkspacesIdUtils = {
 	async getWorkspaceByIdAndWindowId(workspaceId, windowId) {
-		let workspacesData =
+		const workspacesData =
 			await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
 		return workspacesData[workspaceId];
 	},
 
 	async workspaceIdExists(workspaceId, windowId) {
-		let workspacesData =
+		const workspacesData =
 			await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
 		return workspacesData.hasOwnProperty(workspaceId);
 	},
 
 	async getWorkspaceContainerUserContextId(workspaceId, windowId) {
-		let workspace = await this.getWorkspaceByIdAndWindowId(
+		const workspace = await this.getWorkspaceByIdAndWindowId(
 			workspaceId,
 			windowId,
 		);
@@ -36,7 +36,7 @@ export const WorkspacesIdUtils = {
 	},
 
 	async getWorkspaceIcon(workspaceId, windowId) {
-		let workspace = await this.getWorkspaceByIdAndWindowId(
+		const workspace = await this.getWorkspaceByIdAndWindowId(
 			workspaceId,
 			windowId,
 		);
@@ -44,14 +44,14 @@ export const WorkspacesIdUtils = {
 	},
 
 	async removeWorkspaceById(workspaceId, windowId) {
-		let workspacesData =
+		const workspacesData =
 			await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
 		delete workspacesData[workspaceId];
 		await lazy.WorkspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
 	},
 
 	async removeWindowWorkspacesDataById(windowId) {
-		let json = await IOUtils.readJSON(
+		const json = await IOUtils.readJSON(
 			lazy.WorkspacesExternalFileService._workspacesStoreFile,
 		);
 		delete json.windows[windowId];
@@ -63,14 +63,14 @@ export const WorkspacesIdUtils = {
 	},
 
 	async removeWindowTabsDataById(windowId) {
-		let json = await IOUtils.readJSON(
+		const json = await IOUtils.readJSON(
 			lazy.WorkspacesExternalFileService._workspacesStoreFile,
 		);
-		let windowWorkspacesData = json.windows[windowId];
-		for (let workspaceId in windowWorkspacesData) {
-			let workspace = windowWorkspacesData[workspaceId];
+		const windowWorkspacesData = json.windows[windowId];
+		for (const workspaceId in windowWorkspacesData) {
+			const workspace = windowWorkspacesData[workspaceId];
 			if (workspace.tabs) {
-				let workspace = windowWorkspacesData[workspaceId];
+				const workspace = windowWorkspacesData[workspaceId];
 				workspace.tabs = [];
 			}
 		}

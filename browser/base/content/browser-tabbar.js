@@ -164,8 +164,8 @@ const tabbarDisplayStyleFunctions = {
 
 	setWorkspaceLabelToNavbar() {
 		//move workspace button
-		let workspaceButton = document.getElementById("workspace-button");
-		let customizeTarget = document.getElementById(
+		const workspaceButton = document.getElementById("workspace-button");
+		const customizeTarget = document.getElementById(
 			"nav-bar-customization-target",
 		);
 
@@ -177,7 +177,7 @@ const tabbarDisplayStyleFunctions = {
 	},
 
 	moveToDefaultSpace() {
-		let workspaceButton = document.getElementById("workspace-button");
+		const workspaceButton = document.getElementById("workspace-button");
 		if (!workspaceButton) {
 			return;
 		}
@@ -295,7 +295,7 @@ document.addEventListener(
 			setNewTabInTabs,
 		);
 
-		let applyMultitab = () => {
+		const applyMultitab = () => {
 			const tabbarStyle = Services.prefs.getIntPref("floorp.tabbar.style");
 
 			if (tabbarStyle == 1 || tabbarStyle == 2) {

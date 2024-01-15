@@ -18,7 +18,7 @@ var { SiteSpecificBrowserIdUtils } = ChromeUtils.importESModule(
 	"resource:///modules/SiteSpecificBrowserIdUtils.sys.mjs",
 );
 
-let gFloorpPageAction = {
+const gFloorpPageAction = {
 	qrCode: {
 		QRCodeGeneratePageActionButton: window.MozXULElement.parseXULToFragment(`
      <hbox id="QRCodeGeneratePageAction" data-l10n-id="qrcode-generate-page-action"
@@ -44,8 +44,8 @@ let gFloorpPageAction = {
 				"chrome://browser/content/floorp/third_party/qr-code-styling.js"
 			);
 
-			let currentTab = gBrowser.selectedTab;
-			let currentTabURL = currentTab.linkedBrowser.currentURI.spec;
+			const currentTab = gBrowser.selectedTab;
+			const currentTabURL = currentTab.linkedBrowser.currentURI.spec;
 
 			const qrCode = new QRCodeStyling({
 				width: 250,
@@ -69,7 +69,7 @@ let gFloorpPageAction = {
 			});
 
 			//remove old qrcode
-			let QRCodeBox = document.getElementById("qrcode-img-vbox");
+			const QRCodeBox = document.getElementById("qrcode-img-vbox");
 
 			while (QRCodeBox.firstChild) {
 				QRCodeBox.firstChild.remove();
@@ -120,14 +120,14 @@ let gFloorpPageAction = {
 			gSsbChromeManager.functions.installOrRunCurrentPageAsSsb(true);
 
 			// Show installing gif
-			let installingGif = document.getElementById("ssb-installing-icon");
+			const installingGif = document.getElementById("ssb-installing-icon");
 			installingGif?.removeAttribute("hidden");
 
 			// Hide install button
-			let installButtons = document.getElementsByClassName(
+			const installButtons = document.getElementsByClassName(
 				"ssb-install-buttons",
 			);
-			for (let installButton of installButtons) {
+			for (const installButton of installButtons) {
 				installButton?.setAttribute("hidden", true);
 			}
 		},
@@ -135,14 +135,14 @@ let gFloorpPageAction = {
 		closePopup() {
 			document.getElementById("ssb-panel").hidePopup();
 			// Show installing gif
-			let installingGif = document.getElementById("ssb-installing-icon");
+			const installingGif = document.getElementById("ssb-installing-icon");
 			installingGif?.setAttribute("hidden", true);
 
 			// Hide install button
-			let installButtons = document.getElementsByClassName(
+			const installButtons = document.getElementsByClassName(
 				"ssb-install-buttons",
 			);
-			for (let installButton of installButtons) {
+			for (const installButton of installButtons) {
 				installButton?.removeAttribute("hidden");
 			}
 		},

@@ -6,7 +6,7 @@
 /* import-globals-from /toolkit/content/preferencesBindings.js */
 
 const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
-let CustomKeyboardShortcutUtils = ChromeUtils.importESModule(
+const CustomKeyboardShortcutUtils = ChromeUtils.importESModule(
 	"resource:///modules/CustomKeyboardShortcutUtils.sys.mjs",
 );
 
@@ -23,11 +23,11 @@ const keyboradShortcutConfig = JSON.parse(
 
 const allActions =
 	CustomKeyboardShortcutUtils.keyboradShortcutFunctions.getInfoFunctions.getkeyboradShortcutActions();
-let pressedKeys = [];
+const pressedKeys = [];
 let isTracking = false;
 
 function setTitle() {
-	let winElem = document.documentElement;
+	const winElem = document.documentElement;
 	document.l10n.setAttributes(winElem, "shortcutkey-customize");
 }
 setTitle();
@@ -101,7 +101,7 @@ function checkInputKeyCanUse(key) {
 	const cannotUseModifiers = CustomKeyboardShortcutUtils.cannotUseModifiers;
 	const keyListInput = document.getElementById("keyList").value.split(", ");
 
-	let regex = /^[0-9a-zA-Z]*$/;
+	const regex = /^[0-9a-zA-Z]*$/;
 
 	if (modifiersList.includes(key) && !keyCodeIsInputed()) {
 		return true;
@@ -166,12 +166,12 @@ function keyCodeIsInputed() {
 function separateKeyAndModifiers(keyList) {
 	let KeyResult = "";
 	let keyCodeResult = "";
-	let modifiers = [];
+	const modifiers = [];
 	const keyCodeList =
 		CustomKeyboardShortcutUtils.keyboradShortcutFunctions.keyCodesListFunctions.getKeyCodesList();
 	const modifiersList =
 		CustomKeyboardShortcutUtils.keyboradShortcutFunctions.modifiersListFunctions.getModifiersList();
-	let regex = /^[0-9a-zA-Z]*$/;
+	const regex = /^[0-9a-zA-Z]*$/;
 
 	for (let i = 0; i < keyList.length; i++) {
 		const key = keyList[i];
@@ -194,7 +194,7 @@ function setPref() {
 		document.getElementById("keyList").value.split(", "),
 	);
 
-	let keyCodeResult =
+	const keyCodeResult =
 		CustomKeyboardShortcutUtils.keyboradShortcutFunctions.keyCodesListFunctions.conversionToXULKeyCode(
 			keyListInput[1],
 		)

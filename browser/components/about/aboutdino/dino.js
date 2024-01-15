@@ -2,9 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 // extract from chromium source code by @liuwayong
-(function () {
-	"use strict";
-	/**
+(() => {
+		/**
 	 * T-Rex runner.
 	 * @param {string} outerContainerId Outer containing element id.
 	 * @param {Object} opt_config
@@ -225,7 +224,7 @@
 		 * Whether the easter egg has been disabled. CrOS enterprise enrolled devices.
 		 * @return {boolean}
 		 */
-		isDisabled: function () {
+		isDisabled: () => {
 			// return loadTimeData && loadTimeData.valueExists('disabledEasterEgg');
 			return false;
 		},
@@ -957,7 +956,7 @@
 	 * @param {number} opt_height
 	 * @return {boolean} Whether the canvas was scaled.
 	 */
-	Runner.updateCanvasScaling = function (canvas, opt_width, opt_height) {
+	Runner.updateCanvasScaling = (canvas, opt_width, opt_height) => {
 		var context = canvas.getContext("2d");
 
 		// Query the various pixel ratios
@@ -2746,9 +2745,7 @@
 				}
 
 				// Remove expired clouds.
-				this.clouds = this.clouds.filter(function (obj) {
-					return !obj.remove;
-				});
+				this.clouds = this.clouds.filter((obj) => !obj.remove);
 			} else {
 				this.addCloud();
 			}

@@ -24,7 +24,7 @@ const gSsbChromeManager = {
 			return;
 		}
 
-		document.addEventListener("floorpOnLocationChangeEvent", function () {
+		document.addEventListener("floorpOnLocationChangeEvent", () => {
 			gSsbChromeManager.eventListeners.onCurrentTabChangedOrLoaded();
 		});
 
@@ -38,7 +38,7 @@ const gSsbChromeManager = {
 
 	functions: {
 		async installOrRunCurrentPageAsSsb(asPwa) {
-			let isInstalled =
+			const isInstalled =
 				await gSsbChromeManager.functions.checkCurrentPageIsInstalled();
 
 			if (!gBrowser.currentURI.schemeIs("https")) {
@@ -46,14 +46,14 @@ const gSsbChromeManager = {
 			}
 
 			if (isInstalled) {
-				let currentTabSsb =
+				const currentTabSsb =
 					await gSsbChromeManager.functions.getCurrentTabSsb();
-				let ssbObj = await SiteSpecificBrowserIdUtils.getIdByUrl(
+				const ssbObj = await SiteSpecificBrowserIdUtils.getIdByUrl(
 					currentTabSsb._manifest.start_url,
 				);
 
 				if (ssbObj) {
-					let id = ssbObj.id;
+					const id = ssbObj.id;
 					await SiteSpecificBrowserIdUtils.runSsbByUrlAndId(
 						gBrowser.currentURI.spec,
 						id,
@@ -67,7 +67,7 @@ const gSsbChromeManager = {
 					gFloorpPageAction.Ssb.closePopup();
 				}
 			} else {
-				let ssb = await SiteSpecificBrowser.createFromBrowser(
+				const ssb = await SiteSpecificBrowser.createFromBrowser(
 					gBrowser.selectedBrowser,
 					{
 						// Configure the SSB to use the site's manifest if it exists.
@@ -93,9 +93,9 @@ const gSsbChromeManager = {
 		},
 
 		async checkCurrentPageCanBeInstalled() {
-			let currentURI = gBrowser.currentURI;
-			let currentTab = gBrowser.selectedTab;
-			let currentTabURL = currentTab.linkedBrowser.currentURI.spec;
+			const currentURI = gBrowser.currentURI;
+			const currentTab = gBrowser.selectedTab;
+			const currentTabURL = currentTab.linkedBrowser.currentURI.spec;
 
 			if (
 				currentTabURL.startsWith("https://") ||
@@ -121,12 +121,12 @@ const gSsbChromeManager = {
 				return null;
 			}
 
-			let actor =
+			const actor =
 				gBrowser.selectedBrowser.browsingContext.currentWindowGlobal.getActor(
 					"SiteSpecificBrowser",
 				);
 			// If true, return the manifest href, otherwise return null
-			let result = await actor.sendQuery("checkSsbManifestIsExistent");
+			const result = await actor.sendQuery("checkSsbManifestIsExistent");
 
 			return result;
 		},
@@ -144,11 +144,11 @@ const gSsbChromeManager = {
 				return false;
 			}
 
-			let currentTabSsb = await gSsbChromeManager.functions.getCurrentTabSsb();
-			let ssbData =
+			const currentTabSsb = await gSsbChromeManager.functions.getCurrentTabSsb();
+			const ssbData =
 				await SiteSpecificBrowserExternalFileService.getCurrentSsbData();
 
-			for (let key in ssbData) {
+			for (const key in ssbData) {
 				if (
 					key === currentTabSsb._manifest.start_url ||
 					currentTabSsb._manifest.start_url.startsWith(key)
@@ -160,10 +160,10 @@ const gSsbChromeManager = {
 		},
 
 		enableInstallButton(openSsb) {
-			let installButton = document.getElementById("ssbPageAction");
+			const installButton = document.getElementById("ssbPageAction");
 			installButton.removeAttribute("hidden");
 
-			let image = document.getElementById("ssbPageAction-image");
+			const image = document.getElementById("ssbPageAction-image");
 			if (openSsb) {
 				image.setAttribute("open-ssb", "true");
 			} else {
@@ -172,16 +172,16 @@ const gSsbChromeManager = {
 		},
 
 		disableInstallButton() {
-			let installButton = document.getElementById("ssbPageAction");
+			const installButton = document.getElementById("ssbPageAction");
 			installButton.setAttribute("hidden", true);
 		},
 
 		async getCurrentTabSsb() {
-			let options = {
+			const options = {
 				useWebManifest: true,
 			};
 
-			let currentURISsbObj = await SiteSpecificBrowser.createFromBrowser(
+			const currentURISsbObj = await SiteSpecificBrowser.createFromBrowser(
 				gBrowser.selectedBrowser,
 				options,
 			);
@@ -192,19 +192,19 @@ const gSsbChromeManager = {
 		async setImageToInstallButton() {
 			gBrowser.currentURI;
 
-			let currentURISsbObj = await this.getCurrentTabSsb();
-			let isInstalled = await this.checkCurrentPageIsInstalled();
+			const currentURISsbObj = await this.getCurrentTabSsb();
+			const isInstalled = await this.checkCurrentPageIsInstalled();
 
-			let currentTabTitle = currentURISsbObj.name;
-			let currentTabIcon = currentURISsbObj._manifest.icons[0]?.src;
-			let currentTabURL = currentURISsbObj._scope.displayHost;
+			const currentTabTitle = currentURISsbObj.name;
+			const currentTabIcon = currentURISsbObj._manifest.icons[0]?.src;
+			const currentTabURL = currentURISsbObj._scope.displayHost;
 
-			let ssbContentLabel = document.getElementById("ssb-content-label");
-			let ssbContentDescription = document.getElementById(
+			const ssbContentLabel = document.getElementById("ssb-content-label");
+			const ssbContentDescription = document.getElementById(
 				"ssb-content-description",
 			);
-			let ssbContentIcon = document.getElementById("ssb-content-icon");
-			let installButton = document.querySelector("#ssb-app-install-button");
+			const ssbContentIcon = document.getElementById("ssb-content-icon");
+			const installButton = document.querySelector("#ssb-app-install-button");
 
 			if (ssbContentLabel) {
 				ssbContentLabel.textContent = currentTabTitle;
@@ -231,22 +231,22 @@ const gSsbChromeManager = {
 
 		async onSsbSubViewOpened() {
 			// Update ssb infomation
-			let parentElem = document.getElementById("panelMenu_installedSsbMenu");
-			let list =
+			const parentElem = document.getElementById("panelMenu_installedSsbMenu");
+			const list =
 				await SiteSpecificBrowserExternalFileService.getCurrentSsbData();
 
 			// remove old ssb infomation
-			let ssbAppInfoButtons = document.querySelectorAll(".ssb-app-info-button");
-			for (let ssbAppInfoButton of ssbAppInfoButtons) {
+			const ssbAppInfoButtons = document.querySelectorAll(".ssb-app-info-button");
+			for (const ssbAppInfoButton of ssbAppInfoButtons) {
 				ssbAppInfoButton.remove();
 			}
 
-			for (let key in list) {
-				let id = list[key].id;
-				let name = list[key].name;
-				let icon = list[key].manifest.icons[0].src;
+			for (const key in list) {
+				const id = list[key].id;
+				const name = list[key].name;
+				const icon = list[key].manifest.icons[0].src;
 
-				let elem = window.MozXULElement.parseXULToFragment(`
+				const elem = window.MozXULElement.parseXULToFragment(`
           <toolbarbutton id="ssb-${id}" class="subviewbutton ssb-app-info-button" label="${name}" image="${icon}"
                          ssbId="${id}" oncommand="SiteSpecificBrowserIdUtils.runSsbById('${id}');"/>
         `);
@@ -255,9 +255,9 @@ const gSsbChromeManager = {
 			}
 
 			// Check current page ssb is installed
-			let currentPageCanBeInstalled =
+			const currentPageCanBeInstalled =
 				await gSsbChromeManager.functions.checkCurrentPageCanBeInstalled();
-			let installButtonOnPanelUI = document.getElementById(
+			const installButtonOnPanelUI = document.getElementById(
 				"appMenu-install-or-open-ssb-current-page-button",
 			);
 
@@ -269,7 +269,7 @@ const gSsbChromeManager = {
 				);
 				installButtonOnPanelUI.removeAttribute("open-ssb");
 			} else {
-				let isInstalled =
+				const isInstalled =
 					await gSsbChromeManager.functions.checkCurrentPageIsInstalled();
 				installButtonOnPanelUI.removeAttribute("disabled");
 				if (isInstalled) {
@@ -301,13 +301,13 @@ const gSsbChromeManager = {
 		panelUIInstalledAppContextMenu: {
 			onPopupShowing(e) {
 				// Create context menu
-				let oldMenuItems = document.querySelectorAll(".ssb-contextmenu-items");
+				const oldMenuItems = document.querySelectorAll(".ssb-contextmenu-items");
 
 				for (let i = 0; i < oldMenuItems.length; i++) {
 					oldMenuItems[i].remove();
 				}
 
-				let menuitemElem = window.MozXULElement.parseXULToFragment(`
+				const menuitemElem = window.MozXULElement.parseXULToFragment(`
           <menuitem id="run-ssb-contextmenu" class="ssb-contextmenu-items" data-l10n-id="appmenuitem-contextmenu-open-app" oncommand="gSsbChromeManager.contextMenu.panelUIInstalledAppContextMenu.openSsbApp('${e.explicitOriginalTarget.getAttribute(
 						"ssbId",
 					)}');"/>
@@ -336,11 +336,11 @@ const gSsbChromeManager = {
 	eventListeners: {
 		async onCurrentTabChangedOrLoaded() {
 			// set image to the install button
-			let currentPageCanBeInstalled =
+			const currentPageCanBeInstalled =
 				await gSsbChromeManager.functions.checkCurrentPageCanBeInstalled();
-			let currentPageHasSsbManifest =
+			const currentPageHasSsbManifest =
 				await gSsbChromeManager.functions.checkCurrentPageHasSsbManifest();
-			let currentPageIsInstalled =
+			const currentPageIsInstalled =
 				await gSsbChromeManager.functions.checkCurrentPageIsInstalled();
 
 			if (
@@ -364,7 +364,7 @@ if (Services.prefs.getBoolPref("browser.ssb.enabled")) {
 	gSsbChromeManager.init();
 } else {
 	// Hide XUL elements
-	let css = `
+	const css = `
     #ssbPageAction,
     #appMenu-ssb-button,
     #appMenu-install-or-open-ssb-current-page-button,
@@ -372,9 +372,9 @@ if (Services.prefs.getBoolPref("browser.ssb.enabled")) {
       display: none !important;
     }
   `;
-	let sss = Cc["@mozilla.org/content/style-sheet-service;1"].getService(
+	const sss = Cc["@mozilla.org/content/style-sheet-service;1"].getService(
 		Ci.nsIStyleSheetService,
 	);
-	let uri = makeURI("data:text/css," + encodeURIComponent(css));
+	const uri = makeURI("data:text/css," + encodeURIComponent(css));
 	sss.loadAndRegisterSheet(uri, sss.USER_SHEET);
 }

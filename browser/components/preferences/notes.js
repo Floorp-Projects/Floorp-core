@@ -17,7 +17,7 @@ const gNotesPane = {
 		this._pane = document.getElementById("paneNotes");
 		document
 			.getElementById("backtogeneral__")
-			.addEventListener("command", function () {
+			.addEventListener("command", () => {
 				gotoPref("general");
 			});
 
@@ -27,10 +27,10 @@ const gNotesPane = {
 				continue;
 			}
 			needreboot[i].setAttribute("rebootELIsSet", "true");
-			needreboot[i].addEventListener("click", function () {
+			needreboot[i].addEventListener("click", () => {
 				if (!Services.prefs.getBoolPref("floorp.enable.auto.restart", false)) {
 					(async () => {
-						let userConfirm = await confirmRestartPrompt(null);
+						const userConfirm = await confirmRestartPrompt(null);
 						if (userConfirm == CONFIRM_RESTART_PROMPT_RESTART_NOW) {
 							Services.startup.quit(
 								Ci.nsIAppStartup.eAttemptQuit | Ci.nsIAppStartup.eRestart,
@@ -38,7 +38,7 @@ const gNotesPane = {
 						}
 					})();
 				} else {
-					window.setTimeout(function () {
+					window.setTimeout(() => {
 						Services.startup.quit(
 							Services.startup.eAttemptQuit | Services.startup.eRestart,
 						);
@@ -52,7 +52,7 @@ const gNotesPane = {
 				if (i > 9) {
 					document.querySelectorAll(".backup-item")[0].remove();
 				}
-				let elem = window.MozXULElement.parseXULToFragment(`
+				const elem = window.MozXULElement.parseXULToFragment(`
               <richlistitem class="backup-item">
                 <label value="${coventToDateAndTime(
 									Number(Object.keys(content.data)[i]),
@@ -63,9 +63,9 @@ const gNotesPane = {
               </richlistitem>
             `);
 				document.getElementById("backup-list").appendChild(elem);
-				let elems = document.getElementsByClassName("restore-button");
+				const elems = document.getElementsByClassName("restore-button");
 				for (let i = 0; i < elems.length; i++) {
-					elems[i].onclick = function () {
+					elems[i].onclick = () => {
 						restoreNote(elems[i].id);
 					};
 				}
@@ -75,9 +75,9 @@ const gNotesPane = {
 };
 //convert timestamp to date and time
 function coventToDateAndTime(timestamp) {
-	let date = new Date(timestamp);
-	let dateStr = date.toLocaleDateString();
-	let timeStr = date.toLocaleTimeString();
+	const date = new Date(timestamp);
+	const dateStr = date.toLocaleDateString();
+	const timeStr = date.toLocaleTimeString();
 	return dateStr + " " + timeStr;
 }
 
@@ -94,7 +94,7 @@ function getAllBackupedNotes() {
 }
 
 async function restoreNote(timestamp) {
-	let l10n = new Localization(
+	const l10n = new Localization(
 		["browser/floorp.ftl", "branding/brand.ftl"],
 		true,
 	);
@@ -105,7 +105,7 @@ async function restoreNote(timestamp) {
 	const flags =
 		prompts.BUTTON_POS_0 * prompts.BUTTON_TITLE_OK +
 		prompts.BUTTON_POS_1 * prompts.BUTTON_TITLE_CANCEL;
-	let result = prompts.confirmEx(
+	const result = prompts.confirmEx(
 		null,
 		l10n.formatValueSync("restore-from-backup-prompt-title"),
 		`${l10n.formatValueSync(
@@ -121,8 +121,8 @@ async function restoreNote(timestamp) {
 		check,
 	);
 	if (result == 0) {
-		let content = await getAllBackupedNotes();
-		let note = `{${content.data[timestamp]}}`;
+		const content = await getAllBackupedNotes();
+		const note = `{${content.data[timestamp]}}`;
 		Services.prefs.setCharPref("floorp.browser.note.memos", note);
 	}
 }

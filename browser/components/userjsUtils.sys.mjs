@@ -47,8 +47,8 @@ const userjs = PathUtils.join(PROFILE_DIR, "user.js");
 
 export const userjsUtilsFunctions = {
 	userJsNameList() {
-		let list = [];
-		for (let name in userJsList) {
+		const list = [];
+		for (const name in userJsList) {
 			list.push(name);
 		}
 	},
@@ -108,8 +108,8 @@ export const userjsUtilsFunctions = {
 
 		const decoder = new TextDecoder("UTF-8");
 		const path = PathUtils.join(PROFILE_DIR, "user.js");
-		let read = await IOUtils.read(path);
-		let inputStream = decoder.decode(read);
+		const read = await IOUtils.read(path);
+		const inputStream = decoder.decode(read);
 
 		const prefPattern = /user_pref\("([^"]+)",\s*(true|false|\d+|"[^"]*")\);/g;
 		let match;

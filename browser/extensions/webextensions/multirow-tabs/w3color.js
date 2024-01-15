@@ -994,7 +994,7 @@ function ncsToRgb(ncs) {
 	ncs = ncs.replace("(", "");
 	ncs = ncs.replace(")", "");
 	ncs = ncs.replace("NCS", "NCS ");
-	ncs = ncs.replace(/  /g, " ");
+	ncs = ncs.replace(/ {2}/g, " ");
 	if (ncs.indexOf("NCS") == -1) {
 		ncs = "NCS " + ncs;
 	}

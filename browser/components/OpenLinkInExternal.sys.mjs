@@ -21,14 +21,14 @@ const L10N = new Localization(["browser/floorp.ftl"]);
 const env = Services.env;
 
 function getBrowsersOnWindows() {
-	let browsers = [];
-	let ROOT_KEYS = [
+	const browsers = [];
+	const ROOT_KEYS = [
 		Ci.nsIWindowsRegKey.ROOT_KEY_CURRENT_USER,
 		Ci.nsIWindowsRegKey.ROOT_KEY_LOCAL_MACHINE,
 	];
 
-	for (let ROOT_KEY of ROOT_KEYS) {
-		let key = Cc["@mozilla.org/windows-registry-key;1"].createInstance(
+	for (const ROOT_KEY of ROOT_KEYS) {
+		const key = Cc["@mozilla.org/windows-registry-key;1"].createInstance(
 			Ci.nsIWindowsRegKey,
 		);
 		try {
@@ -42,7 +42,7 @@ function getBrowsersOnWindows() {
 			continue;
 		}
 		for (let i = 0; i < key.childCount; i++) {
-			let keyname = key.getChildName(i);
+			const keyname = key.getChildName(i);
 			if (keyname == "IEXPLORE.EXE") {
 				continue;
 			}
@@ -52,7 +52,7 @@ function getBrowsersOnWindows() {
 				continue;
 			}
 
-			let keyBrowserName = Cc[
+			const keyBrowserName = Cc[
 				"@mozilla.org/windows-registry-key;1"
 			].createInstance(Ci.nsIWindowsRegKey);
 			keyBrowserName.open(
@@ -60,10 +60,10 @@ function getBrowsersOnWindows() {
 				`Software\\Clients\\StartMenuInternet\\${keyname}`,
 				Ci.nsIWindowsRegKey.ACCESS_READ,
 			);
-			let browserName = keyBrowserName.readStringValue("");
+			const browserName = keyBrowserName.readStringValue("");
 			keyBrowserName.close();
 
-			let keyPath = Cc["@mozilla.org/windows-registry-key;1"].createInstance(
+			const keyPath = Cc["@mozilla.org/windows-registry-key;1"].createInstance(
 				Ci.nsIWindowsRegKey,
 			);
 			keyPath.open(
@@ -71,14 +71,14 @@ function getBrowsersOnWindows() {
 				`Software\\Clients\\StartMenuInternet\\${keyname}\\shell\\open\\command`,
 				Ci.nsIWindowsRegKey.ACCESS_READ,
 			);
-			let browserPathRegValue = keyPath.readStringValue("");
-			let browserPath = browserPathRegValue
+			const browserPathRegValue = keyPath.readStringValue("");
+			const browserPath = browserPathRegValue
 				.replace(/^\"/, "")
 				.replace(/\"$/, "");
 			keyPath.close();
 
-			let urlAssociations = {};
-			let keyUrlAssociations = Cc[
+			const urlAssociations = {};
+			const keyUrlAssociations = Cc[
 				"@mozilla.org/windows-registry-key;1"
 			].createInstance(Ci.nsIWindowsRegKey);
 			let error = null;
@@ -94,16 +94,16 @@ function getBrowsersOnWindows() {
 			}
 			if (error === null) {
 				for (let j = 0; j < keyUrlAssociations.valueCount; j++) {
-					let valuename = keyUrlAssociations.getValueName(j);
-					let urlAssociationRegValue =
+					const valuename = keyUrlAssociations.getValueName(j);
+					const urlAssociationRegValue =
 						keyUrlAssociations.readStringValue(valuename);
 					urlAssociations[valuename] = urlAssociationRegValue;
 				}
 			}
 			keyUrlAssociations.close();
 
-			let fileAssociations = {};
-			let keyFileAssociations = Cc[
+			const fileAssociations = {};
+			const keyFileAssociations = Cc[
 				"@mozilla.org/windows-registry-key;1"
 			].createInstance(Ci.nsIWindowsRegKey);
 			let error2 = null;
@@ -119,8 +119,8 @@ function getBrowsersOnWindows() {
 			}
 			if (error2 === null) {
 				for (let j = 0; j < keyFileAssociations.valueCount; j++) {
-					let valuename = keyFileAssociations.getValueName(j);
-					let fileAssociationRegValue =
+					const valuename = keyFileAssociations.getValueName(j);
+					const fileAssociationRegValue =
 						keyFileAssociations.readStringValue(valuename);
 					fileAssociations[valuename] = fileAssociationRegValue;
 				}
@@ -152,7 +152,7 @@ function getDefaultBrowserOnWindows(protocol, browsers = null) {
 	if (browsers === null) {
 		browsers = getBrowsersOnWindows();
 	}
-	let key = Cc["@mozilla.org/windows-registry-key;1"].createInstance(
+	const key = Cc["@mozilla.org/windows-registry-key;1"].createInstance(
 		Ci.nsIWindowsRegKey,
 	);
 	key.open(
@@ -160,8 +160,8 @@ function getDefaultBrowserOnWindows(protocol, browsers = null) {
 		`Software\\Microsoft\\Windows\\Shell\\Associations\\UrlAssociations\\${protocol}\\UserChoice`,
 		Ci.nsIWindowsRegKey.ACCESS_READ,
 	);
-	let regValue = key.readStringValue("ProgID");
-	let targets = browsers.filter(
+	const regValue = key.readStringValue("ProgID");
+	const targets = browsers.filter(
 		(browser) => browser.urlAssociations[protocol] === regValue,
 	);
 	if (targets.length === 0) {
@@ -171,7 +171,7 @@ function getDefaultBrowserOnWindows(protocol, browsers = null) {
 }
 
 async function getBrowsersOnLinux() {
-	let checkDirs = [];
+	const checkDirs = [];
 
 	let xdgDataHome = env.get("XDG_DATA_HOME");
 	if (xdgDataHome === "") {
@@ -184,29 +184,29 @@ async function getBrowsersOnLinux() {
 	}
 	checkDirs.push(...xdgDataDirs);
 
-	let desktopFilesInfo = [];
-	for (let checkDir of checkDirs) {
-		let applications_dir_path = PathUtils.join(checkDir, "applications");
-		let dir = FileUtils.File(applications_dir_path);
+	const desktopFilesInfo = [];
+	for (const checkDir of checkDirs) {
+		const applications_dir_path = PathUtils.join(checkDir, "applications");
+		const dir = FileUtils.File(applications_dir_path);
 		if (!dir.exists()) {
 			continue;
 		}
-		let desktopFiles = [];
-		let dir_entries = dir.directoryEntries;
+		const desktopFiles = [];
+		const dir_entries = dir.directoryEntries;
 		while (dir_entries.hasMoreElements()) {
-			let dir_entry = dir_entries.getNext().QueryInterface(Ci.nsIFile);
+			const dir_entry = dir_entries.getNext().QueryInterface(Ci.nsIFile);
 			if (dir_entry.isFile() && dir_entry.leafName.endsWith(".desktop")) {
 				desktopFiles.push(dir_entry);
 			}
 		}
-		for (let desktopFile of desktopFiles) {
+		for (const desktopFile of desktopFiles) {
 			if (
 				desktopFilesInfo.filter(
 					(desktopFileInfo) =>
 						desktopFileInfo.filename === desktopFile.leafName,
 				).length === 0
 			) {
-				let desktopFileInfo = {};
+				const desktopFileInfo = {};
 				desktopFileInfo.filename = desktopFile.leafName;
 				try {
 					desktopFileInfo.fileInfo = await DesktopFileParser.parseFromPath(
@@ -226,7 +226,7 @@ async function getBrowsersOnLinux() {
 				if (!desktopFileInfo.fileInfo["Desktop Entry"].Name) {
 					continue;
 				}
-				let mimetypes = desktopFileInfo.fileInfo["Desktop Entry"].MimeType;
+				const mimetypes = desktopFileInfo.fileInfo["Desktop Entry"].MimeType;
 				if (
 					mimetypes &&
 					(mimetypes.split(";").includes("x-scheme-handler/http") ||
@@ -272,8 +272,8 @@ async function getDefaultBrowserOnLinux(protocol, desktopFilesInfo = null) {
 	if (output === "") {
 		return null;
 	}
-	let filename = output.replace(/\n$/, "");
-	let targets = desktopFilesInfo.filter(
+	const filename = output.replace(/\n$/, "");
+	const targets = desktopFilesInfo.filter(
 		(desktopFileInfo) => desktopFileInfo.filename === filename,
 	);
 	if (targets.length === 0) {
@@ -283,7 +283,7 @@ async function getDefaultBrowserOnLinux(protocol, desktopFilesInfo = null) {
 }
 
 async function OpenLinkInExternal(url) {
-	let userSelectedBrowserId = Services.prefs.getStringPref(
+	const userSelectedBrowserId = Services.prefs.getStringPref(
 		"floorp.openLinkInExternal.browserId",
 		"",
 	);
@@ -295,7 +295,7 @@ async function OpenLinkInExternal(url) {
 		protocol = "https";
 	}
 	if (platform === "linux") {
-		let desktopFilesInfo = await getBrowsersOnLinux();
+		const desktopFilesInfo = await getBrowsersOnLinux();
 		let browser;
 		if (userSelectedBrowserId === "") {
 			browser = await getDefaultBrowserOnLinux(protocol, desktopFilesInfo);
@@ -313,7 +313,7 @@ async function OpenLinkInExternal(url) {
 				return;
 			}
 		} else {
-			let targets = desktopFilesInfo.filter(
+			const targets = desktopFilesInfo.filter(
 				(desktopFileInfo) =>
 					desktopFileInfo.filename === userSelectedBrowserId + ".desktop",
 			);
@@ -342,8 +342,8 @@ async function OpenLinkInExternal(url) {
 			"%u",
 			EscapeShell(url),
 		);
-		let randomized = Math.random().toString(32).substring(2);
-		let outputFilePath = `/tmp/floorp_openInExternal_${randomized}.sh`;
+		const randomized = Math.random().toString(32).substring(2);
+		const outputFilePath = `/tmp/floorp_openInExternal_${randomized}.sh`;
 		await IOUtils.writeUTF8(outputFilePath, shellscript);
 		const process = Cc["@mozilla.org/process/util;1"].createInstance(
 			Ci.nsIProcess,
@@ -353,7 +353,7 @@ async function OpenLinkInExternal(url) {
 			await IOUtils.remove(outputFilePath);
 		});
 	} else if (platform === "win") {
-		let browsers = getBrowsersOnWindows();
+		const browsers = getBrowsersOnWindows();
 		let browser;
 		if (userSelectedBrowserId === "") {
 			browser = getDefaultBrowserOnWindows(protocol, browsers);
@@ -371,7 +371,7 @@ async function OpenLinkInExternal(url) {
 				return;
 			}
 		} else {
-			let targets = browsers.filter(
+			const targets = browsers.filter(
 				(browser) => browser.keyName === userSelectedBrowserId,
 			);
 			if (targets.length === 0) {
@@ -389,7 +389,7 @@ async function OpenLinkInExternal(url) {
 			}
 			browser = targets[0];
 		}
-		let browserPath = browser.path;
+		const browserPath = browser.path;
 		const process = Cc["@mozilla.org/process/util;1"].createInstance(
 			Ci.nsIProcess,
 		);
@@ -398,35 +398,35 @@ async function OpenLinkInExternal(url) {
 	}
 }
 
-let seenDocuments = new WeakSet();
-let documentObserver = {
+const seenDocuments = new WeakSet();
+const documentObserver = {
 	observe(doc) {
 		if (
 			ExtensionCommon.instanceOf(doc, "HTMLDocument") &&
 			!seenDocuments.has(doc)
 		) {
 			seenDocuments.add(doc);
-			let window_ = doc.defaultView;
-			let document_ = window_.document;
-			let uriObj = Services.io.newURI(window_.location.href);
-			let uriWithoutQueryRef = uriObj.prePath + uriObj.filePath;
+			const window_ = doc.defaultView;
+			const document_ = window_.document;
+			const uriObj = Services.io.newURI(window_.location.href);
+			const uriWithoutQueryRef = uriObj.prePath + uriObj.filePath;
 			if (uriWithoutQueryRef == "chrome://browser/content/browser.xhtml") {
 				(async () => {
-					let tabContextMenu = document_.querySelector("#tabContextMenu");
-					let openLinkInExternal = document_.createXULElement("menuitem");
+					const tabContextMenu = document_.querySelector("#tabContextMenu");
+					const openLinkInExternal = document_.createXULElement("menuitem");
 					openLinkInExternal.id = "context_openLinkInExternal";
 					openLinkInExternal.label = await L10N.formatValue(
 						"open-link-in-external-tab-context-menu",
 					);
-					openLinkInExternal.addEventListener("command", function (e) {
-						let window_ = e.currentTarget.ownerGlobal;
+					openLinkInExternal.addEventListener("command", (e) => {
+						const window_ = e.currentTarget.ownerGlobal;
 						OpenLinkInExternal(
 							window_.TabContextMenu.contextTab.linkedBrowser.currentURI.spec,
 						);
 					});
-					tabContextMenu.addEventListener("popupshowing", function (e) {
-						let window_ = e.currentTarget.ownerGlobal;
-						let scheme =
+					tabContextMenu.addEventListener("popupshowing", (e) => {
+						const window_ = e.currentTarget.ownerGlobal;
+						const scheme =
 							window_?.TabContextMenu?.contextTab?.linkedBrowser?.currentURI
 								?.scheme || "";
 						e.currentTarget.querySelector(
@@ -438,19 +438,19 @@ let documentObserver = {
 						.insertAdjacentElement("afterend", openLinkInExternal);
 				})();
 				(async () => {
-					let contextMenu = document_.querySelector("#contentAreaContextMenu");
-					let openLinkInExternal = document_.createXULElement("menuitem");
+					const contextMenu = document_.querySelector("#contentAreaContextMenu");
+					const openLinkInExternal = document_.createXULElement("menuitem");
 					openLinkInExternal.id = "context-openlinkinexternal";
 					openLinkInExternal.label = await L10N.formatValue(
 						"open-link-in-external-tab-context-menu",
 					);
-					openLinkInExternal.addEventListener("command", function (e) {
-						let window_ = e.currentTarget.ownerGlobal;
+					openLinkInExternal.addEventListener("command", (e) => {
+						const window_ = e.currentTarget.ownerGlobal;
 						OpenLinkInExternal(window_.gContextMenu.linkURL);
 					});
-					contextMenu.addEventListener("popupshowing", function (e) {
-						let window_ = e.currentTarget.ownerGlobal;
-						let scheme = window_?.gContextMenu?.linkURI?.scheme || "";
+					contextMenu.addEventListener("popupshowing", (e) => {
+						const window_ = e.currentTarget.ownerGlobal;
+						const scheme = window_?.gContextMenu?.linkURI?.scheme || "";
 						e.currentTarget.querySelector(
 							"#context-openlinkinexternal",
 						).hidden =
@@ -470,12 +470,12 @@ let documentObserver = {
 			) {
 				window_.addEventListener(
 					"pageshow",
-					async function () {
+					async () => {
 						await window_.gMainPane.initialized;
-						let browsers = [];
+						const browsers = [];
 						if (platform === "linux") {
-							let desktopFilesInfo = await getBrowsersOnLinux();
-							for (let desktopFileInfo of desktopFilesInfo) {
+							const desktopFilesInfo = await getBrowsersOnLinux();
+							for (const desktopFileInfo of desktopFilesInfo) {
 								// Flatpak version will be launched that does not work properly.
 								// To avoid data corruption, do not display them in the list.
 								if (
@@ -494,8 +494,8 @@ let documentObserver = {
 								});
 							}
 						} else if (platform === "win") {
-							let startMenusInternet = getBrowsersOnWindows();
-							for (let startMenuInternet of startMenusInternet) {
+							const startMenusInternet = getBrowsersOnWindows();
+							for (const startMenuInternet of startMenusInternet) {
 								browsers.push({
 									name: startMenuInternet.name,
 									id: startMenuInternet.keyName,
@@ -504,11 +504,11 @@ let documentObserver = {
 							}
 						}
 
-						let options = document_.querySelector(
+						const options = document_.querySelector(
 							"#openLinkInExternalSelectBrowser > menupopup",
 						);
-						for (let browser of browsers) {
-							let elem = document_.createXULElement("menuitem");
+						for (const browser of browsers) {
+							const elem = document_.createXULElement("menuitem");
 							elem.setAttribute("value", browser.id);
 							elem.setAttribute("label", browser.name);
 							elem.setAttribute("tooltiptext", browser.tooltiptext);

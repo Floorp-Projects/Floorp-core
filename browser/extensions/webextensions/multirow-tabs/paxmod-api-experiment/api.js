@@ -1,4 +1,3 @@
-"use strict";
 
 var wm = Cc["@mozilla.org/appshell/window-mediator;1"].getService(
 	Ci.nsIWindowMediator,
@@ -6,7 +5,7 @@ var wm = Cc["@mozilla.org/appshell/window-mediator;1"].getService(
 
 var listener = {
 	onOpenWindow(xulWin) {
-		let win = xulWin.docShell.domWindow;
+		const win = xulWin.docShell.domWindow;
 		win.addEventListener(
 			"load",
 			() => {
@@ -24,14 +23,14 @@ var listener = {
 };
 
 function load() {
-	for (let win of wm.getEnumerator("navigator:browser")) {
+	for (const win of wm.getEnumerator("navigator:browser")) {
 		patch(win);
 	}
 	wm.addListener(listener);
 }
 
 function unload() {
-	for (let win of wm.getEnumerator("navigator:browser")) {
+	for (const win of wm.getEnumerator("navigator:browser")) {
 		unpatch(win);
 	}
 	wm.removeListener(listener);
@@ -49,8 +48,8 @@ function patch(win) {
 		return;
 	}
 	function dropIndex(tabs, event) {
-		for (let tab of tabs) {
-			let rect = tab.getBoundingClientRect();
+		for (const tab of tabs) {
+			const rect = tab.getBoundingClientRect();
 			if (
 				event.screenY >= tab.screenY &&
 				event.screenY < tab.screenY + rect.height &&
@@ -73,30 +72,30 @@ function patch(win) {
 		this._positionPinnedTabs_orig();
 		// Remove visual offset of pinned tabs
 		this.style.paddingInlineStart = "";
-		for (let tab of this.allTabs) {
+		for (const tab of this.allTabs) {
 			tab.style.marginInlineStart = "";
 		}
 	});
 	patchMethod("on_drop", function (event) {
-		let dt = event.dataTransfer;
+		const dt = event.dataTransfer;
 		if (dt.dropEffect !== "move") {
 			return this.on_drop_orig(event);
 		}
-		let draggedTab = dt.mozGetDataAt("application/x-moz-tabbrowser-tab", 0);
+		const draggedTab = dt.mozGetDataAt("application/x-moz-tabbrowser-tab", 0);
 		draggedTab._dragData.animDropIndex = dropIndex(this.allTabs, event);
 		return this.on_drop_orig(event);
 	});
 	patchMethod("on_dragover", function (event) {
-		let dt = event.dataTransfer;
+		const dt = event.dataTransfer;
 		if (dt.dropEffect !== "move") {
 			return this.on_dragover_orig(event);
 		}
-		let draggedTab = dt.mozGetDataAt("application/x-moz-tabbrowser-tab", 0);
-		let movingTabs = draggedTab._dragData.movingTabs;
+		const draggedTab = dt.mozGetDataAt("application/x-moz-tabbrowser-tab", 0);
+		const movingTabs = draggedTab._dragData.movingTabs;
 		draggedTab._dragData.animDropIndex = dropIndex(this.allTabs, event);
 		this.on_dragover_orig(event);
 		// Reset rules that visualize dragging because they don't work in multi-row
-		for (let tab of this.allTabs) {
+		for (const tab of this.allTabs) {
 			tab.style.transform = "";
 		}
 	});
@@ -109,13 +108,13 @@ function patch(win) {
 	win.document.querySelector("#tabbrowser-tabs")._positionPinnedTabs();
 	// Make sure the arrowscrollbox doesn't swallow mouse wheel events, so they
 	// get propagated to the tab list, allowing the user to scroll up and down
-	let arrowscrollbox = win.document.querySelector("#tabbrowser-arrowscrollbox");
+	const arrowscrollbox = win.document.querySelector("#tabbrowser-arrowscrollbox");
 	if (arrowscrollbox) {
 		arrowscrollbox.removeEventListener("wheel", arrowscrollbox.on_wheel);
 	} else {
 		console.warn("Paxmod: arrowscrollbox not found");
 	}
-	let TabsToolbar = win.document.querySelector("#TabsToolbar");
+	const TabsToolbar = win.document.querySelector("#TabsToolbar");
 	if (TabsToolbar) {
 		TabsToolbar.setAttribute("multibar", "true");
 	} else {
@@ -137,13 +136,13 @@ function unpatch(win) {
 	unpatchMethod("on_drop");
 	unpatchMethod("on_dragover");
 	unpatchMethod("_handleTabSelect");
-	let arrowscrollbox = win.document.querySelector("#tabbrowser-arrowscrollbox");
+	const arrowscrollbox = win.document.querySelector("#tabbrowser-arrowscrollbox");
 	if (arrowscrollbox) {
 		arrowscrollbox.addEventListener("wheel", arrowscrollbox.on_wheel);
 	} else {
 		console.warn("Paxmod: arrowscrollbox not found");
 	}
-	let TabsToolbar = win.document.querySelector("#TabsToolbar");
+	const TabsToolbar = win.document.querySelector("#TabsToolbar");
 	if (TabsToolbar) {
 		TabsToolbar.removeAttribute("multibar");
 	} else {

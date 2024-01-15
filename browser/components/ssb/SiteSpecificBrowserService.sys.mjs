@@ -39,11 +39,11 @@ const sharedDataKey = (id) => `SiteSpecificBrowserBase:${id}`;
  * Builds a lookup table for all the icons in order of size.
  */
 function buildIconList(icons) {
-	let iconList = [];
+	const iconList = [];
 
-	for (let icon of icons) {
-		for (let sizeSpec of icon.sizes) {
-			let size =
+	for (const icon of icons) {
+		for (const sizeSpec of icon.sizes) {
+			const size =
 				sizeSpec == "any" ? Number.MAX_SAFE_INTEGER : parseInt(sizeSpec);
 
 			iconList.push({
@@ -97,7 +97,7 @@ function scopeIncludes(scope, uri) {
  */
 function manifestForURI(uri) {
 	try {
-		let manifestURI = Services.io.newURI("/manifest.json", null, uri);
+		const manifestURI = Services.io.newURI("/manifest.json", null, uri);
 		return lazy.ManifestProcessor.process({
 			jsonText: "{}",
 			manifestURL: manifestURI.spec,
@@ -117,7 +117,7 @@ function manifestForURI(uri) {
  */
 async function getIconResource(iconData) {
 	// This should be a data url so no network traffic.
-	let imageData = await lazy.ImageTools.loadImage(
+	const imageData = await lazy.ImageTools.loadImage(
 		Services.io.newURI(iconData.iconURL),
 	);
 	if (imageData.container.type == Ci.imgIContainer.TYPE_VECTOR) {
@@ -158,7 +158,7 @@ async function buildManifestForBrowser(browser, options) {
 
 	// Remove white icon if it exists & icons is not 1 or 0.
 	if (manifest && manifest.icons && manifest.icons.length !== 1) {
-		let icons = manifest.icons;
+		const icons = manifest.icons;
 		for (let i = 0; i < icons.length; i++) {
 			if (icons[i].purpose.includes("monochrome")) {
 				icons.splice(i, 1);
@@ -183,7 +183,7 @@ async function buildManifestForBrowser(browser, options) {
 					return icon;
 				}
 
-				let actor = browser.browsingContext.currentWindowGlobal.getActor(
+				const actor = browser.browsingContext.currentWindowGlobal.getActor(
 					"SiteSpecificBrowser",
 				);
 				try {
@@ -200,10 +200,10 @@ async function buildManifestForBrowser(browser, options) {
 
 	// If the site provided no icons then try to use the normal page icons.
 	if (!manifest.icons.length) {
-		let linkHandler =
+		const linkHandler =
 			browser.browsingContext.currentWindowGlobal.getActor("LinkHandler");
 
-		for (let icon of [linkHandler.icon, linkHandler.richIcon]) {
+		for (const icon of [linkHandler.icon, linkHandler.richIcon]) {
 			if (!icon) {
 				continue;
 			}
@@ -228,7 +228,7 @@ async function buildManifestForBrowser(browser, options) {
  * numbers of different SSBs used will be low and the memory use will also
  * be low.
  */
-let SSBMap = new Map();
+const SSBMap = new Map();
 
 /**
  * The base contains the data about an SSB instance needed in content processes.
@@ -263,12 +263,12 @@ export class SiteSpecificBrowserBase {
 			return SiteSpecificBrowser.get(id);
 		}
 
-		let key = sharedDataKey(id);
+		const key = sharedDataKey(id);
 		if (!Services.cpmm.sharedData.has(key)) {
 			return null;
 		}
 
-		let scope = Services.io.newURI(Services.cpmm.sharedData.get(key));
+		const scope = Services.io.newURI(Services.cpmm.sharedData.get(key));
 		return new SiteSpecificBrowserBase(scope);
 	}
 
@@ -352,7 +352,7 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
 			);
 		}
 
-		let list = await SiteSpecificBrowserExternalFileService.getCurrentSsbData();
+		const list = await SiteSpecificBrowserExternalFileService.getCurrentSsbData();
 		for (const key in list) {
 			if (list.hasOwnProperty(key)) {
 				const item = list[key];
@@ -367,7 +367,7 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
 		}
 
 		try {
-			let parsed = JSON.parse(data);
+			const parsed = JSON.parse(data);
 			parsed.config.persisted = true;
 			return new SiteSpecificBrowser(id, parsed.manifest, parsed.config);
 		} catch (e) {
@@ -421,7 +421,7 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
 	 * @returns {Promise<SiteSpecificBrowser>} the generated SSB.
 	 */
 	static async createFromBrowser(browser, options) {
-		let createManifestOptions = options || {};
+		const createManifestOptions = options || {};
 
 		if (!SiteSpecificBrowserService.isEnabled) {
 			throw new Error("Site specific browsing is disabled.");
@@ -433,11 +433,11 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
 			);
 		}
 
-		let manifest = await buildManifestForBrowser(
+		const manifest = await buildManifestForBrowser(
 			browser,
 			createManifestOptions,
 		);
-		let ssb = await SiteSpecificBrowser.createFromManifest(manifest);
+		const ssb = await SiteSpecificBrowser.createFromManifest(manifest);
 
 		if (!manifest.name) {
 			ssb.name = browser.contentTitle;
@@ -599,12 +599,12 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
 	 * @returns {string|null} a data URI for the icon.
 	 */
 	async getScaledIcon(size) {
-		let icon = this.getIcon(size);
+		const icon = this.getIcon(size);
 		if (!icon) {
 			return null;
 		}
 
-		let { container } = await lazy.ImageTools.loadImage(
+		const { container } = await lazy.ImageTools.loadImage(
 			Services.io.newURI(icon.src),
 		);
 		return lazy.ImageTools.scaleImage(container, size, size);
@@ -631,7 +631,7 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
 	 * @param {Element} browser the browser element.
 	 */
 	async updateFromBrowser(browser) {
-		let manifest = await buildManifestForBrowser(browser);
+		const manifest = await buildManifestForBrowser(browser);
 		await this.updateFromManifest(manifest);
 	}
 }
@@ -674,7 +674,7 @@ export class SSBCommandLineHandler {
 			return;
 		}
 
-		let id = cmdLine.handleFlagWithParam("start-ssb", false);
+		const id = cmdLine.handleFlagWithParam("start-ssb", false);
 		if (id) {
 			if (cmdLine.state == Ci.nsICommandLine.STATE_INITIAL_LAUNCH) {
 				Services.prefs.setCharPref("browser.ssb.startup", id);

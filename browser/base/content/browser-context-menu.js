@@ -5,8 +5,8 @@
 
 /*---------------------------------------------------------------- Context Menu ----------------------------------------------------------------*/
 
-let checkItems = [];
-let contextMenuObserver = new MutationObserver(contextMenuObserverFunc);
+const checkItems = [];
+const contextMenuObserver = new MutationObserver(contextMenuObserverFunc);
 
 function addContextBox(
 	id,
@@ -48,12 +48,12 @@ window.SessionStore.promiseInitialized.then(() => {
 		"contentAreaContextMenu",
 	);
 
-	contentAreaContextMenu.addEventListener("popupshowing", function (event) {
-		let menuSeparators = document.querySelectorAll(
+	contentAreaContextMenu.addEventListener("popupshowing", (event) => {
+		const menuSeparators = document.querySelectorAll(
 			"#contentAreaContextMenu > menuseparator",
 		);
 
-		let screenShot = document.getElementById("context-take-screenshot");
+		const screenShot = document.getElementById("context-take-screenshot");
 		if (!screenShot.hidden) {
 			screenShot.nextSibling.hidden = false;
 		}
@@ -78,8 +78,8 @@ window.SessionStore.promiseInitialized.then(() => {
 });
 /********************* Share mode *********************************/
 
-let beforeElem = document.getElementById("menu_openFirefoxView");
-let addElem = window.MozXULElement.parseXULToFragment(`
+const beforeElem = document.getElementById("menu_openFirefoxView");
+const addElem = window.MozXULElement.parseXULToFragment(`
     <menuitem data-l10n-id="sharemode-menuitem" type="checkbox" id="toggle_sharemode" checked="false"
           oncommand="addOrRemoveShareModeCSS();" accesskey="S">
     </menuitem>

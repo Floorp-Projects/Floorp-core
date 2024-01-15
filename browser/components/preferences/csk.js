@@ -32,10 +32,10 @@ const gCSKPane = {
 				continue;
 			}
 			needreboot[i].setAttribute("rebootELIsSet", "true");
-			needreboot[i].addEventListener("click", function () {
+			needreboot[i].addEventListener("click", () => {
 				if (!Services.prefs.getBoolPref("floorp.enable.auto.restart", false)) {
 					(async () => {
-						let userConfirm = await confirmRestartPrompt(null);
+						const userConfirm = await confirmRestartPrompt(null);
 						if (userConfirm == CONFIRM_RESTART_PROMPT_RESTART_NOW) {
 							Services.startup.quit(
 								Ci.nsIAppStartup.eAttemptQuit | Ci.nsIAppStartup.eRestart,
@@ -43,7 +43,7 @@ const gCSKPane = {
 						}
 					})();
 				} else {
-					window.setTimeout(function () {
+					window.setTimeout(() => {
 						Services.startup.quit(
 							Services.startup.eAttemptQuit | Services.startup.eRestart,
 						);
@@ -56,7 +56,7 @@ const gCSKPane = {
 		const restoreDefaultButton = document.getElementById("reset-CSK-button");
 
 		async function restoreDefault() {
-			let l10n = new Localization(
+			const l10n = new Localization(
 				["browser/floorp.ftl", "branding/brand.ftl"],
 				true,
 			);
@@ -67,7 +67,7 @@ const gCSKPane = {
 			const flags =
 				prompts.BUTTON_POS_0 * prompts.BUTTON_TITLE_OK +
 				prompts.BUTTON_POS_1 * prompts.BUTTON_TITLE_CANCEL;
-			let result = prompts.confirmEx(
+			const result = prompts.confirmEx(
 				null,
 				l10n.formatValueSync("CSK-restore-default"),
 				l10n.formatValueSync("CSK-restore-default-description"),
@@ -83,7 +83,7 @@ const gCSKPane = {
 			}
 		}
 
-		let rebootButton = document.getElementById("reboot-browser-CSK-button");
+		const rebootButton = document.getElementById("reboot-browser-CSK-button");
 		function reboot() {
 			Services.startup.quit(
 				Services.startup.eAttemptQuit | Services.startup.eRestart,
@@ -91,7 +91,7 @@ const gCSKPane = {
 		}
 
 		async function removeShortcutKey(actionName) {
-			let l10n = new Localization(["browser/floorp.ftl"], true);
+			const l10n = new Localization(["browser/floorp.ftl"], true);
 			const prompts = Services.prompt;
 			const check = {
 				value: false,
@@ -99,7 +99,7 @@ const gCSKPane = {
 			const flags =
 				prompts.BUTTON_POS_0 * prompts.BUTTON_TITLE_OK +
 				prompts.BUTTON_POS_1 * prompts.BUTTON_TITLE_CANCEL;
-			let result = prompts.confirmEx(
+			const result = prompts.confirmEx(
 				null,
 				l10n.formatValueSync("CSK-remove-shortcutkey"),
 				l10n.formatValueSync("CSK-remove-shortcutkey-description"),
@@ -153,7 +153,7 @@ const gCSKPane = {
 				shortcutkeyPreferences.appendChild(box);
 
 				for (actionName of actions) {
-					(async function (action) {
+					(async (action) => {
 						const actionL10nId =
 							utils.getInfoFunctions.getFluentLocalization(action);
 						const parentBox = document.getElementById(`${type}`);
@@ -176,11 +176,11 @@ const gCSKPane = {
 							const modifiers = keyboradShortcutObj.modifiers
 								? keyboradShortcutObj.modifiers
 								: undefined;
-							let changedActions = Services.prefs.getStringPref(
+							const changedActions = Services.prefs.getStringPref(
 								CustomKeyboardShortcutUtils.SHORTCUT_KEY_CHANGED_ARRAY_PREF,
 								"",
 							);
-							let changedActionsArray = changedActions.split(",");
+							const changedActionsArray = changedActions.split(",");
 
 							// Disable button if the keyborad shortcut is exist
 							const button = document.querySelector(
@@ -200,7 +200,7 @@ const gCSKPane = {
 							boxItem.after(keyboradShortcutInfo);
 
 							if (changedActionsArray.includes(action)) {
-								let showChangedKeyElement =
+								const showChangedKeyElement =
 									window.MozXULElement.parseXULToFragment(`
                   <description class="indent tip-caption csks-box-item-description" data-l10n-id="CSK-keyborad-shortcut-is-changed">
                   </description>
@@ -242,7 +242,7 @@ const gCSKPane = {
 							const removeButton = document.querySelector(
 								`.csks-remove-button[value="${action}"]`,
 							);
-							removeButton.addEventListener("click", function () {
+							removeButton.addEventListener("click", () => {
 								removeShortcutKey(action);
 							});
 						} else {
@@ -250,7 +250,7 @@ const gCSKPane = {
 							const button = document.querySelector(
 								`.csks-button[value="${action}"]`,
 							);
-							button.addEventListener("click", function () {
+							button.addEventListener("click", () => {
 								CustomKeyboardShortcutUtils.keyboradShortcutFunctions.openDialog(
 									action,
 								);
@@ -264,7 +264,7 @@ const gCSKPane = {
 
 		Services.prefs.addObserver(
 			CustomKeyboardShortcutUtils.SHORTCUT_KEY_AND_ACTION_PREF,
-			function () {
+			() => {
 				location.reload();
 			},
 		);

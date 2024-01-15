@@ -2,13 +2,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-"use strict";
 
 const { XPCOMUtils } = ChromeUtils.importESModule(
 	"resource://gre/modules/XPCOMUtils.sys.mjs",
 );
 
-let FxAccounts = ChromeUtils.importESModule(
+const FxAccounts = ChromeUtils.importESModule(
 	"resource://gre/modules/FxAccounts.sys.mjs",
 ).getFxAccountsSingleton();
 
@@ -20,24 +19,24 @@ XPCOMUtils.defineLazyServiceGetter(
 );
 
 async function buildFxAccountsInfo() {
-	let info = await FxAccounts.getSignedInUser();
+	const info = await FxAccounts.getSignedInUser();
 
 	setEventListeners();
 
 	if (!info) {
-		let displayName = document.getElementById("fxa-display-name");
+		const displayName = document.getElementById("fxa-display-name");
 		displayName.setAttribute("data-l10n-id", "fxa-not-signed-in");
 		document.getElementById("fxa-pairing-icon").hidden = true;
 		return;
 	}
 
-	let avatar = document.getElementById("fxa-avatar");
+	const avatar = document.getElementById("fxa-avatar");
 	avatar.src = info.avatar;
 
-	let displayName = document.getElementById("fxa-display-name");
+	const displayName = document.getElementById("fxa-display-name");
 	displayName.textContent = info.displayName;
 
-	let email = document.getElementById("fxa-email");
+	const email = document.getElementById("fxa-email");
 	email.textContent = info.email;
 }
 
@@ -54,23 +53,23 @@ function openSyncSettings() {
 }
 
 function setEventListeners() {
-	let manageFxAccountsButton = document.getElementById("fxa-avatar");
+	const manageFxAccountsButton = document.getElementById("fxa-avatar");
 	manageFxAccountsButton.addEventListener("click", manageFxAccounts);
 
-	let openPasswordManagerButton = document.getElementById("fxa-password-icon");
+	const openPasswordManagerButton = document.getElementById("fxa-password-icon");
 	openPasswordManagerButton.addEventListener("click", openPasswordManager);
 
-	let openSyncSettingsButton = document.getElementById("fxa-setting-icon");
+	const openSyncSettingsButton = document.getElementById("fxa-setting-icon");
 	openSyncSettingsButton.addEventListener("click", openSyncSettings);
 
-	let addAnotherDeviceButton = document.getElementById("fxa-pairing-icon");
+	const addAnotherDeviceButton = document.getElementById("fxa-pairing-icon");
 	addAnotherDeviceButton.addEventListener("click", addAnotherDeviceToSync);
 }
 
 async function addAnotherDeviceToSync() {
-	let info = await FxAccounts.getSignedInUser();
-	let uid = info.uid;
-	let email = info.email;
+	const info = await FxAccounts.getSignedInUser();
+	const uid = info.uid;
+	const email = info.email;
 	window.open(
 		`https://accounts.firefox.com/connect_another_device?context=fx_desktop_v3&entrypoint=preferences&service=sync&uid=${uid}&email=${email}`,
 	);
@@ -81,7 +80,7 @@ async function flush() {
 		ProfileService.flush();
 		rebuildProfileList();
 	} catch (e) {
-		let [title, msg, button] = await document.l10n.formatValues([
+		const [title, msg, button] = await document.l10n.formatValues([
 			{ id: "profiles-flush-fail-title" },
 			{
 				id:
@@ -93,7 +92,7 @@ async function flush() {
 		]);
 
 		const PS = Ci.nsIPromptService;
-		let result = Services.prompt.confirmEx(
+		const result = Services.prompt.confirmEx(
 			window,
 			title,
 			msg,
@@ -112,7 +111,7 @@ async function flush() {
 }
 
 function rebuildProfileList() {
-	let parent = document.getElementById("profiles");
+	const parent = document.getElementById("profiles");
 	while (parent.firstChild) {
 		parent.firstChild.remove();
 	}
@@ -122,14 +121,14 @@ function rebuildProfileList() {
 		defaultProfile = ProfileService.defaultProfile;
 	} catch (e) {}
 
-	let currentProfile = ProfileService.currentProfile;
+	const currentProfile = ProfileService.currentProfile;
 
-	for (let profile of ProfileService.profiles) {
-		let isCurrentProfile = profile == currentProfile;
+	for (const profile of ProfileService.profiles) {
+		const isCurrentProfile = profile == currentProfile;
 		let isInUse = isCurrentProfile;
 		if (!isInUse) {
 			try {
-				let lock = profile.lock({});
+				const lock = profile.lock({});
 				lock.unlock();
 			} catch (e) {
 				if (
@@ -150,27 +149,27 @@ function rebuildProfileList() {
 }
 
 function display(profileData) {
-	let parent = document.getElementById("profiles");
+	const parent = document.getElementById("profiles");
 
-	let div = document.createElement("div");
+	const div = document.createElement("div");
 	div.className = "profile";
 	div.id = profileData.profile.name;
 	parent.appendChild(div);
 
-	let name = document.createElement("label");
+	const name = document.createElement("label");
 	name.className = "name";
 
 	div.appendChild(name);
 	name.textContent = profileData.profile.name;
 
 	if (profileData.isCurrentProfile) {
-		let currentProfile = document.createElement("description");
+		const currentProfile = document.createElement("description");
 		currentProfile.className = "current";
 		currentProfile.classList.add("tip-caption");
 		document.l10n.setAttributes(currentProfile, "floorp-profiles-in-use");
 		div.appendChild(currentProfile);
 	} else if (profileData.isInUse) {
-		let currentProfile = document.createElement("description");
+		const currentProfile = document.createElement("description");
 		currentProfile.className = "inuse";
 		currentProfile.classList.add("tip-caption");
 		document.l10n.setAttributes(currentProfile, "floorp-profiles-in-use");
@@ -178,27 +177,27 @@ function display(profileData) {
 	}
 
 	function createItem(title, value, dir = false) {
-		let tr = document.createElement("tr");
+		const tr = document.createElement("tr");
 
-		let th = document.createElement("th");
+		const th = document.createElement("th");
 		th.setAttribute("class", "column");
 		document.l10n.setAttributes(th, title);
 		tr.appendChild(th);
 
-		let td = document.createElement("td");
+		const td = document.createElement("td");
 		tr.appendChild(td);
 
 		if (dir) {
 			td.appendChild(document.createTextNode(value.path));
 
 			if (value.exists()) {
-				let button = document.createElement("button");
+				const button = document.createElement("button");
 				button.setAttribute("class", "opendir");
 				document.l10n.setAttributes(button, "profiles-opendir");
 
 				td.appendChild(button);
 
-				button.addEventListener("click", function (e) {
+				button.addEventListener("click", (e) => {
 					value.reveal();
 				});
 			}
@@ -219,13 +218,13 @@ function display(profileData) {
 	}
 
 	if (!profileData.isInUse) {
-		let runButton = document.createElement("button");
+		const runButton = document.createElement("button");
 		runButton.className = "run";
 		document.l10n.setAttributes(
 			runButton,
 			"floorp-open-profile-with-new-instance",
 		);
-		runButton.onclick = function () {
+		runButton.onclick = () => {
 			openProfile(profileData.profile);
 		};
 		div.appendChild(runButton);
@@ -251,7 +250,7 @@ function createProfileWizard() {
 
 async function renameProfile(profile) {
 	let newName = { value: profile.name };
-	let [title, msg] = await document.l10n.formatValues([
+	const [title, msg] = await document.l10n.formatValues([
 		{ id: "profiles-rename-profile-title" },
 		{ id: "profiles-rename-profile", args: { name: profile.name } },
 	]);
@@ -266,7 +265,7 @@ async function renameProfile(profile) {
 		try {
 			profile.name = newName;
 		} catch (e) {
-			let [title, msg] = await document.l10n.formatValues([
+			const [title, msg] = await document.l10n.formatValues([
 				{ id: "profiles-invalid-profile-name-title" },
 				{ id: "profiles-invalid-profile-name", args: { name: newName } },
 			]);
@@ -283,7 +282,7 @@ async function removeProfile(profile) {
 	let deleteFiles = false;
 
 	if (profile.rootDir.exists()) {
-		let [title, msg, dontDeleteStr, deleteStr] =
+		const [title, msg, dontDeleteStr, deleteStr] =
 			await document.l10n.formatValues([
 				{ id: "profiles-delete-profile-title" },
 				{
@@ -293,7 +292,7 @@ async function removeProfile(profile) {
 				{ id: "profiles-dont-delete-files" },
 				{ id: "profiles-delete-files" },
 			]);
-		let buttonPressed = Services.prompt.confirmEx(
+		const buttonPressed = Services.prompt.confirmEx(
 			window,
 			title,
 			msg,
@@ -322,7 +321,7 @@ async function removeProfile(profile) {
 	} catch (e) {}
 
 	if (isDefault) {
-		for (let p of ProfileService.profiles) {
+		for (const p of ProfileService.profiles) {
 			if (profile == p) {
 				continue;
 			}
@@ -344,7 +343,7 @@ async function removeProfile(profile) {
 	try {
 		profile.removeInBackground(deleteFiles);
 	} catch (e) {
-		let [title, msg] = await document.l10n.formatValues([
+		const [title, msg] = await document.l10n.formatValues([
 			{ id: "profiles-delete-profile-failed-title" },
 			{ id: "profiles-delete-profile-failed-message" },
 		]);
@@ -362,7 +361,7 @@ async function defaultProfile(profile) {
 		flush();
 	} catch (e) {
 		// This can happen on dev-edition.
-		let [title, msg] = await document.l10n.formatValues([
+		const [title, msg] = await document.l10n.formatValues([
 			{ id: "profiles-cannot-set-as-default-title" },
 			{ id: "profiles-cannot-set-as-default-message" },
 		]);
@@ -376,7 +375,7 @@ function openProfile(profile) {
 }
 
 function restart(safeMode) {
-	let cancelQuit = Cc["@mozilla.org/supports-PRBool;1"].createInstance(
+	const cancelQuit = Cc["@mozilla.org/supports-PRBool;1"].createInstance(
 		Ci.nsISupportsPRBool,
 	);
 	Services.obs.notifyObservers(
@@ -389,7 +388,7 @@ function restart(safeMode) {
 		return;
 	}
 
-	let flags = Ci.nsIAppStartup.eAttemptQuit | Ci.nsIAppStartup.eRestart;
+	const flags = Ci.nsIAppStartup.eAttemptQuit | Ci.nsIAppStartup.eRestart;
 
 	if (safeMode) {
 		Services.startup.restartInSafeMode(flags);
@@ -400,8 +399,8 @@ function restart(safeMode) {
 
 window.addEventListener(
 	"DOMContentLoaded",
-	async function () {
-		let createButton = document.getElementById("create-button");
+	async () => {
+		const createButton = document.getElementById("create-button");
 		createButton.addEventListener("click", createProfileWizard);
 
 		await buildFxAccountsInfo();

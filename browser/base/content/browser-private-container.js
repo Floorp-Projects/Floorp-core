@@ -22,8 +22,8 @@ function initPrivateContainer() {
 		gBrowser.tabContainer.addEventListener("TabOpen", handleTabModifications);
 
 		// Add a tab context menu to reopen in private container.
-		let beforeElem = document.getElementById("context_selectAllTabs");
-		let menuitemElem = window.MozXULElement.parseXULToFragment(`
+		const beforeElem = document.getElementById("context_selectAllTabs");
+		const menuitemElem = window.MozXULElement.parseXULToFragment(`
         <menuitem id="context_toggleToPrivateContainer" data-l10n-id="floorp-toggle-private-container" accesskey="D" oncommand="reopenInPrivateContainer(event);"/>
       `);
 		beforeElem.before(menuitemElem);
@@ -35,7 +35,7 @@ function initPrivateContainer() {
 			"context-openlink",
 			"openWithPrivateContainer(gContextMenu.linkURL);",
 			"context-openlink",
-			function () {
+			() => {
 				document.getElementById("open_in_private_container").hidden =
 					document.getElementById("context-openlink").hidden;
 			},
@@ -44,12 +44,12 @@ function initPrivateContainer() {
 }
 
 function checkPrivateContainerTabExist() {
-	let privateContainer = PrivateContainer.Functions.getPrivateContainer();
+	const privateContainer = PrivateContainer.Functions.getPrivateContainer();
 	if (!privateContainer || !privateContainer.userContextId) {
 		return false;
 	}
 
-	let tabs = gBrowser.tabs;
+	const tabs = gBrowser.tabs;
 	for (let i = 0; i < tabs.length; i++) {
 		if (tabs[i].userContextId === privateContainer.userContextId) {
 			return true;
@@ -59,15 +59,15 @@ function checkPrivateContainerTabExist() {
 }
 
 function removeDataIfPrivateContainerTabNotExist() {
-	let privateContainerUserContextID =
+	const privateContainerUserContextID =
 		PrivateContainer.Functions.getPrivateContainerUserContextId();
 	window.setTimeout(() => {
 		if (!checkPrivateContainerTabExist()) {
 			PrivateContainer.Functions.removePrivateContainerData();
 		}
 
-		let tabs = gBrowser.tabs;
-		let result = [];
+		const tabs = gBrowser.tabs;
+		const result = [];
 		for (let i = 0; i < tabs.length; i++) {
 			if (tabs[i].userContextId === privateContainerUserContextID) {
 				result.push(tabs[i]);
@@ -78,11 +78,11 @@ function removeDataIfPrivateContainerTabNotExist() {
 }
 
 function checkOpendPrivateContainerTab() {
-	let privateContainerUserContextID =
+	const privateContainerUserContextID =
 		PrivateContainer.Functions.getPrivateContainerUserContextId();
 
-	let tabs = gBrowser.tabs;
-	let result = [];
+	const tabs = gBrowser.tabs;
+	const result = [];
 	for (let i = 0; i < tabs.length; i++) {
 		if (tabs[i].userContextId === privateContainerUserContextID) {
 			result.push(tabs[i]);
@@ -102,13 +102,13 @@ function applyDoNotSaveHistoryToTab(tab) {
 }
 
 function checkTabIsPrivateContainer(tab) {
-	let privateContainerUserContextID =
+	const privateContainerUserContextID =
 		PrivateContainer.Functions.getPrivateContainerUserContextId();
 	return tab.userContextId === privateContainerUserContextID;
 }
 
 function handleTabModifications() {
-	let tabs = gBrowser.tabs;
+	const tabs = gBrowser.tabs;
 	for (let i = 0; i < tabs.length; i++) {
 		if (checkTabIsPrivateContainer(tabs[i]) && !tabIsSaveHistory(tabs[i])) {
 			applyDoNotSaveHistoryToTab(tabs[i]);
@@ -118,7 +118,7 @@ function handleTabModifications() {
 
 function openWithPrivateContainer(url) {
 	let relatedToCurrent = false; //"relatedToCurrent" decide where to open the new tab. Default work as last tab (right side). Floorp use this.
-	let _OPEN_NEW_TAB_POSITION_PREF = Services.prefs.getIntPref(
+	const _OPEN_NEW_TAB_POSITION_PREF = Services.prefs.getIntPref(
 		"floorp.browser.tabs.openNewTabPosition",
 	);
 	switch (_OPEN_NEW_TAB_POSITION_PREF) {
@@ -131,7 +131,7 @@ function openWithPrivateContainer(url) {
 			relatedToCurrent = true;
 			break;
 	}
-	let privateContainerUserContextID =
+	const privateContainerUserContextID =
 		PrivateContainer.Functions.getPrivateContainerUserContextId();
 	Services.obs.notifyObservers(
 		{
@@ -150,11 +150,11 @@ function openWithPrivateContainer(url) {
 function reopenInPrivateContainer() {
 	let userContextId =
 		PrivateContainer.Functions.getPrivateContainerUserContextId();
-	let reopenedTabs = TabContextMenu.contextTab.multiselected
+	const reopenedTabs = TabContextMenu.contextTab.multiselected
 		? gBrowser.selectedTabs
 		: [TabContextMenu.contextTab];
 
-	for (let tab of reopenedTabs) {
+	for (const tab of reopenedTabs) {
 		/* Create a triggering principal that is able to load the new tab
        For content principals that are about: chrome: or resource: we need system to load them.
        Anything other than system principal needs to have the new userContextId.
@@ -166,7 +166,7 @@ function reopenInPrivateContainer() {
 		} else {
 			// For lazy tab browsers, get the original principal
 			// from SessionStore
-			let tabState = JSON.parse(SessionStore.getTabState(tab));
+			const tabState = JSON.parse(SessionStore.getTabState(tab));
 			try {
 				triggeringPrincipal = E10SUtils.deserializePrincipal(
 					tabState.triggeringPrincipal_base64,
@@ -192,12 +192,12 @@ function reopenInPrivateContainer() {
 			);
 		}
 
-		let currentTabUserContextId = tab.getAttribute("usercontextid");
+		const currentTabUserContextId = tab.getAttribute("usercontextid");
 		if (currentTabUserContextId == userContextId) {
 			userContextId = 0;
 		}
 
-		let newTab = gBrowser.addTab(tab.linkedBrowser.currentURI.spec, {
+		const newTab = gBrowser.addTab(tab.linkedBrowser.currentURI.spec, {
 			userContextId,
 			pinned: tab.pinned,
 			index: tab._tPos + 1,

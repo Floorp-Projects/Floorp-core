@@ -6,7 +6,7 @@
 
 /* SplitView is a feature that provides show a tab on the left or right side of the window. */
 
-let gSplitView = {
+const gSplitView = {
 	Functions: {
 		init() {
 			gSplitView.Functions.tabContextMenu.addContextMenuToTabContext();
@@ -18,22 +18,22 @@ let gSplitView = {
 			} catch (e) {}
 			Services.prefs.setBoolPref("floorp.browser.splitView.working", true);
 
-			let panel = gSplitView.Functions.getlinkedPanel(tab.linkedPanel);
-			let browser = tab.linkedBrowser;
+			const panel = gSplitView.Functions.getlinkedPanel(tab.linkedPanel);
+			const browser = tab.linkedBrowser;
 			let browserRenderLayers = browser.renderLayers;
-			let browserDocShellIsActiveState = browser.docShellIsActive;
+			const browserDocShellIsActiveState = browser.docShellIsActive;
 
 			// Check if the a tab is already in split view
-			let tabs = gBrowser.tabs;
+			const tabs = gBrowser.tabs;
 			for (let i = 0; i < tabs.length; i++) {
 				if (tabs[i].hasAttribute("splitView")) {
 					gSplitView.Functions.removeSplitView(tabs[i]);
 				}
 			}
 
-			let CSSElem = document.getElementById("splitViewCSS");
+			const CSSElem = document.getElementById("splitViewCSS");
 			if (!CSSElem) {
-				let elem = document.createElement("style");
+				const elem = document.createElement("style");
 				elem.setAttribute("id", "splitViewCSS");
 				elem.textContent = `
         #tabbrowser-tabpanels > * {
@@ -76,15 +76,15 @@ let gSplitView = {
 		removeSplitView() {
 			Services.prefs.setBoolPref("floorp.browser.splitView.working", false);
 
-			let tab = document.querySelector(`.tabbrowser-tab[splitView="true"]`);
+			const tab = document.querySelector(`.tabbrowser-tab[splitView="true"]`);
 
 			if (!tab) {
 				return;
 			}
 
 			// remove style
-			let panel = gSplitView.Functions.getlinkedPanel(tab.linkedPanel);
-			let CSSElem = document.getElementById("splitViewCSS");
+			const panel = gSplitView.Functions.getlinkedPanel(tab.linkedPanel);
+			const CSSElem = document.getElementById("splitViewCSS");
 			CSSElem?.remove();
 
 			tab.removeAttribute("splitView");
@@ -104,18 +104,18 @@ let gSplitView = {
 		},
 
 		getlinkedPanel(id) {
-			let panel = document.getElementById(id);
+			const panel = document.getElementById(id);
 			return panel;
 		},
 
 		setRenderLayersEvent() {
-			document.addEventListener("floorpOnLocationChangeEvent", function () {
+			document.addEventListener("floorpOnLocationChangeEvent", () => {
 				gSplitView.Functions.handleTabEvent();
 			});
 		},
 
 		removeRenderLayersEvent() {
-			document.removeEventListener("floorpOnLocationChangeEvent", function () {
+			document.removeEventListener("floorpOnLocationChangeEvent", () => {
 				gSplitView.Functions.handleTabEvent();
 			});
 		},
@@ -125,13 +125,13 @@ let gSplitView = {
 				return;
 			}
 
-			let currentSplitViewTab = document.querySelector(
+			const currentSplitViewTab = document.querySelector(
 				`.tabbrowser-tab[splitView="true"]`,
 			);
-			let currentSplitViewPanel = gSplitView.Functions.getlinkedPanel(
+			const currentSplitViewPanel = gSplitView.Functions.getlinkedPanel(
 				currentSplitViewTab?.linkedPanel,
 			);
-			let currentSplitViewBrowser = currentSplitViewTab?.linkedBrowser;
+			const currentSplitViewBrowser = currentSplitViewTab?.linkedBrowser;
 
 			if (!currentSplitViewBrowser) {
 				return;
@@ -155,9 +155,9 @@ let gSplitView = {
 			}
 
 			(function modifyDeckSelectedClass() {
-				let tabs = gBrowser.tabs;
+				const tabs = gBrowser.tabs;
 				for (let i = 0; i < tabs.length; i++) {
-					let panel = gSplitView.Functions.getlinkedPanel(tabs[i].linkedPanel);
+					const panel = gSplitView.Functions.getlinkedPanel(tabs[i].linkedPanel);
 					if (
 						tabs[i].hasAttribute("splitView") ||
 						tabs[i] == gBrowser.selectedTab
@@ -174,8 +174,8 @@ let gSplitView = {
 
 		tabContextMenu: {
 			addContextMenuToTabContext() {
-				let beforeElem = document.getElementById("context_selectAllTabs");
-				let menuitemElem = window.MozXULElement.parseXULToFragment(`
+				const beforeElem = document.getElementById("context_selectAllTabs");
+				const menuitemElem = window.MozXULElement.parseXULToFragment(`
                <menu id="context_splitView" data-l10n-id="floorp-split-view-menu" accesskey="D">
                    <menupopup id="splitViewTabContextMenu"
                               onpopupshowing="gSplitView.Functions.tabContextMenu.onPopupShowing(event);"/>
@@ -187,32 +187,32 @@ let gSplitView = {
 
 			onPopupShowing(event) {
 				//delete already exsist items
-				let menuElem = document.getElementById("splitViewTabContextMenu");
+				const menuElem = document.getElementById("splitViewTabContextMenu");
 				while (menuElem.firstChild) {
 					menuElem.firstChild.remove();
 				}
 
 				//Rebuild context menu
 				if (event.target == gBrowser.selectedTab) {
-					let menuItem = window.MozXULElement.parseXULToFragment(`
+					const menuItem = window.MozXULElement.parseXULToFragment(`
                    <menuitem data-l10n-id="workspace-context-menu-selected-tab" disabled="true"/>
                   `);
-					let parentElem = document.getElementById("workspaceTabContextMenu");
+					const parentElem = document.getElementById("workspaceTabContextMenu");
 					parentElem.appendChild(menuItem);
 					return;
 				}
 
-				let menuItem = window.MozXULElement.parseXULToFragment(`
+				const menuItem = window.MozXULElement.parseXULToFragment(`
                   <menuitem id="splitViewTabContextMenuLeft" data-l10n-id="splitview-show-on-left"  oncommand="gSplitView.Functions.setSplitView(TabContextMenu.contextTab, 'left');"/>
                   <menuitem id="splitViewTabContextMenuRight" data-l10n-id="splitview-show-on-right" oncommand="gSplitView.Functions.setSplitView(TabContextMenu.contextTab, 'right');"/>
                 `);
 
-				let parentElem = document.getElementById("splitViewTabContextMenu");
+				const parentElem = document.getElementById("splitViewTabContextMenu");
 				parentElem.appendChild(menuItem);
 			},
 
 			setSplitView(event, side) {
-				let tab = event.target;
+				const tab = event.target;
 				gSplitView.Functions.setSplitView(tab, side);
 			},
 		},

@@ -4,7 +4,7 @@
 
 const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 
-let gTabSleepManager = {
+const gTabSleepManager = {
 	onLoad() {
 		document.getElementById("timeoutMinutes").value = Services.prefs.getIntPref(
 			"floorp.tabsleep.tabTimeoutMinutes",
@@ -17,7 +17,7 @@ let gTabSleepManager = {
 			.map((host) => host.trim())
 			.join("\n");
 
-		let params = window.arguments[0] || {};
+		const params = window.arguments[0] || {};
 		this.init(params);
 	},
 
@@ -28,8 +28,8 @@ let gTabSleepManager = {
 	uninit() {},
 
 	onApplyChanges() {
-		let timeoutMinutes = document.getElementById("timeoutMinutes").value;
-		let excludeHosts = document.getElementById("excludeHosts").value;
+		const timeoutMinutes = document.getElementById("timeoutMinutes").value;
+		const excludeHosts = document.getElementById("excludeHosts").value;
 
 		Services.prefs.setIntPref(
 			"floorp.tabsleep.tabTimeoutMinutes",

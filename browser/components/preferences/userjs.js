@@ -7,11 +7,11 @@ var { AppConstants } = ChromeUtils.import(
 	"resource://gre/modules/AppConstants.jsm",
 );
 
-let userjsUtils = ChromeUtils.importESModule(
+const userjsUtils = ChromeUtils.importESModule(
 	"resource:///modules/userjsUtils.sys.mjs",
 );
 
-let l10n = new Localization(["browser/floorp.ftl"], true);
+const l10n = new Localization(["browser/floorp.ftl"], true);
 
 XPCOMUtils.defineLazyGetter(this, "L10n", () => {
 	return new Localization(["branding/brand.ftl", "browser/floorp"]);
@@ -23,7 +23,7 @@ const gUserjsPane = {
 		this._pane = document.getElementById("paneUserjs");
 		document
 			.getElementById("backtogeneral___")
-			.addEventListener("command", function () {
+			.addEventListener("command", () => {
 				gotoPref("general");
 			});
 
@@ -33,10 +33,10 @@ const gUserjsPane = {
 				continue;
 			}
 			needreboot[i].setAttribute("rebootELIsSet", "true");
-			needreboot[i].addEventListener("click", function () {
+			needreboot[i].addEventListener("click", () => {
 				if (!Services.prefs.getBoolPref("floorp.enable.auto.restart", false)) {
 					(async () => {
-						let userConfirm = await confirmRestartPrompt(null);
+						const userConfirm = await confirmRestartPrompt(null);
 						if (userConfirm == CONFIRM_RESTART_PROMPT_RESTART_NOW) {
 							Services.startup.quit(
 								Ci.nsIAppStartup.eAttemptQuit | Ci.nsIAppStartup.eRestart,
@@ -44,7 +44,7 @@ const gUserjsPane = {
 						}
 					})();
 				} else {
-					window.setTimeout(function () {
+					window.setTimeout(() => {
 						Services.startup.quit(
 							Services.startup.eAttemptQuit | Services.startup.eRestart,
 						);
@@ -53,17 +53,17 @@ const gUserjsPane = {
 			});
 		}
 
-		let buttons = document.getElementsByClassName("apply-userjs-button");
-		for (let button of buttons) {
-			button.addEventListener("click", async function (event) {
-				let url = event.target.getAttribute("data-url");
-				let id = event.target.getAttribute("id");
+		const buttons = document.getElementsByClassName("apply-userjs-button");
+		for (const button of buttons) {
+			button.addEventListener("click", async (event) => {
+				const url = event.target.getAttribute("data-url");
+				const id = event.target.getAttribute("id");
 				const prompts = Services.prompt;
 				const check = { value: false };
 				const flags =
 					prompts.BUTTON_POS_0 * prompts.BUTTON_TITLE_OK +
 					prompts.BUTTON_POS_1 * prompts.BUTTON_TITLE_CANCEL;
-				let result = prompts.confirmEx(
+				const result = prompts.confirmEx(
 					null,
 					l10n.formatValueSync("userjs-prompt"),
 					`${l10n.formatValueSync(
@@ -79,7 +79,7 @@ const gUserjsPane = {
 				if (result == 0) {
 					if (!url) {
 						await userjsUtils.userjsUtilsFunctions.resetPreferencesWithUserJsContents();
-						window.setTimeout(async function () {
+						window.setTimeout(async () => {
 							try {
 								FileUtils.getFile("ProfD", ["user.js"]).remove(false);
 							} catch (e) {}
@@ -88,7 +88,7 @@ const gUserjsPane = {
 						}, 3000);
 					} else {
 						await userjsUtils.userjsUtilsFunctions.resetPreferencesWithUserJsContents();
-						window.setTimeout(async function () {
+						window.setTimeout(async () => {
 							await userjsUtils.userjsUtilsFunctions.setUserJSWithURL(url);
 							Services.prefs.setStringPref("floorp.user.js.customize", id);
 						}, 3000);

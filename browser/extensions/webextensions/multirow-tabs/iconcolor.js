@@ -37,28 +37,28 @@ function rgbToLab(rgb) {
 }
 
 function saturationAndValue(rgb) {
-	let r = rgb[0] / 255;
-	let g = rgb[1] / 255;
-	let b = rgb[2] / 255;
-	let max = Math.max(r, g, b);
-	let min = Math.min(r, g, b);
-	let s = max === 0 ? 0 : (max - min) / max;
+	const r = rgb[0] / 255;
+	const g = rgb[1] / 255;
+	const b = rgb[2] / 255;
+	const max = Math.max(r, g, b);
+	const min = Math.min(r, g, b);
+	const s = max === 0 ? 0 : (max - min) / max;
 	return [s, max];
 }
 
 function pixelColors(img) {
-	let canvas = document.createElementNS(NS_XHTML, "canvas");
-	let context = canvas.getContext("2d");
+	const canvas = document.createElementNS(NS_XHTML, "canvas");
+	const context = canvas.getContext("2d");
 	canvas.width = Math.min(img.width, 64);
 	canvas.height = canvas.width;
 	context.drawImage(img, 0, 0, canvas.width, canvas.height);
-	let colors = context.getImageData(0, 0, canvas.width, canvas.height).data;
+	const colors = context.getImageData(0, 0, canvas.width, canvas.height).data;
 	canvas.remove();
 	return colors;
 }
 
 function adjustLightness(rgb, minLightness, maxLightness) {
-	let lab = rgbToLab(rgb);
+	const lab = rgbToLab(rgb);
 	// Set a minimum lightness to ensure that all colors are visible on a dark
 	// background
 	lab[0] = Math.max(Math.min(lab[0], maxLightness), minLightness);
@@ -66,20 +66,20 @@ function adjustLightness(rgb, minLightness, maxLightness) {
 }
 
 function dominantColor(img, minLightness, maxLightness) {
-	let defaultColor =
+	const defaultColor =
 		(maxLightness + minLightness) / 2 < 50 ? [50, 50, 50] : [205, 205, 205];
 	let mostColorful = defaultColor;
-	let freqs = {};
-	let values = pixelColors(img);
+	const freqs = {};
+	const values = pixelColors(img);
 	for (let i = 0; i < values.length; i += 4) {
-		let r = values[i];
-		let g = values[i + 1];
-		let b = values[i + 2];
-		let a = values[i + 3];
-		let rgb = [r, g, b];
-		let sv = saturationAndValue(rgb);
-		let s = sv[0];
-		let v = sv[1];
+		const r = values[i];
+		const g = values[i + 1];
+		const b = values[i + 2];
+		const a = values[i + 3];
+		const rgb = [r, g, b];
+		const sv = saturationAndValue(rgb);
+		const s = sv[0];
+		const v = sv[1];
 		// Skip transparent, dark and greyish tones
 		if (a < 0.9 || s < 0.2 || v < 0.2) {
 			continue;
@@ -89,7 +89,7 @@ function dominantColor(img, minLightness, maxLightness) {
 			mostColorful = rgb;
 		}
 	}
-	let sortedFreqs = Object.keys(freqs).sort((a, b) => freqs[b] - freqs[a]);
+	const sortedFreqs = Object.keys(freqs).sort((a, b) => freqs[b] - freqs[a]);
 	let best;
 	if (Object.keys(freqs).length === 0) {
 		best = defaultColor;

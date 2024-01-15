@@ -43,8 +43,8 @@ const redirectorUpdateReadyFilePath = PathUtils.join(
 
 const portableUpdateUtils = {
 	async checkUpdate() {
-		let url = `${API_BASE_URL}/browser-portable/latest.json`;
-		let data = await new Promise((resolve, reject) => {
+		const url = `${API_BASE_URL}/browser-portable/latest.json`;
+		const data = await new Promise((resolve, reject) => {
 			fetch(url)
 				.then((res) => {
 					if (res.status !== 200) {
@@ -53,7 +53,7 @@ const portableUpdateUtils = {
 					return res.json();
 				})
 				.then((data) => {
-					let platformKeyName =
+					const platformKeyName =
 						platformInfo.os === "mac"
 							? "mac"
 							: `${platformInfo.os}-${platformInfo.arch}`;
@@ -61,7 +61,7 @@ const portableUpdateUtils = {
 				})
 				.catch(reject);
 		});
-		let isUpdateFound =
+		const isUpdateFound =
 			data.version !== displayVersion &&
 			Services.prefs.getBoolPref("floorp.portable.isUpdate");
 		return {
@@ -112,7 +112,7 @@ const portableUpdateUtils = {
 		return { success: true, fatal: false, reason: "" };
 	},
 	async downloadUpdate(url) {
-		let data = await new Promise((resolve, reject) => {
+		const data = await new Promise((resolve, reject) => {
 			fetch(url)
 				.then((res) => {
 					if (res.status !== 200) {
@@ -125,16 +125,16 @@ const portableUpdateUtils = {
 		});
 		await IOUtils.write(updateZipFilePath, new Uint8Array(data));
 
-		let zipreader = new ZipReader(FileUtils.File(updateZipFilePath));
-		let entries = [];
-		for (let entry of zipreader.findEntries("*")) {
+		const zipreader = new ZipReader(FileUtils.File(updateZipFilePath));
+		const entries = [];
+		for (const entry of zipreader.findEntries("*")) {
 			entries.push(entry);
 		}
 		entries.sort((entry1, entry2) => {
 			return String(entry1).length - String(entry2).length;
 		});
-		for (let entry of entries) {
-			let entryPath = isWin
+		for (const entry of entries) {
+			const entryPath = isWin
 				? String(entry).replaceAll("/", "\\")
 				: String(entry);
 			try {
@@ -150,7 +150,7 @@ const portableUpdateUtils = {
 			} catch (e) {
 				throw console.error("!!! Zip Slip detected !!!");
 			}
-			let path = PathUtils.joinRelative(updateTmpDirPath, entryPath);
+			const path = PathUtils.joinRelative(updateTmpDirPath, entryPath);
 			await zipreader.extract(entry, FileUtils.File(path));
 		}
 		zipreader.close();
@@ -160,7 +160,7 @@ const portableUpdateUtils = {
 };
 
 (async () => {
-	let result = await portableUpdateUtils.applyRedirectorUpdate();
+	const result = await portableUpdateUtils.applyRedirectorUpdate();
 	if (result.success) {
 		AlertsService.showAlertNotification(
 			"chrome://browser/skin/updater/link-48-last.png", // Image URL
@@ -191,7 +191,7 @@ const portableUpdateUtils = {
 		await IOUtils.remove(updateTmpDirPath, { recursive: true });
 	}
 
-	let updateInfo = await portableUpdateUtils.checkUpdate();
+	const updateInfo = await portableUpdateUtils.checkUpdate();
 	if (!updateInfo.isLatest) {
 		console.log("Update found.");
 		AlertsService.showAlertNotification(

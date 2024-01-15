@@ -10,7 +10,7 @@ const { ContextualIdentityService } = ChromeUtils.importESModule(
 
 export const EXPORTED_SYMBOLS = ["PrivateContainer"];
 
-export let PrivateContainer = {
+export const PrivateContainer = {
 	ENABLE_PRIVATE_CONTAINER_PREF: "floorp.privateContainer.enabled",
 	PRIVATE_CONTAINER_L10N_ID: "floorp-private-container-name",
 
@@ -54,9 +54,9 @@ export let PrivateContainer = {
 				return;
 			}
 
-			let userContextId = ++ContextualIdentityService._lastUserContextId;
+			const userContextId = ++ContextualIdentityService._lastUserContextId;
 
-			let identity = {
+			const identity = {
 				userContextId,
 				public: true,
 				icon: "chill",

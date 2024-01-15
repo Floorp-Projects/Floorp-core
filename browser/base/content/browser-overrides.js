@@ -8,21 +8,21 @@
 
 // Override Forward & Backward button's custamizeble element.
 //From "browser.js" line 750
-SetClickAndHoldHandlers = function () {
+SetClickAndHoldHandlers = () => {
 	// Bug 414797: Clone the back/forward buttons' context menu into both buttons.
 	let popup = document.getElementById("backForwardMenu").cloneNode(true);
 	popup.removeAttribute("id");
 	// Prevent the back/forward buttons' context attributes from being inherited.
 	popup.setAttribute("context", "");
 
-	let backButton = document.getElementById("back-button");
+	const backButton = document.getElementById("back-button");
 	if (backButton != null) {
 		backButton.setAttribute("type", "menu");
 		backButton.prepend(popup);
 		gClickAndHoldListenersOnElement.add(backButton);
 	}
 
-	let forwardButton = document.getElementById("forward-button");
+	const forwardButton = document.getElementById("forward-button");
 	if (forwardButton != null) {
 		popup = popup.cloneNode(true);
 		forwardButton.setAttribute("type", "menu");
@@ -43,8 +43,8 @@ if (Services.prefs.getStringPref(newtabOverrideURL, "") != "") {
 // Override close window function.
 // https://searchfox.org/mozilla-esr115/source/browser/base/content/browser.js#3004
 
-BrowserTryToCloseWindow = function (event) {
-	let { setTimeout } = ChromeUtils.importESModule(
+BrowserTryToCloseWindow = (event) => {
+	const { setTimeout } = ChromeUtils.importESModule(
 		"resource://gre/modules/Timer.sys.mjs",
 	);
 	if (WindowIsClosing(event)) {
@@ -55,10 +55,10 @@ BrowserTryToCloseWindow = function (event) {
 				.querySelectorAll(
 					`.webpanels[src='chrome://browser/content/browser.xhtml']`,
 				)
-				.forEach(function (e) {
+				.forEach((e) => {
 					e.remove();
 				});
-			setTimeout(function () {
+			setTimeout(() => {
 				console.info("BMS add-on is enabled. delay closing window.");
 				window.close();
 			}, 500);
@@ -86,7 +86,7 @@ SessionStore.promiseInitialized.then(() => {
 			"resource:///modules/PrivateContainer.sys.mjs",
 		);
 
-		let b = document.createXULElement("browser");
+		const b = document.createXULElement("browser");
 
 		if (
 			userContextId ===
@@ -108,7 +108,7 @@ SessionStore.promiseInitialized.then(() => {
 			b.prepareToChangeRemoteness = () =>
 				SessionStore.prepareToChangeRemoteness(b);
 			b.afterChangeRemoteness = (switchId) => {
-				let tab = this.getTabForBrowser(b);
+				const tab = this.getTabForBrowser(b);
 				SessionStore.finishTabRemotenessChange(tab, switchId);
 				return true;
 			};
@@ -121,7 +121,7 @@ SessionStore.promiseInitialized.then(() => {
 			tooltip: "aHTMLTooltip",
 			type: "content",
 		};
-		for (let attribute in defaultBrowserAttributes) {
+		for (const attribute in defaultBrowserAttributes) {
 			b.setAttribute(attribute, defaultBrowserAttributes[attribute]);
 		}
 
@@ -184,19 +184,19 @@ SessionStore.promiseInitialized.then(() => {
 			b.setAttribute("name", name);
 		}
 
-		let notificationbox = document.createXULElement("notificationbox");
+		const notificationbox = document.createXULElement("notificationbox");
 		notificationbox.setAttribute("notificationside", "top");
 
-		let stack = document.createXULElement("stack");
+		const stack = document.createXULElement("stack");
 		stack.className = "browserStack";
 		stack.appendChild(b);
 
-		let browserContainer = document.createXULElement("vbox");
+		const browserContainer = document.createXULElement("vbox");
 		browserContainer.className = "browserContainer";
 		browserContainer.appendChild(notificationbox);
 		browserContainer.appendChild(stack);
 
-		let browserSidebarContainer = document.createXULElement("hbox");
+		const browserSidebarContainer = document.createXULElement("hbox");
 		browserSidebarContainer.className = "browserSidebarContainer";
 		browserSidebarContainer.appendChild(browserContainer);
 

@@ -22,16 +22,16 @@ export class SiteSpecificBrowserParent extends JSWindowActorParent {
 			case "RetargetOutOfScopeURIToBrowser":
 				// The content process found a URI that needs to be loaded in the main
 				// browser.
-				let triggeringPrincipal = E10SUtils.deserializePrincipal(
+				const triggeringPrincipal = E10SUtils.deserializePrincipal(
 					message.data.triggeringPrincipal,
 				);
-				let referrerInfo = E10SUtils.deserializeReferrerInfo(
+				const referrerInfo = E10SUtils.deserializeReferrerInfo(
 					message.data.referrerInfo,
 				);
-				let csp = E10SUtils.deserializeCSP(message.data.csp);
+				const csp = E10SUtils.deserializeCSP(message.data.csp);
 
 				// Attempt to find an existing window to open it in.
-				let win = BrowserWindowTracker.getTopWindow();
+				const win = BrowserWindowTracker.getTopWindow();
 				if (win) {
 					win.gBrowser.selectedTab = win.gBrowser.addTab(message.data.uri, {
 						triggeringPrincipal,
@@ -39,11 +39,11 @@ export class SiteSpecificBrowserParent extends JSWindowActorParent {
 						referrerInfo,
 					});
 				} else {
-					let sa = Cc["@mozilla.org/array;1"].createInstance(
+					const sa = Cc["@mozilla.org/array;1"].createInstance(
 						Ci.nsIMutableArray,
 					);
 
-					let wuri = Cc["@mozilla.org/supports-string;1"].createInstance(
+					const wuri = Cc["@mozilla.org/supports-string;1"].createInstance(
 						Ci.nsISupportsString,
 					);
 					wuri.data = message.data.uri;

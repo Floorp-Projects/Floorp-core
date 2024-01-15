@@ -29,8 +29,8 @@ export let isUpdated = false;
 		null,
 	);
 
-	let nowVersion = AppConstants.MOZ_APP_VERSION_DISPLAY;
-	let oldVersionPref = Services.prefs.getStringPref(
+	const nowVersion = AppConstants.MOZ_APP_VERSION_DISPLAY;
+	const oldVersionPref = Services.prefs.getStringPref(
 		"floorp.startup.oldVersion",
 		null,
 	);
@@ -46,20 +46,20 @@ const isMainBrowser = env.get("MOZ_BROWSER_TOOLBOX_PORT") === "";
 {
 	let isNativeNotificationEnabled = false;
 	if (AppConstants.platform === "win") {
-		let version = Services.sysinfo.getProperty("version");
+		const version = Services.sysinfo.getProperty("version");
 		if (version === "10.0") {
 			isNativeNotificationEnabled = true;
 		}
 	} else if (AppConstants.platform === "linux") {
 		isNativeNotificationEnabled = true;
 	}
-	let prefs = Services.prefs.getDefaultBranch(null);
+	const prefs = Services.prefs.getDefaultBranch(null);
 	prefs.setBoolPref("alerts.useSystemBackend", isNativeNotificationEnabled);
 }
 
 export async function onFinalUIStartup() {
 	Services.obs.removeObserver(onFinalUIStartup, "final-ui-startup");
-	let { BrowserManagerSidebar } = ChromeUtils.importESModule(
+	const { BrowserManagerSidebar } = ChromeUtils.importESModule(
 		"resource:///modules/BrowserManagerSidebar.sys.mjs",
 	);
 	BrowserManagerSidebar.prefsUpdate();
@@ -85,11 +85,11 @@ export async function onFinalUIStartup() {
 		PathUtils.join(Services.dirsvc.get("ProfD", Ci.nsIFile).path, "chrome"),
 	).then((data) => {
 		if (!data) {
-			let userChromecssPath = PathUtils.join(
+			const userChromecssPath = PathUtils.join(
 				Services.dirsvc.get("ProfD", Ci.nsIFile).path,
 				"chrome",
 			);
-			let uccpth = PathUtils.join(userChromecssPath, "userChrome.css");
+			const uccpth = PathUtils.join(userChromecssPath, "userChrome.css");
 			IOUtils.writeUTF8(
 				uccpth,
 				`
@@ -119,7 +119,7 @@ Quote: https://userChrome.org | https://github.com/topics/userchrome
 `,
 			);
 
-			let ucconpth = PathUtils.join(userChromecssPath, "userContent.css");
+			const ucconpth = PathUtils.join(userChromecssPath, "userContent.css");
 			IOUtils.writeUTF8(
 				ucconpth,
 				`
@@ -154,7 +154,7 @@ NOTE: You can use the userContent.css file without change preferences (about:con
 
 	if (isFirstRun) {
 		setTimeout(() => {
-			let fxViewButton = CustomizableUI.getWidget("firefox-view-button");
+			const fxViewButton = CustomizableUI.getWidget("firefox-view-button");
 			if (fxViewButton) {
 				CustomizableUI.moveWidgetWithinArea("firefox-view-button", 1000);
 			} else {
@@ -169,10 +169,10 @@ if (isMainBrowser) {
 
 // Set BMS icon provider
 {
-	let os_languages = Cc["@mozilla.org/intl/ospreferences;1"].getService(
+	const os_languages = Cc["@mozilla.org/intl/ospreferences;1"].getService(
 		Ci.mozIOSPreferences,
 	).regionalPrefsLocales;
-	let isChina = os_languages.includes("zh-CN");
+	const isChina = os_languages.includes("zh-CN");
 	Services.prefs.getDefaultBranch(null).setStringPref(
 		"floorp.browser.sidebar.useIconProvider",
 		isChina
@@ -184,7 +184,7 @@ if (isMainBrowser) {
 
 // delete BMS's sidebar extension panel preference
 {
-	let pref = "floorp.extensions.webextensions.sidebar-action";
+	const pref = "floorp.extensions.webextensions.sidebar-action";
 	if (Services.prefs.prefHasUserValue(pref)) {
 		Services.prefs.clearUserPref(pref);
 	}

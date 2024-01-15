@@ -21,7 +21,7 @@ XPCOMUtils.defineLazyModuleGetters(lazy, {
 	ImageTools: "resource:///modules/ssb/ImageTools.jsm",
 });
 
-let shellService = Cc["@mozilla.org/browser/shell-service;1"].getService(
+const shellService = Cc["@mozilla.org/browser/shell-service;1"].getService(
 	Ci.nsIWindowsShellService,
 );
 
@@ -54,7 +54,7 @@ export const WindowsSupport = {
 			return;
 		}
 
-		let dir = PathUtils.join(PathUtils.profileDir, "ssb", ssb.id);
+		const dir = PathUtils.join(PathUtils.profileDir, "ssb", ssb.id);
 		await IOUtils.makeDirectory(dir, {
 			from: PathUtils.profileDir,
 			ignoreExisting: true,
@@ -64,9 +64,9 @@ export const WindowsSupport = {
 
 		// We should be embedding multiple icon sizes, but the current icon encoder
 		// does not support this. For now just embed a sensible size.
-		let icon = await SiteSpecificBrowserIdUtils.getIconBySSBId(ssb.id, 128);
+		const icon = await SiteSpecificBrowserIdUtils.getIconBySSBId(ssb.id, 128);
 		if (icon) {
-			let { container } = await lazy.ImageTools.loadImage(
+			const { container } = await lazy.ImageTools.loadImage(
 				Services.io.newURI(icon.src),
 			);
 			lazy.ImageTools.saveIcon(container, 128, 128, iconFile);
@@ -96,7 +96,7 @@ export const WindowsSupport = {
 		}
 
 		try {
-			let startMenu =
+			const startMenu =
 				Services.dirsvc.get("Home", Ci.nsIFile).path +
 				"\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\";
 			await IOUtils.remove(startMenu + ssb.name + ".lnk");
@@ -104,7 +104,7 @@ export const WindowsSupport = {
 			console.error(e);
 		}
 
-		let dir = PathUtils.join(PathUtils.profileDir, "ssb", ssb.id);
+		const dir = PathUtils.join(PathUtils.profileDir, "ssb", ssb.id);
 		try {
 			await IOUtils.remove(dir, { recursive: true });
 		} catch (e) {
@@ -123,13 +123,13 @@ export const WindowsSupport = {
 	async applyOSIntegration(ssb, window) {
 		taskbar.setGroupIdForWindow(window, buildGroupId(ssb.id));
 		const getIcon = async (size) => {
-			let icon = await SiteSpecificBrowserIdUtils.getIconBySSBId(ssb.id, size);
+			const icon = await SiteSpecificBrowserIdUtils.getIconBySSBId(ssb.id, size);
 			if (!icon) {
 				return null;
 			}
 
 			try {
-				let image = await lazy.ImageTools.loadImage(
+				const image = await lazy.ImageTools.loadImage(
 					Services.io.newURI(icon.src),
 				);
 				return image.container;
@@ -143,7 +143,7 @@ export const WindowsSupport = {
 			return;
 		}
 
-		let icons = await Promise.all([
+		const icons = await Promise.all([
 			getIcon(uiUtils.systemSmallIconSize),
 			getIcon(uiUtils.systemLargeIconSize),
 		]);

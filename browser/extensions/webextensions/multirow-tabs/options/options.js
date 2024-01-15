@@ -7,9 +7,9 @@ import {
 } from "../background.js";
 
 async function showOptions() {
-	let options = await getOptions();
-	for (let key in options) {
-		let element = document.getElementById(key);
+	const options = await getOptions();
+	for (const key in options) {
+		const element = document.getElementById(key);
 		if (!element) {
 			continue;
 		}
@@ -22,10 +22,10 @@ async function showOptions() {
 }
 
 function saveOptions() {
-	let newOptions = {};
-	for (let key in defaultOptions) {
-		let element = document.getElementById(key);
-		let value = element.type === "checkbox" ? element.checked : element.value;
+	const newOptions = {};
+	for (const key in defaultOptions) {
+		const element = document.getElementById(key);
+		const value = element.type === "checkbox" ? element.checked : element.value;
 		newOptions[key] = value;
 	}
 	setOptions(newOptions).then(applyOptions);
@@ -36,7 +36,7 @@ function resetOptions() {
 }
 
 function importOptions(e) {
-	let reader = new FileReader();
+	const reader = new FileReader();
 	let newOptions = {};
 	reader.onload = (e) => {
 		try {
@@ -51,13 +51,13 @@ function importOptions(e) {
 }
 
 async function exportOptions() {
-	let options = await getOptions();
-	let file = new Blob([JSON.stringify(options, null, 4)], {
+	const options = await getOptions();
+	const file = new Blob([JSON.stringify(options, null, 4)], {
 		type: "application/json",
 	});
-	let a = document.createElement("a");
-	let url = URL.createObjectURL(file);
-	let timestamp = new Date().toISOString().replaceAll(":", "-");
+	const a = document.createElement("a");
+	const url = URL.createObjectURL(file);
+	const timestamp = new Date().toISOString().replaceAll(":", "-");
 	a.href = url;
 	a.download = `paxmod-settings-${timestamp}.json`;
 	document.body.appendChild(a);

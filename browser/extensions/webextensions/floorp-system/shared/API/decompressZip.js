@@ -2,7 +2,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-"use strict";
 
 /* global ExtensionAPI, ExtensionCommon, Services, XPCOMUtils */
 
@@ -31,24 +30,24 @@ this.decompressZip = class extends ExtensionAPI {
 		return {
 			decompressZip: {
 				async decompress(zipPath, targetDirPath) {
-					let zipreader = new ZipReader(FileUtils.File(zipPath));
+					const zipreader = new ZipReader(FileUtils.File(zipPath));
 
-					let entries = [];
-					for (let entry of zipreader.findEntries("*")) {
+					const entries = [];
+					for (const entry of zipreader.findEntries("*")) {
 						entries.push(entry);
 					}
 					entries.sort((entry1, entry2) => {
 						return String(entry1).length - String(entry2).length;
 					});
-					for (let entry of entries) {
-						let entryPath = String(entry);
+					for (const entry of entries) {
+						const entryPath = String(entry);
 						if (
 							PathUtils.normalize(entryPath).startsWith("..") ||
 							PathUtils.normalize(entryPath).startsWith("/")
 						) {
 							throw new console.error("!!! Zip Slip detected !!!");
 						}
-						let path = PathUtils.join(
+						const path = PathUtils.join(
 							targetDirPath,
 							AppConstants.platform === "win"
 								? entryPath.replaceAll("/", "\\")

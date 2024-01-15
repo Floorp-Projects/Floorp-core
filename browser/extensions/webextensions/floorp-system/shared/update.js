@@ -17,21 +17,21 @@
 
 	const Notify = async (url, now, latest) => {
 		const msg = browser.i18n;
-		let created_notificationId = await browser.notifications.create({
+		const created_notificationId = await browser.notifications.create({
 			type: "basic",
 			iconUrl: browser.runtime.getURL("icons/link-48.png"),
 			title: l10nData[2],
 			message: l10nData[3] + "\n" + now + " -> " + latest,
 		});
 
-		let handle_onClicked = (notificationId) => {
+		const handle_onClicked = (notificationId) => {
 			if (created_notificationId === notificationId) {
 				browser.tabs.create({ url: url });
 			}
 		};
 		browser.notifications.onClicked.addListener(handle_onClicked);
 
-		let handle_onClosed = (notificationId) => {
+		const handle_onClosed = (notificationId) => {
 			if (created_notificationId === notificationId) {
 				browser.notifications.onClicked.removeListener(handle_onClicked);
 				browser.notifications.onClosed.removeListener(handle_onClosed);
@@ -50,20 +50,20 @@
 	};
 
 	const CheckUpdate = async (options) => {
-		let updaterEnabled = await browser.aboutConfigPrefs.getPref(
+		const updaterEnabled = await browser.aboutConfigPrefs.getPref(
 			"enable.floorp.update",
 		);
 		if (!updaterEnabled) return; //updater is disabled
 
-		let latestNotifyEnabledPref = await browser.aboutConfigPrefs.getPref(
+		const latestNotifyEnabledPref = await browser.aboutConfigPrefs.getPref(
 			"enable.floorp.updater.latest",
 		);
-		let latestNotifyEnabled =
+		const latestNotifyEnabled =
 			(options && options.isBrowserActionClicked) || latestNotifyEnabledPref;
 
-		let displayVersion = await browser.BrowserInfo.getDisplayVersion();
+		const displayVersion = await browser.BrowserInfo.getDisplayVersion();
 
-		let platformInfo = await browser.runtime.getPlatformInfo();
+		const platformInfo = await browser.runtime.getPlatformInfo();
 
 		fetch(API_END_POINT)
 			.then((res) => {
@@ -71,11 +71,11 @@
 				return res.json();
 			})
 			.then((datas) => {
-				let platformKeyName =
+				const platformKeyName =
 					platformInfo["os"] === "mac"
 						? "mac"
 						: `${platformInfo["os"]}-${platformInfo["arch"]}`;
-				let data = datas[platformKeyName];
+				const data = datas[platformKeyName];
 				if (!data["notify"]) return;
 				if (data["version"] !== displayVersion) {
 					Notify(data["url"], displayVersion, data["version"]);
@@ -98,7 +98,7 @@
 	CheckUpdate();
 
 	if (browser.browserAction) {
-		browser.browserAction.onClicked.addListener(function () {
+		browser.browserAction.onClicked.addListener(() => {
 			CheckUpdate({ isBrowserActionClicked: true });
 		});
 	}

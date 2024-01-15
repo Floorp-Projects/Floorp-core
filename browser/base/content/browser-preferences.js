@@ -53,7 +53,7 @@ Services.scriptloader.loadSubScript(
 const BROWSER_SETED_USERAGENT_PREF = "floorp.browser.UserAgent";
 const GENERAL_USERAGENT_OVERRIDE_PREF = "general.useragent.override";
 {
-	let setUserAgent = function (BROWSER_SETED_USERAGENT) {
+	const setUserAgent = (BROWSER_SETED_USERAGENT) => {
 		switch (BROWSER_SETED_USERAGENT) {
 			case 0:
 				Services.prefs.clearUserPref(GENERAL_USERAGENT_OVERRIDE_PREF);
@@ -90,13 +90,13 @@ const GENERAL_USERAGENT_OVERRIDE_PREF = "general.useragent.override";
 		}
 	};
 
-	let BROWSER_SETED_USERAGENT = Services.prefs.getIntPref(
+	const BROWSER_SETED_USERAGENT = Services.prefs.getIntPref(
 		BROWSER_SETED_USERAGENT_PREF,
 	);
 	setUserAgent(BROWSER_SETED_USERAGENT);
 
-	Services.prefs.addObserver(BROWSER_SETED_USERAGENT_PREF, function () {
-		let BROWSER_SETED_USERAGENT = Services.prefs.getIntPref(
+	Services.prefs.addObserver(BROWSER_SETED_USERAGENT_PREF, () => {
+		const BROWSER_SETED_USERAGENT = Services.prefs.getIntPref(
 			BROWSER_SETED_USERAGENT_PREF,
 		);
 		setUserAgent(BROWSER_SETED_USERAGENT);
@@ -124,18 +124,18 @@ const backupFloorpNotes = async () => {
 			),
 		).then((data) => {
 			if (!data) {
-				let backupFilePath = PathUtils.join(
+				const backupFilePath = PathUtils.join(
 					Services.dirsvc.get("ProfD", Ci.nsIFile).path,
 					"floorp_notes_backup.json",
 				);
 				IOUtils.writeUTF8(backupFilePath, `{"data":{${jsonToStr},`);
 			} else {
-				let backupFilePath = PathUtils.join(
+				const backupFilePath = PathUtils.join(
 					Services.dirsvc.get("ProfD", Ci.nsIFile).path,
 					"floorp_notes_backup.json",
 				);
 				IOUtils.readUTF8(backupFilePath).then((content) => {
-					let appText = `${content}${jsonToStr},`;
+					const appText = `${content}${jsonToStr},`;
 					IOUtils.writeUTF8(backupFilePath, appText);
 				});
 			}
@@ -172,7 +172,7 @@ getAllBackupedNotes().then((content) => {
 			delete content.data[key];
 		});
 
-		let jsonToStr = JSON.stringify(content).slice(0, -2) + ",";
+		const jsonToStr = JSON.stringify(content).slice(0, -2) + ",";
 		const filePath = PathUtils.join(
 			Services.dirsvc.get("ProfD", Ci.nsIFile).path,
 			"floorp_notes_backup.json",
@@ -187,13 +187,13 @@ getAllBackupedNotes().then((content) => {
 const FLOORP_USERJS_PREF = "floorp.browser.userjs";
 
 async function applyUserJSCustomize() {
-	let userjsUtils = ChromeUtils.importESModule(
+	const userjsUtils = ChromeUtils.importESModule(
 		"resource:///modules/userjsUtils.sys.mjs",
 	);
 	const pref = Services.prefs.getStringPref("floorp.user.js.customize", "");
 
 	if (pref != "") {
-		let url = userjsUtils.userJsList[pref][0];
+		const url = userjsUtils.userJsList[pref][0];
 		const PROFILE_DIR = Services.dirsvc.get("ProfD", Ci.nsIFile).path;
 		const userjs = PathUtils.join(PROFILE_DIR, "user.js");
 

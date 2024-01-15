@@ -20,13 +20,13 @@ const { E10SUtils } = ChromeUtils.import(
  * @returns {Promise<string>} the data URI.
  */
 async function loadIcon(window, uri) {
-	let iconURL = new window.URL(uri, window.location);
+	const iconURL = new window.URL(uri, window.location);
 
-	let request = new window.Request(iconURL, { mode: "cors" });
+	const request = new window.Request(iconURL, { mode: "cors" });
 	request.overrideContentPolicyType(Ci.nsIContentPolicy.TYPE_IMAGE);
 
-	let response = await window.fetch(request);
-	let blob = await response.blob();
+	const response = await window.fetch(request);
+	const blob = await response.blob();
 
 	return new Promise((resolve, reject) => {
 		const reader = new FileReader();
@@ -97,11 +97,11 @@ class WebBrowserChrome {
 		// called for a navigation in an inner frame. First we have to find the
 		// browsing context for the frame doing the load.
 
-		let docShell = linkNode.ownerGlobal.docShell;
-		let bc = docShell.browsingContext;
+		const docShell = linkNode.ownerGlobal.docShell;
+		const bc = docShell.browsingContext;
 
 		// Which browsing context is this link targetting?
-		let target = originalTarget ? bc.findWithName(originalTarget) : bc;
+		const target = originalTarget ? bc.findWithName(originalTarget) : bc;
 
 		if (target) {
 			// If we found a target then it must be one of the frames within this

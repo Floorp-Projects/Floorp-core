@@ -28,16 +28,16 @@
 	let enabled = browser.aboutConfigPrefs.getBoolPref(
 		FLOORP_WEBCOMPAT_ENABLED_PREF,
 	);
-	browser.aboutConfigPrefs.onPrefChange.addListener(function () {
+	browser.aboutConfigPrefs.onPrefChange.addListener(() => {
 		enabled = browser.aboutConfigPrefs.getBoolPref(
 			FLOORP_WEBCOMPAT_ENABLED_PREF,
 		);
 	}, FLOORP_WEBCOMPAT_ENABLED_PREF);
-	let platformInfo = browser.runtime.getPlatformInfo();
+	const platformInfo = browser.runtime.getPlatformInfo();
 
-	for (let WEBCOMPAT_USERAGENT of WEBCOMPATS_USERAGENT) {
+	for (const WEBCOMPAT_USERAGENT of WEBCOMPATS_USERAGENT) {
 		browser.webRequest.onBeforeSendHeaders.addListener(
-			async function (e) {
+			async (e) => {
 				if (!(await enabled)) return;
 				if (e.tabId === -1) return;
 				if (
@@ -45,7 +45,7 @@
 					"undefined"
 				)
 					return;
-				for (let requestHeader of e.requestHeaders) {
+				for (const requestHeader of e.requestHeaders) {
 					if (requestHeader.name.toLowerCase() === "user-agent") {
 						requestHeader.value =
 							WEBCOMPAT_USERAGENT["ua"][(await platformInfo).os];

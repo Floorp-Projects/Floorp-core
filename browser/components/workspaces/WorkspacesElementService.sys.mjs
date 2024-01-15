@@ -92,14 +92,14 @@ export const WorkspacesElementService = {
 		windowId,
 		workspaceManageOnBMSMode,
 	) {
-		let workspacesData =
+		const workspacesData =
 			await WorkspacesWindowIdUtils.getWindowWorkspacesDataWithoutPreferences(
 				windowId,
 			);
-		let workspace = workspacesData[workspaceId];
-		let selectedWorkspaceId =
+		const workspace = workspacesData[workspaceId];
+		const selectedWorkspaceId =
 			await WorkspacesWindowIdUtils.getSelectedWorkspaceId(windowId);
-		let selected = workspaceId == selectedWorkspaceId;
+		const selected = workspaceId == selectedWorkspaceId;
 		return this.workspaceBlockElement(
 			workspaceId,
 			workspace.name,
@@ -109,17 +109,17 @@ export const WorkspacesElementService = {
 	},
 
 	async getAllWorkspacesBlockElements(windowId, workspaceManageOnBMSMode) {
-		let workspacesData =
+		const workspacesData =
 			await WorkspacesWindowIdUtils.getWindowWorkspacesDataWithoutPreferences(
 				windowId,
 			);
-		let selectedWorkspaceId =
+		const selectedWorkspaceId =
 			await WorkspacesWindowIdUtils.getSelectedWorkspaceId(windowId);
 
-		let workspaceBlockElements = [];
-		for (let workspaceId in workspacesData) {
-			let workspace = workspacesData[workspaceId];
-			let selected = workspaceId == selectedWorkspaceId;
+		const workspaceBlockElements = [];
+		for (const workspaceId in workspacesData) {
+			const workspace = workspacesData[workspaceId];
+			const selected = workspaceId == selectedWorkspaceId;
 			workspaceBlockElements.push(
 				this.workspaceBlockElement(
 					workspaceId,

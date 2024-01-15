@@ -111,15 +111,15 @@ function setFaviconColorToTitlebar() {
 
 	extractColorsFromBase64Image(base64ImageWithoutHeader)
 		.then((result) => {
-			let elems = document.querySelectorAll(".floorp-toolbar-bgcolor");
+			const elems = document.querySelectorAll(".floorp-toolbar-bgcolor");
 			for (let i = 0; i < elems.length; i++) {
 				elems[i].remove();
 			}
 
-			let elem = document.createElement("style");
-			let textColor =
+			const elem = document.createElement("style");
+			const textColor =
 				result.averageColor - 0x222222 > 0xffffff / 2 ? "#000000" : "#ffffff";
-			let CSS = `
+			const CSS = `
         #navigator-toolbox:not(:-moz-lwtheme), #navigator-toolbox:-moz-lwtheme {
           background-color: ${result.averageColor} !important;
         }
@@ -138,7 +138,7 @@ function setFaviconColorToTitlebar() {
 			document.head.appendChild(elem);
 		})
 		.catch((error) => {
-			let elems = document.querySelectorAll(".floorp-toolbar-bgcolor");
+			const elems = document.querySelectorAll(".floorp-toolbar-bgcolor");
 			for (let i = 0; i < elems.length; i++) {
 				elems[i].remove();
 			}
@@ -148,18 +148,18 @@ function setFaviconColorToTitlebar() {
 function enableFaviconColorToTitlebar() {
 	setFaviconColorToTitlebar();
 
-	document.addEventListener("floorpOnLocationChangeEvent", function () {
+	document.addEventListener("floorpOnLocationChangeEvent", () => {
 		setFaviconColorToTitlebar();
 	});
 }
 
 function disableFaviconColorToTitlebar() {
-	let elems = document.querySelectorAll(".floorp-toolbar-bgcolor");
+	const elems = document.querySelectorAll(".floorp-toolbar-bgcolor");
 	for (let i = 0; i < elems.length; i++) {
 		elems[i].remove();
 	}
 
-	document.removeEventListener("floorpOnLocationChangeEvent", function () {
+	document.removeEventListener("floorpOnLocationChangeEvent", () => {
 		setFaviconColorToTitlebar();
 	});
 }

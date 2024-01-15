@@ -10,13 +10,13 @@ export const SiteSpecificBrowserExternalFileService = {
 	},
 
 	async getCurrentSsbData() {
-		let fileExists = await IOUtils.exists(this._ssbStoreFile);
+		const fileExists = await IOUtils.exists(this._ssbStoreFile);
 		if (!fileExists) {
 			IOUtils.writeJSON(this._ssbStoreFile, {});
 			return {};
 		}
 
-		let result = await IOUtils.readJSON(this._ssbStoreFile);
+		const result = await IOUtils.readJSON(this._ssbStoreFile);
 
 		return result;
 	},
@@ -26,7 +26,7 @@ export const SiteSpecificBrowserExternalFileService = {
 	},
 
 	async removeSsbData(ssbId) {
-		let list = await SiteSpecificBrowserExternalFileService.getCurrentSsbData();
+		const list = await SiteSpecificBrowserExternalFileService.getCurrentSsbData();
 		for (const key in list) {
 			if (list.hasOwnProperty(key)) {
 				const item = list[key];

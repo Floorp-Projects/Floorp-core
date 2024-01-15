@@ -80,8 +80,8 @@ const welcomeFunctions = {
 		},
 
 		clickNextButton() {
-			let currentStep = document.querySelector(".welcome-setups:not([hidden])");
-			let nextStep = currentStep.nextElementSibling;
+			const currentStep = document.querySelector(".welcome-setups:not([hidden])");
+			const nextStep = currentStep.nextElementSibling;
 			currentStep.setAttribute("hidden", "true");
 			nextStep.removeAttribute("hidden");
 		},

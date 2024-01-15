@@ -55,10 +55,10 @@ function checkBrowserIsStartup() {
 }
 
 function toggleCustomizeModeVerticaltabStyle() {
-	let customizationContainer = document.getElementById("nav-bar");
-	let arrowscrollbox = document.getElementById("tabbrowser-arrowscrollbox");
-	let observer = new MutationObserver(function (mutations) {
-		mutations.forEach(function (mutation) {
+	const customizationContainer = document.getElementById("nav-bar");
+	const arrowscrollbox = document.getElementById("tabbrowser-arrowscrollbox");
+	const observer = new MutationObserver((mutations) => {
+		mutations.forEach((mutation) => {
 			if (mutation.target.getAttribute("customizing") == "true") {
 				Services.prefs.setBoolPref(
 					"floorp.browser.tabs.verticaltab.temporary.disabled",
@@ -78,10 +78,10 @@ function toggleCustomizeModeVerticaltabStyle() {
 			}
 		});
 	});
-	let config = { attributes: true };
+	const config = { attributes: true };
 	observer.observe(customizationContainer, config);
 
-	Services.prefs.addObserver("floorp.tabbar.style", function () {
+	Services.prefs.addObserver("floorp.tabbar.style", () => {
 		if (
 			Services.prefs.getIntPref("floorp.tabbar.style") != 2 &&
 			!Services.prefs.getBoolPref(
@@ -114,7 +114,7 @@ function mutationObserverCallback(mutations) {
 }
 
 function toggleVerticalTabsPositionHandler() {
-	let verticaltabPositionPref = Services.prefs.getBoolPref(
+	const verticaltabPositionPref = Services.prefs.getBoolPref(
 		"floorp.browser.tabs.verticaltab.right",
 	);
 
@@ -171,7 +171,7 @@ function setVerticalTabs() {
 			document.head.appendChild(Tag);
 		}
 		//add context menu
-		let target = document.getElementById("TabsToolbar-customization-target");
+		const target = document.getElementById("TabsToolbar-customization-target");
 		target.setAttribute("context", "toolbar-context-menu");
 
 		//splitter
@@ -213,10 +213,10 @@ function setVerticalTabs() {
 				document.getElementById("TabsToolbar").removeAttribute("hidden");
 			}
 
-			let scroolbarPref = "floorp.verticaltab.show.scrollbar";
-			let arrowscrollbox = document.getElementById("tabbrowser-arrowscrollbox");
+			const scroolbarPref = "floorp.verticaltab.show.scrollbar";
+			const arrowscrollbox = document.getElementById("tabbrowser-arrowscrollbox");
 			if (Services.prefs.getBoolPref(scroolbarPref)) {
-				let elem = arrowscrollbox.shadowRoot.createElementAndAppendChildAt(
+				const elem = arrowscrollbox.shadowRoot.createElementAndAppendChildAt(
 					arrowscrollbox.shadowRoot.querySelector(".scrollbox-clip"),
 					"style",
 				);
@@ -232,7 +232,7 @@ function setVerticalTabs() {
 					".scrollbox-clip[part='scrollbox-clip']",
 				).style.overflowY = "scroll";
 			} else {
-				let elem = arrowscrollbox.shadowRoot.createElementAndAppendChildAt(
+				const elem = arrowscrollbox.shadowRoot.createElementAndAppendChildAt(
 					arrowscrollbox.shadowRoot.querySelector(".scrollbox-clip"),
 					"style",
 				);
@@ -280,10 +280,10 @@ function setVerticalTabs() {
 
 		// Pref
 		Services.prefs.setBoolPref("floorp.browser.tabs.verticaltab", false);
-		let arrowscrollbox = document.getElementById("tabbrowser-arrowscrollbox");
+		const arrowscrollbox = document.getElementById("tabbrowser-arrowscrollbox");
 		arrowscrollbox.shadowRoot
 			.querySelectorAll(".floorp-vtscrollbar")
-			.forEach(function (elem) {
+			.forEach((elem) => {
 				elem.remove();
 			});
 		arrowscrollbox.shadowRoot.querySelector(
@@ -292,7 +292,7 @@ function setVerticalTabs() {
 
 		arrowscrollbox.shadowRoot
 			.querySelectorAll(".floorp-vtscrollbar")
-			.forEach(function (elem) {
+			.forEach((elem) => {
 				elem.remove();
 			});
 
@@ -305,7 +305,7 @@ function setVerticalTabs() {
 
 setVerticalTabs();
 
-Services.prefs.addObserver("floorp.tabbar.style", function () {
+Services.prefs.addObserver("floorp.tabbar.style", () => {
 	if (Services.prefs.getIntPref("floorp.tabbar.style") == 2) {
 		Services.prefs.setIntPref(tabbarContents.tabbarDisplayStylePref, 2);
 	} else {

@@ -9,7 +9,7 @@
 var { AppConstants } = ChromeUtils.import(
 	"resource://gre/modules/AppConstants.jsm",
 );
-let { BrowserManagerSidebar } = ChromeUtils.importESModule(
+const { BrowserManagerSidebar } = ChromeUtils.importESModule(
 	"resource:///modules/BrowserManagerSidebar.sys.mjs",
 );
 XPCOMUtils.defineLazyGetter(this, "L10n", () => {
@@ -28,7 +28,7 @@ Preferences.addAll([
 var gBSBPane = {
 	_pane: null,
 	obsPanel(data_) {
-		let data = data_.wrappedJSObject;
+		const data = data_.wrappedJSObject;
 		switch (data.eventType) {
 			case "mouseOver":
 				document.getElementById(
@@ -62,9 +62,9 @@ var gBSBPane = {
 	},
 
 	upWebpanel(id) {
-		let index = this.BSBs.index.indexOf(id);
+		const index = this.BSBs.index.indexOf(id);
 		if (index >= 1) {
-			let tempValue = this.BSBs.index[index];
+			const tempValue = this.BSBs.index[index];
 			this.BSBs.index[index] = this.BSBs.index[index - 1];
 			this.BSBs.index[index - 1] = tempValue;
 			Services.prefs.setStringPref(
@@ -79,9 +79,9 @@ var gBSBPane = {
 	},
 
 	downWebpanel(id) {
-		let index = this.BSBs.index.indexOf(id);
+		const index = this.BSBs.index.indexOf(id);
 		if (index != this.BSBs.index.length - 1 && index != -1) {
-			let tempValue = this.BSBs.index[index];
+			const tempValue = this.BSBs.index[index];
 			this.BSBs.index[index] = this.BSBs.index[index + 1];
 			this.BSBs.index[index + 1] = tempValue;
 			Services.prefs.setStringPref(
@@ -114,21 +114,21 @@ var gBSBPane = {
 		this._pane = document.getElementById("paneBSB");
 
 		{
-			let prefName = "floorp.browser.sidebar2.global.webpanel.width";
-			let elem = document.getElementById("GlobalWidth");
+			const prefName = "floorp.browser.sidebar2.global.webpanel.width";
+			const elem = document.getElementById("GlobalWidth");
 			elem.value = Services.prefs.getIntPref(prefName, undefined);
-			elem.addEventListener("change", function () {
+			elem.addEventListener("change", () => {
 				Services.prefs.setIntPref(prefName, Number(elem.value));
 			});
-			Services.prefs.addObserver(prefName, function () {
+			Services.prefs.addObserver(prefName, () => {
 				elem.value = Services.prefs.getIntPref(prefName, undefined);
 			});
 		}
 
 		this.panelSet();
-		document.getElementById("BSBAdd").addEventListener("command", function () {
-			let updateNumberDate = new Date();
-			let updateNumber = `w${updateNumberDate.getFullYear()}${updateNumberDate.getMonth()}${updateNumberDate.getDate()}${updateNumberDate.getHours()}${updateNumberDate.getMinutes()}${updateNumberDate.getSeconds()}`;
+		document.getElementById("BSBAdd").addEventListener("command", () => {
+			const updateNumberDate = new Date();
+			const updateNumber = `w${updateNumberDate.getFullYear()}${updateNumberDate.getMonth()}${updateNumberDate.getDate()}${updateNumberDate.getHours()}${updateNumberDate.getMinutes()}${updateNumberDate.getSeconds()}`;
 			gSubDialog.open(
 				"chrome://browser/content/preferences/dialogs/customURLs.xhtml",
 				undefined,
@@ -137,7 +137,7 @@ var gBSBPane = {
 		});
 		document
 			.getElementById("BSBDefault")
-			.addEventListener("command", function () {
+			.addEventListener("command", () => {
 				Services.prefs.clearUserPref(`floorp.browser.sidebar2.data`);
 			});
 	},
@@ -163,7 +163,7 @@ var gBSBPane = {
 		);
 		let isFirst = true;
 		let lastElem = null;
-		for (let container of this.BSBs.index) {
+		for (const container of this.BSBs.index) {
 			let listItem = null;
 			if (document.getElementById(`BSB-${container}`) == null) {
 				listItem = window.MozXULElement.parseXULToFragment(`
@@ -199,12 +199,12 @@ var gBSBPane = {
 					}.bind(this);
 				}
 				{
-					let elem = listItem.querySelector(".bsb_label");
+					const elem = listItem.querySelector(".bsb_label");
 					this.setURL(this.BSBs.data[container].url, elem);
 				}
 				{
-					let elem = listItem.querySelector(".BMS-Edit");
-					elem.addEventListener("command", function (event) {
+					const elem = listItem.querySelector(".BMS-Edit");
+					elem.addEventListener("command", (event) => {
 						gSubDialog.open(
 							"chrome://browser/content/preferences/dialogs/customURLs.xhtml",
 							undefined,
@@ -215,7 +215,7 @@ var gBSBPane = {
 					document.l10n.setAttributes(elem, "sidebar2-pref-setting");
 				}
 				{
-					let elem = listItem.querySelector(".BMS-Remove");
+					const elem = listItem.querySelector(".BMS-Remove");
 					elem.addEventListener(
 						"command",
 						function (event) {
@@ -226,7 +226,7 @@ var gBSBPane = {
 					document.l10n.setAttributes(elem, "sidebar2-pref-delete");
 				}
 				{
-					let elem = listItem.querySelector(".BMS-Up");
+					const elem = listItem.querySelector(".BMS-Up");
 					elem.addEventListener(
 						"command",
 						function (event) {
@@ -236,7 +236,7 @@ var gBSBPane = {
 					elem.setAttribute("value", container);
 				}
 				{
-					let elem = listItem.querySelector(".BMS-Down");
+					const elem = listItem.querySelector(".BMS-Down");
 					elem.addEventListener(
 						"command",
 						function (event) {
@@ -262,9 +262,9 @@ var gBSBPane = {
 			lastElem = listItem;
 		}
 		lastElem?.querySelector(".BMS-Down")?.setAttribute?.("disabled", "true");
-		let BSBAll = document.querySelectorAll(".BSB-list");
-		let sicon = BSBAll.length;
-		let side = this.BSBs.index.length;
+		const BSBAll = document.querySelectorAll(".BSB-list");
+		const sicon = BSBAll.length;
+		const side = this.BSBs.index.length;
 		if (sicon > side) {
 			for (let i = 0; i < sicon - side; i++) {
 				BSBAll[i].remove();
