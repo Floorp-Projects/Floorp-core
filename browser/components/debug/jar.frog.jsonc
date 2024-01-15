@@ -1,0 +1,20 @@
+{
+  "$schema": "../../../misc/jar.frog.schema.json",
+  "jars": [
+    {
+      "jarname": "floorp.jar",
+      "chrome": {
+        "content": ["floorp", "%res/floorp", ["contentaccessible=yes"]]
+      },
+      "pathPrefix": "res/floorp/",
+      "content": {
+        "normal": {
+          "FloorpDebugHandler.sys.mjs": {
+            "path": "./FloorpDebugHandler.sys.mts"
+          }
+        }
+      },
+      "include_map": true
+    }
+  ]
+}

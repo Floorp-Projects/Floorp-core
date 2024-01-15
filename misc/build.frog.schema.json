@@ -1,5 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
+  "$comment": "You should change /tools/frog-build/main.ts because it's not importing this file",
   "title": "Frog Build Tools build script schema",
   "type": "object",
   "properties": {
@@ -10,38 +11,56 @@
       "type": "object",
       "properties": {
         "subprojects": {
-          "type": "array"
+          "type": "array",
+          "description": "sub build.frog.jsonc paths",
+          "items": {
+            "type": "string"
+          }
         },
         "jarmanifest": {
           "type": "array",
+          "items": {
+            "type": "string"
+          },
           "description": "Frog's jar.frog.jsonc files"
         }
-      }
+      },
+      "additionalProperties": false
     },
     "mozilla": {
       "type": "object",
       "properties": {
         "xpcom_manifests": {
-          "type": "array"
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         },
 
         "extra_js_modules": {
           "type": "object",
           "properties": {
-            "default": { "type": "array" }
+            "$default": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           },
           "patternProperties": {
-            "*": { "type": "array" }
+            "$.+$": { "type": "array", "items": { "type": "string" } }
           }
         },
         "jar_manifest": {
           "type": "array",
+          "items": {
+            "type": "string"
+          },
           "description": "Mozilla's jar.mn files"
-        },
-        "additionalProperties": false
-      }
+        }
+      },
+      "additionalProperties": false
     }
   },
-  "required": ["mozilla"],
   "additionalProperties": false
 }

@@ -1,5 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
+  "$comment": "You should change /tools/frog-build/main.ts because it's not importing this file",
   "title": "Frog Build Tools jar manifest schema",
   "type": "object",
   "properties": {
@@ -7,64 +8,85 @@
       "type": "string"
     },
     "jars": {
-      "type": "object",
-      "patternProperties": {
-        "*.jar": {
-          "type": "object",
-          "properties": {
-            "chrome": {
-              "type": "object",
-              "properties": {
-                "content": {
-                  "type": "object",
-                  "properties": {
-                    "pkgname": {
-                      "type": "string"
-                    },
-                    "uri": {
-                      "type": "string"
-                    },
-                    "flags": {
-                      "type": "array"
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "jarname": {
+            "type": "string"
+          },
+          "chrome": {
+            "type": "object",
+            "properties": {
+              "content": {
+                "type": "array",
+                "examples": [["floorp", "%res/floorp", ["contentaccessible=yes"]]],
+
+                "items": [
+                  {
+                    "type": "string",
+                    "description": "pkgname"
+                  },
+                  {
+                    "type": "string",
+                    "description": "uri"
+                  },
+                  {
+                    "type": "array",
+                    "description": "flags",
+                    "items": {
+                      "type": "string",
+                      "description": "flags"
                     }
+                  }
+                ]
+              }
+            },
+            "maxProperties": 1,
+            "description": "https://firefox-source-docs.mozilla.org/build/buildsystem/chrome-registration.html#chrome-registration",
+            "additionalProperties": false
+          },
+          "pathPrefix": {
+            "type": "string",
+            "description": "In jar.mn, the pathPrefix is applied to all virtual file path"
+          },
+          "include_map": {
+            "type": "boolean",
+            "default": true,
+            "description": "include map file(*.map) of content files if there is"
+          },
+          "content": {
+            "type": "object",
+            "properties": {
+              "normal": {
+                "type": "object",
+                "patternProperties": {
+                  "^.+$": {
+                    "type": "object",
+                    "properties": { "path": { "type": "string" } },
+                    "additionalProperties": false
                   }
                 }
               },
-              "maxProperties": 1,
-              "description": "https://firefox-source-docs.mozilla.org/build/buildsystem/chrome-registration.html#chrome-registration"
-            },
-            "prefixPath": {
-              "type": "string",
-              "description": "In jar.mn, the prefixPath is applied to all virtual file path"
-            },
-            "content": {
-              "type": "object",
-              "properties": {
-                "normal": {
-                  "type": "object",
-                  "patternProperties": {
-                    "*": {
-                      "type": "object",
-                      "properties": { "path": { "type": "string" } }
-                    }
+              "preprocess": {
+                "type": "object",
+                "patternProperties": {
+                  "$.+$": {
+                    "type": "object",
+                    "properties": { "path": { "type": "string" } },
+                    "additionalProperties": false
                   }
                 },
-                "preprocess": {
-                  "type": "object",
-                  "patternProperties": {
-                    "*": {
-                      "type": "object",
-                      "properties": { "path": { "type": "string" } }
-                    }
-                  }
-                }
+                "additionalProperties": false
               }
-            }
+            },
+            "additionalProperties": false
           }
-        }
+        },
+        "additionalProperties": false
       }
     }
   },
-  "required": ["mozilla"],
+  "required": ["jars"],
   "additionalProperties": false
 }

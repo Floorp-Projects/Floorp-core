@@ -1,0 +1,6 @@
+{
+  "$schema": "./misc/build.frog.schema.json",
+  "build": {
+    "subprojects": ["./browser/components/debug/build.frog.jsonc"]
+  }
+}
