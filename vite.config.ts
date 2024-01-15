@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import path from "path";
+import * as fs from "fs/promises";
 
 const r = (str: string): string => {
   return path.resolve(__dirname, str);
@@ -14,7 +15,7 @@ export default defineConfig({
     sourcemap: true,
     // outDir,
     assetsInlineLimit: 0,
-    manifest: true,
+    //manifest: true,
     reportCompressedSize: false,
     modulePreload: {
       polyfill: false,
@@ -33,6 +34,18 @@ export default defineConfig({
     },
   },
   plugins: [
+    {
+      name: "flog_manifest",
+      enforce: "post",
+      async writeBundle(option, bundle) {
+        const ret = [];
+        for (const [idx, val] of Object.entries(bundle)) {
+          ret.push(val.fileName);
+        }
+        await fs.mkdir("./dist/.frog", { recursive: true });
+        await fs.writeFile("./dist/.frog/vite.json", JSON.stringify(ret), { flag: "w" });
+      },
+    },
     // {
     //   name: "hook",
     //   enforce: "post",

@@ -1,4 +1,4 @@
-import { AUTO_GENERATED_COMMENT } from "./defines.js";
+import { AUTO_GENERATED_COMMENT } from "./lib/defines.js";
 import { JarSchema } from "./schema.js";
 
 export function generateJarMNFromJarFrog(manifest: JarSchema) {

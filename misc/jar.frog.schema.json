@@ -20,7 +20,7 @@
             "properties": {
               "content": {
                 "type": "array",
-                "examples": [["floorp", "%res/floorp", ["contentaccessible=yes"]]],
+                "examples": [["floorp", "%res/floorp", "contentaccessible=yes"]],
 
                 "items": [
                   {
@@ -30,16 +30,29 @@
                   {
                     "type": "string",
                     "description": "uri"
+                  }
+                ],
+                "additionalItems": {
+                  "type": "string",
+                  "description": "flags"
+                }
+              },
+              "resource": {
+                "type": "array",
+                "items": [
+                  {
+                    "type": "string",
+                    "description": "aliasname"
                   },
                   {
-                    "type": "array",
-                    "description": "flags",
-                    "items": {
-                      "type": "string",
-                      "description": "flags"
-                    }
+                    "type": "string",
+                    "description": "uri"
                   }
-                ]
+                ],
+                "additionalItems": {
+                  "type": "string",
+                  "description": "flags"
+                }
               }
             },
             "maxProperties": 1,
@@ -48,7 +61,7 @@
           },
           "pathPrefix": {
             "type": "string",
-            "description": "In jar.mn, the pathPrefix is applied to all virtual file path"
+            "description": "In jar.mn, the pathPrefix is applied to all virtual file path in jar"
           },
           "include_map": {
             "type": "boolean",

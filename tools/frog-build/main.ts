@@ -5,17 +5,21 @@ process.chdir(__dirname);
 
 import type { BuildSchema, JarSchema } from "./schema.js";
 
-import swc from "@swc/core";
 import * as fs from "fs/promises";
+import { runViteBuild } from "./lib/vite.js";
+import { compile } from "./lib/compile.js";
 
 process.chdir("../..");
 const root = JSON.parse((await fs.readFile("build.frog.jsonc")).toString()) as BuildSchema;
+
+const pVite = runViteBuild();
 
 root.build.subprojects.forEach(async (sub) => {
   const pathBuildFrog = sub;
   const dirBuildFrog = path.dirname(pathBuildFrog);
   console.log(`subDir: ${dirBuildFrog}`);
   const pSub = JSON.parse((await fs.readFile(pathBuildFrog)).toString()) as BuildSchema;
+
   pSub.build.jarmanifest.forEach(async (relativePathJarFrog) => {
     const pathJarFrog = path.resolve(dirBuildFrog, relativePathJarFrog);
     const dirJarFrog = path.dirname(pathJarFrog);
@@ -26,16 +30,9 @@ root.build.subprojects.forEach(async (sub) => {
         const pathContent = path.resolve(dirJarFrog, val.path);
         console.log(`pathContent: ${pathContent}`);
         console.log("Transcompiling: " + pathContent);
-        const output = await swc.transformFile(pathContent, {
-          jsc: {
-            parser: {
-              syntax: "typescript",
-            },
-            target: "esnext",
-          },
-          sourceMaps: jar.include_map,
-        });
-        console.log(jar.include_map);
+
+        const output = await compile(pathContent, jar.include_map);
+
         await fs.mkdir("./dist", { recursive: true });
         await fs.writeFile(`dist/${idx}`, output.code, { flag: "w" });
         if (output.map) {
@@ -45,6 +42,8 @@ root.build.subprojects.forEach(async (sub) => {
     }
   });
 });
+
+await pVite;
 
 //fs.cp("../../browser/components/debug/components.conf", "../../dist/FloorpDebugHandlerComponents.conf");
 //console.log("frog-build end");

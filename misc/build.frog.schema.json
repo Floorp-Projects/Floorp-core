@@ -37,20 +37,6 @@
           }
         },
 
-        "extra_js_modules": {
-          "type": "object",
-          "properties": {
-            "$default": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          "patternProperties": {
-            "$.+$": { "type": "array", "items": { "type": "string" } }
-          }
-        },
         "jar_manifest": {
           "type": "array",
           "items": {

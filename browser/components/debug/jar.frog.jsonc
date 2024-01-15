@@ -4,7 +4,7 @@
     {
       "jarname": "floorp.jar",
       "chrome": {
-        "content": ["floorp", "%res/floorp", ["contentaccessible=yes"]]
+        "resource": ["floorp", "%res/floorp"]
       },
       "pathPrefix": "res/floorp/",
       "content": {
