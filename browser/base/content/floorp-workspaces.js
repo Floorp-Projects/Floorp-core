@@ -100,6 +100,9 @@ const gWorkspaces = {
     }
 
     await this.updateToolbarButtonAndPopupContentIconAndLabel(await this.getCurrentWorkspaceId());
+
+    // Against XSS
+    this.rebuildWorkspacesLabels();
   },
 
   async rebuildWorkspacesLabels() {
@@ -373,13 +376,13 @@ const gWorkspaces = {
 
   changeWorkspace(workspaceId, option, addNewTab = false) {
     // Change Workspace
-    let willChangeWorkspaceLastShowTab = document.querySelector(`[${WorkspacesService.workspaceLastShowId}="${workspaceId}"]`) || null;
+    const willChangeWorkspaceLastShowTab = document.querySelector(`[${WorkspacesService.workspaceLastShowId}="${workspaceId}"]`) || null;
 
     if (willChangeWorkspaceLastShowTab) {
       window.gBrowser.selectedTab = willChangeWorkspaceLastShowTab;
     } else if (addNewTab) {
-      let tab = gWorkspaces.createTabForWorkspace(workspaceId);
-      gBrowser.selectedTab = tab;
+      const tab = gWorkspaces.createTabForWorkspace(workspaceId);
+      window.gBrowser.selectedTab = tab;
     } else {
       gWorkspaces.switchToAnotherWorkspaceTab(workspaceId);
     }
@@ -470,15 +473,15 @@ const gWorkspaces = {
       url = Services.prefs.getStringPref("browser.startup.homepage");
     }
 
-    let tabs = gBrowser.tabs;
-    for (let tab of tabs) {
+    const tabs = window.gBrowser.tabs;
+    for (const tab of tabs) {
       if (!tab.hasAttribute(this.workspacesTabAttributionId)) {
         this.setWorkspaceIdToAttribute(tab, workspaceId);
         return tab;
       }
     }
 
-    let tab = gBrowser.addTab(url, {
+    const tab = window.gBrowser.addTab(url, {
       skipAnimation: true,
       inBackground: false,
       triggeringPrincipal: Services.scriptSecurityManager.getSystemPrincipal(),
@@ -613,11 +616,11 @@ const gWorkspaces = {
     const workspacesCount = await gWorkspaces.getCurrentWorkspacesCount();
 
     // Last Show Workspace Attribute
-    let selectedTab = gBrowser.selectedTab;
+    const selectedTab = window.gBrowser.selectedTab;
     if (selectedTab && !selectedTab.hasAttribute(WorkspacesService.workspaceLastShowId)) {
-      let lastShowWorkspaceTabs = document.querySelectorAll(`[${WorkspacesService.workspaceLastShowId}="${currentWorkspaceId}"]`);
+      const lastShowWorkspaceTabs = document.querySelectorAll(`[${WorkspacesService.workspaceLastShowId}="${currentWorkspaceId}"]`);
 
-      for (let lastShowWorkspaceTab of lastShowWorkspaceTabs) {
+      for (const lastShowWorkspaceTab of lastShowWorkspaceTabs) {
         lastShowWorkspaceTab.removeAttribute(WorkspacesService.workspaceLastShowId);
       }
 
@@ -821,7 +824,7 @@ const gWorkspaces = {
       const beforeElem = document.getElementById("context_moveTabOptions");
       const menuitemElem = window.MozXULElement.parseXULToFragment(`
       <menu id="context_MoveTabToOtherWorkspace" data-l10n-id="move-tab-another-workspace" accesskey="D">
-          <menupopup id="workspacesTabContextMenu" onpopupshowing="gWorkspaces.contextMenu.createWorkspacesContextMenuItems(event)"/>
+          <menupopup id="workspacesTabContextMenu" onpopupshowing="gWorkspaces.contextMenu.createTabWorkspacesContextMenuItems(event)"/>
       </menu>
       `);
       beforeElem.before(menuitemElem);
