@@ -7,20 +7,20 @@
 /****************************************************** QR Code ******************************************************/
 
 var { SiteSpecificBrowserExternalFileService } = ChromeUtils.importESModule(
-  "resource:///modules/SiteSpecificBrowserExternalFileService.sys.mjs"
+	"resource:///modules/SiteSpecificBrowserExternalFileService.sys.mjs",
 );
 
 var { SiteSpecificBrowser } = ChromeUtils.importESModule(
-  "resource:///modules/SiteSpecificBrowserService.sys.mjs"
+	"resource:///modules/SiteSpecificBrowserService.sys.mjs",
 );
 
 var { SiteSpecificBrowserIdUtils } = ChromeUtils.importESModule(
-  "resource:///modules/SiteSpecificBrowserIdUtils.sys.mjs"
+	"resource:///modules/SiteSpecificBrowserIdUtils.sys.mjs",
 );
 
 let gFloorpPageAction = {
-  qrCode: {
-    QRCodeGeneratePageActionButton: window.MozXULElement.parseXULToFragment(`
+	qrCode: {
+		QRCodeGeneratePageActionButton: window.MozXULElement.parseXULToFragment(`
      <hbox id="QRCodeGeneratePageAction" data-l10n-id="qrcode-generate-page-action"
       class="urlbar-page-action" tooltiptext="qrcode-generate-page-action"
       role="button" popup="qrcode-panel">
@@ -39,48 +39,48 @@ let gFloorpPageAction = {
       </panel>
      </hbox>
     `),
-    async onPopupShowing() {
-      const { default: QRCodeStyling } = await import(
-        "chrome://browser/content/floorp/third_party/qr-code-styling.js"
-      );
+		async onPopupShowing() {
+			const { default: QRCodeStyling } = await import(
+				"chrome://browser/content/floorp/third_party/qr-code-styling.js"
+			);
 
-      let currentTab = gBrowser.selectedTab;
-      let currentTabURL = currentTab.linkedBrowser.currentURI.spec;
+			let currentTab = gBrowser.selectedTab;
+			let currentTabURL = currentTab.linkedBrowser.currentURI.spec;
 
-      const qrCode = new QRCodeStyling({
-        width: 250,
-        height: 250,
-        type: "svg",
-        data: currentTabURL,
-        image: "chrome://branding/content/about-logo.png",
-        dotsOptions: {
-          color: "#4267b2",
-        },
-        cornersSquareOptions: {
-          type: "extra-rounded",
-        },
-        backgroundOptions: {
-          color: "#e9ebee",
-        },
-        imageOptions: {
-          crossOrigin: "anonymous",
-          margin: 10,
-        },
-      });
+			const qrCode = new QRCodeStyling({
+				width: 250,
+				height: 250,
+				type: "svg",
+				data: currentTabURL,
+				image: "chrome://branding/content/about-logo.png",
+				dotsOptions: {
+					color: "#4267b2",
+				},
+				cornersSquareOptions: {
+					type: "extra-rounded",
+				},
+				backgroundOptions: {
+					color: "#e9ebee",
+				},
+				imageOptions: {
+					crossOrigin: "anonymous",
+					margin: 10,
+				},
+			});
 
-      //remove old qrcode
-      let QRCodeBox = document.getElementById("qrcode-img-vbox");
+			//remove old qrcode
+			let QRCodeBox = document.getElementById("qrcode-img-vbox");
 
-      while (QRCodeBox.firstChild) {
-        QRCodeBox.firstChild.remove();
-      }
+			while (QRCodeBox.firstChild) {
+				QRCodeBox.firstChild.remove();
+			}
 
-      qrCode.append(QRCodeBox);
-    },
-  },
+			qrCode.append(QRCodeBox);
+		},
+	},
 
-  Ssb: {
-    SsbPageActionButton: window.MozXULElement.parseXULToFragment(`
+	Ssb: {
+		SsbPageActionButton: window.MozXULElement.parseXULToFragment(`
     <hbox id="ssbPageAction" data-l10n-id="ssb-page-action"
      class="urlbar-page-action" tooltiptext="ssb-page-action"
      role="button" popup="ssb-panel">
@@ -116,47 +116,47 @@ let gFloorpPageAction = {
     </hbox>
    `),
 
-    async onCommand() {
-      gSsbChromeManager.functions.installOrRunCurrentPageAsSsb(true);
+		async onCommand() {
+			gSsbChromeManager.functions.installOrRunCurrentPageAsSsb(true);
 
-      // Show installing gif
-      let installingGif = document.getElementById("ssb-installing-icon");
-      installingGif?.removeAttribute("hidden");
+			// Show installing gif
+			let installingGif = document.getElementById("ssb-installing-icon");
+			installingGif?.removeAttribute("hidden");
 
-      // Hide install button
-      let installButtons = document.getElementsByClassName(
-        "ssb-install-buttons"
-      );
-      for (let installButton of installButtons) {
-        installButton?.setAttribute("hidden", true);
-      }
-    },
+			// Hide install button
+			let installButtons = document.getElementsByClassName(
+				"ssb-install-buttons",
+			);
+			for (let installButton of installButtons) {
+				installButton?.setAttribute("hidden", true);
+			}
+		},
 
-    closePopup() {
-      document.getElementById("ssb-panel").hidePopup();
-      // Show installing gif
-      let installingGif = document.getElementById("ssb-installing-icon");
-      installingGif?.setAttribute("hidden", true);
+		closePopup() {
+			document.getElementById("ssb-panel").hidePopup();
+			// Show installing gif
+			let installingGif = document.getElementById("ssb-installing-icon");
+			installingGif?.setAttribute("hidden", true);
 
-      // Hide install button
-      let installButtons = document.getElementsByClassName(
-        "ssb-install-buttons"
-      );
-      for (let installButton of installButtons) {
-        installButton?.removeAttribute("hidden");
-      }
-    },
-  },
+			// Hide install button
+			let installButtons = document.getElementsByClassName(
+				"ssb-install-buttons",
+			);
+			for (let installButton of installButtons) {
+				installButton?.removeAttribute("hidden");
+			}
+		},
+	},
 };
 
 SessionStore.promiseInitialized.then(() => {
-  document
-    .getElementById("star-button-box")
-    .before(gFloorpPageAction.qrCode.QRCodeGeneratePageActionButton);
+	document
+		.getElementById("star-button-box")
+		.before(gFloorpPageAction.qrCode.QRCodeGeneratePageActionButton);
 
-  if (Services.prefs.getBoolPref("browser.ssb.enabled")) {
-    document
-      .getElementById("star-button-box")
-      .before(gFloorpPageAction.Ssb.SsbPageActionButton);
-  }
+	if (Services.prefs.getBoolPref("browser.ssb.enabled")) {
+		document
+			.getElementById("star-button-box")
+			.before(gFloorpPageAction.Ssb.SsbPageActionButton);
+	}
 });

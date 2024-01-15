@@ -5,40 +5,40 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 function OpenChromeDirectory() {
-  const currProfDir = Services.dirsvc.get("ProfD", Ci.nsIFile);
-  const profileDir = currProfDir.path;
-  const nsLocalFile = Components.Constructor(
-    "@mozilla.org/file/local;1",
-    "nsIFile",
-    "initWithPath"
-  );
-  new nsLocalFile(profileDir).reveal();
+	const currProfDir = Services.dirsvc.get("ProfD", Ci.nsIFile);
+	const profileDir = currProfDir.path;
+	const nsLocalFile = Components.Constructor(
+		"@mozilla.org/file/local;1",
+		"nsIFile",
+		"initWithPath",
+	);
+	new nsLocalFile(profileDir).reveal();
 }
 
 function changeXULElementTagName(oldElementId, newTagName) {
-  const oldElement = document.getElementById(oldElementId);
-  const newElement = document.createElement(newTagName);
+	const oldElement = document.getElementById(oldElementId);
+	const newElement = document.createElement(newTagName);
 
-  const attrs = oldElement.attributes;
-  for (let i = 0; i < attrs.length; i++) {
-    newElement.setAttribute(attrs[i].name, attrs[i].value);
-  }
+	const attrs = oldElement.attributes;
+	for (let i = 0; i < attrs.length; i++) {
+		newElement.setAttribute(attrs[i].name, attrs[i].value);
+	}
 
-  while (oldElement.firstChild) {
-    newElement.appendChild(oldElement.firstChild);
-  }
-  oldElement.parentNode.replaceChild(newElement, oldElement);
+	while (oldElement.firstChild) {
+		newElement.appendChild(oldElement.firstChild);
+	}
+	oldElement.parentNode.replaceChild(newElement, oldElement);
 }
 
 function restartbrowser() {
-  Services.obs.notifyObservers(null, "startupcache-invalidate");
+	Services.obs.notifyObservers(null, "startupcache-invalidate");
 
-  const env = Services.env;
-  env.set("MOZ_DISABLE_SAFE_MODE_KEY", "1");
+	const env = Services.env;
+	env.set("MOZ_DISABLE_SAFE_MODE_KEY", "1");
 
-  Services.startup.quit(
-    Ci.nsIAppStartup.eAttemptQuit | Ci.nsIAppStartup.eRestart
-  );
+	Services.startup.quit(
+		Ci.nsIAppStartup.eAttemptQuit | Ci.nsIAppStartup.eRestart,
+	);
 }
 
 Services.obs.addObserver(restartbrowser, "floorp-restart-browser");
@@ -46,23 +46,23 @@ Services.obs.addObserver(restartbrowser, "floorp-restart-browser");
 /******************************************** StyleSheetService (userContent.css) ******************************/
 
 const sss = Cc["@mozilla.org/content/style-sheet-service;1"].getService(
-  Ci.nsIStyleSheetService
+	Ci.nsIStyleSheetService,
 );
 const ios = Services.io;
 
 function loadStyleSheetWithNsStyleSheetService(styleSheetURL) {
-  const uri = ios.newURI(styleSheetURL);
-  sss.loadAndRegisterSheet(uri, sss.USER_SHEET);
+	const uri = ios.newURI(styleSheetURL);
+	sss.loadAndRegisterSheet(uri, sss.USER_SHEET);
 }
 
 function checkProvidedStyleSheetLoaded(styleSheetURL) {
-  const uri = ios.newURI(styleSheetURL);
-  if (!sss.sheetRegistered(uri, sss.USER_SHEET)) {
-    sss.loadAndRegisterSheet(uri, sss.USER_SHEET);
-  }
+	const uri = ios.newURI(styleSheetURL);
+	if (!sss.sheetRegistered(uri, sss.USER_SHEET)) {
+		sss.loadAndRegisterSheet(uri, sss.USER_SHEET);
+	}
 }
 
 function unloadStyleSheetWithNsStyleSheetService(styleSheetURL) {
-  const uri = ios.newURI(styleSheetURL);
-  sss.unregisterSheet(uri, sss.USER_SHEET);
+	const uri = ios.newURI(styleSheetURL);
+	sss.unregisterSheet(uri, sss.USER_SHEET);
 }

@@ -11,126 +11,126 @@ export const EXPORTED_SYMBOLS = ["ImageTools"];
 const lazy = {};
 
 ChromeUtils.defineESModuleGetters(lazy, {
-  FileUtils: "resource://gre/modules/FileUtils.sys.mjs",
-  NetUtil: "resource://gre/modules/NetUtil.sys.mjs",
+	FileUtils: "resource://gre/modules/FileUtils.sys.mjs",
+	NetUtil: "resource://gre/modules/NetUtil.sys.mjs",
 });
 
 XPCOMUtils.defineLazyServiceGetter(
-  lazy,
-  "ImgTools",
-  "@mozilla.org/image/tools;1",
-  Ci.imgITools
+	lazy,
+	"ImgTools",
+	"@mozilla.org/image/tools;1",
+	Ci.imgITools,
 );
 
 export const ImageTools = {
-  /**
-   * Given a data URI decodes the data into an object with "type" which is the
-   * found mimetype and "container" which is an imgIContainer.
-   *
-   * @param {nsIURI} dataURI the URI to load.
-   * @returns {Promise<object>} the image info.
-   */
-  loadImage(dataURI) {
-    return new Promise((resolve, reject) => {
-      if (!dataURI.schemeIs("data")) {
-        reject(new Error("Should only be loading data URIs."));
-        return;
-      }
+	/**
+	 * Given a data URI decodes the data into an object with "type" which is the
+	 * found mimetype and "container" which is an imgIContainer.
+	 *
+	 * @param {nsIURI} dataURI the URI to load.
+	 * @returns {Promise<object>} the image info.
+	 */
+	loadImage(dataURI) {
+		return new Promise((resolve, reject) => {
+			if (!dataURI.schemeIs("data")) {
+				reject(new Error("Should only be loading data URIs."));
+				return;
+			}
 
-      let channel = lazy.NetUtil.newChannel({
-        uri: dataURI,
-        loadUsingSystemPrincipal: true,
-      });
+			let channel = lazy.NetUtil.newChannel({
+				uri: dataURI,
+				loadUsingSystemPrincipal: true,
+			});
 
-      lazy.ImgTools.decodeImageFromChannelAsync(
-        dataURI,
-        channel,
-        (container, status) => {
-          if (Components.isSuccessCode(status)) {
-            resolve({
-              type: channel.contentType,
-              container,
-            });
-          } else {
-            reject(Components.Exception("Failed to load image.", status));
-          }
-        },
-        null
-      );
-    });
-  },
+			lazy.ImgTools.decodeImageFromChannelAsync(
+				dataURI,
+				channel,
+				(container, status) => {
+					if (Components.isSuccessCode(status)) {
+						resolve({
+							type: channel.contentType,
+							container,
+						});
+					} else {
+						reject(Components.Exception("Failed to load image.", status));
+					}
+				},
+				null,
+			);
+		});
+	},
 
-  scaleImage(container, width, height) {
-    return new Promise((resolve, reject) => {
-      let stream = lazy.ImgTools.encodeScaledImage(
-        container,
-        "image/png",
-        width,
-        height,
-        ""
-      );
+	scaleImage(container, width, height) {
+		return new Promise((resolve, reject) => {
+			let stream = lazy.ImgTools.encodeScaledImage(
+				container,
+				"image/png",
+				width,
+				height,
+				"",
+			);
 
-      try {
-        stream.QueryInterface(Ci.nsIAsyncInputStream);
-      } catch (e) {
-        reject(
-          Components.Exception(
-            "imgIEncoder must implement nsIAsyncInputStream",
-            e
-          )
-        );
-      }
+			try {
+				stream.QueryInterface(Ci.nsIAsyncInputStream);
+			} catch (e) {
+				reject(
+					Components.Exception(
+						"imgIEncoder must implement nsIAsyncInputStream",
+						e,
+					),
+				);
+			}
 
-      let binaryStream = Cc["@mozilla.org/binaryinputstream;1"].createInstance(
-        Ci.nsIBinaryInputStream
-      );
-      binaryStream.setInputStream(stream);
+			let binaryStream = Cc["@mozilla.org/binaryinputstream;1"].createInstance(
+				Ci.nsIBinaryInputStream,
+			);
+			binaryStream.setInputStream(stream);
 
-      let buffers = [];
-      let callback = () => {
-        try {
-          let available = binaryStream.available();
-          if (available) {
-            let buffer = new ArrayBuffer(available);
-            binaryStream.readArrayBuffer(available, buffer);
-            buffers.push(buffer);
+			let buffers = [];
+			let callback = () => {
+				try {
+					let available = binaryStream.available();
+					if (available) {
+						let buffer = new ArrayBuffer(available);
+						binaryStream.readArrayBuffer(available, buffer);
+						buffers.push(buffer);
 
-            stream.asyncWait(callback, 0, 0, Services.tm.mainThread);
-            return;
-          }
+						stream.asyncWait(callback, 0, 0, Services.tm.mainThread);
+						return;
+					}
 
-          // No data available, assume the encoding is done.
-          resolve(new Blob(buffers));
-        } catch (e) {
-          reject(e);
-        }
-      };
+					// No data available, assume the encoding is done.
+					resolve(new Blob(buffers));
+				} catch (e) {
+					reject(e);
+				}
+			};
 
-      try {
-        stream.asyncWait(callback, 0, 0, Services.tm.mainThread);
-      } catch (e) {
-        reject(e);
-      }
-    });
-  },
+			try {
+				stream.asyncWait(callback, 0, 0, Services.tm.mainThread);
+			} catch (e) {
+				reject(e);
+			}
+		});
+	},
 
-  saveIcon(container, width, height, target) {
-    return new Promise((resolve, reject) => {
-      let output = lazy.FileUtils.openFileOutputStream(target);
-      let stream = lazy.ImgTools.encodeScaledImage(
-        container,
-        "image/vnd.microsoft.icon",
-        width,
-        height,
-        ""
-      );
-      lazy.NetUtil.asyncCopy(stream, output, status => {
-        if (Components.isSuccessCode(status)) {
-          resolve();
-        } else {
-          reject(Components.Exception("Failed to save icon.", status));
-        }
-      });
-    });
-  },
+	saveIcon(container, width, height, target) {
+		return new Promise((resolve, reject) => {
+			let output = lazy.FileUtils.openFileOutputStream(target);
+			let stream = lazy.ImgTools.encodeScaledImage(
+				container,
+				"image/vnd.microsoft.icon",
+				width,
+				height,
+				"",
+			);
+			lazy.NetUtil.asyncCopy(stream, output, (status) => {
+				if (Components.isSuccessCode(status)) {
+					resolve();
+				} else {
+					reject(Components.Exception("Failed to save icon.", status));
+				}
+			});
+		});
+	},
 };

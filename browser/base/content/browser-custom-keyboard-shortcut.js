@@ -5,79 +5,79 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const CustomKeyboardShortcutUtils = ChromeUtils.importESModule(
-  "resource:///modules/CustomKeyboardShortcutUtils.sys.mjs"
+	"resource:///modules/CustomKeyboardShortcutUtils.sys.mjs",
 );
 var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 
 const keyboradShortcutConfig = JSON.parse(
-  Services.prefs.getStringPref(
-    CustomKeyboardShortcutUtils.SHORTCUT_KEY_AND_ACTION_PREF,
-    ""
-  )
+	Services.prefs.getStringPref(
+		CustomKeyboardShortcutUtils.SHORTCUT_KEY_AND_ACTION_PREF,
+		"",
+	),
 );
 
 const buildShortCutkeyFunctions = {
-  init() {
-    Services.prefs.clearUserPref(
-      CustomKeyboardShortcutUtils.SHORTCUT_KEY_CHANGED_ARRAY_PREF
-    );
+	init() {
+		Services.prefs.clearUserPref(
+			CustomKeyboardShortcutUtils.SHORTCUT_KEY_CHANGED_ARRAY_PREF,
+		);
 
-    if (
-      Services.prefs.getBoolPref(
-        CustomKeyboardShortcutUtils.SHORTCUT_KEY_DISABLE_FX_DEFAULT_SCKEY_PREF,
-        false
-      )
-    ) {
-      SessionStore.promiseInitialized.then(() => {
-        buildShortCutkeyFunctions.disableAllCustomKeyShortcut();
-        console.info("Remove already exist shortcut keys");
-      });
-    }
+		if (
+			Services.prefs.getBoolPref(
+				CustomKeyboardShortcutUtils.SHORTCUT_KEY_DISABLE_FX_DEFAULT_SCKEY_PREF,
+				false,
+			)
+		) {
+			SessionStore.promiseInitialized.then(() => {
+				buildShortCutkeyFunctions.disableAllCustomKeyShortcut();
+				console.info("Remove already exist shortcut keys");
+			});
+		}
 
-    const keyboradShortcutConfig = JSON.parse(
-      Services.prefs.getStringPref(
-        CustomKeyboardShortcutUtils.SHORTCUT_KEY_AND_ACTION_PREF,
-        ""
-      )
-    );
+		const keyboradShortcutConfig = JSON.parse(
+			Services.prefs.getStringPref(
+				CustomKeyboardShortcutUtils.SHORTCUT_KEY_AND_ACTION_PREF,
+				"",
+			),
+		);
 
-    if (
-      keyboradShortcutConfig.length === 0 &&
-      CustomKeyboardShortcutUtils.SHORTCUT_KEY_AND_ACTION_ENABLED_PREF
-    ) {
-      return;
-    }
+		if (
+			keyboradShortcutConfig.length === 0 &&
+			CustomKeyboardShortcutUtils.SHORTCUT_KEY_AND_ACTION_ENABLED_PREF
+		) {
+			return;
+		}
 
-    for (let shortcutObj of keyboradShortcutConfig) {
-      let name = shortcutObj.actionName;
-      let key = shortcutObj.key;
-      let keyCode = shortcutObj.keyCode;
-      let modifiers = shortcutObj.modifiers;
+		for (let shortcutObj of keyboradShortcutConfig) {
+			let name = shortcutObj.actionName;
+			let key = shortcutObj.key;
+			let keyCode = shortcutObj.keyCode;
+			let modifiers = shortcutObj.modifiers;
 
-      if ((key && name) || (keyCode && name)) {
-        buildShortCutkeyFunctions.buildShortCutkeyFunction(
-          name,
-          key,
-          keyCode,
-          modifiers
-        );
-      } else {
-        console.error("Invalid shortcut key config: " + shortcutObj);
-      }
-    }
-  },
+			if ((key && name) || (keyCode && name)) {
+				buildShortCutkeyFunctions.buildShortCutkeyFunction(
+					name,
+					key,
+					keyCode,
+					modifiers,
+				);
+			} else {
+				console.error("Invalid shortcut key config: " + shortcutObj);
+			}
+		}
+	},
 
-  buildShortCutkeyFunction(name, key, keyCode, modifiers) {
-    let functionCode =
-      CustomKeyboardShortcutUtils.keyboradShortcutActions[name][0];
-    if (!functionCode) {
-      return;
-    }
+	buildShortCutkeyFunction(name, key, keyCode, modifiers) {
+		let functionCode =
+			CustomKeyboardShortcutUtils.keyboradShortcutActions[name][0];
+		if (!functionCode) {
+			return;
+		}
 
-    // Remove " " from modifiers.
-    modifiers = modifiers.replace(/ /g, "");
+		// Remove " " from modifiers.
+		modifiers = modifiers.replace(/ /g, "");
 
-    let keyElement = window.MozXULElement.parseXULToFragment(`
+		let keyElement = window.MozXULElement.parseXULToFragment(`
             <key id="${name}" class="floorpCustomShortcutKey"
                  modifiers="${modifiers}"
                  key="${key}"
@@ -85,62 +85,62 @@ const buildShortCutkeyFunctions = {
              />
          `);
 
-    if (keyCode) {
-      keyElement = window.MozXULElement.parseXULToFragment(`
+		if (keyCode) {
+			keyElement = window.MozXULElement.parseXULToFragment(`
            <key id="${name}" class="floorpCustomShortcutKey"
                 oncommand="${functionCode}"
                 keycode="${keyCode}"
              />`);
-    }
+		}
 
-    document.getElementById("mainKeyset").appendChild(keyElement);
-  },
+		document.getElementById("mainKeyset").appendChild(keyElement);
+	},
 
-  removeAlreadyExistShortCutkeys() {
-    let mainKeyset = document.getElementById("mainKeyset");
-    while (mainKeyset.firstChild) {
-      mainKeyset.firstChild.remove();
-    }
-  },
+	removeAlreadyExistShortCutkeys() {
+		let mainKeyset = document.getElementById("mainKeyset");
+		while (mainKeyset.firstChild) {
+			mainKeyset.firstChild.remove();
+		}
+	},
 
-  disableAllCustomKeyShortcut() {
-    let keyElems = document.querySelector("#mainKeyset").childNodes;
-    for (let keyElem of keyElems) {
-      if (!keyElem.classList.contains("floorpCustomShortcutKey")) {
-        keyElem.setAttribute("disabled", true);
-      }
-    }
-  },
+	disableAllCustomKeyShortcut() {
+		let keyElems = document.querySelector("#mainKeyset").childNodes;
+		for (let keyElem of keyElems) {
+			if (!keyElem.classList.contains("floorpCustomShortcutKey")) {
+				keyElem.setAttribute("disabled", true);
+			}
+		}
+	},
 
-  disableAllCustomKeyShortcutElemets() {
-    let keyElems = document.querySelectorAll(".floorpCustomShortcutKey");
-    for (let keyElem of keyElems) {
-      keyElem.remove();
-    }
-  },
+	disableAllCustomKeyShortcutElemets() {
+		let keyElems = document.querySelectorAll(".floorpCustomShortcutKey");
+		for (let keyElem of keyElems) {
+			keyElem.remove();
+		}
+	},
 
-  enableAllCustomKeyShortcutElemets() {
-    let keyElems = document.querySelectorAll(".floorpCustomShortcutKey");
-    for (let keyElem of keyElems) {
-      keyElem.removeAttribute("disabled");
-    }
-  },
+	enableAllCustomKeyShortcutElemets() {
+		let keyElems = document.querySelectorAll(".floorpCustomShortcutKey");
+		for (let keyElem of keyElems) {
+			keyElem.removeAttribute("disabled");
+		}
+	},
 
-  removeCustomKeyShortcutElemets() {
-    let keyElems = document.querySelectorAll(".floorpCustomShortcutKey");
-    for (let keyElem of keyElems) {
-      keyElem.remove();
-    }
-  },
+	removeCustomKeyShortcutElemets() {
+		let keyElems = document.querySelectorAll(".floorpCustomShortcutKey");
+		for (let keyElem of keyElems) {
+			keyElem.remove();
+		}
+	},
 };
 
 let customActionsFunctions = {
-  evalCustomeActionWithNum(num) {
-    let action = Services.prefs.getStringPref(
-      `floorp.custom.shortcutkeysAndActions.customAction${num}`
-    );
-    Function(action)();
-  },
+	evalCustomeActionWithNum(num) {
+		let action = Services.prefs.getStringPref(
+			`floorp.custom.shortcutkeysAndActions.customAction${num}`,
+		);
+		Function(action)();
+	},
 };
 
 buildShortCutkeyFunctions.init();

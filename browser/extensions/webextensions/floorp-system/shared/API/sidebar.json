@@ -1,16 +1,15 @@
 [
-  {
-    "namespace": "sidebar",
-    "description": "about sidebar",
-    "functions": [
-      {
-        "name": "getExtensionsInSidebar",
-        "type": "function",
-        "description": "Get extensions in sidebar",
-        "parameters": [
-        ],
-        "async": true
-      }
-    ]
-  }
+	{
+		"namespace": "sidebar",
+		"description": "about sidebar",
+		"functions": [
+			{
+				"name": "getExtensionsInSidebar",
+				"type": "function",
+				"description": "Get extensions in sidebar",
+				"parameters": [],
+				"async": true
+			}
+		]
+	}
 ]

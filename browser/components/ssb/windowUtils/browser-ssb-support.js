@@ -5,85 +5,85 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 var { SiteSpecificBrowserIdUtils } = ChromeUtils.importESModule(
-  "resource:///modules/SiteSpecificBrowserIdUtils.sys.mjs"
+	"resource:///modules/SiteSpecificBrowserIdUtils.sys.mjs",
 );
 
 var { SiteSpecificBrowser } = ChromeUtils.importESModule(
-  "resource:///modules/SiteSpecificBrowserService.sys.mjs"
+	"resource:///modules/SiteSpecificBrowserService.sys.mjs",
 );
 
 let gSsbSupport = {
-  _initialized: false,
+	_initialized: false,
 
-  get ssbWindowId() {
-    return document.documentElement.getAttribute("FloorpSSBId");
-  },
+	get ssbWindowId() {
+		return document.documentElement.getAttribute("FloorpSSBId");
+	},
 
-  get urlbar() {
-    return document.getElementById("urlbar");
-  },
+	get urlbar() {
+		return document.getElementById("urlbar");
+	},
 
-  get searchbar() {
-    return document.getElementById("searchbar");
-  },
+	get searchbar() {
+		return document.getElementById("searchbar");
+	},
 
-  get TabsToolbar() {
-    return document.getElementById("TabsToolbar");
-  },
+	get TabsToolbar() {
+		return document.getElementById("TabsToolbar");
+	},
 
-  get panelUIBUtton() {
-    return document.getElementById("PanelUI-menu-button");
-  },
+	get panelUIBUtton() {
+		return document.getElementById("PanelUI-menu-button");
+	},
 
-  get navToolbar() {
-    return document.getElementById("nav-bar");
-  },
+	get navToolbar() {
+		return document.getElementById("nav-bar");
+	},
 
-  get pageActionBox() {
-    return document.getElementById("page-action-buttons");
-  },
+	get pageActionBox() {
+		return document.getElementById("page-action-buttons");
+	},
 
-  get identityBox() {
-    return document.getElementById("identity-box");
-  },
+	get identityBox() {
+		return document.getElementById("identity-box");
+	},
 
-  async getSsbObj(id) {
-    let result = await SiteSpecificBrowser.load(id);
-    return result;
-  },
+	async getSsbObj(id) {
+		let result = await SiteSpecificBrowser.load(id);
+		return result;
+	},
 
-  getIconShouldBlackOrWhite(color) {
-    let r, g, b, hsp;
-    if (color.match(/^rgb/)) {
-      color = color.match(/^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
-      r = color[1];
-      g = color[2];
-      b = color[3];
-    } else {
-      color = +(
-        "0x" + color.slice(1).replace(color.length < 5 && /./g, "$&$&")
-      );
-      r = color >> 16;
-      g = (color >> 8) & 255;
-      b = color & 255;
-    }
-    hsp = Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
-    return hsp > 127.5 ? "black" : "white";
-  },
+	getIconShouldBlackOrWhite(color) {
+		let r, g, b, hsp;
+		if (color.match(/^rgb/)) {
+			color = color.match(/^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
+			r = color[1];
+			g = color[2];
+			b = color[3];
+		} else {
+			color = +(
+				"0x" + color.slice(1).replace(color.length < 5 && /./g, "$&$&")
+			);
+			r = color >> 16;
+			g = (color >> 8) & 255;
+			b = color & 255;
+		}
+		hsp = Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
+		return hsp > 127.5 ? "black" : "white";
+	},
 
-  async init() {
-    let styleElement = document.createElement("style");
-    styleElement.id = "ssb-support";
-    styleElement.textContent = `@import url("chrome://browser/content/browser-ssb-support.css");`;
-    document.head.appendChild(styleElement);
+	async init() {
+		let styleElement = document.createElement("style");
+		styleElement.id = "ssb-support";
+		styleElement.textContent = `@import url("chrome://browser/content/browser-ssb-support.css");`;
+		document.head.appendChild(styleElement);
 
-    this.identityBox.after(this.pageActionBox);
+		this.identityBox.after(this.pageActionBox);
 
-    gBrowser.tabs.forEach(tab => {
-      tab.setAttribute("floorpSSB", "true");
-    });
+		gBrowser.tabs.forEach((tab) => {
+			tab.setAttribute("floorpSSB", "true");
+		});
 
-    /* Set theme color to Navbar
+		/* Set theme color to Navbar
     let ssbObj = await this.getSsbObj(this.ssbWindowId);
     
     this.navToolbar.style.backgroundColor = ssbObj.manifest.theme_color;    
@@ -93,8 +93,8 @@ let gSsbSupport = {
     this.searchbar.style.cssText += `color: ${iconColor} !important;`;
     */
 
-    this._initialized = true;
-  },
+		this._initialized = true;
+	},
 };
 
 gSsbSupport.init();

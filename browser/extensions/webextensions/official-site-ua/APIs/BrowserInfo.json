@@ -1,15 +1,15 @@
 [
-  {
-    "namespace": "BrowserInfo",
-    "description": "display version get",
-    "functions": [
-      {
-        "name": "getDisplayVersion",
-        "type": "function",
-        "description": "Get a preference's value",
-        "parameters": [],
-        "async": true
-      }
-    ]
-  }
+	{
+		"namespace": "BrowserInfo",
+		"description": "display version get",
+		"functions": [
+			{
+				"name": "getDisplayVersion",
+				"type": "function",
+				"description": "Get a preference's value",
+				"parameters": [],
+				"async": true
+			}
+		]
+	}
 ]

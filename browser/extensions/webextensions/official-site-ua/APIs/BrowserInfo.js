@@ -7,19 +7,19 @@
 /* global ExtensionAPI, ExtensionCommon, Services, XPCOMUtils */
 
 const { AppConstants } = ChromeUtils.import(
-  "resource://gre/modules/AppConstants.jsm"
+	"resource://gre/modules/AppConstants.jsm",
 );
 
 this.BrowserInfo = class extends ExtensionAPI {
-  getAPI(context) {
-    const EventManager = ExtensionCommon.EventManager;
+	getAPI(context) {
+		const EventManager = ExtensionCommon.EventManager;
 
-    return {
-      BrowserInfo: {
-        async getDisplayVersion() {
-          return AppConstants.MOZ_APP_VERSION_DISPLAY;
-        },
-      },
-    };
-  }
+		return {
+			BrowserInfo: {
+				async getDisplayVersion() {
+					return AppConstants.MOZ_APP_VERSION_DISPLAY;
+				},
+			},
+		};
+	}
 };

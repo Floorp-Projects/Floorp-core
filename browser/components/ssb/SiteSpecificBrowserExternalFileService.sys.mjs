@@ -5,36 +5,36 @@
 export const EXPORTED_SYMBOLS = ["SiteSpecificBrowserExternalFileService"];
 
 export const SiteSpecificBrowserExternalFileService = {
-  get _ssbStoreFile() {
-    return PathUtils.join(PathUtils.profileDir, "ssb", "ssb.json");
-  },
+	get _ssbStoreFile() {
+		return PathUtils.join(PathUtils.profileDir, "ssb", "ssb.json");
+	},
 
-  async getCurrentSsbData() {
-    let fileExists = await IOUtils.exists(this._ssbStoreFile);
-    if (!fileExists) {
-      IOUtils.writeJSON(this._ssbStoreFile, {});
-      return {};
-    }
+	async getCurrentSsbData() {
+		let fileExists = await IOUtils.exists(this._ssbStoreFile);
+		if (!fileExists) {
+			IOUtils.writeJSON(this._ssbStoreFile, {});
+			return {};
+		}
 
-    let result = await IOUtils.readJSON(this._ssbStoreFile);
+		let result = await IOUtils.readJSON(this._ssbStoreFile);
 
-    return result;
-  },
+		return result;
+	},
 
-  async saveSsbData(ssbData) {
-    await IOUtils.writeJSON(this._ssbStoreFile, ssbData);
-  },
+	async saveSsbData(ssbData) {
+		await IOUtils.writeJSON(this._ssbStoreFile, ssbData);
+	},
 
-  async removeSsbData(ssbId) {
-    let list = await SiteSpecificBrowserExternalFileService.getCurrentSsbData();
-    for (const key in list) {
-      if (list.hasOwnProperty(key)) {
-        const item = list[key];
-        if (item.id == ssbId) {
-          delete list[key];
-          await SiteSpecificBrowserExternalFileService.saveSsbData(list);
-        }
-      }
-    }
-  },
+	async removeSsbData(ssbId) {
+		let list = await SiteSpecificBrowserExternalFileService.getCurrentSsbData();
+		for (const key in list) {
+			if (list.hasOwnProperty(key)) {
+				const item = list[key];
+				if (item.id == ssbId) {
+					delete list[key];
+					await SiteSpecificBrowserExternalFileService.saveSsbData(list);
+				}
+			}
+		}
+	},
 };

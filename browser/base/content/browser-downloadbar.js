@@ -6,46 +6,46 @@
 var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 
 if (
-  Services.prefs.getBoolPref("floorp.browser.native.downloadbar.enabled", true)
+	Services.prefs.getBoolPref("floorp.browser.native.downloadbar.enabled", true)
 ) {
-  window.setTimeout(() => {
-    function changeXULElementTagName(oldElementId, newTagName) {
-      const oldElement = document.getElementById(oldElementId);
-      const newElement = document.createElement(newTagName);
+	window.setTimeout(() => {
+		function changeXULElementTagName(oldElementId, newTagName) {
+			const oldElement = document.getElementById(oldElementId);
+			const newElement = document.createElement(newTagName);
 
-      const attrs = oldElement.attributes;
-      for (let i = 0; i < attrs.length; i++) {
-        newElement.setAttribute(attrs[i].name, attrs[i].value);
-      }
+			const attrs = oldElement.attributes;
+			for (let i = 0; i < attrs.length; i++) {
+				newElement.setAttribute(attrs[i].name, attrs[i].value);
+			}
 
-      while (oldElement.firstChild) {
-        newElement.appendChild(oldElement.firstChild);
-      }
-      oldElement.parentNode.replaceChild(newElement, oldElement);
-    }
+			while (oldElement.firstChild) {
+				newElement.appendChild(oldElement.firstChild);
+			}
+			oldElement.parentNode.replaceChild(newElement, oldElement);
+		}
 
-    document
-      .getElementById("appcontent")
-      .appendChild(document.getElementById("downloadsPanel"));
-    document
-      .getElementById("downloadsFooter")
-      .appendChild(document.getElementById("downloadsSummary"));
-    document.getElementById("downloadsPanel").style.display = "block";
-    document.getElementById("downloadsPanel").hidden = false;
-    document.querySelector("#downloadsFooter > stack").remove();
-    changeXULElementTagName("downloadsPanel", "vbox");
-    changeXULElementTagName("downloadsPanel-multiView", "vbox");
-    changeXULElementTagName("downloadsPanel-mainView", "vbox");
-    changeXULElementTagName("downloadsFooter", "richlistitem");
+		document
+			.getElementById("appcontent")
+			.appendChild(document.getElementById("downloadsPanel"));
+		document
+			.getElementById("downloadsFooter")
+			.appendChild(document.getElementById("downloadsSummary"));
+		document.getElementById("downloadsPanel").style.display = "block";
+		document.getElementById("downloadsPanel").hidden = false;
+		document.querySelector("#downloadsFooter > stack").remove();
+		changeXULElementTagName("downloadsPanel", "vbox");
+		changeXULElementTagName("downloadsPanel-multiView", "vbox");
+		changeXULElementTagName("downloadsPanel-mainView", "vbox");
+		changeXULElementTagName("downloadsFooter", "richlistitem");
 
-    const elem = document.createElement("div");
-    elem.id = "close";
-    elem.textContent = `X`;
-    elem.setAttribute("flex", "1");
-    document.head.appendChild(elem);
+		const elem = document.createElement("div");
+		elem.id = "close";
+		elem.textContent = `X`;
+		elem.setAttribute("flex", "1");
+		document.head.appendChild(elem);
 
-    const Tag = document.createElement("style");
-    Tag.textContent = `
+		const Tag = document.createElement("style");
+		Tag.textContent = `
     :root[inDOMFullscreen] :is(#downloadsPanel), :root[customizing] :is(#downloadsPanel),
     :root[inFullscreen]:not([macOSNativeFullscreen]) :is(#downloadsPanel) {
       display: none !important;
@@ -141,33 +141,34 @@ if (
       background-color: var(--panel-item-hover-bgcolor);
     }
     `;
-    document.head.appendChild(Tag);
+		document.head.appendChild(Tag);
 
-    //delete all downloads button
+		//delete all downloads button
 
-    const downloadsFooterButtonElem = document.getElementById("downloadsFooter");
-    const hideAllDownloadButtonElem = window.MozXULElement.parseXULToFragment(`
+		const downloadsFooterButtonElem =
+			document.getElementById("downloadsFooter");
+		const hideAllDownloadButtonElem = window.MozXULElement.parseXULToFragment(`
     <toolbarbutton id="hide-downloads-button" class="toolbarbutton-1" command="downloadsCmd_clearList" data-l10n-id="floorp-delete-all-downloads" />
     `);
-    const showAllDownloadTextAndButtonElem = window.MozXULElement
-      .parseXULToFragment(`
+		const showAllDownloadTextAndButtonElem =
+			window.MozXULElement.parseXULToFragment(`
     <toolbarbutton id="show-downloads-button" class="toolbarbutton-1" oncommand="BrowserDownloadsUI();" data-l10n-id="floorp-show-all-downloads" />
     `);
 
-    document
-      .getElementById("downloadsListBox")
-      .appendChild(downloadsFooterButtonElem);
-    document
-      .getElementById("downloadsListBox")
-      .appendChild(showAllDownloadTextAndButtonElem);
-    document
-      .getElementById("downloadsListBox")
-      .appendChild(hideAllDownloadButtonElem);
-  }, 1000);
-  const scrollElem = document.getElementById("downloadsListBox");
-  scrollElem.addEventListener("wheel", (e) => {
-    if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
-      e.preventDefault();
-    scrollElem.scrollLeft += e.deltaY*8;
-  });
+		document
+			.getElementById("downloadsListBox")
+			.appendChild(downloadsFooterButtonElem);
+		document
+			.getElementById("downloadsListBox")
+			.appendChild(showAllDownloadTextAndButtonElem);
+		document
+			.getElementById("downloadsListBox")
+			.appendChild(hideAllDownloadButtonElem);
+	}, 1000);
+	const scrollElem = document.getElementById("downloadsListBox");
+	scrollElem.addEventListener("wheel", (e) => {
+		if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
+		e.preventDefault();
+		scrollElem.scrollLeft += e.deltaY * 8;
+	});
 }

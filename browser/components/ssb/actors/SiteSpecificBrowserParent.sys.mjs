@@ -6,69 +6,69 @@
 export const EXPORTED_SYMBOLS = ["SiteSpecificBrowserParent"];
 
 const { BrowserWindowTracker } = ChromeUtils.import(
-  "resource:///modules/BrowserWindowTracker.jsm"
+	"resource:///modules/BrowserWindowTracker.jsm",
 );
 const { E10SUtils } = ChromeUtils.import(
-  "resource://gre/modules/E10SUtils.jsm"
+	"resource://gre/modules/E10SUtils.jsm",
 );
 const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 const { AppConstants } = ChromeUtils.import(
-  "resource://gre/modules/AppConstants.jsm"
+	"resource://gre/modules/AppConstants.jsm",
 );
 
 export class SiteSpecificBrowserParent extends JSWindowActorParent {
-  receiveMessage(message) {
-    switch (message.name) {
-      case "RetargetOutOfScopeURIToBrowser":
-        // The content process found a URI that needs to be loaded in the main
-        // browser.
-        let triggeringPrincipal = E10SUtils.deserializePrincipal(
-          message.data.triggeringPrincipal
-        );
-        let referrerInfo = E10SUtils.deserializeReferrerInfo(
-          message.data.referrerInfo
-        );
-        let csp = E10SUtils.deserializeCSP(message.data.csp);
+	receiveMessage(message) {
+		switch (message.name) {
+			case "RetargetOutOfScopeURIToBrowser":
+				// The content process found a URI that needs to be loaded in the main
+				// browser.
+				let triggeringPrincipal = E10SUtils.deserializePrincipal(
+					message.data.triggeringPrincipal,
+				);
+				let referrerInfo = E10SUtils.deserializeReferrerInfo(
+					message.data.referrerInfo,
+				);
+				let csp = E10SUtils.deserializeCSP(message.data.csp);
 
-        // Attempt to find an existing window to open it in.
-        let win = BrowserWindowTracker.getTopWindow();
-        if (win) {
-          win.gBrowser.selectedTab = win.gBrowser.addTab(message.data.uri, {
-            triggeringPrincipal,
-            csp,
-            referrerInfo,
-          });
-        } else {
-          let sa = Cc["@mozilla.org/array;1"].createInstance(
-            Ci.nsIMutableArray
-          );
+				// Attempt to find an existing window to open it in.
+				let win = BrowserWindowTracker.getTopWindow();
+				if (win) {
+					win.gBrowser.selectedTab = win.gBrowser.addTab(message.data.uri, {
+						triggeringPrincipal,
+						csp,
+						referrerInfo,
+					});
+				} else {
+					let sa = Cc["@mozilla.org/array;1"].createInstance(
+						Ci.nsIMutableArray,
+					);
 
-          let wuri = Cc["@mozilla.org/supports-string;1"].createInstance(
-            Ci.nsISupportsString
-          );
-          wuri.data = message.data.uri;
+					let wuri = Cc["@mozilla.org/supports-string;1"].createInstance(
+						Ci.nsISupportsString,
+					);
+					wuri.data = message.data.uri;
 
-          sa.appendElement(wuri);
-          sa.appendElement(null); // unused (bug 871161)
-          sa.appendElement(referrerInfo);
-          sa.appendElement(null); // postData
-          sa.appendElement(null); // allowThirdPartyFixup
-          sa.appendElement(null); // userContextId
-          sa.appendElement(null); // originPrincipal
-          sa.appendElement(null); // originStoragePrincipal
-          sa.appendElement(triggeringPrincipal);
-          sa.appendElement(null); // allowInheritPrincipal
-          sa.appendElement(csp);
+					sa.appendElement(wuri);
+					sa.appendElement(null); // unused (bug 871161)
+					sa.appendElement(referrerInfo);
+					sa.appendElement(null); // postData
+					sa.appendElement(null); // allowThirdPartyFixup
+					sa.appendElement(null); // userContextId
+					sa.appendElement(null); // originPrincipal
+					sa.appendElement(null); // originStoragePrincipal
+					sa.appendElement(triggeringPrincipal);
+					sa.appendElement(null); // allowInheritPrincipal
+					sa.appendElement(csp);
 
-          Services.ww.openWindow(
-            null,
-            AppConstants.BROWSER_CHROME_URL,
-            null,
-            "chrome,dialog=no,all",
-            sa
-          );
-        }
-        break;
-    }
-  }
+					Services.ww.openWindow(
+						null,
+						AppConstants.BROWSER_CHROME_URL,
+						null,
+						"chrome,dialog=no,all",
+						sa,
+					);
+				}
+				break;
+		}
+	}
 }
