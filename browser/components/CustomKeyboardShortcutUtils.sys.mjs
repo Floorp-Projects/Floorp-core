@@ -151,10 +151,6 @@ export const keyboradShortcutActions = {
     showPanel9: ["bmsController.eventFunctions.contextMenu.showWithNumber(8)", "show-panel-9", "bms-action"],
     showPanel10: ["bmsController.eventFunctions.contextMenu.showWithNumber(9)", "show-panel-10", "bms-action"],
 
-    // Workspace actions
-    openNextWorkspace: ["workspaceFunctions.manageWorkspaceFunctions.changeWorkspaceToBeforeNext();", "open-next-workspace", "workspace-action"],
-    openPreviousWorkspace: ["workspaceFunctions.manageWorkspaceFunctions.changeWorkspaceToAfterNext();", "open-previous-workspace", "workspace-action"],
-
     // Custom actions
     customAction1: ["customActionsFunctions.evalCustomeActionWithNum(1)", "custom-action-1", "custom-action"],
     customAction2: ["customActionsFunctions.evalCustomeActionWithNum(2)", "custom-action-2", "custom-action"],
