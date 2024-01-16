@@ -80,6 +80,10 @@ export const WorkspacesMigratorUtils = {
     return Services.prefs.getStringPref("floorp.browser.workspace.current");
   },
 
+  get legacyWorkspacesAreExist() {
+    return Services.prefs.getStringPref("floorp.browser.workspace.all") !== "";
+  },
+
   get legacyDefaultWorkspace() {
     return Services.prefs
       .getStringPref("floorp.browser.workspace.all")
@@ -101,6 +105,10 @@ export const WorkspacesMigratorUtils = {
 
   async importDataFromLegacyWorkspaces(tabs, windowId) {
     if (this.migrated) {
+      return;
+    }
+
+    if (!this.legacyWorkspacesAreExist) {
       return;
     }
 

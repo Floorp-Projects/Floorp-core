@@ -125,6 +125,12 @@ var gWorkspaces = {
       );
     }
 
+    if (gWorkspaces._workspaceManageOnBMSMode) {
+      for (let workspaceButton of gWorkspaces.workspaceButtons) {
+        workspaceButton.classList.add("sidepanel-icon");
+      }
+    }
+
     await this.updateToolbarButtonAndPopupContentIconAndLabel(
       await this.getCurrentWorkspaceId()
     );
@@ -199,7 +205,24 @@ var gWorkspaces = {
   },
 
   enableWorkspacesManageOnBMSMode() {
+    if (this._workspaceManageOnBMSMode) {
+      return;
+    }
+
+    // Check elements exists
+    if (!this.workspacesPopupContent) {
+      this._workspaceManageOnBMSMode = false;
+      return;
+    }
+
     let bmsSidebar = document.getElementById("sidebar-select-box");
+    if (!bmsSidebar) {
+      this._workspaceManageOnBMSMode = false;
+      return;
+    }
+
+    this.workspacesPopupContent.removeAttribute("flex");
+
     bmsSidebar.prepend(this.workspacesPopupContent);
 
     const CSS = WorkspacesElementService.manageOnBmsInjectionCSS;
@@ -221,6 +244,9 @@ var gWorkspaces = {
       .classList.add("sidepanel-icon");
 
     this._workspaceManageOnBMSMode = true;
+
+    // rebuild the workspacesToolbar
+    this.rebuildWorkspacesToolbar();
   },
 
   /* Preferences */
@@ -406,7 +432,7 @@ var gWorkspaces = {
   },
 
   /* Workspaces manager */
-  async createWorkspace(name, defaultWorkspace, addNewTab) {
+  async createWorkspace(name, defaultWorkspace, addNewTab = false) {
     let windowId = this.getCurrentWindowId();
     let createdWorkspaceId = await WorkspacesService.createWorkspace(
       name,
@@ -416,7 +442,7 @@ var gWorkspaces = {
     this.changeWorkspace(
       createdWorkspaceId,
       defaultWorkspace ? 1 : 2,
-      addNewTab ? addNewTab : false
+      addNewTab
     );
   },
 
@@ -774,11 +800,18 @@ var gWorkspaces = {
     let workspacesData = await gWorkspaces.getCurrentWorkspacesData();
     let workspacesCount = await gWorkspaces.getCurrentWorkspacesCount();
 
+    // BMS Sidebar mode
+    if (!this._workspaceManageOnBMSMode) {
+      gWorkspaces.enableWorkspacesManageOnBMSMode();
+    }
+
     // Last Show Workspace Attribute
     let selectedTab = gBrowser.selectedTab;
     if (
       selectedTab &&
-      !selectedTab.hasAttribute(WorkspacesService.workspaceLastShowId)
+      !selectedTab.hasAttribute(WorkspacesService.workspaceLastShowId) &&
+      selectedTab.getAttribute(WorkspacesService.workspacesTabAttributionId) ==
+        currentWorkspaceId
     ) {
       let lastShowWorkspaceTabs = document.querySelectorAll(
         `[${WorkspacesService.workspaceLastShowId}="${currentWorkspaceId}"]`
@@ -924,6 +957,14 @@ var gWorkspaces = {
 
     // Create Context Menu
     this.contextMenu.createWorkspacesTabContextMenuItems();
+
+    if (
+      Services.prefs.getBoolPref(
+        workspacesPreferences.WORKSPACE_MANAGE_ON_BMS_PREF
+      )
+    ) {
+      this.enableWorkspacesManageOnBMSMode();
+    }
 
     // Manage on BMS Sidebar mode
 
