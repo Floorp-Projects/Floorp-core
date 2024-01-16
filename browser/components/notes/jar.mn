@@ -6,3 +6,6 @@ browser.jar:
    content/browser/notes/notes.js                  (content/notes.js)
    content/browser/notes/notes-bms.css             (content/notes-bms.css)
    content/browser/notes/notes-bms.html            (content/notes-bms.html)
+
+## library
+   content/browser/notes/showdown.min.js           (content/library/showdown@2.1.0.min.js)

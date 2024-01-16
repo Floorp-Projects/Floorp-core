@@ -1,9 +1,0 @@
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-browser.jar:
-%  content floorp %floorp/ contentaccessible=yes
-
-  floorp/third_party/qr-code-styling.js          (qr-code-styling@1.5.0/qr-code-styling.js)
-  floorp/third_party/showdown.js                 (showdown@2.1.0/showdown.min.js)
