@@ -108,7 +108,7 @@ export const WorkspacesMigratorUtils = {
       return;
     }
 
-    if (!this.legacyWorkspacesAreExist) {
+    if (!this.legacyWorkspacesAreExist || !this.IsLegacyWorkspaceEnabled) {
       return;
     }
 
