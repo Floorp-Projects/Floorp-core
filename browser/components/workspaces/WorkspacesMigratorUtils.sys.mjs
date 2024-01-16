@@ -69,7 +69,6 @@ export const WorkspacesMigratorUtils = {
   },
 
   get migrated() {
-    console.log("migrated", Services.prefs.getBoolPref("floorp.browser.workspace.migrated", false));
     return Services.prefs.getBoolPref("floorp.browser.workspace.migrated", false);
   },
 
