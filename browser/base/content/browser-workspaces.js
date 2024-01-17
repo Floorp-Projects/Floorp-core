@@ -801,7 +801,12 @@ var gWorkspaces = {
     let workspacesCount = await gWorkspaces.getCurrentWorkspacesCount();
 
     // BMS Sidebar mode
-    if (!this._workspaceManageOnBMSMode) {
+    if (
+      !this._workspaceManageOnBMSMode &&
+      Services.prefs.getBoolPref(
+        workspacesPreferences.WORKSPACE_MANAGE_ON_BMS_PREF
+      )
+    ) {
       gWorkspaces.enableWorkspacesManageOnBMSMode();
     }
 
