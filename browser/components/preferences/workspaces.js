@@ -15,12 +15,16 @@ XPCOMUtils.defineLazyGetter(this, "L10n", () => {
 
 Preferences.addAll([
   {
-    id: workspacesPreferences.WORKSPACE_CLOSE_POPUP_AFTER_CLICK_PREF,
+    id: workspacesPreferences.WORKSPACES_CLOSE_POPUP_AFTER_CLICK_PREF,
     type: "bool",
   },
-  { id: workspacesPreferences.WORKSPACE_MANAGE_ON_BMS_PREF, type: "bool" },
+  { id: workspacesPreferences.WORKSPACES_MANAGE_ON_BMS_PREF, type: "bool" },
   {
     id: workspacesPreferences.WORKSPACE_SHOW_WORKSPACE_NAME_PREF,
+    type: "bool",
+  },
+  {
+    id: workspacesPreferences.WORKSPACES_ENABLED_PREF,
     type: "bool",
   },
 ]);

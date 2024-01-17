@@ -34,7 +34,7 @@ export const WorkspacesService = {
 
   get workspaceEnabled() {
     return Services.prefs.getBoolPref(
-      workspacesPreferences.TAB_STACKS_ENABLED_PREF,
+      workspacesPreferences.WORKSPACES_ENABLED_PREF,
       false
     );
   },
@@ -181,10 +181,10 @@ export function getWorkspaceIconUrl(icon) {
 }
 
 export const workspacesPreferences = {
-  TAB_STACKS_ENABLED_PREF: "floorp.browser.workspaces.enabled",
-  WORKSPACE_CLOSE_POPUP_AFTER_CLICK_PREF:
+  WORKSPACES_ENABLED_PREF: "floorp.browser.workspaces.enabled",
+  WORKSPACES_CLOSE_POPUP_AFTER_CLICK_PREF:
     "floorp.browser.workspace.closePopupAfterClick",
-  WORKSPACE_MANAGE_ON_BMS_PREF: "floorp.browser.workspace.manageOnBMS",
+  WORKSPACES_MANAGE_ON_BMS_PREF: "floorp.browser.workspace.manageOnBMS",
   WORKSPACE_SHOW_WORKSPACE_NAME_PREF:
     "floorp.browser.workspace.showWorkspaceName",
 };

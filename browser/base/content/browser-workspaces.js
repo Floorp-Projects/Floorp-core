@@ -252,7 +252,7 @@ var gWorkspaces = {
   /* Preferences */
   get workspaceEnabled() {
     return Services.prefs.getBoolPref(
-      workspacesPreferences.TAB_STACKS_ENABLED_PREF,
+      workspacesPreferences.WORKSPACES_ENABLED_PREF,
       false
     );
   },
@@ -523,7 +523,7 @@ var gWorkspaces = {
     // Close workspace popup check
     if (
       Services.prefs.getBoolPref(
-        workspacesPreferences.WORKSPACE_CLOSE_POPUP_AFTER_CLICK_PREF
+        workspacesPreferences.WORKSPACES_CLOSE_POPUP_AFTER_CLICK_PREF
       )
     ) {
       gWorkspaces.workspacesToolbarButton.click();
@@ -804,7 +804,7 @@ var gWorkspaces = {
     if (
       !this._workspaceManageOnBMSMode &&
       Services.prefs.getBoolPref(
-        workspacesPreferences.WORKSPACE_MANAGE_ON_BMS_PREF
+        workspacesPreferences.WORKSPACES_MANAGE_ON_BMS_PREF
       )
     ) {
       gWorkspaces.enableWorkspacesManageOnBMSMode();
@@ -965,7 +965,7 @@ var gWorkspaces = {
 
     if (
       Services.prefs.getBoolPref(
-        workspacesPreferences.WORKSPACE_MANAGE_ON_BMS_PREF
+        workspacesPreferences.WORKSPACES_MANAGE_ON_BMS_PREF
       )
     ) {
       this.enableWorkspacesManageOnBMSMode();
