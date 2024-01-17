@@ -38,8 +38,12 @@
   visibility: hidden !important;
 }
 
+#TabsToolbar-customization-target > #firefox-view-button {
+  max-width: 100% !important;
+}
+
 #TabsToolbar-customization-target:not(:hover) > #tabbrowser-tabs > #tabbrowser-arrowscrollbox > .tabbrowser-tab > .tab-stack > .tab-content > .tab-label-container {
-  opacity: 0;
+  opacity: 0 !important;
   visibility: collapse;
   transition: opacity 370ms,
   visibility 370ms,
