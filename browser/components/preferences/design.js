@@ -22,7 +22,6 @@ Preferences.addAll([
   { id: "floorp.browser.tabs.verticaltab.right", type: "bool" },
   { id: "floorp.verticaltab.hover.enabled", type: "bool" },
   { id: "floorp.verticaltab.show.newtab.button" , type: "bool" },
-  { id: "floorp.verticaltab.show.scrollbar" , type: "bool" },
 ])
 var gDesign = {
   _pane: null,
