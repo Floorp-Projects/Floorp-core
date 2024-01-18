@@ -244,20 +244,6 @@ if (!Services.prefs.getBoolPref("floorp.browser.sidebar.enable", false)) {
 
 /*------------------------------------------- verticaltab -------------------------------------------*/
 
-observePreference("floorp.verticaltab.hover.enabled", function (event) {
-  if (Services.prefs.getIntPref("floorp.tabbar.style", false) != 2) {
-    return;
-  }
-  if (event.prefValue) {
-    var Tag = document.createElement("style");
-    Tag.innerText = `@import url(chrome://browser/skin/options/native-verticaltab-hover.css)`;
-    Tag.setAttribute("id", "floorp-vthover");
-    document.head.appendChild(Tag);
-  } else {
-    document.getElementById("floorp-vthover")?.remove();
-  }
-});
-
 observePreference("floorp.verticaltab.show.newtab.button", function (event) {
   if (Services.prefs.getIntPref("floorp.tabbar.style", false) != 2) {
     return;

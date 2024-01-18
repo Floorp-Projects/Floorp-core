@@ -107,10 +107,12 @@ var gFloorpVerticalTabBar = {
 
     // Hover effect CSS check
     if (this.hoverStyleElem == null && this.hoverModeEnabled) {
-      Tag = document.createElement("style");
-      Tag.innerText = `@import url(chrome://browser/skin/options/native-verticaltab-hover.css)`;
-      Tag.setAttribute("id", "floorp-vthover");
-      document.head.appendChild(Tag);
+      window.setTimeout(() => {
+        Tag = document.createElement("style");
+        Tag.innerText = `@import url(chrome://browser/skin/options/native-verticaltab-hover.css)`;
+        Tag.setAttribute("id", "floorp-vthover");
+        document.head.appendChild(Tag);
+      }, 1000);
     }
 
     //splitter
