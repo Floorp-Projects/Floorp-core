@@ -78,13 +78,15 @@ observePreference("floorp.bookmarks.bar.focus.mode", function (event) {
 });
 
 observePreference("floorp.bookmarks.fakestatus.mode", function (event) {
+  let eventListener = null
+
   if (event.prefValue) {
     setTimeout(
       function () {
         document
           .getElementById("fullscreen-and-pointerlock-wrapper")
           .after(document.getElementById("PersonalToolbar"));
-        document.addEventListener("floorpOnLocationChangeEvent", function () {
+          eventListener = document.addEventListener("floorpOnLocationChangeEvent", function () {
           let { AboutNewTab } = ChromeUtils.import("resource:///modules/AboutNewTab.jsm"); 
           let currentUrl = gFloorpOnLocationChange.locationURI.spec;
           let newtabUrl = AboutNewTab.newTabURL;
@@ -109,6 +111,9 @@ observePreference("floorp.bookmarks.fakestatus.mode", function (event) {
     document
       .getElementById("navigator-toolbox")
       .appendChild(document.getElementById("PersonalToolbar"));
+
+    // remove event listener
+    document.removeEventListener("floorpOnLocationChangeEvent", eventListener);
   }
 });
 
