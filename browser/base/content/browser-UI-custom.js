@@ -92,7 +92,7 @@ observePreference("floorp.bookmarks.fakestatus.mode", function (event) {
           let newtabUrl = AboutNewTab.newTabURL;
           let pref = Services.prefs.getStringPref("browser.toolbars.bookmarks.visibility", "always");
 
-          if (currentUrl == newtabUrl && pref == "newtab") {
+          if ((currentUrl == newtabUrl && pref == "newtab") || (pref == "always")) {
             document.getElementById("PersonalToolbar").removeAttribute("collapsed");
           } else {
             document.getElementById("PersonalToolbar").setAttribute("collapsed", "true");
