@@ -244,9 +244,6 @@ var gWorkspaces = {
       .classList.add("sidepanel-icon");
 
     this._workspaceManageOnBMSMode = true;
-
-    // rebuild the workspacesToolbar
-    this.rebuildWorkspacesToolbar();
   },
 
   /* Preferences */
@@ -962,16 +959,6 @@ var gWorkspaces = {
 
     // Create Context Menu
     this.contextMenu.createWorkspacesTabContextMenuItems();
-
-    if (
-      Services.prefs.getBoolPref(
-        workspacesPreferences.WORKSPACES_MANAGE_ON_BMS_PREF
-      )
-    ) {
-      this.enableWorkspacesManageOnBMSMode();
-    }
-
-    // Manage on BMS Sidebar mode
 
     // Override the default newtab opening position in tabbar.
     //copy from browser.js (./browser/base/content/browser.js)
