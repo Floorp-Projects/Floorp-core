@@ -34,7 +34,7 @@ function uuid() {
   return Services.uuid.generateUUID().toString();
 }
 
-const sharedDataKey = id => `SiteSpecificBrowserBase:${id}`;
+const sharedDataKey = (id) => `SiteSpecificBrowserBase:${id}`;
 /**
  * Builds a lookup table for all the icons in order of size.
  */
@@ -118,7 +118,7 @@ function manifestForURI(uri) {
 async function getIconResource(iconData) {
   // This should be a data url so no network traffic.
   let imageData = await lazy.ImageTools.loadImage(
-    Services.io.newURI(iconData.iconURL)
+    Services.io.newURI(iconData.iconURL),
   );
   if (imageData.container.type == Ci.imgIContainer.TYPE_VECTOR) {
     return {
@@ -178,13 +178,13 @@ async function buildManifestForBrowser(browser, options) {
   // the website is not loaded.
   manifest.icons = (
     await Promise.all(
-      manifest.icons.map(async icon => {
+      manifest.icons.map(async (icon) => {
         if (icon.src.startsWith("data:")) {
           return icon;
         }
 
         let actor = browser.browsingContext.currentWindowGlobal.getActor(
-          "SiteSpecificBrowser"
+          "SiteSpecificBrowser",
         );
         try {
           icon.src = await actor.sendQuery("LoadIcon", icon.src);
@@ -194,9 +194,9 @@ async function buildManifestForBrowser(browser, options) {
         }
 
         return icon;
-      })
+      }),
     )
-  ).filter(icon => icon);
+  ).filter((icon) => icon);
 
   // If the site provided no icons then try to use the normal page icons.
   if (!manifest.icons.length) {
@@ -320,7 +320,7 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
   constructor(id, manifest, config = {}) {
     if (!IS_MAIN_PROCESS) {
       throw new Error(
-        "SiteSpecificBrowser instances are only available in the main process."
+        "SiteSpecificBrowser instances are only available in the main process.",
       );
     }
 
@@ -332,7 +332,7 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
         needsUpdate: true,
         persisted: false,
       },
-      config
+      config,
     );
 
     this._updateSharedData();
@@ -348,7 +348,7 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
   static async load(id, data = null) {
     if (!IS_MAIN_PROCESS) {
       throw new Error(
-        "SiteSpecificBrowser instances are only available in the main process."
+        "SiteSpecificBrowser instances are only available in the main process.",
       );
     }
 
@@ -387,7 +387,7 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
   static get(id) {
     if (!IS_MAIN_PROCESS) {
       throw new Error(
-        "SiteSpecificBrowser instances are only available in the main process."
+        "SiteSpecificBrowser instances are only available in the main process.",
       );
     }
 
@@ -407,7 +407,7 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
 
     if (!manifest.scope.startsWith("https:")) {
       throw new Error(
-        "Site specific browsers can only be opened for secure sites."
+        "Site specific browsers can only be opened for secure sites.",
       );
     }
 
@@ -429,13 +429,13 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
 
     if (!browser.currentURI.schemeIs("https")) {
       throw new Error(
-        "Site specific browsers can only be opened for secure sites."
+        "Site specific browsers can only be opened for secure sites.",
       );
     }
 
     let manifest = await buildManifestForBrowser(
       browser,
-      createManifestOptions
+      createManifestOptions,
     );
     let ssb = await SiteSpecificBrowser.createFromManifest(manifest);
 
@@ -458,7 +458,7 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
 
     if (!uri.schemeIs("https")) {
       throw new Error(
-        "Site specific browsers can only be opened for secure sites."
+        "Site specific browsers can only be opened for secure sites.",
       );
     }
 
@@ -519,7 +519,7 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
     Services.obs.notifyObservers(
       null,
       "site-specific-browser-install",
-      this.id
+      this.id,
     );
   }
 
@@ -605,7 +605,7 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
     }
 
     let { container } = await lazy.ImageTools.loadImage(
-      Services.io.newURI(icon.src)
+      Services.io.newURI(icon.src),
     );
     return lazy.ImageTools.scaleImage(container, size, size);
   }
@@ -650,7 +650,7 @@ XPCOMUtils.defineLazyPreferenceGetter(
   SiteSpecificBrowserService,
   "isEnabled",
   "browser.ssb.enabled",
-  false
+  false,
 );
 
 async function startSSB(id) {

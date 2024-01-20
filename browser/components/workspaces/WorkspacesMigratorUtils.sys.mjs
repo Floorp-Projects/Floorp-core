@@ -13,7 +13,7 @@ ChromeUtils.defineESModuleGetters(lazy, {
 
 function getIconNameByWorkspaceName(workspaceName) {
   const settings = JSON.parse(
-    Services.prefs.getStringPref("floorp.browser.workspace.info")
+    Services.prefs.getStringPref("floorp.browser.workspace.info"),
   );
 
   const targetWorkspaceNumber = checkWorkspaceInfoExist(workspaceName);
@@ -32,7 +32,7 @@ function getIconNameByWorkspaceName(workspaceName) {
 
 function checkWorkspaceInfoExist(name) {
   const data = JSON.parse(
-    Services.prefs.getStringPref("floorp.browser.workspace.info")
+    Services.prefs.getStringPref("floorp.browser.workspace.info"),
   );
   for (let i = 0; i < data.length; i++) {
     const obj = data[i];
@@ -49,7 +49,7 @@ function checkWorkspaceInfoExist(name) {
 
 function getWorkspaceUserContextId(workspaceName) {
   const settings = JSON.parse(
-    Services.prefs.getStringPref("floorp.browser.workspace.info")
+    Services.prefs.getStringPref("floorp.browser.workspace.info"),
   );
   const targetWorkspaceNumber = checkWorkspaceInfoExist(workspaceName);
   if (
@@ -65,11 +65,17 @@ function getWorkspaceUserContextId(workspaceName) {
 
 export const WorkspacesMigratorUtils = {
   get IsLegacyWorkspaceEnabled() {
-    return Services.prefs.getBoolPref("floorp.browser.workspace.tab.enabled", true);
+    return Services.prefs.getBoolPref(
+      "floorp.browser.workspace.tab.enabled",
+      true,
+    );
   },
 
   get migrated() {
-    return Services.prefs.getBoolPref("floorp.browser.workspace.migrated", false);
+    return Services.prefs.getBoolPref(
+      "floorp.browser.workspace.migrated",
+      false,
+    );
   },
 
   get LegacyWorkspacesData() {
@@ -122,13 +128,13 @@ export const WorkspacesMigratorUtils = {
       const workspaceId = await lazy.WorkspacesService.createWorkspace(
         name,
         windowId,
-        this.legacyDefaultWorkspace === name
+        this.legacyDefaultWorkspace === name,
       );
 
       const workspace =
         await lazy.WorkspacesIdUtils.getWorkspaceByIdAndWindowId(
           workspaceId,
-          windowId
+          windowId,
         );
 
       if (this.legacySelectedWorkspace === name) {
@@ -143,7 +149,7 @@ export const WorkspacesMigratorUtils = {
           workspace.id,
           userContextId || 0,
           iconName || "fingerprint",
-          windowId
+          windowId,
         );
       }
 
@@ -152,7 +158,7 @@ export const WorkspacesMigratorUtils = {
         if (tab.getAttribute("floorpWorkspace") === name) {
           tab.setAttribute(
             lazy.WorkspacesService.workspacesTabAttributionId,
-            workspace.id
+            workspace.id,
           );
         }
       }

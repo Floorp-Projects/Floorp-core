@@ -45,7 +45,7 @@ if (Services.prefs.getStringPref(newtabOverrideURL, "") != "") {
 
 BrowserTryToCloseWindow = function (event) {
   let { setTimeout } = ChromeUtils.importESModule(
-    "resource://gre/modules/Timer.sys.mjs"
+    "resource://gre/modules/Timer.sys.mjs",
   );
   if (WindowIsClosing(event)) {
     if (
@@ -53,7 +53,7 @@ BrowserTryToCloseWindow = function (event) {
     ) {
       document
         .querySelectorAll(
-          `.webpanels[src='chrome://browser/content/browser.xhtml']`
+          `.webpanels[src='chrome://browser/content/browser.xhtml']`,
         )
         .forEach(function (e) {
           e.remove();
@@ -83,12 +83,15 @@ SessionStore.promiseInitialized.then(() => {
     initiallyActive,
   } = {}) {
     const { PrivateContainer } = ChromeUtils.importESModule(
-      "resource:///modules/PrivateContainer.sys.mjs"
+      "resource:///modules/PrivateContainer.sys.mjs",
     );
 
     let b = document.createXULElement("browser");
 
-    if (userContextId === PrivateContainer.Functions.getPrivateContainerUserContextId()) {
+    if (
+      userContextId ===
+      PrivateContainer.Functions.getPrivateContainerUserContextId()
+    ) {
       b.setAttribute("disablehistory", "true");
       b.setAttribute("disableglobalhistory", "true");
       b.setAttribute("FloorpPrivateContainer", "true");
@@ -98,19 +101,19 @@ SessionStore.promiseInitialized.then(() => {
     // permanentKey is held by something after this window closes, it
     // doesn't keep the window alive.
     b.permanentKey = new (Cu.getGlobalForObject(Services).Object)();
-  
+
     // Ensure that SessionStore has flushed any session history state from the
     // content process before we this browser's remoteness.
     if (!Services.appinfo.sessionHistoryInParent) {
       b.prepareToChangeRemoteness = () =>
         SessionStore.prepareToChangeRemoteness(b);
-      b.afterChangeRemoteness = switchId => {
+      b.afterChangeRemoteness = (switchId) => {
         let tab = this.getTabForBrowser(b);
         SessionStore.finishTabRemotenessChange(tab, switchId);
         return true;
       };
     }
-  
+
     const defaultBrowserAttributes = {
       contextmenu: "contentAreaContextMenu",
       message: "true",
@@ -121,28 +124,28 @@ SessionStore.promiseInitialized.then(() => {
     for (let attribute in defaultBrowserAttributes) {
       b.setAttribute(attribute, defaultBrowserAttributes[attribute]);
     }
-  
+
     if (gMultiProcessBrowser || remoteType) {
       b.setAttribute("maychangeremoteness", "true");
     }
-  
+
     if (!initiallyActive) {
       b.setAttribute("initiallyactive", "false");
     }
-  
+
     if (userContextId) {
       b.setAttribute("usercontextid", userContextId);
     }
-  
+
     if (remoteType) {
       b.setAttribute("remoteType", remoteType);
       b.setAttribute("remote", "true");
     }
-  
+
     if (!isPreloadBrowser) {
       b.setAttribute("autocompletepopup", "PopupAutoComplete");
     }
-  
+
     /*
      * This attribute is meant to describe if the browser is the
      * preloaded browser. When the preloaded browser is created, the
@@ -155,7 +158,7 @@ SessionStore.promiseInitialized.then(() => {
     if (isPreloadBrowser) {
       b.setAttribute("preloadedState", "preloaded");
     }
-  
+
     // Ensure that the browser will be created in a specific initial
     // BrowsingContextGroup. This may change the process selection behaviour
     // of the newly created browser, and is often used in combination with
@@ -164,15 +167,15 @@ SessionStore.promiseInitialized.then(() => {
     if (initialBrowsingContextGroupId) {
       b.setAttribute(
         "initialBrowsingContextGroupId",
-        initialBrowsingContextGroupId
+        initialBrowsingContextGroupId,
       );
     }
-  
+
     // Propagate information about the opening content window to the browser.
     if (openWindowInfo) {
       b.openWindowInfo = openWindowInfo;
     }
-  
+
     // This will be used by gecko to control the name of the opened
     // window.
     if (name) {
@@ -180,29 +183,29 @@ SessionStore.promiseInitialized.then(() => {
       // we use a different attribute name for this?
       b.setAttribute("name", name);
     }
-  
+
     let notificationbox = document.createXULElement("notificationbox");
     notificationbox.setAttribute("notificationside", "top");
-  
+
     let stack = document.createXULElement("stack");
     stack.className = "browserStack";
     stack.appendChild(b);
-  
+
     let browserContainer = document.createXULElement("vbox");
     browserContainer.className = "browserContainer";
     browserContainer.appendChild(notificationbox);
     browserContainer.appendChild(stack);
-  
+
     let browserSidebarContainer = document.createXULElement("hbox");
     browserSidebarContainer.className = "browserSidebarContainer";
     browserSidebarContainer.appendChild(browserContainer);
-  
+
     // Prevent the superfluous initial load of a blank document
     // if we're going to load something other than about:blank.
     if (!uriIsAboutBlank || skipLoad) {
       b.setAttribute("nodefaultsrc", "true");
     }
-  
+
     return b;
   };
 });

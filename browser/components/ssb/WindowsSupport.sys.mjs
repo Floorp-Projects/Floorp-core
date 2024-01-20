@@ -6,14 +6,14 @@ export const EXPORTED_SYMBOLS = ["WindowsSupport"];
 
 const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 const { XPCOMUtils } = ChromeUtils.import(
-  "resource://gre/modules/XPCOMUtils.jsm"
+  "resource://gre/modules/XPCOMUtils.jsm",
 );
 const { SiteSpecificBrowserService } = ChromeUtils.import(
-  "resource:///modules/SiteSpecificBrowserService.jsm"
+  "resource:///modules/SiteSpecificBrowserService.jsm",
 );
 
 const { SiteSpecificBrowserIdUtils } = ChromeUtils.import(
-  "resource:///modules/SiteSpecificBrowserIdUtils.jsm"
+  "resource:///modules/SiteSpecificBrowserIdUtils.jsm",
 );
 
 const lazy = {};
@@ -22,21 +22,21 @@ XPCOMUtils.defineLazyModuleGetters(lazy, {
 });
 
 let shellService = Cc["@mozilla.org/browser/shell-service;1"].getService(
-  Ci.nsIWindowsShellService
+  Ci.nsIWindowsShellService,
 );
 
 const uiUtils = Cc["@mozilla.org/windows-ui-utils;1"].getService(
-  Ci.nsIWindowsUIUtils
+  Ci.nsIWindowsUIUtils,
 );
 
 const taskbar = Cc["@mozilla.org/windows-taskbar;1"].getService(
-  Ci.nsIWinTaskbar
+  Ci.nsIWinTaskbar,
 );
 
 const File = Components.Constructor(
   "@mozilla.org/file/local;1",
   Ci.nsIFile,
-  "initWithPath"
+  "initWithPath",
 );
 
 function buildGroupId(id) {
@@ -67,7 +67,7 @@ export const WindowsSupport = {
     let icon = await SiteSpecificBrowserIdUtils.getIconBySSBId(ssb.id, 128);
     if (icon) {
       let { container } = await lazy.ImageTools.loadImage(
-        Services.io.newURI(icon.src)
+        Services.io.newURI(icon.src),
       );
       lazy.ImageTools.saveIcon(container, 128, 128, iconFile);
     } else {
@@ -83,7 +83,7 @@ export const WindowsSupport = {
       0,
       buildGroupId(ssb.id),
       "Programs",
-      `${ssb.name}.lnk`
+      `${ssb.name}.lnk`,
     );
   },
 
@@ -122,7 +122,7 @@ export const WindowsSupport = {
    */
   async applyOSIntegration(ssb, window) {
     taskbar.setGroupIdForWindow(window, buildGroupId(ssb.id));
-    const getIcon = async size => {
+    const getIcon = async (size) => {
       let icon = await SiteSpecificBrowserIdUtils.getIconBySSBId(ssb.id, size);
       if (!icon) {
         return null;
@@ -130,7 +130,7 @@ export const WindowsSupport = {
 
       try {
         let image = await lazy.ImageTools.loadImage(
-          Services.io.newURI(icon.src)
+          Services.io.newURI(icon.src),
         );
         return image.container;
       } catch (e) {

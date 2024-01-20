@@ -19,7 +19,7 @@ var gFloorpVerticalTabBar = {
   get hoverModeEnabled() {
     return Services.prefs.getBoolPref(
       "floorp.verticaltab.hover.enabled",
-      false
+      false,
     );
   },
 
@@ -124,9 +124,9 @@ var gFloorpVerticalTabBar = {
     // Change Scroll elem tag
     this.changeXULElementTagName(
       this.arrowscrollbox.shadowRoot.querySelector(
-        "scrollbox[part='scrollbox']"
+        "scrollbox[part='scrollbox']",
       ),
-      "vbox"
+      "vbox",
     );
 
     // Width observer
@@ -142,16 +142,12 @@ var gFloorpVerticalTabBar = {
       .getElementById("TabsToolbar")
       ?.setAttribute(
         "width",
-        Services.prefs.getIntPref(VERTICAL_TABS_WIDTH_PREF, 200)
+        Services.prefs.getIntPref(VERTICAL_TABS_WIDTH_PREF, 200),
       );
 
     if (this.tabsToolbar) {
-      document.getElementById(
-        "TabsToolbar"
-      ).style.width = `${Services.prefs.getIntPref(
-        VERTICAL_TABS_WIDTH_PREF,
-        200
-      )}px`;
+      document.getElementById("TabsToolbar").style.width =
+        `${Services.prefs.getIntPref(VERTICAL_TABS_WIDTH_PREF, 200)}px`;
     }
 
     // Observer
@@ -188,7 +184,7 @@ var gFloorpVerticalTabBar = {
     // Change Scroll elem tag
     this.changeXULElementTagName(
       this.arrowscrollbox.shadowRoot.querySelector("vbox[part='scrollbox']"),
-      "scrollbox"
+      "scrollbox",
     );
 
     // Observer
@@ -230,7 +226,7 @@ var gFloorpVerticalTabBar = {
       if (mutation.type === "attributes" && mutation.attributeName == "width") {
         Services.prefs.setIntPref(
           VERTICAL_TABS_WIDTH_PREF,
-          parseInt(mutation.target.style.width)
+          parseInt(mutation.target.style.width),
         );
       }
     }
@@ -244,7 +240,7 @@ var gFloorpVerticalTabBar = {
         if (mutation.target.getAttribute("customizing") == "true") {
           Services.prefs.setBoolPref(
             "floorp.browser.tabs.verticaltab.temporary.disabled",
-            true
+            true,
           );
           Services.prefs.setIntPref("floorp.tabbar.style", 0);
           Services.prefs.setIntPref(tabbarContents.tabbarDisplayStylePref, 0);
@@ -252,7 +248,7 @@ var gFloorpVerticalTabBar = {
         } else {
           Services.prefs.setBoolPref(
             "floorp.browser.tabs.verticaltab.temporary.disabled",
-            false
+            false,
           );
           Services.prefs.setIntPref("floorp.tabbar.style", 2);
           Services.prefs.setIntPref(tabbarContents.tabbarDisplayStylePref, 2);
@@ -267,14 +263,14 @@ var gFloorpVerticalTabBar = {
       if (
         Services.prefs.getIntPref("floorp.tabbar.style") != 2 &&
         !Services.prefs.getBoolPref(
-          "floorp.browser.tabs.verticaltab.temporary.disabled"
+          "floorp.browser.tabs.verticaltab.temporary.disabled",
         )
       ) {
         observer.disconnect();
       } else if (
         Services.prefs.getIntPref("floorp.tabbar.style") == 2 &&
         Services.prefs.getBoolPref(
-          "floorp.browser.tabs.verticaltab.temporary.disabled"
+          "floorp.browser.tabs.verticaltab.temporary.disabled",
         )
       ) {
         observer.observe(customizationContainer, config);

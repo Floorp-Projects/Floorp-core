@@ -18,22 +18,18 @@
   ],
   "content_scripts": [
     {
-      "matches": [
-          "moz-extension://*/views/options/*"
-      ],
-      "js": [
-          "gesturefy/gesturefy.js"
-      ]
+      "matches": ["moz-extension://*/views/options/*"],
+      "js": ["gesturefy/gesturefy.js"]
     }
   ],
   "experiment_apis": {
     "aboutConfigPrefs": {
-        "schema": "API/aboutConfigPrefs.json",
-        "parent": {
-            "scopes": ["addon_parent"],
-            "script": "API/aboutConfigPrefs.js",
-            "paths": [["aboutConfigPrefs"]]
-        }
+      "schema": "API/aboutConfigPrefs.json",
+      "parent": {
+        "scopes": ["addon_parent"],
+        "script": "API/aboutConfigPrefs.js",
+        "paths": [["aboutConfigPrefs"]]
+      }
     },
     "BrowserInfo": {
       "schema": "API/BrowserInfo.json",
@@ -46,15 +42,9 @@
     "browserL10n": {
       "schema": "API/browserL10n.json",
       "parent": {
-        "scopes": [
-          "addon_parent"
-        ],
+        "scopes": ["addon_parent"],
         "script": "API/browserL10n.js",
-        "paths": [
-          [
-            "browserL10n"
-          ]
-        ]
+        "paths": [["browserL10n"]]
       }
     },
     "decompressZip": {

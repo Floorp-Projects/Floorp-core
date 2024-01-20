@@ -19,7 +19,7 @@ XPCOMUtils.defineLazyServiceGetter(
   lazy,
   "ImgTools",
   "@mozilla.org/image/tools;1",
-  Ci.imgITools
+  Ci.imgITools,
 );
 
 export const ImageTools = {
@@ -55,7 +55,7 @@ export const ImageTools = {
             reject(Components.Exception("Failed to load image.", status));
           }
         },
-        null
+        null,
       );
     });
   },
@@ -67,7 +67,7 @@ export const ImageTools = {
         "image/png",
         width,
         height,
-        ""
+        "",
       );
 
       try {
@@ -76,13 +76,13 @@ export const ImageTools = {
         reject(
           Components.Exception(
             "imgIEncoder must implement nsIAsyncInputStream",
-            e
-          )
+            e,
+          ),
         );
       }
 
       let binaryStream = Cc["@mozilla.org/binaryinputstream;1"].createInstance(
-        Ci.nsIBinaryInputStream
+        Ci.nsIBinaryInputStream,
       );
       binaryStream.setInputStream(stream);
 
@@ -122,9 +122,9 @@ export const ImageTools = {
         "image/vnd.microsoft.icon",
         width,
         height,
-        ""
+        "",
       );
-      lazy.NetUtil.asyncCopy(stream, output, status => {
+      lazy.NetUtil.asyncCopy(stream, output, (status) => {
         if (Components.isSuccessCode(status)) {
           resolve();
         } else {

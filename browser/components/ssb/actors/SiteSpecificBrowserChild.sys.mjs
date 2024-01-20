@@ -5,11 +5,11 @@
 export const EXPORTED_SYMBOLS = ["SiteSpecificBrowserChild"];
 
 const { SiteSpecificBrowserBase } = ChromeUtils.import(
-  "resource:///modules/SiteSpecificBrowserService.jsm"
+  "resource:///modules/SiteSpecificBrowserService.jsm",
 );
 const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 const { E10SUtils } = ChromeUtils.import(
-  "resource://gre/modules/E10SUtils.jsm"
+  "resource://gre/modules/E10SUtils.jsm",
 );
 
 /**
@@ -45,14 +45,14 @@ export class SiteSpecificBrowserChild extends JSWindowActorChild {
         // different processes will not be handled correctly. Fixing this will
         // happen in bug 1602849.
         this.docShell.browserChild.webBrowserChrome = new WebBrowserChrome(
-          message.data
+          message.data,
         );
         break;
       case "LoadIcon":
         return loadIcon(this.contentWindow, message.data);
       case "checkSsbManifestIsExistent":
         let manifestHref = null;
-        this.document.head.childNodes.forEach(element => {
+        this.document.head.childNodes.forEach((element) => {
           if (element.rel === "manifest") {
             manifestHref = element.href;
           }
@@ -141,7 +141,7 @@ class WebBrowserChrome {
     referrerInfo,
     hasPostData,
     triggeringPrincipal,
-    csp
+    csp,
   ) {
     // As above, our actor is for the top-level frame in the page however we
     // are passed the docshell potentially handling the load here so we can
@@ -160,7 +160,7 @@ class WebBrowserChrome {
         referrerInfo: E10SUtils.serializeReferrerInfo(referrerInfo),
         triggeringPrincipal: E10SUtils.serializePrincipal(
           triggeringPrincipal ||
-            Services.scriptSecurityManager.createNullPrincipal({})
+            Services.scriptSecurityManager.createNullPrincipal({}),
         ),
         csp: csp ? E10SUtils.serializeCSP(csp) : null,
       });
