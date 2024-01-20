@@ -20,38 +20,52 @@ function setBrowserDesign() {
   );
   const updateNumber = new Date().getTime();
   const themeCSS = {
-    ProtonfixUI: `@import url(chrome://browser/skin/protonfix/protonfix.css?${updateNumber});`,
     LeptonUI: `@import url(chrome://browser/skin/lepton/leptonChrome.css?${updateNumber}); @import url(chrome://browser/skin/lepton/leptonContent.css?${updateNumber});`,
     fluentUI: `@import url(chrome://browser/skin/fluentUI/fluentUI.css);`,
-    gnomeUI: `@import url(chrome://browser/skin/gnomeUI/gnomeUI.css);
-              `,
+    gnomeUI: `@import url(chrome://browser/skin/gnomeUI/gnomeUI.css);`,
     FluerialUI: `@import url(chrome://browser/skin/floorplegacy/test_legacy.css?${updateNumber});`,
     FluerialUIMultitab: `@import url(chrome://browser/skin/floorplegacy/test_legacy.css?${updateNumber}); @import url(chrome://browser/skin/floorplegacy/test_legacy_multitab.css);`,
+
+    // Vertical Tabs CSS Injection
+    LeptonVerticalTabs: `@import url(chrome://browser/skin/lepton/leptonVerticalTabs.css);`,
+    fluentVerticalTabs: `@import url(chrome://browser/skin/fluentUI/fluentVerticalTabs.css);`,
+    gnomeVerticalTabs: `@import url(chrome://browser/skin/gnomeUI/gnomeVerticalTabs.css);`,
+    FluerialVerticalTabs: `@import url(chrome://browser/skin/floorplegacy/test_legacy_verticalTabs.css?${updateNumber});`,
   };
 
   const tag = document.createElement("style");
   tag.setAttribute("id", "browserdesgin");
   const enableMultitab = Services.prefs.getIntPref("floorp.tabbar.style") == 1;
+  const enableVerticalTabs =
+    Services.prefs.getIntPref("floorp.browser.tabbar.settings") == 2;
 
   switch (floorpInterfaceNum) {
     case 1:
       break;
     case 3:
-      tag.innerText = themeCSS.LeptonUI;
+      tag.innerText = enableVerticalTabs
+        ? themeCSS.LeptonUI + themeCSS.LeptonVerticalTabs
+        : themeCSS.LeptonUI;
       break;
     case 5:
       if (AppConstants.platform !== "linux") {
-        tag.innerText = themeCSS.fluentUI;
+        tag.innerText = enableVerticalTabs
+          ? themeCSS.fluentUI + themeCSS.fluentVerticalTabs
+          : themeCSS.fluentUI;
       }
       break;
     case 6:
       if (AppConstants.platform == "linux") {
-        tag.innerText = themeCSS.gnomeUI;
+        tag.innerText = enableVerticalTabs
+          ? themeCSS.gnomeUI + themeCSS.gnomeVerticalTabs
+          : themeCSS.gnomeUI;
       }
       break;
     case 8:
       tag.innerText = enableMultitab
         ? themeCSS.FluerialUIMultitab
+        : enableVerticalTabs
+        ? themeCSS.FluerialUI + themeCSS.FluerialVerticalTabs
         : themeCSS.FluerialUI;
       break;
   }

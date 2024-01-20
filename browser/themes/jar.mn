@@ -37,7 +37,7 @@ browser.jar:
 # Lepton
   skin/classic/browser/lepton/leptonChrome.css                              (designs/lepton/leptonChrome.css)
   skin/classic/browser/lepton/leptonContent.css                             (designs/lepton/leptonContent.css)
-
+  skin/classic/browser/lepton/leptonVerticalTabs.css                 (designs/lepton/leptonVerticalTabs.css)
   skin/classic/browser/lepton/photon.svg                                    (designs/lepton/photon.svg)
   skin/classic/browser/lepton/toolbarButton-upload.svg                      (designs/lepton/icons/toolbarButton-upload.svg)
   skin/classic/browser/lepton/menu-check.svg                                (designs/lepton/icons/menu-check.svg)
@@ -89,7 +89,7 @@ browser.jar:
   skin/classic/browser/lepton/edit-cut.svg                                  (designs/lepton/icons/edit-cut.svg)
   skin/classic/browser/lepton/edit-paste-go.svg                             (designs/lepton/icons/edit-paste-go.svg)
   skin/classic/browser/lepton/edit-paste-search.svg                         (designs/lepton/icons/edit-paste-search.svg)
-  skin/classic/browser/lepton/edit-paste.svg                                (designs/lepton/icons/edit-paste.svg) 
+  skin/classic/browser/lepton/edit-paste.svg                                (designs/lepton/icons/edit-paste.svg)
   skin/classic/browser/lepton/enter-fullscreen.svg                          (designs/lepton/icons/enter-fullscreen.svg)
   skin/classic/browser/lepton/eraser.svg                                    (designs/lepton/icons/eraser.svg)
   skin/classic/browser/lepton/error-connection-failure.svg                  (designs/lepton/icons/error-connection-failure.svg)
@@ -232,7 +232,7 @@ browser.jar:
 # gnomeUI
 
  skin/classic/browser/gnomeUI/gnomeUI.css                                                      (designs/gnomeUI/gnomeUI.css)
-
+ skin/classic/browser/gnomeUI/gnomeVerticalTabs.css                                            (designs/gnomeUI/gnomeVerticalTabs.css)
  skin/classic/browser/gnomeUI/bullet-symbolic.svg                                              (designs/gnomeUI/bullet-symbolic.svg)
  skin/classic/browser/gnomeUI/edit-clear-symbolic.svg                                          (designs/gnomeUI/edit-clear-symbolic.svg)
  skin/classic/browser/gnomeUI/process-working-symbolic-black.svg                               (designs/gnomeUI/process-working-symbolic-black.svg)
@@ -422,10 +422,11 @@ browser.jar:
   skin/classic/browser/fluentUI/security-broken.svg                  (designs/fluentUI/security-broken.svg)
   skin/classic/browser/fluentUI/security-warning.svg                 (designs/fluentUI/security-warning.svg)
   skin/classic/browser/fluentUI/send-to-device.svg                   (designs/fluentUI/send-to-device.svg)
-  skin/classic/browser/fluentUI/settings.svg                         (designs/fluentUI/settings.svg) 
+  skin/classic/browser/fluentUI/settings.svg                         (designs/fluentUI/settings.svg)
   skin/classic/browser/fluentUI/share.svg                            (designs/fluentUI/share.svg)
   skin/classic/browser/fluentUI/sidebars.svg                         (designs/fluentUI/sidebars.svg)
   skin/classic/browser/fluentUI/fluentUI.css                         (designs/fluentUI/fluentUI.css)
+  skin/classic/browser/fluentUI/fluentVerticalTabs.css               (designs/fluentUI/fluentVerticalTabs.css)
 
 # Floorp Legacy by materialfox
   skin/classic/browser/floorplegacy/floorplegacy.css           (designs/floorp-legacy/floorplegacy.css)
@@ -490,6 +491,7 @@ browser.jar:
 # Floorp Fluenial 
   skin/classic/browser/floorplegacy/test_legacy.css           (designs/floorp-legacy/test_legacy.css)
   skin/classic/browser/floorplegacy/test_legacy_multitab.css  (designs/floorp-legacy/test_legacy_multitab.css)
+  skin/classic/browser/floorplegacy/test_legacy_verticalTabs.css  (designs/floorp-legacy/test_legacy_verticalTabs.css)
 
 ## SSB  
   skin/classic/browser/install-ssb.svg                                      (icons/install-ssb.svg)
@@ -668,5 +670,5 @@ browser.jar:
   skin/classic/browser/newtabbg-97.webp                              (newtabbg/newtabbg-97.webp)
   skin/classic/browser/newtabbg-98.webp                              (newtabbg/newtabbg-98.webp)
   skin/classic/browser/newtabbg-99.webp                              (newtabbg/newtabbg-99.webp)
-  
+
 # finish

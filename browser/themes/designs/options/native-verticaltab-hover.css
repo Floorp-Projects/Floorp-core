@@ -56,10 +56,6 @@
   transition-delay: 0.2s !important;
 }
 
-#TabsToolbar-customization-target > #alltabs-button > .toolbarbutton-badge-stack {
-  padding-left: 0px !important;
-}
-
 #sidebar-box .tabbrowser-tab{
   margin-right: 1px !important;
   margin-left: 1px !important;
