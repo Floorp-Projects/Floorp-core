@@ -8,7 +8,7 @@ import { WorkspacesWindowIdUtils } from "resource:///modules/WorkspacesWindowIdU
 export const EXPORTED_SYMBOLS = ["WorkspacesElementService"];
 
 export const WorkspacesElementService = {
-  panelElement: `<panel id="workspacesToolbarButtonPanel" type="arrow" position="bottom top" onpopupshowing="gWorkspaces.rebuildWorkspacesToolbar();">
+  panelElement: `<panel id="workspacesToolbarButtonPanel" type="arrow" position="bottom top">
           <vbox id="workspacesToolbarButtonPanelBox">
             <arrowscrollbox id="workspacesPopupBox" flex="1">
                 <vbox id="workspacesPopupContent" align="center" flex="1" orient="vertical"

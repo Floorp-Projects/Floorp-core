@@ -793,7 +793,6 @@ var gWorkspaces = {
     await WorkspacesIdUtils.removeWindowTabsDataById(windowId);
 
     let currentWorkspaceId = await gWorkspaces.getCurrentWorkspaceId();
-    let workspace = await gWorkspaces.getCurrentWorkspace();
     let workspacesData = await gWorkspaces.getCurrentWorkspacesData();
     let workspacesCount = await gWorkspaces.getCurrentWorkspacesCount();
 
@@ -855,6 +854,7 @@ var gWorkspaces = {
         }
       }
 
+      /* Disable Tab information save
       let tabObj = {
         url: tabs[i].linkedBrowser.currentURI.spec,
         tabId: i,
@@ -867,7 +867,10 @@ var gWorkspaces = {
 
       // Save Workspaces data
       workspacesData[workspace.id].tabs.push(tabObj);
+
+      */
     }
+
     // Save Workspaces data
     await gWorkspaces.saveWorkspacesDataWithoutOverwritingPreferences(
       workspacesData
