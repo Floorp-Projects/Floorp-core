@@ -1083,7 +1083,7 @@ var gWorkspaces = {
       const menuitemElem = window.MozXULElement.parseXULToFragment(`
       <menu id="context_MoveTabToOtherWorkspace" data-l10n-id="move-tab-another-workspace" accesskey="D">
           <menupopup id="workspacesTabContextMenu"
-                     onpopupshowing="gWorkspaces.contextMenu.createTabWorkspacesContextMenuItems(event)"/>
+                     onpopupshowing="gWorkspaces.contextMenu.createTabWorkspacesContextMenuItems()"/>
       </menu>
       `);
       beforeElem.before(menuitemElem);
