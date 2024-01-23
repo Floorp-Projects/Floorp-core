@@ -502,6 +502,10 @@ var gWorkspaces = {
   },
 
   changeWorkspace(workspaceId, option, addNewTab = false) {
+    if (!this.workspaceEnabled) {
+      return;
+    }
+
     // Change Workspace
     let willChangeWorkspaceLastShowTab =
       document.querySelector(
@@ -546,6 +550,36 @@ var gWorkspaces = {
         break;
     }
     gWorkspaces.checkAllTabsForVisibility();
+  },
+
+  async changeWorkspaceToDefaultWorkspace() {
+    let windowId = await gWorkspaces.getDefaultWorkspaceId();
+    this.changeWorkspace(windowId);
+  },
+
+  async changeWorkspaceToNextOrBeforeWorkspace(isNext) {
+    let currentWorkspaceId = await gWorkspaces.getCurrentWorkspaceId();
+    let allWorkspacesId = await gWorkspaces.getAllWorkspacesId();
+    const targetIndex = allWorkspacesId.indexOf(currentWorkspaceId);
+
+    if (targetIndex !== -1) {
+      const previousValue = allWorkspacesId[targetIndex - 1];
+      const nextValue = allWorkspacesId[targetIndex + 1];    
+      
+      if (isNext) {
+        if (nextValue) {
+          this.changeWorkspace(nextValue);
+        } else {
+          this.changeWorkspace(allWorkspacesId[0]);
+        }
+      } else {
+        if (previousValue) {
+          this.changeWorkspace(previousValue);
+        } else {
+          this.changeWorkspace(allWorkspacesId[allWorkspacesId.length - 1]);
+        }
+      }
+    }
   },
 
   async workspaceIdExists(workspaceId) {

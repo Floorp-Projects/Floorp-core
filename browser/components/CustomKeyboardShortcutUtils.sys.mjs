@@ -138,6 +138,10 @@ export const keyboradShortcutActions = {
     hideSidebar: ["SidebarUI.hide()", "hide-sidebar", "sidebar-action"],
     toggleSidebar: ["SidebarUI.toggle()", "toggle-sidebar", "sidebar-action"],
 
+    // Workspaces actions
+    changeWorkspaceToPrevious: ["gWorkspaces.changeWorkspaceToNextOrBeforeWorkspace()", "open-previous-workspace", "workspaces-action"],
+    changeWorkspaceToNext: ["gWorkspaces.changeWorkspaceToNextOrBeforeWorkspace(true)", "open-next-workspace", "workspaces-action"],
+
     // BMS actions
     toggleBMS: ["bmsController.controllFunctions.changeVisibleWenpanel()", "show-bsm", "bms-action"],
     showPanel1: ["bmsController.eventFunctions.contextMenu.showWithNumber(0)", "show-panel-1", "bms-action"],
