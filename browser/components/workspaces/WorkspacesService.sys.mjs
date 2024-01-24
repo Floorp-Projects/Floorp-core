@@ -47,7 +47,7 @@ export const WorkspacesService = {
   get workspaceEnabled() {
     return Services.prefs.getBoolPref(
       workspacesPreferences.WORKSPACES_ENABLED_PREF,
-      false
+      false,
     );
   },
 
@@ -146,7 +146,7 @@ export const WorkspacesService = {
     workspaceId,
     userContextId,
     icon,
-    windowId
+    windowId,
   ) {
     let workspacesData =
       await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
@@ -179,7 +179,7 @@ export const WorkspacesService = {
   async setWorkspaceContainerUserContextId(
     workspaceId,
     userContextId,
-    windowId
+    windowId,
   ) {
     let workspacesData =
       await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);

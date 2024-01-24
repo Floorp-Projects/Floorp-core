@@ -6,7 +6,7 @@
 
 var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 var { AppConstants } = ChromeUtils.import(
-  "resource://gre/modules/AppConstants.jsm"
+  "resource://gre/modules/AppConstants.jsm",
 );
 
 function setBrowserDesign() {
@@ -16,7 +16,7 @@ function setBrowserDesign() {
   }
 
   const floorpInterfaceNum = Services.prefs.getIntPref(
-    "floorp.browser.user.interface"
+    "floorp.browser.user.interface",
   );
   const updateNumber = new Date().getTime();
   const themeCSS = {
@@ -87,11 +87,11 @@ function setBrowserDesign() {
 
   if (floorpInterfaceNum == 3) {
     loadStyleSheetWithNsStyleSheetService(
-      "chrome://browser/skin/lepton/leptonContent.css"
+      "chrome://browser/skin/lepton/leptonContent.css",
     );
   } else {
     unloadStyleSheetWithNsStyleSheetService(
-      "chrome://browser/skin/lepton/leptonContent.css"
+      "chrome://browser/skin/lepton/leptonContent.css",
     );
   }
 }
@@ -100,7 +100,7 @@ setBrowserDesign();
 Services.prefs.addObserver("floorp.browser.user.interface", setBrowserDesign);
 Services.prefs.addObserver(
   "floorp.fluerial.roundVerticalTabs",
-  setBrowserDesign
+  setBrowserDesign,
 );
 Services.obs.addObserver(setBrowserDesign, "update-photon-pref");
 Services.obs.addObserver(setPhotonUI, "set-photon-ui");
@@ -119,7 +119,7 @@ function setPhotonUI() {
   Services.prefs.setBoolPref("userChrome.tab.static_separator", true);
   Services.prefs.setBoolPref(
     "userChrome.tab.static_separator.selected_accent",
-    false
+    false,
   );
   Services.prefs.setBoolPref("userChrome.tab.bar_separator", false);
 
@@ -150,7 +150,7 @@ function setLeptonUI() {
   Services.prefs.setBoolPref("userChrome.tab.static_separator", false);
   Services.prefs.setBoolPref(
     "userChrome.tab.static_separator.selected_accent",
-    false
+    false,
   );
   Services.prefs.setBoolPref("userChrome.tab.bar_separator", false);
 
@@ -182,7 +182,7 @@ function setProtonFixUI() {
   Services.prefs.setBoolPref("userChrome.tab.static_separator", false);
   Services.prefs.setBoolPref(
     "userChrome.tab.static_separator.selected_accent",
-    false
+    false,
   );
   Services.prefs.setBoolPref("userChrome.tab.bar_separator", false);
 

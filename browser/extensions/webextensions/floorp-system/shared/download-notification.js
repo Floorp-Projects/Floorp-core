@@ -5,7 +5,7 @@
 
 const DOWNLOAD_NOTIFICATION_PREF = "floorp.download.notification";
 
-browser.downloads.onCreated.addListener(async file => {
+browser.downloads.onCreated.addListener(async (file) => {
   let getL10nData = await browser.browserL10n.getFloorpL10nValues({
     file: ["browser/floorp.ftl"],
     text: ["floorp-started-download"],
@@ -16,7 +16,7 @@ browser.downloads.onCreated.addListener(async file => {
   }
 
   let pref = String(
-    await browser.aboutConfigPrefs.getPref(DOWNLOAD_NOTIFICATION_PREF)
+    await browser.aboutConfigPrefs.getPref(DOWNLOAD_NOTIFICATION_PREF),
   );
   if (pref === "1" || pref === "3") {
     browser.notifications.create({
@@ -28,7 +28,7 @@ browser.downloads.onCreated.addListener(async file => {
   }
 });
 
-browser.downloads.onChanged.addListener(async file => {
+browser.downloads.onChanged.addListener(async (file) => {
   let getL10nData = await browser.browserL10n.getFloorpL10nValues({
     file: ["browser/floorp.ftl"],
     text: ["floorp-finished-download"],
@@ -39,7 +39,7 @@ browser.downloads.onChanged.addListener(async file => {
   }
 
   let pref = String(
-    await browser.aboutConfigPrefs.getPref(DOWNLOAD_NOTIFICATION_PREF)
+    await browser.aboutConfigPrefs.getPref(DOWNLOAD_NOTIFICATION_PREF),
   );
 
   if (!file.state) {

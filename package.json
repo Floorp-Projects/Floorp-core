@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "gen": "pnpm run:xpidl2dts && pnpm format:xpidl2dts",
+    "format": "biome format browser --write",
     "run:xpidl2dts": "cd ./tools && tsx run-xpidl2dts.ts & cd ..",
     "format:xpidl2dts": "prettier --write @types/firefox/**/*.d.ts --ignore-path \"\""
   },
@@ -14,6 +15,7 @@
   "license": "ISC",
   "devDependencies": {
     "@babel/eslint-parser": "^7.23.3",
+    "@biomejs/biome": "1.5.2",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
     "@typescript-eslint/parser": "^6.14.0",
     "eslint": "^8.56.0",

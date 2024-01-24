@@ -12,16 +12,16 @@
  * The module also exports constants for the preference keys used to store the keyboard shortcuts and whether they are enabled.
  *
  *  @module CustomKeyboardShortcutUtils
- * 
+ *
  *  @example Importing the module
  *  import { CustomKeyboardShortcutUtils } from "resource:///modules/CustomKeyboardShortcutUtils.sys.mjs";
  *  const CustomKeyboardShortcutUtils = ChromeUtils.importESModule("resource:///modules/CustomKeyboardShortcutUtils.sys.mjs");
- * 
+ *
  *  @example Getting all actions of a type
  *  const allActionType = CustomKeyboardShortcutUtils.keyboradShortcutFunctions.getInfoFunctions.getAllActionType();
  *  console.log(allActionType);
  *  Codes output: ["tab-action", "page-action", "visible-action", "history-action", "search-action", "tools-action", "pip-action", "bookmark-action", "open-page-action", "history-action", "downloads-action", "sidebar-action", "bms-action"]
- * 
+ *
  *
  * @typedef {object} ShortcutAction
  * @property {string} code - The code that will be executed when the action is triggered.
@@ -37,13 +37,16 @@
  */
 
 export const EXPORTED_SYMBOLS = ["CustomKeyboardShortcutUtils"];
-export const SHORTCUT_KEY_AND_ACTION_PREF = "floorp.custom.shortcutkeysAndActions";
-export const SHORTCUT_KEY_AND_ACTION_ENABLED_PREF = "floorp.custom.shortcutkeysAndActions.enabled";
-export const SHORTCUT_KEY_DISABLE_FX_DEFAULT_SCKEY_PREF = "floorp.custom.shortcutkeysAndActions.remove.fx.actions";
-export const SHORTCUT_KEY_CHANGED_ARRAY_PREF = "floorp.custom.shortcutkeysAndActions.changed";
+export const SHORTCUT_KEY_AND_ACTION_PREF =
+  "floorp.custom.shortcutkeysAndActions";
+export const SHORTCUT_KEY_AND_ACTION_ENABLED_PREF =
+  "floorp.custom.shortcutkeysAndActions.enabled";
+export const SHORTCUT_KEY_DISABLE_FX_DEFAULT_SCKEY_PREF =
+  "floorp.custom.shortcutkeysAndActions.remove.fx.actions";
+export const SHORTCUT_KEY_CHANGED_ARRAY_PREF =
+  "floorp.custom.shortcutkeysAndActions.changed";
 
 export const keyboradShortcutActions = {
-
     /*
      * these are the actions that can be triggered by keyboard shortcuts.
      * the first element of each array is the code that will be executed.
@@ -164,58 +167,76 @@ export const keyboradShortcutActions = {
 }
 
 export const modifiersList = {
-    Alt: ["Alt", "VK_ALT"],
-    Control: ["Control", "VK_CONTROL"],
-    Shift: ["Shift", "VK_SHIFT"],
-    Tab: ["Tab", "VK_TAB"],
-}
+  Alt: ["Alt", "VK_ALT"],
+  Control: ["Control", "VK_CONTROL"],
+  Shift: ["Shift", "VK_SHIFT"],
+  Tab: ["Tab", "VK_TAB"],
+};
 
-export const cannotUseModifiers = ["Zenkaku", "Hankaku", "NumLock", "Delete", "Insert", "Alphanumeric", "Unidentified", "NonConvert"]
+export const cannotUseModifiers = [
+  "Zenkaku",
+  "Hankaku",
+  "NumLock",
+  "Delete",
+  "Insert",
+  "Alphanumeric",
+  "Unidentified",
+  "NonConvert",
+];
 
 export const keyCodesList = {
-    // F num keys
-    F1: ["F1", "VK_F1"],
-    F2: ["F2", "VK_F2"],
-    F3: ["F3", "VK_F3"],
-    F4: ["F4", "VK_F4"],
-    F5: ["F5", "VK_F5"],
-    F6: ["F6", "VK_F6"],
-    F7: ["F7", "VK_F7"],
-    F8: ["F8", "VK_F8"],
-    F9: ["F9", "VK_F9"],
-    F10: ["F10", "VK_F10"],
-    F11: ["F11", "VK_F11"],
-    F12: ["F12", "VK_F12"],
-    F13: ["F13", "VK_F13"],
-    F14: ["F14", "VK_F14"],
-    F15: ["F15", "VK_F15"],
-    F16: ["F16", "VK_F16"],
-    F17: ["F17", "VK_F17"],
-    F18: ["F18", "VK_F18"],
-    F19: ["F19", "VK_F19"],
-    F20: ["F20", "VK_F20"],
-    F21: ["F21", "VK_F21"],
-    F22: ["F22", "VK_F22"],
-    F23: ["F23", "VK_F23"],
-    F24: ["F24", "VK_F24"],
-}
+  // F num keys
+  F1: ["F1", "VK_F1"],
+  F2: ["F2", "VK_F2"],
+  F3: ["F3", "VK_F3"],
+  F4: ["F4", "VK_F4"],
+  F5: ["F5", "VK_F5"],
+  F6: ["F6", "VK_F6"],
+  F7: ["F7", "VK_F7"],
+  F8: ["F8", "VK_F8"],
+  F9: ["F9", "VK_F9"],
+  F10: ["F10", "VK_F10"],
+  F11: ["F11", "VK_F11"],
+  F12: ["F12", "VK_F12"],
+  F13: ["F13", "VK_F13"],
+  F14: ["F14", "VK_F14"],
+  F15: ["F15", "VK_F15"],
+  F16: ["F16", "VK_F16"],
+  F17: ["F17", "VK_F17"],
+  F18: ["F18", "VK_F18"],
+  F19: ["F19", "VK_F19"],
+  F20: ["F20", "VK_F20"],
+  F21: ["F21", "VK_F21"],
+  F22: ["F22", "VK_F22"],
+  F23: ["F23", "VK_F23"],
+  F24: ["F24", "VK_F24"],
+};
 
 export const keyboradShortcutFunctions = {
   preferencesFunctions: {
     addKeyForShortcutAction(actionName, key, keyCode, modifiers) {
-      let keysState = JSON.parse(Services.prefs.getStringPref(SHORTCUT_KEY_AND_ACTION_PREF));
+      let keysState = JSON.parse(
+        Services.prefs.getStringPref(SHORTCUT_KEY_AND_ACTION_PREF),
+      );
       let keyState = {
-          actionName,
-          key : key ? key : "",
-          keyCode : keyCode ? keyCode : "",
-          modifiers: modifiers ? modifiers : "",
+        actionName,
+        key: key ? key : "",
+        keyCode: keyCode ? keyCode : "",
+        modifiers: modifiers ? modifiers : "",
       };
       keysState.push(keyState);
 
-      if (keyboradShortcutFunctions.getInfoFunctions.getKeyForShortcutAction(actionName)) {
+      if (
+        keyboradShortcutFunctions.getInfoFunctions.getKeyForShortcutAction(
+          actionName,
+        )
+      ) {
         return;
       }
-      Services.prefs.setStringPref(SHORTCUT_KEY_AND_ACTION_PREF, JSON.stringify(keysState));
+      Services.prefs.setStringPref(
+        SHORTCUT_KEY_AND_ACTION_PREF,
+        JSON.stringify(keysState),
+      );
     },
 
     removeAllKeyboradShortcut() {
@@ -223,14 +244,33 @@ export const keyboradShortcutFunctions = {
     },
 
     removeKeyboradShortcutByAllNames(actionName, key, keyCode, modifiers) {
-      let keysState = JSON.parse(Services.prefs.getStringPref(SHORTCUT_KEY_AND_ACTION_PREF));
-      let newKeysState = keysState.filter(keyState => { return !(keyState.actionName === actionName && keyState.key === key && keyState.keyCode === keyCode && keyState.modifiers === modifiers) });
-      Services.prefs.setStringPref(SHORTCUT_KEY_AND_ACTION_PREF, JSON.stringify(newKeysState));
+      let keysState = JSON.parse(
+        Services.prefs.getStringPref(SHORTCUT_KEY_AND_ACTION_PREF),
+      );
+      let newKeysState = keysState.filter((keyState) => {
+        return !(
+          keyState.actionName === actionName &&
+          keyState.key === key &&
+          keyState.keyCode === keyCode &&
+          keyState.modifiers === modifiers
+        );
+      });
+      Services.prefs.setStringPref(
+        SHORTCUT_KEY_AND_ACTION_PREF,
+        JSON.stringify(newKeysState),
+      );
     },
     removeKeyboradShortcutByActionName(actionName) {
-      let keysState = JSON.parse(Services.prefs.getStringPref(SHORTCUT_KEY_AND_ACTION_PREF));
-      let newKeysState = keysState.filter(keyState => { return !(keyState.actionName === actionName) });
-      Services.prefs.setStringPref(SHORTCUT_KEY_AND_ACTION_PREF, JSON.stringify(newKeysState));
+      let keysState = JSON.parse(
+        Services.prefs.getStringPref(SHORTCUT_KEY_AND_ACTION_PREF),
+      );
+      let newKeysState = keysState.filter((keyState) => {
+        return !(keyState.actionName === actionName);
+      });
+      Services.prefs.setStringPref(
+        SHORTCUT_KEY_AND_ACTION_PREF,
+        JSON.stringify(newKeysState),
+      );
     },
   },
 
@@ -270,28 +310,39 @@ export const keyboradShortcutFunctions = {
     getAllActionLocalizations() {
       let result = [];
       for (let actionName in keyboradShortcutActions) {
-        result.push(keyboradShortcutFunctions.getInfoFunctions.getFluentLocalization(actionName));
+        result.push(
+          keyboradShortcutFunctions.getInfoFunctions.getFluentLocalization(
+            actionName,
+          ),
+        );
       }
       return result;
     },
 
     getKeyForShortcutAction(actionName) {
-      let keysState = JSON.parse(Services.prefs.getStringPref(SHORTCUT_KEY_AND_ACTION_PREF));
-      let exsitKey = keysState.find(keyState => keyState.actionName === actionName);
+      let keysState = JSON.parse(
+        Services.prefs.getStringPref(SHORTCUT_KEY_AND_ACTION_PREF),
+      );
+      let exsitKey = keysState.find(
+        (keyState) => keyState.actionName === actionName,
+      );
       if (exsitKey) {
         return exsitKey;
       }
       return null;
     },
-    
+
     getAllExsitKeys() {
-      let keysState = JSON.parse(Services.prefs.getStringPref(SHORTCUT_KEY_AND_ACTION_PREF));
+      let keysState = JSON.parse(
+        Services.prefs.getStringPref(SHORTCUT_KEY_AND_ACTION_PREF),
+      );
       return keysState;
     },
-    
+
     getAllExsitActionsName() {
       let result = [];
-      let configs = keyboradShortcutFunctions.getInfoFunctions.getAllExsitKeys();
+      let configs =
+        keyboradShortcutFunctions.getInfoFunctions.getAllExsitKeys();
       for (let config of configs) {
         result.push(config.actionName);
       }
@@ -299,8 +350,12 @@ export const keyboradShortcutFunctions = {
     },
 
     actionIsExsit(actionName) {
-      let keysState = JSON.parse(Services.prefs.getStringPref(SHORTCUT_KEY_AND_ACTION_PREF));
-      let exsitKey = keysState.find(keyState => keyState.actionName === actionName);
+      let keysState = JSON.parse(
+        Services.prefs.getStringPref(SHORTCUT_KEY_AND_ACTION_PREF),
+      );
+      let exsitKey = keysState.find(
+        (keyState) => keyState.actionName === actionName,
+      );
       if (exsitKey) {
         return true;
       }
@@ -308,13 +363,17 @@ export const keyboradShortcutFunctions = {
     },
 
     getActionKey(actionName) {
-      let keysState = JSON.parse(Services.prefs.getStringPref(SHORTCUT_KEY_AND_ACTION_PREF));
-      let exsitKey = keysState.find(keyState => keyState.actionName === actionName);
+      let keysState = JSON.parse(
+        Services.prefs.getStringPref(SHORTCUT_KEY_AND_ACTION_PREF),
+      );
+      let exsitKey = keysState.find(
+        (keyState) => keyState.actionName === actionName,
+      );
       if (exsitKey) {
         return exsitKey;
       }
       return null;
-    },   
+    },
 
     getFluentLocalization(actionName) {
       if (!keyboradShortcutActions[actionName]) {
@@ -325,14 +384,20 @@ export const keyboradShortcutFunctions = {
     },
 
     getActionNameByKey(key, keyCode, modifiers) {
-      let keysState = JSON.parse(Services.prefs.getStringPref(SHORTCUT_KEY_AND_ACTION_PREF));
-      let result = []
+      let keysState = JSON.parse(
+        Services.prefs.getStringPref(SHORTCUT_KEY_AND_ACTION_PREF),
+      );
+      let result = [];
       for (let keyState of keysState) {
-        if (keyState.key === key && keyState.keyCode === keyCode && keyState.modifiers === modifiers) {
-          result.push(keyState.actionName)
+        if (
+          keyState.key === key &&
+          keyState.keyCode === keyCode &&
+          keyState.modifiers === modifiers
+        ) {
+          result.push(keyState.actionName);
         }
       }
-      return result
+      return result;
     },
   },
 
@@ -347,7 +412,8 @@ export const keyboradShortcutFunctions = {
 
     // Not recommended to use
     getKeyIsModifier(key, keyCode) {
-      let modifiersList = keyboradShortcutFunctions.modifiersListFunctions.getModifiersList();
+      let modifiersList =
+        keyboradShortcutFunctions.modifiersListFunctions.getModifiersList();
       return modifiersList.includes(key) || modifiersList.includes(keyCode);
     },
 
@@ -358,7 +424,7 @@ export const keyboradShortcutFunctions = {
         result.push(modifiersList[modifier][1]);
       }
       return result;
-    }
+    },
   },
 
   keyCodesListFunctions: {
@@ -375,7 +441,7 @@ export const keyboradShortcutFunctions = {
         return null;
       }
       return keyCodesList[keyCode][1];
-    }
+    },
   },
 
   openDialog(actionN) {
@@ -395,7 +461,7 @@ export const keyboradShortcutFunctions = {
     if (parentWindow?.gDialogBox) {
       parentWindow.gDialogBox.open(
         "chrome://browser/content/preferences/dialogs/manage-keyboard-shortcut.xhtml",
-        object
+        object,
       );
     } else {
       Services.ww.openWindow(
@@ -403,8 +469,8 @@ export const keyboradShortcutFunctions = {
         "chrome://browser/content/preferences/dialogs/manage-keyboard-shortcut.xhtml",
         null,
         "chrome,titlebar,dialog,centerscreen,modal",
-        object
+        object,
       );
     }
   },
-}
+};

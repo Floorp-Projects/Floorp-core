@@ -16,7 +16,7 @@ var gFloorpOnLocationChange = {
       {
         bubbles: true,
         cancelable: true,
-      }
+      },
     );
   },
 
@@ -27,7 +27,7 @@ var gFloorpOnLocationChange = {
     this.locationURI = aLocationURI;
     this.flags = aFlags;
     this.isSimulated = aIsSimulated;
-        
+
     // Dispatch the event
     document.dispatchEvent(window.floorpOnLocationChangeEvent);
   },

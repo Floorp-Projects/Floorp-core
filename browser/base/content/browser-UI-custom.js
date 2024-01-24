@@ -9,7 +9,7 @@ var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 const observePreference = function (prefName, callback) {
   let prefValue = Services.prefs.getBoolPref(prefName, false);
 
-  const notifyCallback = reason => {
+  const notifyCallback = (reason) => {
     try {
       callback({
         pref: prefName,
@@ -52,7 +52,7 @@ observePreference(
     } else {
       document.getElementById("floorp-optimizefortreestyletab")?.remove();
     }
-  }
+  },
 );
 
 observePreference("floorp.optimized.msbutton.ope", function (event) {
@@ -78,7 +78,7 @@ observePreference("floorp.bookmarks.bar.focus.mode", function (event) {
 });
 
 observePreference("floorp.bookmarks.fakestatus.mode", function (event) {
-  let eventListener = null
+  let eventListener = null;
 
   if (event.prefValue) {
     setTimeout(
@@ -86,20 +86,35 @@ observePreference("floorp.bookmarks.fakestatus.mode", function (event) {
         document
           .getElementById("fullscreen-and-pointerlock-wrapper")
           .after(document.getElementById("PersonalToolbar"));
-          eventListener = document.addEventListener("floorpOnLocationChangeEvent", function () {
-          let { AboutNewTab } = ChromeUtils.import("resource:///modules/AboutNewTab.jsm"); 
-          let currentUrl = gFloorpOnLocationChange.locationURI.spec;
-          let newtabUrl = AboutNewTab.newTabURL;
-          let pref = Services.prefs.getStringPref("browser.toolbars.bookmarks.visibility", "always");
+        eventListener = document.addEventListener(
+          "floorpOnLocationChangeEvent",
+          function () {
+            let { AboutNewTab } = ChromeUtils.import(
+              "resource:///modules/AboutNewTab.jsm",
+            );
+            let currentUrl = gFloorpOnLocationChange.locationURI.spec;
+            let newtabUrl = AboutNewTab.newTabURL;
+            let pref = Services.prefs.getStringPref(
+              "browser.toolbars.bookmarks.visibility",
+              "always",
+            );
 
-          if ((currentUrl == newtabUrl && pref == "newtab") || (pref == "always")) {
-            document.getElementById("PersonalToolbar").removeAttribute("collapsed");
-          } else {
-            document.getElementById("PersonalToolbar").setAttribute("collapsed", "true");
-          }
-        });
+            if (
+              (currentUrl == newtabUrl && pref == "newtab") ||
+              pref == "always"
+            ) {
+              document
+                .getElementById("PersonalToolbar")
+                .removeAttribute("collapsed");
+            } else {
+              document
+                .getElementById("PersonalToolbar")
+                .setAttribute("collapsed", "true");
+            }
+          },
+        );
       },
-      event.reason === "init" ? 250 : 1
+      event.reason === "init" ? 250 : 1,
     );
   } else if (event.reason === "changed") {
     //Fix for the bug that bookmarksbar is on the navigation toolbar when the pref is cahaned to false
@@ -230,7 +245,7 @@ observePreference(
     } else {
       document.getElementById("floorp-STG-like-floorp-workspaces")?.remove();
     }
-  }
+  },
 );
 
 /*------------------------------------------- sidebar -------------------------------------------*/

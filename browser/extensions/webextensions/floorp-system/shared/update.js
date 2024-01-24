@@ -24,14 +24,14 @@
       message: l10nData[3] + "\n" + now + " -> " + latest,
     });
 
-    let handle_onClicked = notificationId => {
+    let handle_onClicked = (notificationId) => {
       if (created_notificationId === notificationId) {
         browser.tabs.create({ url: url });
       }
     };
     browser.notifications.onClicked.addListener(handle_onClicked);
 
-    let handle_onClosed = notificationId => {
+    let handle_onClosed = (notificationId) => {
       if (created_notificationId === notificationId) {
         browser.notifications.onClicked.removeListener(handle_onClicked);
         browser.notifications.onClosed.removeListener(handle_onClosed);
@@ -49,14 +49,14 @@
     });
   };
 
-  const CheckUpdate = async options => {
+  const CheckUpdate = async (options) => {
     let updaterEnabled = await browser.aboutConfigPrefs.getPref(
-      "enable.floorp.update"
+      "enable.floorp.update",
     );
     if (!updaterEnabled) return; //updater is disabled
 
     let latestNotifyEnabledPref = await browser.aboutConfigPrefs.getPref(
-      "enable.floorp.updater.latest"
+      "enable.floorp.updater.latest",
     );
     let latestNotifyEnabled =
       (options && options.isBrowserActionClicked) || latestNotifyEnabledPref;
@@ -66,11 +66,11 @@
     let platformInfo = await browser.runtime.getPlatformInfo();
 
     fetch(API_END_POINT)
-      .then(res => {
+      .then((res) => {
         if (!res.ok) throw `${res.status} ${res.statusText}`;
         return res.json();
       })
-      .then(datas => {
+      .then((datas) => {
         let platformKeyName =
           platformInfo["os"] === "mac"
             ? "mac"
@@ -83,16 +83,15 @@
           NotifyNew();
         }
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
       });
   };
 
   let isPortable = false;
   try {
-    isPortable = await browser.aboutConfigPrefs.getBoolPref(
-      "floorp.isPortable"
-    );
+    isPortable =
+      await browser.aboutConfigPrefs.getBoolPref("floorp.isPortable");
   } catch (e) {}
   if (isPortable) return;
 

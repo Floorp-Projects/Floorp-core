@@ -12,7 +12,7 @@ const tabbarDisplayStyleFunctions = {
   init() {
     tabbarContents.tabbarElement.setAttribute(
       "floorp-tabbar-display-style",
-      Services.prefs.getIntPref(tabbarContents.tabbarDisplayStylePref)
+      Services.prefs.getIntPref(tabbarContents.tabbarDisplayStylePref),
     );
     tabbarContents.tabbarWindowManageContainer.id =
       "floorp-tabbar-window-manage-container";
@@ -21,7 +21,7 @@ const tabbarDisplayStyleFunctions = {
   setTabbarDisplayStyle() {
     tabbarContents.tabbarElement.setAttribute(
       "floorp-tabbar-display-style",
-      Services.prefs.getIntPref(tabbarContents.tabbarDisplayStylePref)
+      Services.prefs.getIntPref(tabbarContents.tabbarDisplayStylePref),
     );
 
     switch (Services.prefs.getIntPref(tabbarContents.tabbarDisplayStylePref)) {
@@ -30,7 +30,7 @@ const tabbarDisplayStyleFunctions = {
         tabbarDisplayStyleFunctions.revertToDefaultStyle();
         tabbarContents.navigatorToolboxtabbarElement.setAttribute(
           "floorp-tabbar-display-style",
-          "0"
+          "0",
         );
         break;
       case 1:
@@ -47,7 +47,7 @@ const tabbarDisplayStyleFunctions = {
         document.querySelector("head").appendChild(tabbarContents.modifyCSS);
         tabbarContents.tabbarElement.setAttribute(
           "floorp-tabbar-display-style",
-          "1"
+          "1",
         );
         break;
 
@@ -57,7 +57,7 @@ const tabbarDisplayStyleFunctions = {
         //optimize vertical tabbar
         tabbarContents.tabbarElement.setAttribute("hidden", "true");
         tabbarContents.navbarElement.appendChild(
-          document.querySelector("#floorp-tabbar-window-manage-container")
+          document.querySelector("#floorp-tabbar-window-manage-container"),
         );
         tabbarContents.modifyCSS = document.createElement("style");
         tabbarContents.modifyCSS.id = "floorp-tabbar-modify-css";
@@ -81,7 +81,7 @@ const tabbarDisplayStyleFunctions = {
         tabbarDisplayStyleFunctions.setWorkspaceLabelToNavbar();
         tabbarContents.tabbarElement.setAttribute(
           "floorp-tabbar-display-style",
-          "1"
+          "1",
         );
 
         window.setTimeout(() => {
@@ -91,16 +91,16 @@ const tabbarDisplayStyleFunctions = {
       case 3:
         tabbarDisplayStyleFunctions.revertToDefaultStyle();
 
-          //move tabbar to navigator-toolbox's bottom
-          tabbarContents.navigatorToolboxtabbarElement.appendChild(
-            tabbarContents.tabbarElement
-          );
-          tabbarContents.PanelUIMenuButton.after(
-            document.querySelector("#floorp-tabbar-window-manage-container")
-          );
-          tabbarContents.modifyCSS = document.createElement("style");
-          tabbarContents.modifyCSS.id = "floorp-tabbar-modify-css";
-          tabbarContents.modifyCSS.textContent = `
+        //move tabbar to navigator-toolbox's bottom
+        tabbarContents.navigatorToolboxtabbarElement.appendChild(
+          tabbarContents.tabbarElement,
+        );
+        tabbarContents.PanelUIMenuButton.after(
+          document.querySelector("#floorp-tabbar-window-manage-container"),
+        );
+        tabbarContents.modifyCSS = document.createElement("style");
+        tabbarContents.modifyCSS.id = "floorp-tabbar-modify-css";
+        tabbarContents.modifyCSS.textContent = `
             #toolbar-menubar > .titlebar-buttonbox-container {
               display: none !important;
             }
@@ -114,11 +114,11 @@ const tabbarDisplayStyleFunctions = {
               padding: 0px !important;
             }
           `;
-          document.querySelector("head").appendChild(tabbarContents.modifyCSS);
-          tabbarContents.tabbarElement.setAttribute(
-            "floorp-tabbar-display-style",
-            "2"
-          );
+        document.querySelector("head").appendChild(tabbarContents.modifyCSS);
+        tabbarContents.tabbarElement.setAttribute(
+          "floorp-tabbar-display-style",
+          "2",
+        );
         break;
       case 4:
         tabbarDisplayStyleFunctions.revertToDefaultStyle();
@@ -126,7 +126,7 @@ const tabbarDisplayStyleFunctions = {
         //move tabbar to window's bottom
         tabbarContents.browserElement.after(tabbarContents.titleBarElement);
         tabbarContents.PanelUIMenuButton.after(
-          document.querySelector("#floorp-tabbar-window-manage-container")
+          document.querySelector("#floorp-tabbar-window-manage-container"),
         );
         tabbarContents.modifyCSS = document.createElement("style");
         tabbarContents.modifyCSS.id = "floorp-tabbar-modify-css";
@@ -141,10 +141,10 @@ const tabbarDisplayStyleFunctions = {
         document.querySelector("head").appendChild(tabbarContents.modifyCSS);
         tabbarContents.tabbarElement.setAttribute(
           "floorp-tabbar-display-style",
-          "3"
+          "3",
         );
         // set margin to the top of urlbar container & allow moving the window
-        document.getElementById("urlbar-container").style.marginTop = "10px"; 
+        document.getElementById("urlbar-container").style.marginTop = "10px";
         break;
     }
   },
@@ -153,16 +153,18 @@ const tabbarDisplayStyleFunctions = {
     tabbarContents.tabbarElement.removeAttribute("floorp-tabbar-display-style");
     tabbarContents.tabbarElement.removeAttribute("hidden");
     tabbarContents.tabbarElement.appendChild(
-      document.querySelector("#floorp-tabbar-window-manage-container")
+      document.querySelector("#floorp-tabbar-window-manage-container"),
     );
     tabbarContents.titleBarElement.appendChild(tabbarContents.tabbarElement);
     tabbarContents.navigatorToolboxtabbarElement.prepend(
-      tabbarContents.titleBarElement
+      tabbarContents.titleBarElement,
     );
     document.querySelector("#floorp-tabbar-modify-css")?.remove();
     tabbarContents.tabbarElement.removeAttribute("floorp-tabbar-display-style");
     // Remove tabbar margin from the top (when tabs are at the bottom)
-    document.getElementById("urlbar-container")?.style.removeProperty("margin-top");
+    document
+      .getElementById("urlbar-container")
+      ?.style.removeProperty("margin-top");
     tabbarDisplayStyleFunctions.moveToDefaultSpace();
   },
 
@@ -170,7 +172,7 @@ const tabbarDisplayStyleFunctions = {
     //move workspace button
     let workspaceButton = document.getElementById("workspace-button");
     let customizeTarget = document.getElementById(
-      "nav-bar-customization-target"
+      "nav-bar-customization-target",
     );
 
     if (!workspaceButton) {
@@ -197,7 +199,7 @@ SessionStore.promiseInitialized.then(() => {
     titleBarElement: document.querySelector("#titlebar"),
     navbarElement: document.querySelector("#nav-bar"),
     tabbarWindowManageContainer: document.querySelector(
-      "#TabsToolbar > .titlebar-buttonbox-container"
+      "#TabsToolbar > .titlebar-buttonbox-container",
     ),
     navigatorToolboxtabbarElement: document.querySelector("#navigator-toolbox"),
     browserElement: document.querySelector("#browser"),
@@ -211,7 +213,7 @@ SessionStore.promiseInitialized.then(() => {
   //listen
   Services.prefs.addObserver(
     tabbarContents.tabbarDisplayStylePref,
-    tabbarDisplayStyleFunctions.setTabbarDisplayStyle
+    tabbarDisplayStyleFunctions.setTabbarDisplayStyle,
   );
 });
 
@@ -225,14 +227,14 @@ function setMultirowTabMaxHeight() {
   scrollbox.removeAttribute("style");
 
   const isMultiRowTabEnabled = Services.prefs.getBoolPref(
-    "floorp.browser.tabbar.multirow.max.enabled"
+    "floorp.browser.tabbar.multirow.max.enabled",
   );
   const rowValue = Services.prefs.getIntPref(
-    "floorp.browser.tabbar.multirow.max.row"
+    "floorp.browser.tabbar.multirow.max.row",
   );
 
   const tabHeight = document.querySelector(
-    ".tabbrowser-tab:not([hidden='true'])"
+    ".tabbrowser-tab:not([hidden='true'])",
   ).clientHeight;
 
   if (
@@ -241,7 +243,7 @@ function setMultirowTabMaxHeight() {
   ) {
     scrollbox.setAttribute(
       "style",
-      `max-height: ${tabHeight * rowValue}px !important;`
+      `max-height: ${tabHeight * rowValue}px !important;`,
     );
     arrowscrollbox.style.maxHeight = "";
   } else {
@@ -262,7 +264,7 @@ function setNewTabInTabs() {
 
   if (
     Services.prefs.getBoolPref(
-      "floorp.browser.tabbar.multirow.newtab-inside.enabled"
+      "floorp.browser.tabbar.multirow.newtab-inside.enabled",
     )
   ) {
     newTabButton.style.display = "none";
@@ -288,15 +290,15 @@ document.addEventListener(
 
     Services.prefs.addObserver(
       "floorp.browser.tabbar.multirow.max.row",
-      setMultirowTabMaxHeight
+      setMultirowTabMaxHeight,
     );
     Services.prefs.addObserver(
       "floorp.browser.tabbar.multirow.max.enabled",
-      setMultirowTabMaxHeight
+      setMultirowTabMaxHeight,
     );
     Services.prefs.addObserver(
       "floorp.browser.tabbar.multirow.newtab-inside.enabled",
-      setNewTabInTabs
+      setNewTabInTabs,
     );
 
     let applyMultitab = () => {
@@ -313,7 +315,7 @@ document.addEventListener(
     Services.prefs.addObserver("floorp.tabbar.style", applyMultitab);
 
     const tabs = document.querySelector(`#tabbrowser-tabs`);
-    tabs.on_wheel = event => {
+    tabs.on_wheel = (event) => {
       if (Services.prefs.getBoolPref("toolkit.tabbox.switchByScrolling")) {
         if (
           event.deltaY > 0 !=
@@ -321,12 +323,12 @@ document.addEventListener(
         ) {
           tabs.advanceSelectedTab(
             1,
-            Services.prefs.getBoolPref("floorp.tabscroll.wrap")
+            Services.prefs.getBoolPref("floorp.tabscroll.wrap"),
           );
         } else {
           tabs.advanceSelectedTab(
             -1,
-            Services.prefs.getBoolPref("floorp.tabscroll.wrap")
+            Services.prefs.getBoolPref("floorp.tabscroll.wrap"),
           );
         }
         event.preventDefault();
@@ -334,5 +336,5 @@ document.addEventListener(
       }
     };
   },
-  { once: true }
+  { once: true },
 );

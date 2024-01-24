@@ -5,10 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const { CustomizableUI } = ChromeUtils.importESModule(
-  "resource:///modules/CustomizableUI.sys.mjs"
+  "resource:///modules/CustomizableUI.sys.mjs",
 );
 const { SessionStore } = ChromeUtils.import(
-  "resource:///modules/sessionstore/SessionStore.jsm"
+  "resource:///modules/sessionstore/SessionStore.jsm",
 );
 
 async function UCTFirst() {
@@ -27,7 +27,7 @@ async function UCTFirst() {
     tooltiptext: l10nText,
     onCreated(aNode) {
       const fragment = window.MozXULElement.parseXULToFragment(
-        `<stack xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" class="toolbarbutton-badge-stack"><image class="toolbarbutton-icon" label="閉じたタブを開く"/><html:label xmlns:html="http://www.w3.org/1999/xhtml" class="toolbarbutton-badge" ></html:label></stack>`
+        `<stack xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" class="toolbarbutton-badge-stack"><image class="toolbarbutton-icon" label="閉じたタブを開く"/><html:label xmlns:html="http://www.w3.org/1999/xhtml" class="toolbarbutton-badge" ></html:label></stack>`,
       );
       aNode.appendChild(fragment);
     },
@@ -60,7 +60,7 @@ async function switchSidebarPositionButton() {
     tooltiptext: l10nText,
     onCreated(aNode) {
       const fragment = window.MozXULElement.parseXULToFragment(
-        `<stack xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" class="toolbarbutton-badge-stack"><image class="toolbarbutton-icon" label="閉じたタブを開く"/><html:label xmlns:html="http://www.w3.org/1999/xhtml" class="toolbarbutton-badge" ></html:label></stack>`
+        `<stack xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" class="toolbarbutton-badge-stack"><image class="toolbarbutton-icon" label="閉じたタブを開く"/><html:label xmlns:html="http://www.w3.org/1999/xhtml" class="toolbarbutton-badge" ></html:label></stack>`,
       );
       aNode.appendChild(fragment);
     },
@@ -75,7 +75,7 @@ async function switchSidebarPositionButton() {
     CustomizableUI.addWidgetToArea(
       "sidebar-button",
       CustomizableUI.AREA_NAVBAR,
-      3
+      3,
     );
     CustomizableUI.addWidgetToArea(widgetId, CustomizableUI.AREA_NAVBAR, 4);
   }
@@ -114,7 +114,7 @@ async function profileManager() {
         0,
         0,
         false,
-        false
+        false,
       );
     },
   });
@@ -128,9 +128,9 @@ if (
 
 async function workspacesToolbarButton() {
   let { WorkspacesElementService } = ChromeUtils.importESModule(
-    "resource:///modules/WorkspacesElementService.sys.mjs"
+    "resource:///modules/WorkspacesElementService.sys.mjs",
   );
-  
+
   const widgetId = "workspaces-toolbar-button";
   const widget = CustomizableUI.getWidget(widgetId);
   if (widget && widget.type !== "custom") {
@@ -145,19 +145,23 @@ async function workspacesToolbarButton() {
     tooltiptext: l10nText,
     onCreated(aNode) {
       aNode.setAttribute("type", "menu");
-      const popup = window.MozXULElement.parseXULToFragment(WorkspacesElementService.panelElement);
+      const popup = window.MozXULElement.parseXULToFragment(
+        WorkspacesElementService.panelElement,
+      );
       aNode.appendChild(popup);
     },
     onCommand() {
       let currentWindow = Services.wm.getMostRecentWindow("navigator:browser");
-      const panel = currentWindow.document.getElementById("workspacesToolbarButtonPanel");
+      const panel = currentWindow.document.getElementById(
+        "workspacesToolbarButtonPanel",
+      );
       panel.openPopup(
         document.getElementById("workspaces-toolbar-button"),
         "bottomright topright",
         0,
         0,
         false,
-        false
+        false,
       );
     },
   });

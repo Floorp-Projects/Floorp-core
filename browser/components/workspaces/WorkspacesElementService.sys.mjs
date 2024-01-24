@@ -72,7 +72,7 @@ export const WorkspacesElementService = {
     workspaceId,
     workspaceName,
     selected,
-    workspaceManageOnBMSMode
+    workspaceManageOnBMSMode,
   ) {
     return `<toolbarbutton id="workspace-${workspaceId}" context="workspaces-toolbar-item-context-menu"
                                class="toolbarbutton-1 chromeclass-toolbar-additional workspaceButton ${
@@ -90,11 +90,11 @@ export const WorkspacesElementService = {
   async getWorkspaceBlockElement(
     workspaceId,
     windowId,
-    workspaceManageOnBMSMode
+    workspaceManageOnBMSMode,
   ) {
     let workspacesData =
       await WorkspacesWindowIdUtils.getWindowWorkspacesDataWithoutPreferences(
-        windowId
+        windowId,
       );
     let workspace = workspacesData[workspaceId];
     let selectedWorkspaceId =
@@ -104,14 +104,14 @@ export const WorkspacesElementService = {
       workspaceId,
       workspace.name,
       selected,
-      workspaceManageOnBMSMode
+      workspaceManageOnBMSMode,
     );
   },
 
   async getAllWorkspacesBlockElements(windowId, workspaceManageOnBMSMode) {
     let workspacesData =
       await WorkspacesWindowIdUtils.getWindowWorkspacesDataWithoutPreferences(
-        windowId
+        windowId,
       );
     let selectedWorkspaceId =
       await WorkspacesWindowIdUtils.getSelectedWorkspaceId(windowId);
@@ -125,8 +125,8 @@ export const WorkspacesElementService = {
           workspaceId,
           workspace.name,
           selected,
-          workspaceManageOnBMSMode
-        )
+          workspaceManageOnBMSMode,
+        ),
       );
     }
     return workspaceBlockElements;

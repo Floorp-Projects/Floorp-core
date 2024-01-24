@@ -7,15 +7,15 @@
 /****************************************************** QR Code ******************************************************/
 
 var { SiteSpecificBrowserExternalFileService } = ChromeUtils.importESModule(
-  "resource:///modules/SiteSpecificBrowserExternalFileService.sys.mjs"
+  "resource:///modules/SiteSpecificBrowserExternalFileService.sys.mjs",
 );
 
 var { SiteSpecificBrowser } = ChromeUtils.importESModule(
-  "resource:///modules/SiteSpecificBrowserService.sys.mjs"
+  "resource:///modules/SiteSpecificBrowserService.sys.mjs",
 );
 
 var { SiteSpecificBrowserIdUtils } = ChromeUtils.importESModule(
-  "resource:///modules/SiteSpecificBrowserIdUtils.sys.mjs"
+  "resource:///modules/SiteSpecificBrowserIdUtils.sys.mjs",
 );
 
 let gFloorpPageAction = {
@@ -42,7 +42,7 @@ let gFloorpPageAction = {
     onPopupShowing() {
       Services.scriptloader.loadSubScript(
         "chrome://browser/content/qr-code-styling/qr-code-styling.js",
-        window
+        window,
       );
 
       let currentTab = gBrowser.selectedTab;
@@ -119,13 +119,15 @@ let gFloorpPageAction = {
 
     async onCommand() {
       gSsbChromeManager.functions.installOrRunCurrentPageAsSsb(true);
-      
+
       // Show installing gif
       let installingGif = document.getElementById("ssb-installing-icon");
       installingGif?.removeAttribute("hidden");
 
       // Hide install button
-      let installButtons = document.getElementsByClassName("ssb-install-buttons");
+      let installButtons = document.getElementsByClassName(
+        "ssb-install-buttons",
+      );
       for (let installButton of installButtons) {
         installButton?.setAttribute("hidden", true);
       }
@@ -138,7 +140,9 @@ let gFloorpPageAction = {
       installingGif?.setAttribute("hidden", true);
 
       // Hide install button
-      let installButtons = document.getElementsByClassName("ssb-install-buttons");
+      let installButtons = document.getElementsByClassName(
+        "ssb-install-buttons",
+      );
       for (let installButton of installButtons) {
         installButton?.removeAttribute("hidden");
       }

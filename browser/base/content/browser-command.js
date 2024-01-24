@@ -10,7 +10,7 @@ function OpenChromeDirectory() {
   const nsLocalFile = Components.Constructor(
     "@mozilla.org/file/local;1",
     "nsIFile",
-    "initWithPath"
+    "initWithPath",
   );
   new nsLocalFile(profileDir).reveal();
 }
@@ -37,7 +37,7 @@ function restartbrowser() {
   env.set("MOZ_DISABLE_SAFE_MODE_KEY", "1");
 
   Services.startup.quit(
-    Ci.nsIAppStartup.eAttemptQuit | Ci.nsIAppStartup.eRestart
+    Ci.nsIAppStartup.eAttemptQuit | Ci.nsIAppStartup.eRestart,
   );
 }
 
@@ -46,7 +46,7 @@ Services.obs.addObserver(restartbrowser, "floorp-restart-browser");
 /******************************************** StyleSheetService (userContent.css) ******************************/
 
 const sss = Cc["@mozilla.org/content/style-sheet-service;1"].getService(
-  Ci.nsIStyleSheetService
+  Ci.nsIStyleSheetService,
 );
 const ios = Services.io;
 
