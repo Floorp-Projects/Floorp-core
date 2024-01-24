@@ -1162,7 +1162,7 @@ var gWorkspaces = {
 };
 
 window.SessionStore.promiseInitialized.then(() => {
-  window.setTimeout(() => {
+  if (SessionStartup.sessionType == 3) {
     gWorkspaces.init();
-  }, 2000);
+  }
 });
