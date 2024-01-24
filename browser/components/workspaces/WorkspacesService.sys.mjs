@@ -24,14 +24,26 @@ function generateUuid() {
 }
 
 export const WorkspacesService = {
+  /**
+   * Returns the attribution ID for the workspaces tab.
+   * @returns {string} The attribution ID for the workspaces tab.
+   */
   get workspacesTabAttributionId() {
     return "floorpWorkspaceId";
   },
 
+  /**
+   * Returns the last show ID for the workspace.
+   * @returns {string} The last show ID for the workspace.
+   */
   get workspaceLastShowId() {
     return "floorpWorkspaceLastShowId";
   },
 
+  /**
+   * Returns whether workspaces are enabled.
+   * @returns {boolean} Whether workspaces are enabled.
+   */
   get workspaceEnabled() {
     return Services.prefs.getBoolPref(
       workspacesPreferences.WORKSPACES_ENABLED_PREF,
@@ -39,6 +51,13 @@ export const WorkspacesService = {
     );
   },
 
+  /**
+   * Creates a new workspace.
+   * @param {string} name - The name of the workspace.
+   * @param {number} windowId - The ID of the window.
+   * @param {boolean} [defaultWorkspace=false] - Whether the workspace is the default workspace.
+   * @returns {Promise<string>} A promise that resolves with the ID of the created workspace.
+   */
   async createWorkspace(name, windowId, defaultWorkspace) {
     let workspacesData =
       await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
@@ -54,6 +73,12 @@ export const WorkspacesService = {
     return workspaceId;
   },
 
+  /**
+   * Deletes a workspace.
+   * @param {string} workspaceId - The ID of the workspace to delete.
+   * @param {number} windowId - The ID of the window.
+   * @returns {Promise<void>} A promise that resolves when the workspace is deleted.
+   */
   async deleteWorkspace(workspaceId, windowId) {
     let workspacesData =
       await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
@@ -61,6 +86,13 @@ export const WorkspacesService = {
     await lazy.WorkspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
   },
 
+  /**
+   * Renames a workspace.
+   * @param {string} workspaceId - The ID of the workspace to rename.
+   * @param {string} newName - The new name for the workspace.
+   * @param {number} windowId - The ID of the window.
+   * @returns {Promise<void>} A promise that resolves when the workspace is renamed.
+   */
   async renameWorkspace(workspaceId, newName, windowId) {
     let workspacesData =
       await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
@@ -68,6 +100,12 @@ export const WorkspacesService = {
     await lazy.WorkspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
   },
 
+  /**
+   * Sets a workspace as the default workspace.
+   * @param {string} workspaceId - The ID of the workspace to set as default.
+   * @param {number} windowId - The ID of the window.
+   * @returns {Promise<void>} A promise that resolves when the default workspace is set.
+   */
   async setDefaultWorkspace(workspaceId, windowId) {
     let workspacesData =
       await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
@@ -77,6 +115,12 @@ export const WorkspacesService = {
     await lazy.WorkspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
   },
 
+  /**
+   * Sets a workspace as the selected workspace.
+   * @param {string} workspaceId - The ID of the workspace to set as selected.
+   * @param {number} windowId - The ID of the window.
+   * @returns {Promise<void>} A promise that resolves when the selected workspace is set.
+   */
   async setSelectWorkspace(workspaceId, windowId) {
     let workspacesData =
       await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
@@ -90,6 +134,14 @@ export const WorkspacesService = {
     await lazy.WorkspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
   },
 
+  /**
+   * Sets the user context ID and icon for a workspace container.
+   * @param {string} workspaceId - The ID of the workspace.
+   * @param {string} userContextId - The user context ID for the workspace container.
+   * @param {string} icon - The icon for the workspace container.
+   * @param {number} windowId - The ID of the window.
+   * @returns {Promise<void>} A promise that resolves when the user context ID and icon are set.
+   */
   async setWorkspaceContainerUserContextIdAndIcon(
     workspaceId,
     userContextId,
@@ -103,6 +155,13 @@ export const WorkspacesService = {
     await lazy.WorkspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
   },
 
+  /**
+   * Sets the icon for a workspace.
+   * @param {string} workspaceId - The ID of the workspace.
+   * @param {string} icon - The icon for the workspace.
+   * @param {number} windowId - The ID of the window.
+   * @returns {Promise<void>} A promise that resolves when the icon is set.
+   */
   async setWorkspaceIcon(workspaceId, icon, windowId) {
     let workspacesData =
       await lazy.WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
@@ -110,6 +169,13 @@ export const WorkspacesService = {
     await lazy.WorkspacesDataSaver.saveWorkspacesData(workspacesData, windowId);
   },
 
+  /**
+   * Sets the user context ID for a workspace container.
+   * @param {string} workspaceId - The ID of the workspace.
+   * @param {string} userContextId - The user context ID for the workspace container.
+   * @param {number} windowId - The ID of the window.
+   * @returns {Promise<void>} A promise that resolves when the user context ID is set.
+   */
   async setWorkspaceContainerUserContextId(
     workspaceId,
     userContextId,
@@ -122,6 +188,12 @@ export const WorkspacesService = {
   },
 };
 
+/**
+ * Reorders a workspace group before another workspace within a window.
+ * @param {string} workspaceId - The ID of the workspace to be reordered.
+ * @param {string} beforeWorkspaceId - The ID of the workspace before which the target workspace should be placed.
+ * @param {string} windowId - The ID of the window containing the workspaces.
+ */
 export const WorkspacesGroupService = {
   reorderingWorkspacesGroupBefore(workspaceId, beforeWorkspaceId, windowId) {
     let workspacesData =

@@ -498,6 +498,10 @@ var gWorkspaces = {
   },
 
   changeWorkspace(workspaceId, option, addNewTab = false) {
+    if (!this.workspaceEnabled) {
+      return;
+    }
+
     // Change Workspace
     let willChangeWorkspaceLastShowTab =
       document.querySelector(
@@ -542,6 +546,36 @@ var gWorkspaces = {
         break;
     }
     gWorkspaces.checkAllTabsForVisibility();
+  },
+
+  async changeWorkspaceToDefaultWorkspace() {
+    let windowId = await gWorkspaces.getDefaultWorkspaceId();
+    this.changeWorkspace(windowId);
+  },
+
+  async changeWorkspaceToNextOrBeforeWorkspace(isNext) {
+    let currentWorkspaceId = await gWorkspaces.getCurrentWorkspaceId();
+    let allWorkspacesId = await gWorkspaces.getAllWorkspacesId();
+    const targetIndex = allWorkspacesId.indexOf(currentWorkspaceId);
+
+    if (targetIndex !== -1) {
+      const previousValue = allWorkspacesId[targetIndex - 1];
+      const nextValue = allWorkspacesId[targetIndex + 1];    
+      
+      if (isNext) {
+        if (nextValue) {
+          this.changeWorkspace(nextValue);
+        } else {
+          this.changeWorkspace(allWorkspacesId[0]);
+        }
+      } else {
+        if (previousValue) {
+          this.changeWorkspace(previousValue);
+        } else {
+          this.changeWorkspace(allWorkspacesId[allWorkspacesId.length - 1]);
+        }
+      }
+    }
   },
 
   async workspaceIdExists(workspaceId) {
@@ -784,12 +818,15 @@ var gWorkspaces = {
     // Get Current Workspace & Workspace Id
     // Get Current Window Id
 
+    if(!this.workspacesToolbarButton) {
+      return;
+    }
+
     let windowId = gWorkspaces.getCurrentWindowId();
     // Remove all tab infomation from json
     await WorkspacesIdUtils.removeWindowTabsDataById(windowId);
 
     let currentWorkspaceId = await gWorkspaces.getCurrentWorkspaceId();
-    let workspace = await gWorkspaces.getCurrentWorkspace();
     let workspacesData = await gWorkspaces.getCurrentWorkspacesData();
     let workspacesCount = await gWorkspaces.getCurrentWorkspacesCount();
 
@@ -850,20 +887,8 @@ var gWorkspaces = {
           gBrowser.hideTab(tabs[i]);
         }
       }
-
-      let tabObj = {
-        url: tabs[i].linkedBrowser.currentURI.spec,
-        tabId: i,
-        userContextId: tabs[i].userContextId ? tabs[i].userContextId : 0,
-      };
-
-      if (tabs[i].hasAttribute(WorkspacesService.workspaceLastShowId)) {
-        tabObj.lastShow = true;
-      }
-
-      // Save Workspaces data
-      workspacesData[workspace.id].tabs.push(tabObj);
     }
+
     // Save Workspaces data
     await gWorkspaces.saveWorkspacesDataWithoutOverwritingPreferences(
       workspacesData,
@@ -1076,7 +1101,7 @@ var gWorkspaces = {
       const menuitemElem = window.MozXULElement.parseXULToFragment(`
       <menu id="context_MoveTabToOtherWorkspace" data-l10n-id="move-tab-another-workspace" accesskey="D">
           <menupopup id="workspacesTabContextMenu"
-                     onpopupshowing="gWorkspaces.contextMenu.createTabWorkspacesContextMenuItems(event)"/>
+                     onpopupshowing="gWorkspaces.contextMenu.createTabWorkspacesContextMenuItems()"/>
       </menu>
       `);
       beforeElem.before(menuitemElem);
@@ -1121,7 +1146,7 @@ var gWorkspaces = {
 };
 
 window.SessionStore.promiseInitialized.then(() => {
-  window.setTimeout(() => {
+  if (SessionStartup.sessionType == 3) {
     gWorkspaces.init();
-  }, 2000);
+  }
 });

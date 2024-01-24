@@ -168,7 +168,6 @@
 
 #verticaltab-splitter {
   background: var(--toolbar-bgcolor);
-  width: 2px;
 }
 
 
@@ -185,3 +184,4 @@
   display: none;
   transition: opacity 0.3s ease-in-out;
 }
+
