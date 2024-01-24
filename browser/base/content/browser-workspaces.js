@@ -822,6 +822,10 @@ var gWorkspaces = {
     // Get Current Workspace & Workspace Id
     // Get Current Window Id
 
+    if(!this.workspacesToolbarButton) {
+      return;
+    }
+
     let windowId = gWorkspaces.getCurrentWindowId();
     // Remove all tab infomation from json
     await WorkspacesIdUtils.removeWindowTabsDataById(windowId);
@@ -887,22 +891,6 @@ var gWorkspaces = {
           gBrowser.hideTab(tabs[i]);
         }
       }
-
-      /* Disable Tab information save
-      let tabObj = {
-        url: tabs[i].linkedBrowser.currentURI.spec,
-        tabId: i,
-        userContextId: tabs[i].userContextId ? tabs[i].userContextId : 0,
-      };
-
-      if (tabs[i].hasAttribute(WorkspacesService.workspaceLastShowId)) {
-        tabObj.lastShow = true;
-      }
-
-      // Save Workspaces data
-      workspacesData[workspace.id].tabs.push(tabObj);
-
-      */
     }
 
     // Save Workspaces data
