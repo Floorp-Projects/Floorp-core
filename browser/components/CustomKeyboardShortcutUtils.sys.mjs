@@ -14,8 +14,8 @@
  *  @module CustomKeyboardShortcutUtils
  * 
  *  @example Importing the module
- *  import { CustomKeyboardShortcutUtils } from "resource:///modules/CustomKeyboardShortcutUtils.sys.mjs";
- *  const CustomKeyboardShortcutUtils = ChromeUtils.importESModule("resource:///modules/CustomKeyboardShortcutUtils.sys.mjs");
+ *  import { CustomKeyboardShortcutUtils } from "resource://floorp/modules/CustomKeyboardShortcutUtils.sys.mjs";
+ *  const CustomKeyboardShortcutUtils = ChromeUtils.importESModule("resource://floorp/modules/CustomKeyboardShortcutUtils.sys.mjs");
  * 
  *  @example Getting all actions of a type
  *  const allActionType = CustomKeyboardShortcutUtils.keyboradShortcutFunctions.getInfoFunctions.getAllActionType();
@@ -30,13 +30,11 @@
  *
  * @typedef {object} KeyboardShortcutActions
  * @typedef {object} CustomKeyboardShortcutUtils
- * @property {string[]} EXPORTED_SYMBOLS - The exported symbols of the module.
  * @property {string} SHORTCUT_KEY_AND_ACTION_PREF - The preference key used to store the keyboard shortcuts and actions.
  * @property {string} SHORTCUT_KEY_AND_ACTION_ENABLED_PREF - The preference key used to store whether the keyboard shortcuts and actions are enabled.
  * @property {KeyboardShortcutActions} keyboradShortcutActions - The object containing all the keyboard shortcut actions.
  */
 
-export const EXPORTED_SYMBOLS = ["CustomKeyboardShortcutUtils"];
 export const SHORTCUT_KEY_AND_ACTION_PREF = "floorp.custom.shortcutkeysAndActions";
 export const SHORTCUT_KEY_AND_ACTION_ENABLED_PREF = "floorp.custom.shortcutkeysAndActions.enabled";
 export const SHORTCUT_KEY_DISABLE_FX_DEFAULT_SCKEY_PREF = "floorp.custom.shortcutkeysAndActions.remove.fx.actions";

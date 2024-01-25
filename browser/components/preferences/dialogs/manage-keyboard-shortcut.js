@@ -6,7 +6,7 @@
 /* import-globals-from /toolkit/content/preferencesBindings.js */
 
 const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
-let CustomKeyboardShortcutUtils = ChromeUtils.importESModule("resource:///modules/CustomKeyboardShortcutUtils.sys.mjs");
+let CustomKeyboardShortcutUtils = ChromeUtils.importESModule("resource://floorp/modules/CustomKeyboardShortcutUtils.sys.mjs");
 
 XPCOMUtils.defineLazyGetter(this, "L10n", () => {
   return new Localization([

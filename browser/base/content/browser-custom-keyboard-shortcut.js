@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const CustomKeyboardShortcutUtils = ChromeUtils.importESModule(
-  "resource:///modules/CustomKeyboardShortcutUtils.sys.mjs"
+  "resource://floorp/modules/CustomKeyboardShortcutUtils.sys.mjs"
 );
 var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 

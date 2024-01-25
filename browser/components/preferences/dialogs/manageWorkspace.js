@@ -6,7 +6,7 @@
 
 const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 const { workspaceIcons } = ChromeUtils.importESModule(
-  "resource:///modules/WorkspacesService.sys.mjs"
+  "resource://floorp/modules/WorkspacesService.sys.mjs"
 );
 const { ContextualIdentityService } = ChromeUtils.importESModule(
   "resource://gre/modules/ContextualIdentityService.sys.mjs"
@@ -23,7 +23,6 @@ async function onLoad() {
   // set Title
   let winElem = document.documentElement;
   document.l10n.setAttributes(winElem, "workspace-customize");
-
 
   // Workspace Menu Items
   const workspaces =

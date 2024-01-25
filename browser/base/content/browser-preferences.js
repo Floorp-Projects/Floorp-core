@@ -188,7 +188,7 @@ const FLOORP_USERJS_PREF = "floorp.browser.userjs";
 
 async function applyUserJSCustomize() {
   let userjsUtils = ChromeUtils.importESModule(
-    "resource:///modules/userjsUtils.sys.mjs"
+    "resource://floorp/modules/userjsUtils.sys.mjs"
   );
   const pref = Services.prefs.getStringPref("floorp.user.js.customize", "");
 

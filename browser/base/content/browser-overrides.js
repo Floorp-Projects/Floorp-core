@@ -83,7 +83,7 @@ SessionStore.promiseInitialized.then(() => {
     initiallyActive,
   } = {}) {
     const { PrivateContainer } = ChromeUtils.importESModule(
-      "resource:///modules/PrivateContainer.sys.mjs"
+      "resource://floorp/modules/PrivateContainer.sys.mjs"
     );
 
     let b = document.createXULElement("browser");

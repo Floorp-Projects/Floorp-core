@@ -3,12 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-export const EXPORTED_SYMBOLS = ["WorkspacesWindowIdUtils"];
-
 const lazy = {};
 ChromeUtils.defineESModuleGetters(lazy, {
   WorkspacesExternalFileService:
-    "resource:///modules/WorkspacesExternalFileService.sys.mjs",
+    "resource://floorp/modules/WorkspacesExternalFileService.sys.mjs",
 });
 
 export const WorkspacesWindowIdUtils = {
@@ -82,8 +80,9 @@ export const WorkspacesWindowIdUtils = {
   },
 
   async getAllWorkspacesId(windowId) {
-    let workspacesData = await this.getWindowWorkspacesDataWithoutPreferences(windowId);
+    let workspacesData =
+      await this.getWindowWorkspacesDataWithoutPreferences(windowId);
     let workspacesIds = Object.keys(workspacesData);
     return workspacesIds;
-  }
+  },
 };

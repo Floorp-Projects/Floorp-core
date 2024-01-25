@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 let { BrowserManagerSidebar } = ChromeUtils.importESModule(
-  "resource:///modules/BrowserManagerSidebar.sys.mjs"
+  "resource://floorp/modules/BrowserManagerSidebar.sys.mjs"
 );
 var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 /*---------------------------------------------------------------- browser manager sidebar ----------------------------------------------------------------*/

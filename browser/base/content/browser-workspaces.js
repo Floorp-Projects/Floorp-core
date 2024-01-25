@@ -4,39 +4,39 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 var { WorkspacesMigratorUtils } = ChromeUtils.importESModule(
-  "resource:///modules/WorkspacesMigratorUtils.sys.mjs"
+  "resource://floorp/modules/WorkspacesMigratorUtils.sys.mjs"
 );
 
 var { WorkspacesService } = ChromeUtils.importESModule(
-  "resource:///modules/WorkspacesService.sys.mjs"
+  "resource://floorp/modules/WorkspacesService.sys.mjs"
 );
 
 var { getWorkspaceIconUrl } = ChromeUtils.importESModule(
-  "resource:///modules/WorkspacesService.sys.mjs"
+  "resource://floorp/modules/WorkspacesService.sys.mjs"
 );
 
 var { workspacesPreferences } = ChromeUtils.importESModule(
-  "resource:///modules/WorkspacesService.sys.mjs"
+  "resource://floorp/modules/WorkspacesService.sys.mjs"
 );
 
 var { WorkspacesWindowUuidService } = ChromeUtils.importESModule(
-  "resource:///modules/WorkspacesService.sys.mjs"
+  "resource://floorp/modules/WorkspacesService.sys.mjs"
 );
 
 var { WorkspacesIdUtils } = ChromeUtils.importESModule(
-  "resource:///modules/WorkspacesIdUtils.sys.mjs"
+  "resource://floorp/modules/WorkspacesIdUtils.sys.mjs"
 );
 
 var { WorkspacesElementService } = ChromeUtils.importESModule(
-  "resource:///modules/WorkspacesElementService.sys.mjs"
+  "resource://floorp/modules/WorkspacesElementService.sys.mjs"
 );
 
 var { WorkspacesWindowIdUtils } = ChromeUtils.importESModule(
-  "resource:///modules/WorkspacesWindowIdUtils.sys.mjs"
+  "resource://floorp/modules/WorkspacesWindowIdUtils.sys.mjs"
 );
 
 var { WorkspacesDataSaver } = ChromeUtils.importESModule(
-  "resource:///modules/WorkspacesDataSaver.sys.mjs"
+  "resource://floorp/modules/WorkspacesDataSaver.sys.mjs"
 );
 
 var { XPCOMUtils } = ChromeUtils.importESModule(
@@ -266,9 +266,8 @@ var gWorkspaces = {
 
   async getCurrentWorkspace() {
     let windowId = this.getCurrentWindowId();
-    let workspaceId = await WorkspacesWindowIdUtils.getSelectedWorkspaceId(
-      windowId
-    );
+    let workspaceId =
+      await WorkspacesWindowIdUtils.getSelectedWorkspaceId(windowId);
 
     if (workspaceId == null) {
       let id = await WorkspacesWindowIdUtils.getDefaultWorkspaceId(windowId);
@@ -296,9 +295,8 @@ var gWorkspaces = {
 
   async getCurrentWorkspacesData() {
     let windowId = this.getCurrentWindowId();
-    let workspacesData = await WorkspacesWindowIdUtils.getWindowWorkspacesData(
-      windowId
-    );
+    let workspacesData =
+      await WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
     return workspacesData;
   },
 
@@ -366,9 +364,8 @@ var gWorkspaces = {
 
   async getAllWorkspacesId() {
     let windowId = this.getCurrentWindowId();
-    let allWorkspacesId = await WorkspacesWindowIdUtils.getAllWorkspacesId(
-      windowId
-    );
+    let allWorkspacesId =
+      await WorkspacesWindowIdUtils.getAllWorkspacesId(windowId);
 
     return allWorkspacesId;
   },
@@ -488,9 +485,8 @@ var gWorkspaces = {
 
   async checkAllWorkspacesHasTab() {
     let windowId = this.getCurrentWindowId();
-    let allWorkspacesId = await WorkspacesWindowIdUtils.getAllWorkspacesId(
-      windowId
-    );
+    let allWorkspacesId =
+      await WorkspacesWindowIdUtils.getAllWorkspacesId(windowId);
 
     for (let workspaceId of allWorkspacesId) {
       let workspaceHasTab = await this.checkWorkspacesHasTab(workspaceId);
@@ -564,8 +560,8 @@ var gWorkspaces = {
 
     if (targetIndex !== -1) {
       const previousValue = allWorkspacesId[targetIndex - 1];
-      const nextValue = allWorkspacesId[targetIndex + 1];    
-      
+      const nextValue = allWorkspacesId[targetIndex + 1];
+
       if (isNext) {
         if (nextValue) {
           this.changeWorkspace(nextValue);

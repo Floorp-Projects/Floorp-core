@@ -8,7 +8,7 @@ var { AppConstants } = ChromeUtils.import(
 );
 
 let userjsUtils = ChromeUtils.importESModule(
-  "resource:///modules/userjsUtils.sys.mjs"
+  "resource://floorp/modules/userjsUtils.sys.mjs"
 );
 
 let l10n = new Localization(["browser/floorp.ftl"], true);

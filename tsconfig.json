@@ -4,8 +4,8 @@
     "include": ["./@types/index.d.ts"]
   },
   "compilerOptions": {
-    "target": "es2017",
-    "module": "ESNext",
+    "target": "ESNext",
+    "module": "NodeNext",
     "moduleDetection": "force",
     "allowJs": true,
     "declaration": true,
@@ -20,7 +20,6 @@
         "./third_party/qr-code-styling@1.5.0/qr-code-styling.js"
       ]
     },
-    "lib": ["ES2023", "dom"],
     "plugins": [
       // Transform paths in output .js files
       { "transform": "typescript-transform-paths" },

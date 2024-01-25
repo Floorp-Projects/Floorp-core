@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 var { AppConstants } =  ChromeUtils.import("resource://gre/modules/AppConstants.jsm");
-const CustomKeyboardShortcutUtils = ChromeUtils.importESModule("resource:///modules/CustomKeyboardShortcutUtils.sys.mjs");
+const CustomKeyboardShortcutUtils = ChromeUtils.importESModule("resource://floorp/modules/CustomKeyboardShortcutUtils.sys.mjs");
 
 XPCOMUtils.defineLazyGetter(this, "L10n", () => {
   return new Localization(["branding/brand.ftl", "browser/floorp", ]);

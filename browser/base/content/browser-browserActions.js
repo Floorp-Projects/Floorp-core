@@ -36,8 +36,9 @@ async function UCTFirst() {
     },
   });
   if (
-    ChromeUtils.importESModule("resource:///modules/FloorpStartup.sys.mjs")
-      .isFirstRun
+    ChromeUtils.importESModule(
+      "resource://floorp/modules/FloorpStartup.sys.mjs"
+    ).isFirstRun
   ) {
     CustomizableUI.addWidgetToArea(widgetId, CustomizableUI.AREA_NAVBAR, -1);
   }
@@ -69,8 +70,9 @@ async function switchSidebarPositionButton() {
     },
   });
   if (
-    ChromeUtils.importESModule("resource:///modules/FloorpStartup.sys.mjs")
-      .isFirstRun
+    ChromeUtils.importESModule(
+      "resource://floorp/modules/FloorpStartup.sys.mjs"
+    ).isFirstRun
   ) {
     CustomizableUI.addWidgetToArea(
       "sidebar-button",
@@ -128,9 +130,9 @@ if (
 
 async function workspacesToolbarButton() {
   let { WorkspacesElementService } = ChromeUtils.importESModule(
-    "resource:///modules/WorkspacesElementService.sys.mjs"
+    "resource://floorp/modules/WorkspacesElementService.sys.mjs"
   );
-  
+
   const widgetId = "workspaces-toolbar-button";
   const widget = CustomizableUI.getWidget(widgetId);
   if (widget && widget.type !== "custom") {
@@ -145,12 +147,16 @@ async function workspacesToolbarButton() {
     tooltiptext: l10nText,
     onCreated(aNode) {
       aNode.setAttribute("type", "menu");
-      const popup = window.MozXULElement.parseXULToFragment(WorkspacesElementService.panelElement);
+      const popup = window.MozXULElement.parseXULToFragment(
+        WorkspacesElementService.panelElement
+      );
       aNode.appendChild(popup);
     },
     onCommand() {
       let currentWindow = Services.wm.getMostRecentWindow("navigator:browser");
-      const panel = currentWindow.document.getElementById("workspacesToolbarButtonPanel");
+      const panel = currentWindow.document.getElementById(
+        "workspacesToolbarButtonPanel"
+      );
       panel.openPopup(
         document.getElementById("workspaces-toolbar-button"),
         "bottomright topright",

@@ -7,7 +7,7 @@
 /* import-globals-from preferences.js */
 
 var { AppConstants } = ChromeUtils.import("resource://gre/modules/AppConstants.jsm");
-let { BrowserManagerSidebar } = ChromeUtils.importESModule("resource:///modules/BrowserManagerSidebar.sys.mjs")
+let { BrowserManagerSidebar } = ChromeUtils.importESModule("resource://floorp/modules/BrowserManagerSidebar.sys.mjs")
 XPCOMUtils.defineLazyGetter(this, "L10n", () => {
   return new Localization([
     "branding/brand.ftl",

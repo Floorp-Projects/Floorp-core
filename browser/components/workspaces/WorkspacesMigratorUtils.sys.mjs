@@ -2,13 +2,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-export const EXPORTED_SYMBOLS = ["WorkspacesMigratorUtils"];
-
 const lazy = {};
 
 ChromeUtils.defineESModuleGetters(lazy, {
-  WorkspacesService: "resource:///modules/WorkspacesService.sys.mjs",
-  WorkspacesIdUtils: "resource:///modules/WorkspacesIdUtils.sys.mjs",
+  WorkspacesService: "resource://floorp/modules/WorkspacesService.sys.mjs",
+  WorkspacesIdUtils: "resource://floorp/modules/WorkspacesIdUtils.sys.mjs",
 });
 
 function getIconNameByWorkspaceName(workspaceName) {
@@ -65,11 +63,17 @@ function getWorkspaceUserContextId(workspaceName) {
 
 export const WorkspacesMigratorUtils = {
   get IsLegacyWorkspaceEnabled() {
-    return Services.prefs.getBoolPref("floorp.browser.workspace.tab.enabled", true);
+    return Services.prefs.getBoolPref(
+      "floorp.browser.workspace.tab.enabled",
+      true
+    );
   },
 
   get migrated() {
-    return Services.prefs.getBoolPref("floorp.browser.workspace.migrated", false);
+    return Services.prefs.getBoolPref(
+      "floorp.browser.workspace.migrated",
+      false
+    );
   },
 
   get LegacyWorkspacesData() {
