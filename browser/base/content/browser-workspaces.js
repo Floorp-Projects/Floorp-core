@@ -560,8 +560,8 @@ var gWorkspaces = {
 
     if (targetIndex !== -1) {
       const previousValue = allWorkspacesId[targetIndex - 1];
-      const nextValue = allWorkspacesId[targetIndex + 1];    
-      
+      const nextValue = allWorkspacesId[targetIndex + 1];
+
       if (isNext) {
         if (nextValue) {
           this.changeWorkspace(nextValue);
@@ -818,7 +818,7 @@ var gWorkspaces = {
     // Get Current Workspace & Workspace Id
     // Get Current Window Id
 
-    if(!this.workspacesToolbarButton) {
+    if (!this.workspacesToolbarButton) {
       return;
     }
 
@@ -1146,7 +1146,10 @@ var gWorkspaces = {
 };
 
 window.SessionStore.promiseInitialized.then(() => {
-  if (SessionStartup.sessionType == 3) {
+  if (
+    SessionStartup.sessionType == 3 ||
+    workspacesPreferences.workspacesIsFirstRun()
+  ) {
     gWorkspaces.init();
   }
 });

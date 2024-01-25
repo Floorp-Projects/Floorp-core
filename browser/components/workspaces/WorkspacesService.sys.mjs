@@ -253,6 +253,14 @@ export function getWorkspaceIconUrl(icon) {
 }
 
 export const workspacesPreferences = {
+  workspacesIsFirstRun() {
+    let result = Services.prefs.getBoolPref(
+      "floorp.browser.workspaces.isFirstRun",
+      true
+    );
+    Services.prefs.setBoolPref("floorp.browser.workspaces.isFirstRun", false);
+    return result;
+  },
   WORKSPACES_ENABLED_PREF: "floorp.browser.workspaces.enabled",
   WORKSPACES_CLOSE_POPUP_AFTER_CLICK_PREF:
     "floorp.browser.workspace.closePopupAfterClick",
