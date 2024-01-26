@@ -4,7 +4,7 @@ process.chdir("../..")
 
 import {$} from 'execa';
 
-const p_run = $({stdout:"inherit",stderr:"inherit"})`./mach run`;
+await $({stdout:"inherit",stderr:"inherit"})`./mach build faster`;
 
 process.on('SIGINT', function() {
   process.exit();

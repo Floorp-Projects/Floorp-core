@@ -8,6 +8,9 @@ devDependencies:
   '@babel/eslint-parser':
     specifier: ^7.23.3
     version: 7.23.3(@babel/core@7.23.7)(eslint@8.56.0)
+  '@types/node':
+    specifier: ^20.11.7
+    version: 20.11.7
   '@typescript-eslint/eslint-plugin':
     specifier: ^6.16.0
     version: 6.16.0(@typescript-eslint/parser@6.16.0)(eslint@8.56.0)(typescript@5.3.3)
@@ -29,6 +32,9 @@ devDependencies:
   execa:
     specifier: ^8.0.1
     version: 8.0.1
+  fast-glob:
+    specifier: ^3.3.2
+    version: 3.3.2
   prettier:
     specifier: ^3.1.1
     version: 3.1.1
@@ -691,6 +697,12 @@ packages:
 
   /@types/json5@0.0.29:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
+    dev: true
+
+  /@types/node@20.11.7:
+    resolution: {integrity: sha512-GPmeN1C3XAyV5uybAf4cMLWT9fDWcmQhZVtMFu7OR32WjrqGG+Wnk2V1d0bmtUyE/Zy1QJ9BxyiTih9z8Oks8A==}
+    dependencies:
+      undici-types: 5.26.5
     dev: true
 
   /@types/semver@7.5.6:
@@ -2799,6 +2811,10 @@ packages:
       has-bigints: 1.0.2
       has-symbols: 1.0.3
       which-boxed-primitive: 1.0.2
+    dev: true
+
+  /undici-types@5.26.5:
+    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
     dev: true
 
   /update-browserslist-db@1.0.13(browserslist@4.22.2):

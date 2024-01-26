@@ -31,7 +31,7 @@ const db_local = await readJarManifests(
 		"floorp/browser/components/about/aboutdino/jar.mn",
 		"floorp/browser/components/calendar/jar.mn"
 	],
-	false,
+	true,
 );
 
 for (const chrome of db_local) {
