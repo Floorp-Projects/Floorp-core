@@ -28,7 +28,7 @@ export const WorkspacesIdUtils = {
   async getWorkspaceContainerUserContextId(workspaceId, windowId) {
     let workspace = await this.getWorkspaceByIdAndWindowId(
       workspaceId,
-      windowId
+      windowId,
     );
     return workspace.userContextId;
   },
@@ -36,7 +36,7 @@ export const WorkspacesIdUtils = {
   async getWorkspaceIcon(workspaceId, windowId) {
     let workspace = await this.getWorkspaceByIdAndWindowId(
       workspaceId,
-      windowId
+      windowId,
     );
     return workspace.icon;
   },
@@ -50,19 +50,19 @@ export const WorkspacesIdUtils = {
 
   async removeWindowWorkspacesDataById(windowId) {
     let json = await IOUtils.readJSON(
-      lazy.WorkspacesExternalFileService._workspacesStoreFile
+      lazy.WorkspacesExternalFileService._workspacesStoreFile,
     );
     delete json.windows[windowId];
 
     await IOUtils.writeJSON(
       lazy.WorkspacesExternalFileService._workspacesStoreFile,
-      json
+      json,
     );
   },
 
   async removeWindowTabsDataById(windowId) {
     let json = await IOUtils.readJSON(
-      lazy.WorkspacesExternalFileService._workspacesStoreFile
+      lazy.WorkspacesExternalFileService._workspacesStoreFile,
     );
     let windowWorkspacesData = json.windows[windowId];
     for (let workspaceId in windowWorkspacesData) {
@@ -75,7 +75,7 @@ export const WorkspacesIdUtils = {
 
     await IOUtils.writeJSON(
       lazy.WorkspacesExternalFileService._workspacesStoreFile,
-      json
+      json,
     );
   },
 };

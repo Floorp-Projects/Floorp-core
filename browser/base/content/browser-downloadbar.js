@@ -145,12 +145,13 @@ if (
 
     //delete all downloads button
 
-    const downloadsFooterButtonElem = document.getElementById("downloadsFooter");
+    const downloadsFooterButtonElem =
+      document.getElementById("downloadsFooter");
     const hideAllDownloadButtonElem = window.MozXULElement.parseXULToFragment(`
     <toolbarbutton id="hide-downloads-button" class="toolbarbutton-1" command="downloadsCmd_clearList" data-l10n-id="floorp-delete-all-downloads" />
     `);
-    const showAllDownloadTextAndButtonElem = window.MozXULElement
-      .parseXULToFragment(`
+    const showAllDownloadTextAndButtonElem =
+      window.MozXULElement.parseXULToFragment(`
     <toolbarbutton id="show-downloads-button" class="toolbarbutton-1" oncommand="BrowserDownloadsUI();" data-l10n-id="floorp-show-all-downloads" />
     `);
 
@@ -167,7 +168,7 @@ if (
   const scrollElem = document.getElementById("downloadsListBox");
   scrollElem.addEventListener("wheel", (e) => {
     if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
-      e.preventDefault();
-    scrollElem.scrollLeft += e.deltaY*8;
+    e.preventDefault();
+    scrollElem.scrollLeft += e.deltaY * 8;
   });
 }

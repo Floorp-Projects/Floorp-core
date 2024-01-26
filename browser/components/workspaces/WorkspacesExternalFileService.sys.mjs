@@ -7,7 +7,7 @@ export const WorkspacesExternalFileService = {
     return PathUtils.join(
       PathUtils.profileDir,
       "Workspaces",
-      "Workspaces.json"
+      "Workspaces.json",
     );
   },
 };

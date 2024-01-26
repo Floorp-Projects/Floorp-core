@@ -145,6 +145,8 @@ async function workspacesToolbarButton() {
     type: "button",
     label: l10nText,
     tooltiptext: l10nText,
+    overflows: false,
+    removable: true,
     onCreated(aNode) {
       aNode.setAttribute("type", "menu");
       const popup = window.MozXULElement.parseXULToFragment(
@@ -167,4 +169,11 @@ async function workspacesToolbarButton() {
       );
     },
   });
+  if (
+    ChromeUtils.importESModule("resource:///modules/FloorpStartup.sys.mjs")
+      .isFirstRun
+  ) {
+    CustomizableUI.addWidgetToArea(widgetId, CustomizableUI.AREA_TABSTRIP);
+    CustomizableUI.moveWidgetWithinArea(widgetId, -1);
+  }
 }

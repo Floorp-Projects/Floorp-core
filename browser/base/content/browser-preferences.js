@@ -210,6 +210,6 @@ async function applyUserJSCustomize() {
         await IOUtils.write(userjs, writeData);
       });
   }
-};
+}
 
 applyUserJSCustomize();

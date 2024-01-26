@@ -13,7 +13,9 @@ let gSplitView = {
       Services.prefs.setBoolPref("floorp.browser.splitView.working", false);
     },
     setSplitView(tab, side) {
-      try{this.removeSplitView()}catch(e){};
+      try {
+        this.removeSplitView();
+      } catch (e) {}
       Services.prefs.setBoolPref("floorp.browser.splitView.working", true);
 
       let panel = gSplitView.Functions.getlinkedPanel(tab.linkedPanel);
@@ -109,7 +111,7 @@ let gSplitView = {
     setRenderLayersEvent() {
       document.addEventListener("floorpOnLocationChangeEvent", function () {
         gSplitView.Functions.handleTabEvent();
-      });  
+      });
     },
 
     removeRenderLayersEvent() {
@@ -124,10 +126,10 @@ let gSplitView = {
       }
 
       let currentSplitViewTab = document.querySelector(
-        `.tabbrowser-tab[splitView="true"]`
+        `.tabbrowser-tab[splitView="true"]`,
       );
       let currentSplitViewPanel = gSplitView.Functions.getlinkedPanel(
-        currentSplitViewTab?.linkedPanel
+        currentSplitViewTab?.linkedPanel,
       );
       let currentSplitViewBrowser = currentSplitViewTab?.linkedBrowser;
 

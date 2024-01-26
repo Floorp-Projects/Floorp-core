@@ -413,7 +413,9 @@ const bmsController = {
         let webpanelElem = window.MozXULElement.parseXULToFragment(`
               <browser 
                 id="webpanel${webpanel_id}"
-                class="webpanels ${isFloorp ? "isFloorp" : "isWeb"} ${webpanelURL.slice(0, 9) == "extension" ? "isExtension" : ""}"
+                class="webpanels ${isFloorp ? "isFloorp" : "isWeb"} ${
+                  webpanelURL.slice(0, 9) == "extension" ? "isExtension" : ""
+                }"
                 flex="1"
                 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
                 disablehistory="true"
@@ -424,15 +426,22 @@ const bmsController = {
                 messagemanagergroup="browsers"
                 autocompletepopup="PopupAutoComplete"
                 initialBrowsingContextGroupId="40"
-              ${isWeb ? `
-                usercontextid="${(typeof wibpanel_usercontext) == "number" ? String(wibpanel_usercontext) : "0"}"
+              ${
+                isWeb
+                  ? `
+                usercontextid="${
+                  typeof wibpanel_usercontext == "number"
+                    ? String(wibpanel_usercontext)
+                    : "0"
+                }"
                 changeuseragent="${webpanel_userAgent ? "true" : "false"}"
                 webextension-view-type="sidebar"
                 type="content"
                 remote="true"
                 maychangeremoteness="true"
                 context=""
-                ` : ""
+                `
+                  : ""
               }
                />
                 `);

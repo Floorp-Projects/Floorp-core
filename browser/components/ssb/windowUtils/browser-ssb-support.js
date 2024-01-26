@@ -5,11 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 var { SiteSpecificBrowserIdUtils } = ChromeUtils.importESModule(
-  "resource:///modules/SiteSpecificBrowserIdUtils.sys.mjs"
+  "resource:///modules/SiteSpecificBrowserIdUtils.sys.mjs",
 );
 
 var { SiteSpecificBrowser } = ChromeUtils.importESModule(
-  "resource:///modules/SiteSpecificBrowserService.sys.mjs"
+  "resource:///modules/SiteSpecificBrowserService.sys.mjs",
 );
 
 let gSsbSupport = {
@@ -79,7 +79,7 @@ let gSsbSupport = {
 
     this.identityBox.after(this.pageActionBox);
 
-    gBrowser.tabs.forEach(tab => {
+    gBrowser.tabs.forEach((tab) => {
       tab.setAttribute("floorpSSB", "true");
     });
 

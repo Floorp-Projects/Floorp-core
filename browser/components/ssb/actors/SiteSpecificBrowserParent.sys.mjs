@@ -4,14 +4,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const { BrowserWindowTracker } = ChromeUtils.import(
-  "resource:///modules/BrowserWindowTracker.jsm"
+  "resource:///modules/BrowserWindowTracker.jsm",
 );
 const { E10SUtils } = ChromeUtils.import(
-  "resource://gre/modules/E10SUtils.jsm"
+  "resource://gre/modules/E10SUtils.jsm",
 );
 const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 const { AppConstants } = ChromeUtils.import(
-  "resource://gre/modules/AppConstants.jsm"
+  "resource://gre/modules/AppConstants.jsm",
 );
 
 export class SiteSpecificBrowserParent extends JSWindowActorParent {
@@ -21,10 +21,10 @@ export class SiteSpecificBrowserParent extends JSWindowActorParent {
         // The content process found a URI that needs to be loaded in the main
         // browser.
         let triggeringPrincipal = E10SUtils.deserializePrincipal(
-          message.data.triggeringPrincipal
+          message.data.triggeringPrincipal,
         );
         let referrerInfo = E10SUtils.deserializeReferrerInfo(
-          message.data.referrerInfo
+          message.data.referrerInfo,
         );
         let csp = E10SUtils.deserializeCSP(message.data.csp);
 
@@ -38,11 +38,11 @@ export class SiteSpecificBrowserParent extends JSWindowActorParent {
           });
         } else {
           let sa = Cc["@mozilla.org/array;1"].createInstance(
-            Ci.nsIMutableArray
+            Ci.nsIMutableArray,
           );
 
           let wuri = Cc["@mozilla.org/supports-string;1"].createInstance(
-            Ci.nsISupportsString
+            Ci.nsISupportsString,
           );
           wuri.data = message.data.uri;
 
@@ -63,7 +63,7 @@ export class SiteSpecificBrowserParent extends JSWindowActorParent {
             AppConstants.BROWSER_CHROME_URL,
             null,
             "chrome,dialog=no,all",
-            sa
+            sa,
           );
         }
         break;

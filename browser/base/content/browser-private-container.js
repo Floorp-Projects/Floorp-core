@@ -9,43 +9,38 @@ const { PrivateContainer } = ChromeUtils.importESModule(
 );
 
 function initPrivateContainer() {
-    // Create a private container.
-    PrivateContainer.Functions.StartupCreatePrivateContainer();
-    PrivateContainer.Functions.removePrivateContainerData();
-  
-    SessionStore.promiseInitialized.then(() => {
-  
-      gBrowser.tabContainer.addEventListener(
-        "TabClose",
-        removeDataIfPrivateContainerTabNotExist
-      );
-  
-      gBrowser.tabContainer.addEventListener(
-        "TabOpen",
-        handleTabModifications
-      );
-      
-      // Add a tab context menu to reopen in private container.
-      let beforeElem = document.getElementById("context_selectAllTabs");
-      let menuitemElem = window.MozXULElement.parseXULToFragment(`
+  // Create a private container.
+  PrivateContainer.Functions.StartupCreatePrivateContainer();
+  PrivateContainer.Functions.removePrivateContainerData();
+
+  SessionStore.promiseInitialized.then(() => {
+    gBrowser.tabContainer.addEventListener(
+      "TabClose",
+      removeDataIfPrivateContainerTabNotExist
+    );
+
+    gBrowser.tabContainer.addEventListener("TabOpen", handleTabModifications);
+
+    // Add a tab context menu to reopen in private container.
+    let beforeElem = document.getElementById("context_selectAllTabs");
+    let menuitemElem = window.MozXULElement.parseXULToFragment(`
         <menuitem id="context_toggleToPrivateContainer" data-l10n-id="floorp-toggle-private-container" accesskey="D" oncommand="reopenInPrivateContainer(event);"/>
       `);
-      beforeElem.before(menuitemElem);
-  
-      // add URL link a context menu to open in private container.
-      addContextBox(
-        "open_in_private_container",
-        "open-in_private-container",
-        "context-openlink",
-        "openWithPrivateContainer(gContextMenu.linkURL);",
-        "context-openlink",
-        function () {
-          document.getElementById("open_in_private_container").hidden =
-            document.getElementById("context-openlink").hidden;
-        }
-      );
-    }
-  );
+    beforeElem.before(menuitemElem);
+
+    // add URL link a context menu to open in private container.
+    addContextBox(
+      "open_in_private_container",
+      "open-in_private-container",
+      "context-openlink",
+      "openWithPrivateContainer(gContextMenu.linkURL);",
+      "context-openlink",
+      function () {
+        document.getElementById("open_in_private_container").hidden =
+          document.getElementById("context-openlink").hidden;
+      }
+    );
+  });
 }
 
 function checkPrivateContainerTabExist() {
@@ -112,7 +107,6 @@ function checkTabIsPrivateContainer(tab) {
   return tab.userContextId === privateContainerUserContextID;
 }
 
-
 function handleTabModifications() {
   let tabs = gBrowser.tabs;
   for (let i = 0; i < tabs.length; i++) {
@@ -137,23 +131,25 @@ function openWithPrivateContainer(url) {
       relatedToCurrent = true;
       break;
   }
-  let privateContainerUserContextID = PrivateContainer.Functions.getPrivateContainerUserContextId();
-    Services.obs.notifyObservers(
-      {
-        wrappedJSObject: new Promise(resolve => {
-          openTrustedLinkIn(url, "tab", {
-            relatedToCurrent,
-            resolveOnNewTabCreated: resolve,
-            userContextId: privateContainerUserContextID
-          });
-        }),
-      },
-      "browser-open-newtab-start"
-    );
+  let privateContainerUserContextID =
+    PrivateContainer.Functions.getPrivateContainerUserContextId();
+  Services.obs.notifyObservers(
+    {
+      wrappedJSObject: new Promise(resolve => {
+        openTrustedLinkIn(url, "tab", {
+          relatedToCurrent,
+          resolveOnNewTabCreated: resolve,
+          userContextId: privateContainerUserContextID,
+        });
+      }),
+    },
+    "browser-open-newtab-start"
+  );
 }
 
 function reopenInPrivateContainer() {
-  let userContextId = PrivateContainer.Functions.getPrivateContainerUserContextId();
+  let userContextId =
+    PrivateContainer.Functions.getPrivateContainerUserContextId();
   let reopenedTabs = TabContextMenu.contextTab.multiselected
     ? gBrowser.selectedTabs
     : [TabContextMenu.contextTab];
@@ -184,8 +180,9 @@ function reopenInPrivateContainer() {
       // Ensure that we have a null principal if we couldn't
       // deserialize it (for lazy tab browsers) ...
       // This won't always work however is safe to use.
-      triggeringPrincipal =
-        Services.scriptSecurityManager.createNullPrincipal({ userContextId });
+      triggeringPrincipal = Services.scriptSecurityManager.createNullPrincipal({
+        userContextId,
+      });
     } else if (triggeringPrincipal.isContentPrincipal) {
       triggeringPrincipal = Services.scriptSecurityManager.principalWithOA(
         triggeringPrincipal,
@@ -194,7 +191,7 @@ function reopenInPrivateContainer() {
         }
       );
     }
-    
+
     let currentTabUserContextId = tab.getAttribute("usercontextid");
     if (currentTabUserContextId == userContextId) {
       userContextId = 0;

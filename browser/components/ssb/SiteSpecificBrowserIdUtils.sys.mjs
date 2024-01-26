@@ -73,13 +73,13 @@ export let SiteSpecificBrowserIdUtils = {
     Services.obs.notifyObservers(
       null,
       "site-specific-browser-uninstall",
-      ssb.id
+      ssb.id,
     );
   },
 
   async getIdByUrl(uri) {
     const { SiteSpecificBrowserExternalFileService } = ChromeUtils.import(
-      "resource:///modules/SiteSpecificBrowserExternalFileService.jsm"
+      "resource:///modules/SiteSpecificBrowserExternalFileService.jsm",
     );
     let ssbData =
       await SiteSpecificBrowserExternalFileService.getCurrentSsbData();
@@ -109,7 +109,7 @@ function createSsbWidow(ssb) {
     //"chrome,location=yes,centerscreen,dialog=no,resizable=yes,scrollbars=yes";
 
     let args = Cc["@mozilla.org/supports-string;1"].createInstance(
-      Ci.nsISupportsString
+      Ci.nsISupportsString,
     );
 
     // URL
@@ -120,7 +120,7 @@ function createSsbWidow(ssb) {
       AppConstants.BROWSER_CHROME_URL,
       "_blank",
       browserWindowFeatures,
-      args
+      args,
     );
 
     if (Services.appinfo.OS == "WINNT") {
