@@ -442,7 +442,7 @@ var gWorkspaces = {
 
   async createNoNameWorkspace() {
     await this.createWorkspace(
-      this.l10n.formatValueSync("workspace-default-name"),
+      this.l10n.formatValueSync("workspace-new-default-name"),
       false,
       true,
     );
@@ -1146,10 +1146,7 @@ var gWorkspaces = {
 };
 
 window.SessionStore.promiseInitialized.then(() => {
-  if (
-    SessionStartup.sessionType == 3 ||
-    workspacesPreferences.workspacesIsFirstRun()
-  ) {
-    gWorkspaces.init();
-  }
+  window.setTimeout(() => {
+      gWorkspaces.init();
+  }, 1000);
 });
