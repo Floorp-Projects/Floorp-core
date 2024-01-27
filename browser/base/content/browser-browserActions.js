@@ -170,8 +170,9 @@ async function workspacesToolbarButton() {
     },
   });
   if (
-    ChromeUtils.importESModule("resource:///modules/FloorpStartup.sys.mjs")
-      .isFirstRun
+    ChromeUtils.importESModule(
+      "resource://floorp/modules/FloorpStartup.sys.mjs"
+    ).isFirstRun
   ) {
     CustomizableUI.addWidgetToArea(widgetId, CustomizableUI.AREA_TABSTRIP);
     CustomizableUI.moveWidgetWithinArea(widgetId, -1);
