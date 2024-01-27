@@ -122,6 +122,7 @@ browser.jar:
   skin/classic/browser/lepton/key-multiple.svg                              (designs/lepton/icons/key-multiple.svg)
   skin/classic/browser/lepton/link-no-tracking.svg                          (designs/lepton/icons/link-no-tracking.svg)
   skin/classic/browser/lepton/link.svg                                      (designs/lepton/icons/link.svg)
+  skin/classic/browser/lepton/link-square.svg                               (designs/lepton/icons/link-square.svg)
   skin/classic/browser/lepton/lock-closed.svg                               (designs/lepton/icons/lock-closed.svg)
   skin/classic/browser/lepton/mail-inbox.svg                                (designs/lepton/icons/mail-inbox.svg)
   skin/classic/browser/lepton/mail.svg                                      (designs/lepton/icons/mail.svg)
