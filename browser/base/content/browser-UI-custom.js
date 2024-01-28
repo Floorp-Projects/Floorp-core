@@ -81,40 +81,30 @@ observePreference("floorp.bookmarks.fakestatus.mode", function (event) {
   let eventListener = null;
 
   if (event.prefValue) {
-    setTimeout(
+    document
+      .getElementById("fullscreen-and-pointerlock-wrapper")
+      .after(document.getElementById("PersonalToolbar"));
+    eventListener = document.addEventListener(
+      "floorpOnLocationChangeEvent",
       function () {
-        document
-          .getElementById("fullscreen-and-pointerlock-wrapper")
-          .after(document.getElementById("PersonalToolbar"));
-        eventListener = document.addEventListener(
-          "floorpOnLocationChangeEvent",
-          function () {
-            let { AboutNewTab } = ChromeUtils.import(
-              "resource:///modules/AboutNewTab.jsm",
-            );
-            let currentUrl = gFloorpOnLocationChange.locationURI.spec;
-            let newtabUrl = AboutNewTab.newTabURL;
-            let pref = Services.prefs.getStringPref(
-              "browser.toolbars.bookmarks.visibility",
-              "always",
-            );
-
-            if (
-              (currentUrl == newtabUrl && pref == "newtab") ||
-              pref == "always"
-            ) {
-              document
-                .getElementById("PersonalToolbar")
-                .removeAttribute("collapsed");
-            } else {
-              document
-                .getElementById("PersonalToolbar")
-                .setAttribute("collapsed", "true");
-            }
-          },
+        let currentUrl = gFloorpOnLocationChange.locationURI.spec;
+        let pref = Services.prefs.getStringPref(
+          "browser.toolbars.bookmarks.visibility",
+          "always",
         );
-      },
-      event.reason === "init" ? 250 : 1,
+        if (
+          ((currentUrl == "about:newtab" || currentUrl == "about:home") && pref == "newtab") ||
+          pref == "always"
+        ) {
+          document
+            .getElementById("PersonalToolbar")
+            .setAttribute("collapsed", "false");
+        } else {
+          document
+            .getElementById("PersonalToolbar")
+            .setAttribute("collapsed", "true");
+        }
+      }
     );
   } else if (event.reason === "changed") {
     //Fix for the bug that bookmarksbar is on the navigation toolbar when the pref is cahaned to false
