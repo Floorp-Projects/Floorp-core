@@ -6,8 +6,6 @@ import { XPCOMUtils } from "resource://gre/modules/XPCOMUtils.sys.mjs";
 
 var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 
-export const EXPORTED_SYMBOLS = ["ImageTools"];
-
 const lazy = {};
 
 ChromeUtils.defineESModuleGetters(lazy, {

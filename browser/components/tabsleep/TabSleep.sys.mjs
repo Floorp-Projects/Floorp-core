@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-export const EXPORTED_SYMBOLS = [];
-
 import {
   clearInterval,
   setInterval,
@@ -166,7 +164,7 @@ function tabObserve(callback) {
             domwindow.gBrowser.addTabsProgressListener(statusListener);
           }
         },
-        { once: true },
+        { once: true }
       );
     },
     onCloseWindow(aWindow) {
@@ -269,7 +267,7 @@ function enableTabSleep() {
         nativeTab.lastActivity = currentTime;
         break;
       case "TabClose":
-        tabs = tabs.filter((nativeTab_) => nativeTab_ !== nativeTab);
+        tabs = tabs.filter(nativeTab_ => nativeTab_ !== nativeTab);
         break;
       case "TabSelect":
         nativeTab.lastActivity = currentTime;
@@ -292,7 +290,7 @@ function enableTabSleep() {
         break;
       case "WindowClose":
         for (let nativeTab of event.targets) {
-          tabs = tabs.filter((nativeTab_) => nativeTab_ !== nativeTab);
+          tabs = tabs.filter(nativeTab_ => nativeTab_ !== nativeTab);
         }
         break;
     }
@@ -306,7 +304,7 @@ function enableTabSleep() {
     let excludeHosts = Services.prefs
       .getStringPref(TAB_SLEEP_EXCLUDE_HOSTS_PREF, "")
       .split(",")
-      .map((host) => host.trim());
+      .map(host => host.trim());
     for (let nativeTab of tabs) {
       if (nativeTab.isTabSleepExcludeTab) {
         continue;
@@ -349,7 +347,7 @@ function enableTabSleep() {
       for (let EXCLUDE_URL_PATTERN_COMPILED of EXCLUDE_URL_PATTERNS_COMPILED) {
         if (
           EXCLUDE_URL_PATTERN_COMPILED.test(
-            nativeTab.linkedBrowser.documentURI.spec,
+            nativeTab.linkedBrowser.documentURI.spec
           )
         ) {
           target = false;
@@ -369,7 +367,7 @@ function enableTabSleep() {
         nativeTab.ownerGlobal.gBrowser.discardBrowser(nativeTab);
         if (isTestMode) {
           console.log(
-            `Tab Sleep: ${nativeTab.label} (${linkedPanel}) => discarded`,
+            `Tab Sleep: ${nativeTab.label} (${linkedPanel}) => discarded`
           );
         }
       }
@@ -404,7 +402,7 @@ async function createTabContextElement(document_) {
   tabSleepExcludeTab.setAttribute("checked", "false");
   tabSleepExcludeTab.id = "context_tabSleepExcludeTab";
   tabSleepExcludeTab.label = await L10N.formatValue(
-    "tab-sleep-tab-context-menu-excludetab",
+    "tab-sleep-tab-context-menu-excludetab"
   );
   tabSleepExcludeTab.addEventListener("command", function (e) {
     let window_ = e.currentTarget.ownerGlobal;
@@ -417,7 +415,7 @@ async function createTabContextElement(document_) {
       .querySelector("#context_tabSleepExcludeTab")
       .setAttribute(
         "checked",
-        Boolean(window_.TabContextMenu.contextTab.isTabSleepExcludeTab),
+        Boolean(window_.TabContextMenu.contextTab.isTabSleepExcludeTab)
       );
   });
   tabContextMenu
@@ -456,7 +454,7 @@ Services.obs.addObserver(documentObserver, "chrome-document-interactive");
   isEnabled = Services.prefs.getBoolPref(TAB_SLEEP_ENABLED_PREF, false);
   isTestMode = Services.prefs.getBoolPref(
     TAB_SLEEP_TESTMODE_ENABLED_PREF,
-    false,
+    false
   );
 
   let systemMemory = Services.sysinfo.getProperty("memsize");
@@ -473,7 +471,7 @@ Services.obs.addObserver(documentObserver, "chrome-document-interactive");
   let timeoutMinutesPrefHandle = function () {
     TAB_TIMEOUT_MINUTES = Services.prefs.getIntPref(
       TAB_SLEEP_TAB_TIMEOUT_MINUTES_PREF,
-      tabTimeoutMinutesDefault,
+      tabTimeoutMinutesDefault
     );
     if (isTestMode) {
       console.log(`Tab Sleep: TAB_TIMEOUT_MINUTES => ${TAB_TIMEOUT_MINUTES}`);
@@ -482,7 +480,7 @@ Services.obs.addObserver(documentObserver, "chrome-document-interactive");
   timeoutMinutesPrefHandle();
   Services.prefs.addObserver(
     TAB_SLEEP_TAB_TIMEOUT_MINUTES_PREF,
-    timeoutMinutesPrefHandle,
+    timeoutMinutesPrefHandle
   );
 
   if (isEnabled) {
@@ -501,7 +499,7 @@ Services.obs.addObserver(documentObserver, "chrome-document-interactive");
   Services.prefs.addObserver(TAB_SLEEP_TESTMODE_ENABLED_PREF, function () {
     isTestMode = Services.prefs.getBoolPref(
       TAB_SLEEP_TESTMODE_ENABLED_PREF,
-      false,
+      false
     );
   });
 }

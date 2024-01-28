@@ -4,8 +4,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-export const EXPORTED_SYMBOLS = ["BrowserManagerSidebar"];
-
 const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 
 export let BrowserManagerSidebar = {
@@ -61,12 +59,12 @@ export let BrowserManagerSidebar = {
       .getDefaultBranch(null)
       .setStringPref(
         "floorp.browser.sidebar2.data",
-        JSON.stringify(defaultPref),
+        JSON.stringify(defaultPref)
       );
 
     if (Services.prefs.prefHasUserValue("floorp.browser.sidebar2.data")) {
       let prefTemp = JSON.parse(
-        Services.prefs.getStringPref("floorp.browser.sidebar2.data"),
+        Services.prefs.getStringPref("floorp.browser.sidebar2.data")
       );
       let setPref = { data: {}, index: [] };
       for (let elem of prefTemp.index) {
@@ -75,7 +73,7 @@ export let BrowserManagerSidebar = {
       }
       Services.prefs.setStringPref(
         "floorp.browser.sidebar2.data",
-        JSON.stringify(setPref),
+        JSON.stringify(setPref)
       );
     }
   },
@@ -89,13 +87,13 @@ export let BrowserManagerSidebar = {
     if (sbar_url.startsWith("http://") || sbar_url.startsWith("https://")) {
       let iconProvider = Services.prefs.getStringPref(
         "floorp.browser.sidebar.useIconProvider",
-        null,
+        null
       );
       let icon_url;
       switch (iconProvider) {
         case "google":
           icon_url = `https://www.google.com/s2/favicons?domain_url=${encodeURIComponent(
-            sbar_url,
+            sbar_url
           )}`;
           break;
         case "duckduckgo":
@@ -110,18 +108,18 @@ export let BrowserManagerSidebar = {
           break;
         case "hatena":
           icon_url = `https://cdn-ak.favicon.st-hatena.com/?url=${encodeURIComponent(
-            sbar_url,
+            sbar_url
           )}`; // or `https://favicon.hatena.ne.jp/?url=${encodeURIComponent(sbar_url)}`
           break;
         default:
           icon_url = `https://www.google.com/s2/favicons?domain_url=${encodeURIComponent(
-            sbar_url,
+            sbar_url
           )}`;
           break;
       }
 
       fetch(icon_url)
-        .then(async (response) => {
+        .then(async response => {
           if (response.status !== 200) {
             throw new Error(`${response.status} ${response.statusText}`);
           }
@@ -130,7 +128,7 @@ export let BrowserManagerSidebar = {
 
           let blob_data = await response.blob();
 
-          let icon_data_url = await new Promise((resolve) => {
+          let icon_data_url = await new Promise(resolve => {
             reader.addEventListener("load", function () {
               resolve(this.result);
             });
@@ -148,14 +146,14 @@ export let BrowserManagerSidebar = {
             elem.style.setProperty("--BMSIcon", `url(${icon_data_url})`);
           }
         })
-        .catch((reject) => {
+        .catch(reject => {
           elem.style.removeProperty("--BMSIcon");
         });
     } else if (sbar_url.startsWith("moz-extension://")) {
       let addon_id = new URL(sbar_url).hostname;
       let addon_base_url = `moz-extension://${addon_id}`;
       fetch(addon_base_url + "/manifest.json")
-        .then(async (response) => {
+        .then(async response => {
           if (response.status !== 200) {
             throw new Error(`${response.status} ${response.statusText}`);
           }
@@ -179,10 +177,10 @@ export let BrowserManagerSidebar = {
             elem.style.setProperty("--BMSIcon", `url(${addon_icon_url})`);
           }
         })
-        .catch((reject) => {
+        .catch(reject => {
           elem.style.setProperty(
             "--BMSIcon",
-            `url(chrome://mozapps/skin/extensions/extensionGeneric.svg)`,
+            `url(chrome://mozapps/skin/extensions/extensionGeneric.svg)`
           );
         });
     } else if (sbar_url.startsWith("file://")) {
@@ -194,10 +192,10 @@ export let BrowserManagerSidebar = {
       let listTexts =
         "chrome://browser/content/BMS-extension-needs-white-bg.txt";
       fetch(listTexts)
-        .then((response) => {
+        .then(response => {
           return response.text();
         })
-        .then((text) => {
+        .then(text => {
           let lines = text.split(/\r?\n/);
           for (let line of lines) {
             if (line == sbar_url.split(",")[2]) {
@@ -217,7 +215,7 @@ export let BrowserManagerSidebar = {
   },
   async getAdoonSidebarPage(addonId) {
     let addonUUID = JSON.parse(
-      Services.prefs.getStringPref("extensions.webextensions.uuids"),
+      Services.prefs.getStringPref("extensions.webextensions.uuids")
     );
     let manifestJSON = await (
       await fetch(`moz-extension://${addonUUID[addonId]}/manifest.json`)
@@ -248,7 +246,7 @@ export let BrowserManagerSidebar = {
     if (parentWindow?.gDialogBox) {
       parentWindow.gDialogBox.open(
         "chrome://browser/content/preferences/dialogs/customURLs.xhtml",
-        object,
+        object
       );
     } else {
       Services.ww.openWindow(
@@ -256,7 +254,7 @@ export let BrowserManagerSidebar = {
         "chrome://browser/content/preferences/dialogs/customURLs.xhtml",
         "AddWebpanel",
         "chrome,titlebar,dialog,centerscreen,modal",
-        object,
+        object
       );
     }
   },

@@ -5,13 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 let { BrowserManagerSidebar } = ChromeUtils.importESModule(
-  "resource:///modules/BrowserManagerSidebar.sys.mjs",
+  "resource://floorp/modules/BrowserManagerSidebar.sys.mjs"
 );
 var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 /*---------------------------------------------------------------- browser manager sidebar ----------------------------------------------------------------*/
 const STATIC_SIDEBAR_DATA = BrowserManagerSidebar.STATIC_SIDEBAR_DATA;
 let BROWSER_SIDEBAR_DATA = JSON.parse(
-  Services.prefs.getStringPref(`floorp.browser.sidebar2.data`, undefined),
+  Services.prefs.getStringPref(`floorp.browser.sidebar2.data`, undefined)
 );
 const sidebar_icons = [
   "sidebar2-back",
@@ -21,7 +21,7 @@ const sidebar_icons = [
 ];
 const bmsController = {
   eventFunctions: {
-    sidebarButtons: (action) => {
+    sidebarButtons: action => {
       const modeValuePref = bmsController.nowPage;
       let webpanel = document.getElementById(`webpanel${modeValuePref}`);
       switch (action) {
@@ -33,7 +33,7 @@ const bmsController = {
           break;
         case 2:
           webpanel.reloadWithFlags(
-            Ci.nsIWebNavigation.LOAD_FLAGS_BYPASS_CACHE,
+            Ci.nsIWebNavigation.LOAD_FLAGS_BYPASS_CACHE
           ); /* Reload */
           break;
         case 3:
@@ -47,37 +47,37 @@ const bmsController = {
         document.getElementById("sidebar2-box").clientWidth;
       Services.prefs.setStringPref(
         `floorp.browser.sidebar2.data`,
-        JSON.stringify(BROWSER_SIDEBAR_DATA),
+        JSON.stringify(BROWSER_SIDEBAR_DATA)
       );
     },
     keepWidthForGlobal: () => {
       Services.prefs.setIntPref(
         "floorp.browser.sidebar2.global.webpanel.width",
-        document.getElementById("sidebar2-box").width,
+        document.getElementById("sidebar2-box").width
       );
     },
-    servicesObs: (data_) => {
+    servicesObs: data_ => {
       let data = data_.wrappedJSObject;
       switch (data.eventType) {
         case "mouseOver":
           document.getElementById(
-            data.id.replace("BSB-", "select-"),
+            data.id.replace("BSB-", "select-")
           ).style.border = "1px solid blue";
           bmsController.controllFunctions.setUserContextColorLine(
-            data.id.replace("BSB-", ""),
+            data.id.replace("BSB-", "")
           );
           break;
         case "mouseOut":
           document.getElementById(
-            data.id.replace("BSB-", "select-"),
+            data.id.replace("BSB-", "select-")
           ).style.border = "";
           bmsController.controllFunctions.setUserContextColorLine(
-            data.id.replace("BSB-", ""),
+            data.id.replace("BSB-", "")
           );
           break;
       }
     },
-    selectSidebarItem: (event) => {
+    selectSidebarItem: event => {
       let custom_url_id = event.target.id.replace("select-", "");
       if (bmsController.nowPage == custom_url_id) {
         bmsController.controllFunctions.changeVisibleWenpanel();
@@ -87,36 +87,36 @@ const bmsController = {
       }
     },
     sidebarItemMouse: {
-      mouseOver: (event) =>
+      mouseOver: event =>
         Services.obs.notifyObservers(
           {
             eventType: "mouseOver",
             id: event.target.id,
           },
-          "obs-panel",
+          "obs-panel"
         ),
-      mouseOut: (event) =>
+      mouseOut: event =>
         Services.obs.notifyObservers(
           {
             eventType: "mouseOut",
             id: event.target.id,
           },
-          "obs-panel",
+          "obs-panel"
         ),
-      dragStart: (event) =>
+      dragStart: event =>
         event.dataTransfer.setData("text/plain", event.target.id),
-      dragOver: (event) => {
+      dragOver: event => {
         event.preventDefault();
         event.currentTarget.style.borderTop = "2px solid blue";
       },
-      dragLeave: (event) => (event.currentTarget.style.borderTop = ""),
-      drop: (event) => {
+      dragLeave: event => (event.currentTarget.style.borderTop = ""),
+      drop: event => {
         event.preventDefault();
         let id = event.dataTransfer.getData("text/plain");
         let elm_drag = document.getElementById(id);
         event.currentTarget.parentNode.insertBefore(
           elm_drag,
-          event.currentTarget,
+          event.currentTarget
         );
         event.currentTarget.style.borderTop = "";
         BROWSER_SIDEBAR_DATA.index.splice(0);
@@ -125,12 +125,12 @@ const bmsController = {
         }
         Services.prefs.setStringPref(
           `floorp.browser.sidebar2.data`,
-          JSON.stringify(BROWSER_SIDEBAR_DATA),
+          JSON.stringify(BROWSER_SIDEBAR_DATA)
         );
       },
     },
     contextMenu: {
-      show: (event) => {
+      show: event => {
         clickedWebpanel = event.explicitOriginalTarget.id;
         webpanel = clickedWebpanel.replace("select-", "webpanel");
         contextWebpanel = document.getElementById(webpanel);
@@ -140,13 +140,13 @@ const bmsController = {
           needLoadedWebpanel[i].disabled = contextWebpanel == null;
         }
       },
-      showWithNumber: (num) => {
+      showWithNumber: num => {
         targetWebpanel = document.getElementsByClassName("sicon-list")[num];
         targetWebpanel.click();
       },
       unloadWebpanel: () => {
         bmsController.controllFunctions.unloadWebpanel(
-          clickedWebpanel.replace("select-", ""),
+          clickedWebpanel.replace("select-", "")
         );
       },
       changeUserAgent: () => {
@@ -158,11 +158,11 @@ const bmsController = {
             .getAttribute("changeuseragent") ?? "false") == "false";
         Services.prefs.setStringPref(
           `floorp.browser.sidebar2.data`,
-          JSON.stringify(BROWSER_SIDEBAR_DATA),
+          JSON.stringify(BROWSER_SIDEBAR_DATA)
         );
         //unload webpanel
         bmsController.controllFunctions.unloadWebpanel(
-          clickedWebpanel.replace("select-", ""),
+          clickedWebpanel.replace("select-", "")
         );
       },
       deleteWebpanel: () => {
@@ -173,7 +173,7 @@ const bmsController = {
           bmsController.controllFunctions.changeVisibleWenpanel();
         }
         let index = BROWSER_SIDEBAR_DATA.index.indexOf(
-          clickedWebpanel.replace("select-", ""),
+          clickedWebpanel.replace("select-", "")
         );
         BROWSER_SIDEBAR_DATA.index.splice(index, 1);
         delete BROWSER_SIDEBAR_DATA.data[
@@ -181,7 +181,7 @@ const bmsController = {
         ];
         Services.prefs.setStringPref(
           `floorp.browser.sidebar2.data`,
-          JSON.stringify(BROWSER_SIDEBAR_DATA),
+          JSON.stringify(BROWSER_SIDEBAR_DATA)
         );
         contextWebpanel?.remove();
         document.getElementById(clickedWebpanel)?.remove();
@@ -209,12 +209,12 @@ const bmsController = {
     visiblePanelBrowserElem: () => {
       const modeValuePref = bmsController.nowPage;
       const selectedwebpanel = document.getElementById(
-        `webpanel${modeValuePref}`,
+        `webpanel${modeValuePref}`
       );
       const selectedURL = BROWSER_SIDEBAR_DATA.data[modeValuePref].url ?? "";
       bmsController.controllFunctions.changeVisibleCommandButton(
         selectedURL.startsWith("floorp//") ||
-          Services.prefs.getBoolPref("floorp.browser.sidebar2.addons.enabled"),
+          Services.prefs.getBoolPref("floorp.browser.sidebar2.addons.enabled")
       );
       for (let elem of document.getElementsByClassName("webpanels")) {
         elem.hidden = true;
@@ -235,13 +235,13 @@ const bmsController = {
       }
       bmsController.controllFunctions.changeCheckPanel(
         document.getElementById("sidebar-splitter2").getAttribute("hidden") !=
-          "true",
+          "true"
       );
       if (selectedwebpanel != null) {
         selectedwebpanel.hidden = false;
       }
     },
-    unloadWebpanel: (id) => {
+    unloadWebpanel: id => {
       let sidebarsplit2 = document.getElementById("sidebar-splitter2");
       if (id == bmsController.nowPage) {
         bmsController.nowPage = null;
@@ -261,20 +261,20 @@ const bmsController = {
       }
       bmsController.nowPage = null;
     },
-    setUserContextColorLine: (id) => {
+    setUserContextColorLine: id => {
       const wibpanel_usercontext =
         BROWSER_SIDEBAR_DATA.data[id].usercontext ?? 0;
       const container_list = ContextualIdentityService.getPublicIdentities();
       if (
         wibpanel_usercontext != 0 &&
         container_list.findIndex(
-          (e) => e.userContextId === wibpanel_usercontext,
+          e => e.userContextId === wibpanel_usercontext
         ) != -1
       ) {
         let container_color =
           container_list[
             container_list.findIndex(
-              (e) => e.userContextId === wibpanel_usercontext,
+              e => e.userContextId === wibpanel_usercontext
             )
           ].color;
         document.getElementById(`select-${id}`).style.borderLeft = `solid 2px ${
@@ -288,27 +288,27 @@ const bmsController = {
         document.getElementById(`select-${id}`).style.borderLeft = "";
       }
     },
-    changeCheckPanel: (doChecked) => {
+    changeCheckPanel: doChecked => {
       for (let elem of document.getElementsByClassName("sidepanel-icon")) {
         elem.setAttribute("checked", "false");
       }
       if (doChecked) {
         let selectedNode = document.querySelector(
-          `#select-${bmsController.nowPage}`,
+          `#select-${bmsController.nowPage}`
         );
         if (selectedNode != null) {
           selectedNode.setAttribute("checked", "true");
         }
       }
     },
-    changeVisibleBrowserManagerSidebar: (doVisible) => {
+    changeVisibleBrowserManagerSidebar: doVisible => {
       if (doVisible) {
         document.querySelector("html").removeAttribute("invisibleBMS");
       } else {
         document.querySelector("html").setAttribute("invisibleBMS", "true");
       }
     },
-    changeVisibleCommandButton: (hidden) => {
+    changeVisibleCommandButton: hidden => {
       for (let elem of sidebar_icons) {
         document.getElementById(elem).hidden = hidden;
       }
@@ -329,20 +329,20 @@ const bmsController = {
       bmsController.controllFunctions.changeCheckPanel(doDisplay);
       Services.prefs.setBoolPref(
         "floorp.browser.sidebar.is.displayed",
-        doDisplay,
+        doDisplay
       );
 
       if (
         Services.prefs.getBoolPref(
           "floorp.browser.sidebar2.hide.to.unload.panel.enabled",
-          false,
+          false
         ) &&
         !doDisplay
       ) {
         bmsController.controllFunctions.unloadAllWebpanel();
       }
     },
-    setSidebarWidth: (webpanel_id) => {
+    setSidebarWidth: webpanel_id => {
       if (
         webpanel_id != null &&
         BROWSER_SIDEBAR_DATA.index.includes(webpanel_id)
@@ -351,7 +351,7 @@ const bmsController = {
           BROWSER_SIDEBAR_DATA.data[webpanel_id].width ??
           Services.prefs.getIntPref(
             "floorp.browser.sidebar2.global.webpanel.width",
-            undefined,
+            undefined
           );
         document.getElementById("sidebar2-box").style.width = `${panelWidth}px`;
       }
@@ -365,7 +365,7 @@ const bmsController = {
         bmsController.controllFunctions.makeWebpanel(webpanel_id);
       }
     },
-    makeWebpanel: (webpanel_id) => {
+    makeWebpanel: webpanel_id => {
       const webpandata = BROWSER_SIDEBAR_DATA.data[webpanel_id];
       let webpanobject = document.getElementById(`webpanel${webpanel_id}`);
       let webpanelURL = webpandata.url;
@@ -451,21 +451,21 @@ const bmsController = {
 
         if (
           Services.prefs.getBoolPref(
-            "floorp.browser.sidebar2.addons.enabled",
+            "floorp.browser.sidebar2.addons.enabled"
           ) &&
           !isFloorp
         ) {
           Services.prefs.setBoolPref(
             "floorp.browser.sidebar2.addons.window.start",
-            true,
+            true
           );
           Services.prefs.setStringPref(
             "floorp.browser.sidebar2.start.url",
-            webpanelURL,
+            webpanelURL
           );
           webpanelElem.firstChild.setAttribute(
             "src",
-            "chrome://browser/content/browser.xhtml",
+            "chrome://browser/content/browser.xhtml"
           );
         } else {
           webpanelElem.firstChild.setAttribute("src", webpanelURL);
@@ -495,7 +495,7 @@ const bmsController = {
           sidebarItem.classList.add("sicon-list");
           sidebarItem.setAttribute(
             "oncommand",
-            "bmsController.eventFunctions.selectSidebarItem(event)",
+            "bmsController.eventFunctions.selectSidebarItem(event)"
           );
           if (BROWSER_SIDEBAR_DATA.data[elem].url.slice(0, 8) == "floorp//") {
             if (BROWSER_SIDEBAR_DATA.data[elem].url in STATIC_SIDEBAR_DATA) {
@@ -503,7 +503,7 @@ const bmsController = {
               sidebarItem.setAttribute(
                 "data-l10n-id",
                 "show-" +
-                  STATIC_SIDEBAR_DATA[BROWSER_SIDEBAR_DATA.data[elem].url].l10n,
+                  STATIC_SIDEBAR_DATA[BROWSER_SIDEBAR_DATA.data[elem].url].l10n
               );
               sidebarItem.setAttribute("context", "all-panel-context");
             }
@@ -513,23 +513,23 @@ const bmsController = {
             sidebarItem.setAttribute("context", "webpanel-context");
             sidebarItem.setAttribute(
               "tooltiptext",
-              BROWSER_SIDEBAR_DATA.data[elem].url,
+              BROWSER_SIDEBAR_DATA.data[elem].url
             );
           }
 
           if (BROWSER_SIDEBAR_DATA.data[elem].url.slice(0, 9) == "extension") {
             sidebarItem.setAttribute(
               "tooltiptext",
-              BROWSER_SIDEBAR_DATA.data[elem].url.split(",")[1],
+              BROWSER_SIDEBAR_DATA.data[elem].url.split(",")[1]
             );
             sidebarItem.className += " extension-icon";
             let listTexts =
               "chrome://browser/content/BMS-extension-needs-white-bg.txt";
             fetch(listTexts)
-              .then((response) => {
+              .then(response => {
                 return response.text();
               })
-              .then((text) => {
+              .then(text => {
                 let lines = text.split(/\r?\n/);
                 for (let line of lines) {
                   if (
@@ -575,7 +575,7 @@ const bmsController = {
               sidebarItem.setAttribute(
                 "data-l10n-id",
                 "show-" +
-                  STATIC_SIDEBAR_DATA[BROWSER_SIDEBAR_DATA.data[elem].url].l10n,
+                  STATIC_SIDEBAR_DATA[BROWSER_SIDEBAR_DATA.data[elem].url].l10n
               );
               sidebarItem.setAttribute("context", "all-panel-context");
             }
@@ -596,7 +596,7 @@ const bmsController = {
         for (let i = 0; i < sicon - side; i++) {
           if (
             document.getElementById(
-              siconAll[i].id.replace("select-", "webpanel"),
+              siconAll[i].id.replace("select-", "webpanel")
             ) != null
           ) {
             let sidebarsplit2 = document.getElementById("sidebar-splitter2");
@@ -621,10 +621,10 @@ const bmsController = {
           let sbar_url = BROWSER_SIDEBAR_DATA.data[elem.id.slice(7)].url;
           BrowserManagerSidebar.getFavicon(
             sbar_url,
-            document.getElementById(`${elem.id}`),
+            document.getElementById(`${elem.id}`)
           );
           bmsController.controllFunctions.setUserContextColorLine(
-            elem.id.slice(7),
+            elem.id.slice(7)
           );
         } else {
           elem.style.removeProperty("--BMSIcon");
@@ -635,7 +635,7 @@ const bmsController = {
   bmsWindowFunctions: {
     loadBMSURI: () => {
       let embedded = Services.prefs.getStringPref(
-        "floorp.browser.sidebar2.start.url",
+        "floorp.browser.sidebar2.start.url"
       );
       gBrowser.loadURI(Services.io.newURI(embedded), {
         triggeringPrincipal:
@@ -646,13 +646,13 @@ const bmsController = {
         .setAttribute(
           "chromehidden",
           "toolbar",
-          "menubar directories extrachrome",
+          "menubar directories extrachrome"
         );
       document.getElementById("main-window").setAttribute("BSM-window", "true");
       Services.prefs.clearUserPref("floorp.browser.sidebar2.start.url");
       Services.prefs.setBoolPref(
         "floorp.browser.sidebar2.addons.window.start",
-        false,
+        false
       );
 
       // Load CSS
@@ -679,7 +679,7 @@ const bmsController = {
       document.getElementById("bsb-context-add").hidden =
         document.getElementById("context-viewsource").hidden ||
         !document.getElementById("context-viewimage").hidden;
-    },
+    }
   );
   addContextBox(
     "bsb-context-link-add",
@@ -692,27 +692,26 @@ const bmsController = {
     function () {
       document.getElementById("bsb-context-link-add").hidden =
         document.getElementById("context-openlink").hidden;
-    },
+    }
   );
   Services.prefs.addObserver(
     "floorp.browser.sidebar2.global.webpanel.width",
-    () =>
-      bmsController.controllFunctions.setSidebarWidth(bmsController.nowPage),
+    () => bmsController.controllFunctions.setSidebarWidth(bmsController.nowPage)
   );
   Services.prefs.addObserver("floorp.browser.sidebar.enable", () =>
     bmsController.controllFunctions.changeVisibleBrowserManagerSidebar(
-      Services.prefs.getBoolPref("floorp.browser.sidebar.enable", true),
-    ),
+      Services.prefs.getBoolPref("floorp.browser.sidebar.enable", true)
+    )
   );
   bmsController.controllFunctions.changeVisibleBrowserManagerSidebar(
-    Services.prefs.getBoolPref("floorp.browser.sidebar.enable", true),
+    Services.prefs.getBoolPref("floorp.browser.sidebar.enable", true)
   );
   Services.prefs.addObserver(`floorp.browser.sidebar2.data`, function () {
     let TEMP_BROWSER_SIDEBAR_DATA = JSON.parse(
-      JSON.stringify(BROWSER_SIDEBAR_DATA),
+      JSON.stringify(BROWSER_SIDEBAR_DATA)
     );
     BROWSER_SIDEBAR_DATA = JSON.parse(
-      Services.prefs.getStringPref(`floorp.browser.sidebar2.data`, undefined),
+      Services.prefs.getStringPref(`floorp.browser.sidebar2.data`, undefined)
     );
     for (let elem of BROWSER_SIDEBAR_DATA.index) {
       if (
@@ -734,11 +733,11 @@ const bmsController = {
   });
   Services.obs.addObserver(
     bmsController.eventFunctions.servicesObs,
-    "obs-panel-re",
+    "obs-panel-re"
   );
   Services.obs.addObserver(
     bmsController.controllFunctions.changeVisibleWenpanel,
-    "floorp-change-panel-show",
+    "floorp-change-panel-show"
   );
   let addbutton = document.getElementById("add-button");
   addbutton.ondragover = bmsController.eventFunctions.sidebarItemMouse.dragOver;
@@ -757,7 +756,7 @@ const bmsController = {
   if (Services.prefs.getBoolPref("floorp.browser.sidebar2.addons.enabled")) {
     // Browser Manager Sidebar embedded check
     let embedded = Services.prefs.getStringPref(
-      "floorp.browser.sidebar2.start.url",
+      "floorp.browser.sidebar2.start.url"
     );
     if (embedded != "" && embedded !== false && embedded != undefined) {
       if (gBrowser) {

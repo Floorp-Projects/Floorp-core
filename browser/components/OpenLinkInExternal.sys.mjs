@@ -3,14 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-export const EXPORTED_SYMBOLS = [];
-
 import { FileUtils } from "resource://gre/modules/FileUtils.sys.mjs";
 import { ExtensionCommon } from "resource://gre/modules/ExtensionCommon.sys.mjs";
 import { AppConstants } from "resource://gre/modules/AppConstants.sys.mjs";
 import { Subprocess } from "resource://gre/modules/Subprocess.sys.mjs";
-import { DesktopFileParser } from "resource:///modules/DesktopFileParser.sys.mjs";
-import { EscapeShell } from "resource:///modules/EscapeShell.sys.mjs";
+import { DesktopFileParser } from "resource://floorp/modules/DesktopFileParser.sys.mjs";
+import { EscapeShell } from "resource://floorp/modules/EscapeShell.sys.mjs";
 
 // Migration from JSM to ES Module in the future.
 const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
@@ -29,13 +27,13 @@ function getBrowsersOnWindows() {
 
   for (let ROOT_KEY of ROOT_KEYS) {
     let key = Cc["@mozilla.org/windows-registry-key;1"].createInstance(
-      Ci.nsIWindowsRegKey,
+      Ci.nsIWindowsRegKey
     );
     try {
       key.open(
         ROOT_KEY,
         "Software\\Clients\\StartMenuInternet",
-        Ci.nsIWindowsRegKey.ACCESS_READ,
+        Ci.nsIWindowsRegKey.ACCESS_READ
       );
     } catch (e) {
       console.error(e);
@@ -46,9 +44,7 @@ function getBrowsersOnWindows() {
       if (keyname == "IEXPLORE.EXE") {
         continue;
       }
-      if (
-        browsers.filter((browser) => browser.keyName === keyname).length >= 1
-      ) {
+      if (browsers.filter(browser => browser.keyName === keyname).length >= 1) {
         continue;
       }
 
@@ -58,18 +54,18 @@ function getBrowsersOnWindows() {
       keyBrowserName.open(
         ROOT_KEY,
         `Software\\Clients\\StartMenuInternet\\${keyname}`,
-        Ci.nsIWindowsRegKey.ACCESS_READ,
+        Ci.nsIWindowsRegKey.ACCESS_READ
       );
       let browserName = keyBrowserName.readStringValue("");
       keyBrowserName.close();
 
       let keyPath = Cc["@mozilla.org/windows-registry-key;1"].createInstance(
-        Ci.nsIWindowsRegKey,
+        Ci.nsIWindowsRegKey
       );
       keyPath.open(
         ROOT_KEY,
         `Software\\Clients\\StartMenuInternet\\${keyname}\\shell\\open\\command`,
-        Ci.nsIWindowsRegKey.ACCESS_READ,
+        Ci.nsIWindowsRegKey.ACCESS_READ
       );
       let browserPathRegValue = keyPath.readStringValue("");
       let browserPath = browserPathRegValue
@@ -86,7 +82,7 @@ function getBrowsersOnWindows() {
         keyUrlAssociations.open(
           ROOT_KEY,
           `Software\\Clients\\StartMenuInternet\\${keyname}\\Capabilities\\URLAssociations`,
-          Ci.nsIWindowsRegKey.ACCESS_READ,
+          Ci.nsIWindowsRegKey.ACCESS_READ
         );
       } catch (e) {
         error = e;
@@ -111,7 +107,7 @@ function getBrowsersOnWindows() {
         keyFileAssociations.open(
           ROOT_KEY,
           `Software\\Clients\\StartMenuInternet\\${keyname}\\Capabilities\\FileAssociations`,
-          Ci.nsIWindowsRegKey.ACCESS_READ,
+          Ci.nsIWindowsRegKey.ACCESS_READ
         );
       } catch (e) {
         error2 = e;
@@ -153,16 +149,16 @@ function getDefaultBrowserOnWindows(protocol, browsers = null) {
     browsers = getBrowsersOnWindows();
   }
   let key = Cc["@mozilla.org/windows-registry-key;1"].createInstance(
-    Ci.nsIWindowsRegKey,
+    Ci.nsIWindowsRegKey
   );
   key.open(
     Ci.nsIWindowsRegKey.ROOT_KEY_CURRENT_USER,
     `Software\\Microsoft\\Windows\\Shell\\Associations\\UrlAssociations\\${protocol}\\UserChoice`,
-    Ci.nsIWindowsRegKey.ACCESS_READ,
+    Ci.nsIWindowsRegKey.ACCESS_READ
   );
   let regValue = key.readStringValue("ProgID");
   let targets = browsers.filter(
-    (browser) => browser.urlAssociations[protocol] === regValue,
+    browser => browser.urlAssociations[protocol] === regValue
   );
   if (targets.length === 0) {
     return null;
@@ -202,15 +198,14 @@ async function getBrowsersOnLinux() {
     for (let desktopFile of desktopFiles) {
       if (
         desktopFilesInfo.filter(
-          (desktopFileInfo) =>
-            desktopFileInfo.filename === desktopFile.leafName,
+          desktopFileInfo => desktopFileInfo.filename === desktopFile.leafName
         ).length === 0
       ) {
         let desktopFileInfo = {};
         desktopFileInfo.filename = desktopFile.leafName;
         try {
           desktopFileInfo.fileInfo = await DesktopFileParser.parseFromPath(
-            desktopFile.path,
+            desktopFile.path
           );
         } catch (e) {
           console.log(`Failed to load ${desktopFile.path}`);
@@ -257,7 +252,7 @@ async function getDefaultBrowserOnLinux(protocol, desktopFilesInfo = null) {
     output = await Subprocess.call({
       command: "/usr/bin/xdg-mime",
       arguments: ["query", "default", `x-scheme-handler/${protocol}`],
-    }).then(async (proc) => {
+    }).then(async proc => {
       proc.stdin.close().catch(() => {
         // It's possible that the process exists before we close stdin.
         // In that case, we should ignore the errors.
@@ -274,7 +269,7 @@ async function getDefaultBrowserOnLinux(protocol, desktopFilesInfo = null) {
   }
   let filename = output.replace(/\n$/, "");
   let targets = desktopFilesInfo.filter(
-    (desktopFileInfo) => desktopFileInfo.filename === filename,
+    desktopFileInfo => desktopFileInfo.filename === filename
   );
   if (targets.length === 0) {
     return null;
@@ -285,7 +280,7 @@ async function getDefaultBrowserOnLinux(protocol, desktopFilesInfo = null) {
 async function OpenLinkInExternal(url) {
   let userSelectedBrowserId = Services.prefs.getStringPref(
     "floorp.openLinkInExternal.browserId",
-    "",
+    ""
   );
   let protocol;
   if (url.startsWith("http")) {
@@ -304,29 +299,29 @@ async function OpenLinkInExternal(url) {
           null,
           null,
           await L10N.formatValue(
-            "open-link-in-external-tab-dialog-title-error",
+            "open-link-in-external-tab-dialog-title-error"
           ),
           await L10N.formatValue(
-            "open-link-in-external-tab-dialog-message-default-browser-not-found",
-          ),
+            "open-link-in-external-tab-dialog-message-default-browser-not-found"
+          )
         );
         return;
       }
     } else {
       let targets = desktopFilesInfo.filter(
-        (desktopFileInfo) =>
-          desktopFileInfo.filename === userSelectedBrowserId + ".desktop",
+        desktopFileInfo =>
+          desktopFileInfo.filename === userSelectedBrowserId + ".desktop"
       );
       if (targets.length === 0) {
         Services.prompt.asyncAlert(
           null,
           null,
           await L10N.formatValue(
-            "open-link-in-external-tab-dialog-title-error",
+            "open-link-in-external-tab-dialog-title-error"
           ),
           await L10N.formatValue(
-            "open-link-in-external-tab-dialog-message-selected-browser-not-found",
-          ),
+            "open-link-in-external-tab-dialog-message-selected-browser-not-found"
+          )
         );
         return;
       }
@@ -340,13 +335,13 @@ async function OpenLinkInExternal(url) {
     let shellscript = "#!/bin/sh\n";
     shellscript += browser.fileInfo["Desktop Entry"].Exec.replace(
       "%u",
-      EscapeShell(url),
+      EscapeShell(url)
     );
     let randomized = Math.random().toString(32).substring(2);
     let outputFilePath = `/tmp/floorp_openInExternal_${randomized}.sh`;
     await IOUtils.writeUTF8(outputFilePath, shellscript);
     const process = Cc["@mozilla.org/process/util;1"].createInstance(
-      Ci.nsIProcess,
+      Ci.nsIProcess
     );
     process.init(FileUtils.File("/bin/sh"));
     process.runAsync([outputFilePath], 1, async () => {
@@ -362,28 +357,28 @@ async function OpenLinkInExternal(url) {
           null,
           null,
           await L10N.formatValue(
-            "open-link-in-external-tab-dialog-title-error",
+            "open-link-in-external-tab-dialog-title-error"
           ),
           await L10N.formatValue(
-            "open-link-in-external-tab-dialog-message-default-browser-not-found",
-          ),
+            "open-link-in-external-tab-dialog-message-default-browser-not-found"
+          )
         );
         return;
       }
     } else {
       let targets = browsers.filter(
-        (browser) => browser.keyName === userSelectedBrowserId,
+        browser => browser.keyName === userSelectedBrowserId
       );
       if (targets.length === 0) {
         Services.prompt.asyncAlert(
           null,
           null,
           await L10N.formatValue(
-            "open-link-in-external-tab-dialog-title-error",
+            "open-link-in-external-tab-dialog-title-error"
           ),
           await L10N.formatValue(
-            "open-link-in-external-tab-dialog-message-selected-browser-not-found",
-          ),
+            "open-link-in-external-tab-dialog-message-selected-browser-not-found"
+          )
         );
         return;
       }
@@ -391,7 +386,7 @@ async function OpenLinkInExternal(url) {
     }
     let browserPath = browser.path;
     const process = Cc["@mozilla.org/process/util;1"].createInstance(
-      Ci.nsIProcess,
+      Ci.nsIProcess
     );
     process.init(FileUtils.File(browserPath));
     process.runAsync([url], 1);
@@ -416,12 +411,12 @@ let documentObserver = {
           let openLinkInExternal = document_.createXULElement("menuitem");
           openLinkInExternal.id = "context_openLinkInExternal";
           openLinkInExternal.label = await L10N.formatValue(
-            "open-link-in-external-tab-context-menu",
+            "open-link-in-external-tab-context-menu"
           );
           openLinkInExternal.addEventListener("command", function (e) {
             let window_ = e.currentTarget.ownerGlobal;
             OpenLinkInExternal(
-              window_.TabContextMenu.contextTab.linkedBrowser.currentURI.spec,
+              window_.TabContextMenu.contextTab.linkedBrowser.currentURI.spec
             );
           });
           tabContextMenu.addEventListener("popupshowing", function (e) {
@@ -430,7 +425,7 @@ let documentObserver = {
               window_?.TabContextMenu?.contextTab?.linkedBrowser?.currentURI
                 ?.scheme || "";
             e.currentTarget.querySelector(
-              "#context_openLinkInExternal",
+              "#context_openLinkInExternal"
             ).hidden = !/^https?$/.test(scheme);
           });
           tabContextMenu
@@ -442,7 +437,7 @@ let documentObserver = {
           let openLinkInExternal = document_.createXULElement("menuitem");
           openLinkInExternal.id = "context-openlinkinexternal";
           openLinkInExternal.label = await L10N.formatValue(
-            "open-link-in-external-tab-context-menu",
+            "open-link-in-external-tab-context-menu"
           );
           openLinkInExternal.addEventListener("command", function (e) {
             let window_ = e.currentTarget.ownerGlobal;
@@ -452,7 +447,7 @@ let documentObserver = {
             let window_ = e.currentTarget.ownerGlobal;
             let scheme = window_?.gContextMenu?.linkURI?.scheme || "";
             e.currentTarget.querySelector(
-              "#context-openlinkinexternal",
+              "#context-openlinkinexternal"
             ).hidden =
               !(
                 window_.gContextMenu.onSaveableLink ||
@@ -480,14 +475,14 @@ let documentObserver = {
                 // To avoid data corruption, do not display them in the list.
                 if (
                   desktopFileInfo.fileInfo["Desktop Entry"].Exec.startsWith(
-                    "/usr/bin/flatpak",
+                    "/usr/bin/flatpak"
                   )
                 ) {
                   continue;
                 }
                 browsers.push({
                   name: DesktopFileParser.getCurrentLanguageNameProperty(
-                    desktopFileInfo,
+                    desktopFileInfo
                   ),
                   id: desktopFileInfo.filename.replace(/\.desktop$/, ""),
                   tooltiptext: desktopFileInfo.fileInfo["Desktop Entry"].Exec,
@@ -505,7 +500,7 @@ let documentObserver = {
             }
 
             let options = document_.querySelector(
-              "#openLinkInExternalSelectBrowser > menupopup",
+              "#openLinkInExternalSelectBrowser > menupopup"
             );
             for (let browser of browsers) {
               let elem = document_.createXULElement("menuitem");
@@ -520,11 +515,11 @@ let documentObserver = {
               .querySelector(
                 `[value="${Services.prefs
                   .getStringPref("floorp.openLinkInExternal.browserId", "")
-                  .replaceAll(`"`, `\\"`)}"]`,
+                  .replaceAll(`"`, `\\"`)}"]`
               )
               ?.dispatchEvent(new Event("command"));
           },
-          { once: true },
+          { once: true }
         );
       }
     }

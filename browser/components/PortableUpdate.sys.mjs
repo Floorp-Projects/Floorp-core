@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-export const EXPORTED_SYMBOLS = [];
-
 import { ExtensionParent } from "resource://gre/modules/ExtensionParent.sys.mjs";
 import { AppConstants } from "resource://gre/modules/AppConstants.sys.mjs";
 import { FileUtils } from "resource://gre/modules/FileUtils.sys.mjs";
@@ -16,10 +14,10 @@ const L10N = new Localization(["browser/floorp.ftl", "branding/brand.ftl"]);
 const ZipReader = Components.Constructor(
   "@mozilla.org/libjar/zip-reader;1",
   "nsIZipReader",
-  "open",
+  "open"
 );
 const AlertsService = Cc["@mozilla.org/alerts-service;1"].getService(
-  Ci.nsIAlertsService,
+  Ci.nsIAlertsService
 );
 
 const API_BASE_URL = "https://floorp-update.ablaze.one";
@@ -34,11 +32,11 @@ const updateTmpDirPath = PathUtils.join(appDirParentDirPath, "update_tmp");
 const updateZipFilePath = PathUtils.join(updateTmpDirPath, "update.zip");
 const coreUpdateReadyFilePath = PathUtils.join(
   updateTmpDirPath,
-  "CORE_UPDATE_READY",
+  "CORE_UPDATE_READY"
 );
 const redirectorUpdateReadyFilePath = PathUtils.join(
   updateTmpDirPath,
-  "REDIRECTOR_UPDATE_READY",
+  "REDIRECTOR_UPDATE_READY"
 );
 
 const portableUpdateUtils = {
@@ -46,13 +44,13 @@ const portableUpdateUtils = {
     let url = `${API_BASE_URL}/browser-portable/latest.json`;
     let data = await new Promise((resolve, reject) => {
       fetch(url)
-        .then((res) => {
+        .then(res => {
           if (res.status !== 200) {
             throw new Error`${res.status} ${res.statusText}`();
           }
           return res.json();
         })
-        .then((data) => {
+        .then(data => {
           let platformKeyName =
             platformInfo.os === "mac"
               ? "mac"
@@ -79,7 +77,7 @@ const portableUpdateUtils = {
         await IOUtils.remove(
           isWin
             ? PathUtils.join(appDirParentDirPath, "floorp.exe")
-            : PathUtils.join(appDirParentDirPath, "floorp"),
+            : PathUtils.join(appDirParentDirPath, "floorp")
         );
       } catch (e) {
         console.error(e);
@@ -93,7 +91,7 @@ const portableUpdateUtils = {
             : PathUtils.join(updateTmpDirPath, "floorp"),
           isWin
             ? PathUtils.join(appDirParentDirPath, "floorp.exe")
-            : PathUtils.join(appDirParentDirPath, "floorp"),
+            : PathUtils.join(appDirParentDirPath, "floorp")
         );
       } catch (e) {
         console.error(e);
@@ -114,7 +112,7 @@ const portableUpdateUtils = {
   async downloadUpdate(url) {
     let data = await new Promise((resolve, reject) => {
       fetch(url)
-        .then((res) => {
+        .then(res => {
           if (res.status !== 200) {
             throw new Error`${res.status} ${res.statusText}`();
           }
@@ -168,7 +166,7 @@ const portableUpdateUtils = {
       await L10N.formatValue("update-portable-notification-success-message"), // Body
       true, // textClickable
       null, // id
-      null, // clickCallback
+      null // clickCallback
     );
   } else if (!result.success && result.fatal) {
     console.error(result);
@@ -176,11 +174,11 @@ const portableUpdateUtils = {
       "chrome://browser/skin/updater/failed.png",
       await L10N.formatValue("update-portable-notification-failed-title"),
       await L10N.formatValue(
-        "update-portable-notification-failed-redirector-message",
+        "update-portable-notification-failed-redirector-message"
       ),
       true,
       null,
-      null,
+      null
     );
     return;
   } else {
@@ -200,7 +198,7 @@ const portableUpdateUtils = {
       await L10N.formatValue("update-portable-notification-found-message"),
       true,
       null,
-      null,
+      null
     );
 
     try {
@@ -211,11 +209,11 @@ const portableUpdateUtils = {
         "chrome://browser/skin/updater/failed.png",
         await L10N.formatValue("update-portable-notification-failed-title"),
         await L10N.formatValue(
-          "update-portable-notification-failed-prepare-message",
+          "update-portable-notification-failed-prepare-message"
         ),
         true,
         null,
-        null,
+        null
       );
       return;
     }
@@ -226,7 +224,7 @@ const portableUpdateUtils = {
       await L10N.formatValue("update-portable-notification-ready-message"),
       true,
       null,
-      null,
+      null
     );
   }
 })();

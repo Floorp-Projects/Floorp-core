@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-export const EXPORTED_SYMBOLS = ["isFirstRun", "isUpdated", "isMainBrowser"];
-
 /*
 Scripts written here are executed only once at browser startup.
 */
@@ -13,7 +11,7 @@ import { AppConstants } from "resource://gre/modules/AppConstants.sys.mjs";
 import { setTimeout } from "resource://gre/modules/Timer.sys.mjs";
 import { FileUtils } from "resource://gre/modules/FileUtils.sys.mjs";
 import { CustomizableUI } from "resource:///modules/CustomizableUI.sys.mjs";
-import { FloorpAppConstants } from "resource:///modules/FloorpAppConstants.sys.mjs";
+import { FloorpAppConstants } from "resource://floorp/modules/FloorpAppConstants.sys.mjs";
 
 // Migration from JSM to ES Module in the future.
 const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
@@ -26,13 +24,13 @@ export let isUpdated = false;
 {
   isFirstRun = !Services.prefs.getStringPref(
     "browser.startup.homepage_override.mstone",
-    null,
+    null
   );
 
   let nowVersion = AppConstants.MOZ_APP_VERSION_DISPLAY;
   let oldVersionPref = Services.prefs.getStringPref(
     "floorp.startup.oldVersion",
-    null,
+    null
   );
   if (oldVersionPref !== nowVersion && !isFirstRun) {
     isUpdated = true;
@@ -60,34 +58,34 @@ const isMainBrowser = env.get("MOZ_BROWSER_TOOLBOX_PORT") === "";
 export async function onFinalUIStartup() {
   Services.obs.removeObserver(onFinalUIStartup, "final-ui-startup");
   let { BrowserManagerSidebar } = ChromeUtils.importESModule(
-    "resource:///modules/BrowserManagerSidebar.sys.mjs",
+    "resource://floorp/modules/BrowserManagerSidebar.sys.mjs"
   );
   BrowserManagerSidebar.prefsUpdate();
 
   IOUtils.exists(
     PathUtils.join(
       Services.dirsvc.get("ProfD", Ci.nsIFile).path,
-      "newtabImages",
-    ),
-  ).then((data) => {
+      "newtabImages"
+    )
+  ).then(data => {
     if (!data) {
       IOUtils.makeDirectory(
         PathUtils.join(
           Services.dirsvc.get("ProfD", Ci.nsIFile).path,
-          "newtabImages",
-        ),
+          "newtabImages"
+        )
       );
     }
   });
 
   // Write CSS.
   IOUtils.exists(
-    PathUtils.join(Services.dirsvc.get("ProfD", Ci.nsIFile).path, "chrome"),
-  ).then((data) => {
+    PathUtils.join(Services.dirsvc.get("ProfD", Ci.nsIFile).path, "chrome")
+  ).then(data => {
     if (!data) {
       let userChromecssPath = PathUtils.join(
         Services.dirsvc.get("ProfD", Ci.nsIFile).path,
-        "chrome",
+        "chrome"
       );
       let uccpth = PathUtils.join(userChromecssPath, "userChrome.css");
       IOUtils.writeUTF8(
@@ -116,7 +114,7 @@ Quote: https://userChrome.org | https://github.com/topics/userchrome
 
 
 }
-`,
+`
       );
 
       let ucconpth = PathUtils.join(userChromecssPath, "userContent.css");
@@ -142,7 +140,7 @@ NOTE: You can use the userContent.css file without change preferences (about:con
 
 @charset "UTF-8";
 /* Please write your custom CSS under this line*/
-`,
+`
       );
     }
   });
@@ -170,7 +168,7 @@ if (isMainBrowser) {
 // Set BMS icon provider
 {
   let os_languages = Cc["@mozilla.org/intl/ospreferences;1"].getService(
-    Ci.mozIOSPreferences,
+    Ci.mozIOSPreferences
   ).regionalPrefsLocales;
   let isChina = os_languages.includes("zh-CN");
   Services.prefs.getDefaultBranch(null).setStringPref(
@@ -178,7 +176,7 @@ if (isMainBrowser) {
     isChina
       ? "yandex"
       : // Setup for China
-        "google",
+        "google"
   );
 }
 
@@ -193,7 +191,9 @@ if (isMainBrowser) {
 if (isMainBrowser) {
   // Load actors
   try {
-    ChromeUtils.importESModule("resource:///modules/FloorpActors.sys.mjs");
+    ChromeUtils.importESModule(
+      "resource://floorp/modules/FloorpActors.sys.mjs"
+    );
   } catch (e) {
     console.error(e);
   }
@@ -220,7 +220,7 @@ if (isMainBrowser) {
         Services.prefs.getBoolPref("floorp.openLinkInExternal.enabled", false)
       ) {
         ChromeUtils.importESModule(
-          "resource:///modules/OpenLinkInExternal.sys.mjs",
+          "resource://floorp/modules/OpenLinkInExternal.sys.mjs"
         );
       }
     }
@@ -231,7 +231,9 @@ if (isMainBrowser) {
   // Load PortableUpdate feature
   try {
     if (Services.prefs.getBoolPref("floorp.isPortable", false)) {
-      ChromeUtils.importESModule("resource:///modules/PortableUpdate.sys.mjs");
+      ChromeUtils.importESModule(
+        "resource://floorp/modules/PortableUpdate.sys.mjs"
+      );
     }
   } catch (e) {
     console.error(e);

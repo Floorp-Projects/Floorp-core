@@ -17,21 +17,6 @@ DIRS += [
     "workspaces",
 ]
 
-EXTRA_JS_MODULES += [
-    "BrowserManagerSidebar.sys.mjs",
-    "CustomKeyboardShortcutUtils.sys.mjs",
-    "DesktopFileParser.sys.mjs",
-    "EscapeShell.sys.mjs",
-    "FloorpActors.sys.mjs",
-    "FloorpStartup.sys.mjs",
-    "OpenLinkInExternal.sys.mjs",
-    "PortableUpdate.sys.mjs",
-    "PrivateContainer.sys.mjs",
-    "userjsUtils.sys.mjs",
-]
-
 DEFINES["TOPOBJDIR"] = TOPOBJDIR
 
-EXTRA_PP_JS_MODULES += [
-    "FloorpAppConstants.sys.mjs",
-]
+JAR_MANIFESTS += ["jar.mn"]

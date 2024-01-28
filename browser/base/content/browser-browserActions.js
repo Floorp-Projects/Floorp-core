@@ -36,8 +36,9 @@ async function UCTFirst() {
     },
   });
   if (
-    ChromeUtils.importESModule("resource:///modules/FloorpStartup.sys.mjs")
-      .isFirstRun
+    ChromeUtils.importESModule(
+      "resource://floorp/modules/FloorpStartup.sys.mjs"
+    ).isFirstRun
   ) {
     CustomizableUI.addWidgetToArea(widgetId, CustomizableUI.AREA_NAVBAR, -1);
   }
@@ -69,8 +70,9 @@ async function switchSidebarPositionButton() {
     },
   });
   if (
-    ChromeUtils.importESModule("resource:///modules/FloorpStartup.sys.mjs")
-      .isFirstRun
+    ChromeUtils.importESModule(
+      "resource://floorp/modules/FloorpStartup.sys.mjs"
+    ).isFirstRun
   ) {
     CustomizableUI.addWidgetToArea(
       "sidebar-button",
@@ -128,7 +130,7 @@ if (
 
 async function workspacesToolbarButton() {
   let { WorkspacesElementService } = ChromeUtils.importESModule(
-    "resource:///modules/WorkspacesElementService.sys.mjs"
+    "resource://floorp/modules/WorkspacesElementService.sys.mjs"
   );
 
   const widgetId = "workspaces-toolbar-button";
@@ -168,8 +170,9 @@ async function workspacesToolbarButton() {
     },
   });
   if (
-    ChromeUtils.importESModule("resource:///modules/FloorpStartup.sys.mjs")
-      .isFirstRun
+    ChromeUtils.importESModule(
+      "resource://floorp/modules/FloorpStartup.sys.mjs"
+    ).isFirstRun
   ) {
     CustomizableUI.addWidgetToArea(widgetId, CustomizableUI.AREA_TABSTRIP);
     CustomizableUI.moveWidgetWithinArea(widgetId, -1);
