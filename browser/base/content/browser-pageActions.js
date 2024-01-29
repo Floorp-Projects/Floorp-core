@@ -7,15 +7,15 @@
 /****************************************************** QR Code ******************************************************/
 
 var { SiteSpecificBrowserExternalFileService } = ChromeUtils.importESModule(
-  "resource:///modules/SiteSpecificBrowserExternalFileService.sys.mjs",
+  "resource:///modules/SiteSpecificBrowserExternalFileService.sys.mjs"
 );
 
 var { SiteSpecificBrowser } = ChromeUtils.importESModule(
-  "resource:///modules/SiteSpecificBrowserService.sys.mjs",
+  "resource:///modules/SiteSpecificBrowserService.sys.mjs"
 );
 
 var { SiteSpecificBrowserIdUtils } = ChromeUtils.importESModule(
-  "resource:///modules/SiteSpecificBrowserIdUtils.sys.mjs",
+  "resource:///modules/SiteSpecificBrowserIdUtils.sys.mjs"
 );
 
 let gFloorpPageAction = {
@@ -42,7 +42,7 @@ let gFloorpPageAction = {
     onPopupShowing() {
       Services.scriptloader.loadSubScript(
         "chrome://browser/content/qr-code-styling/qr-code-styling.js",
-        window,
+        window
       );
 
       let currentTab = gBrowser.selectedTab;
@@ -126,7 +126,7 @@ let gFloorpPageAction = {
 
       // Hide install button
       let installButtons = document.getElementsByClassName(
-        "ssb-install-buttons",
+        "ssb-install-buttons"
       );
       for (let installButton of installButtons) {
         installButton?.setAttribute("hidden", true);
@@ -141,7 +141,7 @@ let gFloorpPageAction = {
 
       // Hide install button
       let installButtons = document.getElementsByClassName(
-        "ssb-install-buttons",
+        "ssb-install-buttons"
       );
       for (let installButton of installButtons) {
         installButton?.removeAttribute("hidden");
@@ -155,7 +155,7 @@ SessionStore.promiseInitialized.then(() => {
     .getElementById("star-button-box")
     .before(gFloorpPageAction.qrCode.QRCodeGeneratePageActionButton);
 
-  if (Services.prefs.getBoolPref("browser.ssb.enabled")) {
+  if (Services.prefs.getBoolPref("floorp.browser.ssb.enabled")) {
     document
       .getElementById("star-button-box")
       .before(gFloorpPageAction.Ssb.SsbPageActionButton);

@@ -47,6 +47,13 @@ let gSsbSupport = {
     return document.getElementById("identity-box");
   },
 
+  get disableToolbar() {
+    return Services.prefs.getBoolPref(
+      "floorp.browser.ssb.toolbars.disabled",
+      false
+    );
+  },
+
   async getSsbObj(id) {
     let result = await SiteSpecificBrowser.load(id);
     return result;
@@ -77,21 +84,19 @@ let gSsbSupport = {
     styleElement.textContent = `@import url("chrome://browser/content/browser-ssb-support.css");`;
     document.head.appendChild(styleElement);
 
+    if (this.disableToolbar) {
+      styleElement.textContent += `
+        #nav-bar, #status-bar, #PersonalToolbar, #titlebar {
+          display: none;
+        }
+      `;
+    }
+
     this.identityBox.after(this.pageActionBox);
 
     gBrowser.tabs.forEach((tab) => {
       tab.setAttribute("floorpSSB", "true");
     });
-
-    /* Set theme color to Navbar
-    let ssbObj = await this.getSsbObj(this.ssbWindowId);
-    
-    this.navToolbar.style.backgroundColor = ssbObj.manifest.theme_color;    
-    const iconColor = this.getIconShouldBlackOrWhite(ssbObj.manifest.theme_color);
-    this.navToolbar.style.cssText += `--toolbarbutton-icon-fill: ${iconColor};`;
-    this.urlbar.style.cssText += `color: ${iconColor} !important;`;
-    this.searchbar.style.cssText += `color: ${iconColor} !important;`;
-    */
 
     this._initialized = true;
   },

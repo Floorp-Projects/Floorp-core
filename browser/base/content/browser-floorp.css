@@ -615,10 +615,6 @@ toolbar #workspace-button:not([disabled="true"], [checked], [open], :active):hov
   margin-bottom: 5px;
 }
 
-#ssbPageAction-image {
-  list-style-image: url("chrome://browser/skin/install-ssb.svg");
-}
-
 .ssb-app-info-button > .toolbarbutton-icon {
   width: 20px;
 }
@@ -634,6 +630,38 @@ toolbar #workspace-button:not([disabled="true"], [checked], [open], :active):hov
 
 #ssb-installing-icon {
   margin: auto;
+}
+
+#ssbPageAction-image {
+  list-style-image: url("chrome://browser/skin/lepton/pwa-install.svg");
+}
+
+#ssbPageAction-image[open-ssb="true"] {
+  list-style-image: url("chrome://browser/skin/lepton/pwa-launch.svg");
+}
+
+#appMenu-ssb-button {
+  list-style-image: url("chrome://browser/skin/lepton/pwa-manage.svg");
+}
+
+#appMenu-install-or-open-ssb-current-page-button {
+  list-style-image: url("chrome://browser/skin/lepton/pwa-install.svg");
+}
+
+#appMenu-install-or-open-ssb-current-page-button[open-ssb="true"] {
+  list-style-image: url("chrome://browser/skin/lepton/pwa-launch.svg");
+}
+
+#appMenu-install-or-open-ssb-current-page-button[open-ssb="true"] {
+  list-style-image: url("chrome://browser/skin/lepton/pwa-launch.svg");
+}
+
+#run-ssb-contextmenu {
+  --menuitem-image: url("chrome://browser/skin/lepton/pwa-launch.svg");
+}
+
+#uninstall-ssb-contextmenu {
+  --menuitem-image: url("chrome://browser/skin/lepton/pwa-remove.svg");
 }
 
 #workspacesToolbar {

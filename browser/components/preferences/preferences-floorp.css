@@ -46,6 +46,10 @@
     list-style-image: url("chrome://browser/skin/window.svg") !important;
   }
 
+  #category-ssb > .category-icon {
+    list-style-image: url("chrome://browser/skin/lepton/pwa-manage.svg") !important;
+  }
+
   #communityDesc {
     padding: 25px 0px 25px 0px;
   }
