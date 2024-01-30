@@ -815,20 +815,6 @@ var gWorkspaces = {
   /* Visibility Service */
   async checkAllTabsForVisibility() {
     // Check all tabs for visibility
-    // Get Current Workspace & Workspace Id
-    // Get Current Window Id
-
-    if (!this.workspacesToolbarButton) {
-      return;
-    }
-
-    let windowId = gWorkspaces.getCurrentWindowId();
-    // Remove all tab infomation from json
-    await WorkspacesIdUtils.removeWindowTabsDataById(windowId);
-
-    let currentWorkspaceId = await gWorkspaces.getCurrentWorkspaceId();
-    let workspacesData = await gWorkspaces.getCurrentWorkspacesData();
-    let workspacesCount = await gWorkspaces.getCurrentWorkspacesCount();
 
     // BMS Sidebar mode
     if (
@@ -839,6 +825,20 @@ var gWorkspaces = {
     ) {
       gWorkspaces.enableWorkspacesManageOnBMSMode();
     }
+
+    if (!this.workspacesToolbarButton && !this._workspaceManageOnBMSMode) {
+      return;
+    }
+
+    // Get Current Window Id
+    let windowId = gWorkspaces.getCurrentWindowId();
+    // Remove all tab infomation from json
+    await WorkspacesIdUtils.removeWindowTabsDataById(windowId);
+
+    // Get Current Workspace & Workspace Id
+    let currentWorkspaceId = await gWorkspaces.getCurrentWorkspaceId();
+    let workspacesData = await gWorkspaces.getCurrentWorkspacesData();
+    let workspacesCount = await gWorkspaces.getCurrentWorkspacesCount();
 
     // Last Show Workspace Attribute
     let selectedTab = gBrowser.selectedTab;
