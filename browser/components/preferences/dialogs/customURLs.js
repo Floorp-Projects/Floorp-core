@@ -189,6 +189,10 @@ function setPref() {
   let userAgent = document.querySelector("#userAgentCheck").checked;
   let width = Number(document.querySelector("#widthBox").value);
 
+  if (url.length === 0) {
+    return;
+  }
+
   let dataObject = {};
   if (page != 0) {
     dataObject.url = document.querySelector("#pageSelect").value;
