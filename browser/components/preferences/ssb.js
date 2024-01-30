@@ -5,6 +5,14 @@
 
 /* import-globals-from preferences.js */
 
+var { SiteSpecificBrowserExternalFileService } = ChromeUtils.importESModule(
+  "resource:///modules/SiteSpecificBrowserExternalFileService.sys.mjs"
+);
+
+var { SiteSpecificBrowserIdUtils } = ChromeUtils.importESModule(
+  "resource:///modules/SiteSpecificBrowserIdUtils.sys.mjs"
+);
+
 XPCOMUtils.defineLazyGetter(this, "L10n", () => {
   return new Localization(["branding/brand.ftl", "browser/floorp"]);
 });
@@ -94,14 +102,6 @@ const gSsbPane = {
       });
     }
 
-    var { SiteSpecificBrowserExternalFileService } = ChromeUtils.importESModule(
-      "resource:///modules/SiteSpecificBrowserExternalFileService.sys.mjs"
-    );
-
-    var { SiteSpecificBrowserIdUtils } = ChromeUtils.importESModule(
-      "resource:///modules/SiteSpecificBrowserIdUtils.sys.mjs"
-    );
-
     // Build the list of installed SSBs & PWAs
     let parentElem = document.getElementById("ssb-installed-apps-list");
     let list = await SiteSpecificBrowserExternalFileService.getCurrentSsbData();
@@ -112,9 +112,10 @@ const gSsbPane = {
       let icon = list[key].manifest.icons[0].src; // Base64 encoded icon
       let startUrl = list[key].manifest.start_url;
 
-      let elem = window.MozXULElement.parseXULToFragment(`
+      try {
+        let elem = window.MozXULElement.parseXULToFragment(`
         <hbox class="csks-box-item" ssbId="${id}">
-          <image class="ssb-image" src="${icon}"/>
+          <image class="ssb-image"/>
           <vbox class="csks-box-item-content">
             <label class="sbb-name-label">${name}</label>
             <label class="ssb-url-label">${startUrl}</label>
@@ -123,14 +124,24 @@ const gSsbPane = {
           <button class="ssb-uninstall-button" value="${id}" data-l10n-id="ssb-uninstall-button" />
         </hbox>
       `);
-      parentElem?.appendChild(elem);
+        parentElem?.appendChild(elem);
 
-      let button = document
-        .querySelector(`.csks-box-item`)
-        .querySelector(`.ssb-uninstall-button`);
-      button.addEventListener("click", function () {
-        gSsbPane.uninstallSsbFromPreferecesPage(id);
-      });
+        let iconElem = document
+          .querySelector(`.csks-box-item[ssbId="${id}"]`)
+          .querySelector(`.ssb-image`);
+        iconElem.style.listStyleImage = `url(${icon})`;
+
+        let button = document
+          .querySelector(`.csks-box-item[ssbId="${id}"]`)
+          .querySelector(`.ssb-uninstall-button`);
+        if (!button.getAttribute("uninstallIsSet")) {
+          button.addEventListener("click", () => {
+            this.uninstallSsbFromPreferecesPage(id, name);
+          });
+          button.setAttribute("uninstallIsSet", "true");
+        }
+      } catch (e) {
+      }
     }
   },
 };
