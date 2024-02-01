@@ -147,7 +147,14 @@ export let BrowserManagerSidebar = {
           }
         })
         .catch(reject => {
-          elem.style.removeProperty("--BMSIcon");
+          icon_url = new URL(sbar_url).origin + "/favicon.ico";
+          fetch(icon_url).then(async response => {
+            if (elem.style.getPropertyValue("--BMSIcon") != icon_url) {
+              elem.style.setProperty("--BMSIcon", `url(${icon_url})`);
+            }
+          }).catch(reject => {
+            elem.style.removeProperty("--BMSIcon");
+          });
         });
     } else if (sbar_url.startsWith("moz-extension://")) {
       let addon_id = new URL(sbar_url).hostname;
