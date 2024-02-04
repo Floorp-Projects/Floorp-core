@@ -67,6 +67,7 @@ const tabbarDisplayStyleFunctions = {
           }
           #titlebar {
             appearance: none !important;
+            display: none !important;
           }
           #TabsToolbar #workspace-button[label] > .toolbarbutton-icon,
           #TabsToolbar #firefox-view-button[flex] > .toolbarbutton-icon {
