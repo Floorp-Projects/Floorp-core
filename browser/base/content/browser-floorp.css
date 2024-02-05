@@ -640,22 +640,6 @@ toolbar #workspace-button:not([disabled="true"], [checked], [open], :active):hov
   list-style-image: url("chrome://browser/skin/lepton/pwa-launch.svg");
 }
 
-#appMenu-ssb-button {
-  list-style-image: url("chrome://browser/skin/lepton/pwa-manage.svg");
-}
-
-#appMenu-install-or-open-ssb-current-page-button {
-  list-style-image: url("chrome://browser/skin/lepton/pwa-install.svg");
-}
-
-#appMenu-install-or-open-ssb-current-page-button[open-ssb="true"] {
-  list-style-image: url("chrome://browser/skin/lepton/pwa-launch.svg");
-}
-
-#appMenu-install-or-open-ssb-current-page-button[open-ssb="true"] {
-  list-style-image: url("chrome://browser/skin/lepton/pwa-launch.svg");
-}
-
 #run-ssb-contextmenu {
   --menuitem-image: url("chrome://browser/skin/lepton/pwa-launch.svg");
 }

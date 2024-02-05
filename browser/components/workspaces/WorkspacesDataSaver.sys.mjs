@@ -7,6 +7,7 @@
  * @module WorkspacesDataSaver
  */
 
+
 /**
  * The exported symbols from this module.
  * @type {Array<string>}
@@ -16,7 +17,7 @@ export const EXPORTED_SYMBOLS = ["WorkspacesDataSaver"];
 const lazy = {};
 ChromeUtils.defineESModuleGetters(lazy, {
   WorkspacesExternalFileService:
-    "resource://floorp/modules/WorkspacesExternalFileService.sys.mjs",
+    "resource:///modules/WorkspacesExternalFileService.sys.mjs",
 });
 
 /**
@@ -66,7 +67,7 @@ export const WorkspacesDataSaver = {
    */
   async saveWorkspacesDataWithoutOverwritingPreferences(
     workspacesData,
-    windowId
+    windowId,
   ) {
     let json = await IOUtils.readJSON(this._workspacesStoreFile);
     let preferences = json.windows[windowId].preferences;

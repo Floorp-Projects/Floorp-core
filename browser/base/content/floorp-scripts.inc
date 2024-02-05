@@ -6,7 +6,7 @@
 <script type="text/javascript">
 // "FloorpAppConstants" has build information.
 var { FloorpAppConstants } = ChromeUtils.importESModule(
-    "resource://floorp/modules/FloorpAppConstants.sys.mjs"
+    "resource:///modules/FloorpAppConstants.sys.mjs"
 );
 
 Services.scriptloader.loadSubScript("chrome://browser/content/browser-workspaces.js", this);
