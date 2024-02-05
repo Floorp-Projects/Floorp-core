@@ -214,7 +214,7 @@ const bmsController = {
       const selectedURL = BROWSER_SIDEBAR_DATA.data[modeValuePref].url ?? "";
       bmsController.controllFunctions.changeVisibleCommandButton(
         selectedURL.startsWith("floorp//") ||
-          Services.prefs.getBoolPref("floorp.browser.sidebar2.addons.enabled"),
+        Services.prefs.getBoolPref("floorp.browser.sidebar2.addons.enabled"),
       );
       for (let elem of document.getElementsByClassName("webpanels")) {
         elem.hidden = true;
@@ -235,7 +235,7 @@ const bmsController = {
       }
       bmsController.controllFunctions.changeCheckPanel(
         document.getElementById("sidebar-splitter2").getAttribute("hidden") !=
-          "true",
+        "true",
       );
       if (selectedwebpanel != null) {
         selectedwebpanel.hidden = false;
@@ -262,26 +262,25 @@ const bmsController = {
       bmsController.nowPage = null;
     },
     setUserContextColorLine: (id) => {
-      const wibpanel_usercontext =
+      const webpanel_usercontext =
         BROWSER_SIDEBAR_DATA.data[id].usercontext ?? 0;
       const container_list = ContextualIdentityService.getPublicIdentities();
       if (
-        wibpanel_usercontext != 0 &&
+        webpanel_usercontext != 0 &&
         container_list.findIndex(
-          (e) => e.userContextId === wibpanel_usercontext,
+          (e) => e.userContextId === webpanel_usercontext,
         ) != -1
       ) {
         let container_color =
           container_list[
             container_list.findIndex(
-              (e) => e.userContextId === wibpanel_usercontext,
+              (e) => e.userContextId === webpanel_usercontext,
             )
           ].color;
-        document.getElementById(`select-${id}`).style.borderLeft = `solid 2px ${
-          container_color == "toolbar"
+        document.getElementById(`select-${id}`).style.borderLeft = `solid 2px ${container_color == "toolbar"
             ? "var(--toolbar-field-color)"
             : container_color
-        }`;
+          }`;
       } else if (
         document.getElementById(`select-${id}`).style.border != "1px solid blue"
       ) {
@@ -369,7 +368,7 @@ const bmsController = {
       const webpandata = BROWSER_SIDEBAR_DATA.data[webpanel_id];
       let webpanobject = document.getElementById(`webpanel${webpanel_id}`);
       let webpanelURL = webpandata.url;
-      const wibpanel_usercontext = webpandata.usercontext ?? 0;
+      const webpanel_usercontext = webpandata.usercontext ?? 0;
       const webpanel_userAgent = webpandata.userAgent ?? false;
       let isWeb = true;
       let isFloorp = false;
@@ -387,12 +386,12 @@ const bmsController = {
         ) &&
           !(
             webpanobject?.getAttribute("usercontextid") == "" &&
-            wibpanel_usercontext == 0
+            webpanel_usercontext == 0
           ) &&
           ((webpanobject?.getAttribute("changeuseragent") ?? "false") !==
             String(webpanel_userAgent) ||
             (webpanobject?.getAttribute("usercontextid") ?? "0") !==
-              String(wibpanel_usercontext))) ||
+              String(webpanel_usercontext))) ||
           ((webpanobject.className.includes("isFloorp") ||
             webpanobject.className.includes("isWeb")) &&
             isFloorp))
@@ -430,8 +429,8 @@ const bmsController = {
                 isWeb
                   ? `
                 usercontextid="${
-                  typeof wibpanel_usercontext == "number"
-                    ? String(wibpanel_usercontext)
+                  typeof webpanel_usercontext == "number"
+                    ? String(webpanel_usercontext)
                     : "0"
                 }"
                 changeuseragent="${webpanel_userAgent ? "true" : "false"}"
@@ -455,17 +454,9 @@ const bmsController = {
           ) &&
           !isFloorp
         ) {
-          Services.prefs.setBoolPref(
-            "floorp.browser.sidebar2.addons.window.start",
-            true,
-          );
-          Services.prefs.setStringPref(
-            "floorp.browser.sidebar2.start.url",
-            webpanelURL,
-          );
           webpanelElem.firstChild.setAttribute(
             "src",
-            "chrome://browser/content/browser.xhtml",
+            `chrome://browser/content/browser.xhtml?${webpanelURL}?${webpanel_usercontext}?${webpanel_userAgent}`,
           );
         } else {
           webpanelElem.firstChild.setAttribute("src", webpanelURL);
@@ -503,7 +494,7 @@ const bmsController = {
               sidebarItem.setAttribute(
                 "data-l10n-id",
                 "show-" +
-                  STATIC_SIDEBAR_DATA[BROWSER_SIDEBAR_DATA.data[elem].url].l10n,
+                STATIC_SIDEBAR_DATA[BROWSER_SIDEBAR_DATA.data[elem].url].l10n,
               );
               sidebarItem.setAttribute("context", "all-panel-context");
             }
@@ -575,7 +566,7 @@ const bmsController = {
               sidebarItem.setAttribute(
                 "data-l10n-id",
                 "show-" +
-                  STATIC_SIDEBAR_DATA[BROWSER_SIDEBAR_DATA.data[elem].url].l10n,
+                STATIC_SIDEBAR_DATA[BROWSER_SIDEBAR_DATA.data[elem].url].l10n,
               );
               sidebarItem.setAttribute("context", "all-panel-context");
             }
@@ -634,26 +625,24 @@ const bmsController = {
   },
   bmsWindowFunctions: {
     loadBMSURI: () => {
-      let embedded = Services.prefs.getStringPref(
-        "floorp.browser.sidebar2.start.url",
-      );
-      gBrowser.loadURI(Services.io.newURI(embedded), {
+      let arry = window.location.toString().split("?");
+      let loadURL = arry[1];
+      let userContextId = Number(arry[2]);
+      let userAgent = arry[3] == "true";
+
+      gBrowser.loadURI(Services.io.newURI(loadURL), {
         triggeringPrincipal:
           Services.scriptSecurityManager.getSystemPrincipal(),
       });
+
       document
         .getElementById("main-window")
         .setAttribute(
           "chromehidden",
           "toolbar",
-          "menubar directories extrachrome",
+          "menubar directories extrachrome chrome,location=yes,centerscreen,dialog=no,resizable=yes,scrollbars=yes",
         );
       document.getElementById("main-window").setAttribute("BSM-window", "true");
-      Services.prefs.clearUserPref("floorp.browser.sidebar2.start.url");
-      Services.prefs.setBoolPref(
-        "floorp.browser.sidebar2.addons.window.start",
-        false,
-      );
 
       // Load CSS
       const BMSSyleElement = document.createElement("style");
@@ -661,6 +650,13 @@ const bmsController = {
          @import url("chrome://browser/content/browser-bms-window.css");
        `;
       document.head.appendChild(BMSSyleElement);
+
+      // Apply custom user agent
+      if (userAgent) {
+        let browser = gBrowser.selectedBrowser.linkedBrowser;
+        browser.setAttribute("changeuseragent", "true");
+        browser.setAttribute("id", "webpanel");
+      }
     },
   },
   nowPage: null,
@@ -718,7 +714,7 @@ const bmsController = {
       if (
         document.querySelector(`#webpanel${elem}`) &&
         JSON.stringify(BROWSER_SIDEBAR_DATA.data[elem]) !=
-          JSON.stringify(TEMP_BROWSER_SIDEBAR_DATA.data[elem])
+        JSON.stringify(TEMP_BROWSER_SIDEBAR_DATA.data[elem])
       ) {
         if (
           bmsController.nowPage == elem &&
@@ -754,24 +750,13 @@ const bmsController = {
   }
   window.bmsController = bmsController;
 
-  if (Services.prefs.getBoolPref("floorp.browser.sidebar2.addons.enabled")) {
-    // Browser Manager Sidebar embedded check
-    let embedded = Services.prefs.getStringPref(
-      "floorp.browser.sidebar2.start.url",
-    );
-    if (embedded != "" && embedded !== false && embedded != undefined) {
-      if (gBrowser) {
+  SessionStore.promiseInitialized.then(() => {
+    if (Services.prefs.getBoolPref("floorp.browser.sidebar2.addons.enabled")) {
+      // Browser Manager Sidebar embedded check
+      let embedded = window.location.toString().split("?")[1];
+      if (embedded != "" && embedded !== false && embedded != undefined) {
         bmsController.bmsWindowFunctions.loadBMSURI();
-      } else {
-        checkgBrowserIsReady();
       }
     }
-    function checkgBrowserIsReady() {
-      if (gBrowser) {
-        bmsController.bmsWindowFunctions.loadBMSURI();
-      } else {
-        window.setTimeout(checkgBrowserIsReady, 1000);
-      }
-    }
-  }
+  })
 })();

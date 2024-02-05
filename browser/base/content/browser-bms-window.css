@@ -37,3 +37,7 @@
 #urlbar-container {
     display: none !important;
 }
+
+#fxa-toolbar-menu-button {
+  display: none !important;
+}

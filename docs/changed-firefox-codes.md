@@ -195,3 +195,25 @@ Line: 5312
 URL: [Searchfox](https://searchfox.org/mozilla-central/source/browser/base/content/browser.js#5312)
 
 ---
+
+20. browser/components/customizableui/CustomizableUI.sys.mjs
+
+**Feature: "Floorp Sidebar | BMS"**
+
+changed: "Insert Floorp Sidebar & BMS codes."
+Line: 1827
+
+URL: [VSCodeDev](https://insiders.vscode.dev/github/floorp-projects/Floorp/blob/ESR115/browser/components/customizableui/CustomizableUI.sys.mjs#L1827)
+
+
+---
+
+21. browser/components/extensions/webrequest/WebRequest.sys.mjs
+
+**Feature: "Floorp Sidebar | BMS"**
+
+changed: "Insert Floorp Sidebar & BMS codes."
+
+Line: 861
+
+URL: [VSCodeDev](https://insiders.vscode.dev/github/floorp-projects/Floorp/blob/ESR115/toolkit/components/extensions/webrequest/WebRequest.sys.mjs#L861)
