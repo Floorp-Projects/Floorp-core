@@ -45,7 +45,7 @@ if (Services.prefs.getStringPref(newtabOverrideURL, "") != "") {
 
 BrowserTryToCloseWindow = function (event) {
   let { setTimeout } = ChromeUtils.importESModule(
-    "resource://gre/modules/Timer.sys.mjs"
+    "resource://gre/modules/Timer.sys.mjs",
   );
   if (WindowIsClosing(event)) {
     if (
@@ -53,7 +53,7 @@ BrowserTryToCloseWindow = function (event) {
     ) {
       document
         .querySelectorAll(
-          `.webpanels[src='chrome://browser/content/browser.xhtml']`
+          `.webpanels[src='chrome://browser/content/browser.xhtml']`,
         )
         .forEach(function (e) {
           e.remove();
@@ -83,7 +83,7 @@ SessionStore.promiseInitialized.then(() => {
     initiallyActive,
   } = {}) {
     const { PrivateContainer } = ChromeUtils.importESModule(
-      "resource://floorp/modules/PrivateContainer.sys.mjs"
+      "resource:///modules/PrivateContainer.sys.mjs",
     );
 
     let b = document.createXULElement("browser");
@@ -107,7 +107,7 @@ SessionStore.promiseInitialized.then(() => {
     if (!Services.appinfo.sessionHistoryInParent) {
       b.prepareToChangeRemoteness = () =>
         SessionStore.prepareToChangeRemoteness(b);
-      b.afterChangeRemoteness = switchId => {
+      b.afterChangeRemoteness = (switchId) => {
         let tab = this.getTabForBrowser(b);
         SessionStore.finishTabRemotenessChange(tab, switchId);
         return true;
@@ -167,7 +167,7 @@ SessionStore.promiseInitialized.then(() => {
     if (initialBrowsingContextGroupId) {
       b.setAttribute(
         "initialBrowsingContextGroupId",
-        initialBrowsingContextGroupId
+        initialBrowsingContextGroupId,
       );
     }
 
