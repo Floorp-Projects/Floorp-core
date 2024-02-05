@@ -650,13 +650,6 @@ const bmsController = {
          @import url("chrome://browser/content/browser-bms-window.css");
        `;
       document.head.appendChild(BMSSyleElement);
-
-      // Apply custom user agent
-      if (userAgent) {
-        let browser = gBrowser.selectedBrowser.linkedBrowser;
-        browser.setAttribute("changeuseragent", "true");
-        browser.setAttribute("id", "webpanel");
-      }
     },
   },
   nowPage: null,
