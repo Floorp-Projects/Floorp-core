@@ -27,6 +27,15 @@ export const WorkspacesElementService = {
         </panel>
         `,
 
+  manageOnBmsInjectionXHTML: `
+  <vbox id="workspacesBmsContent" align="center" flex="1" orient="vertical"
+        clicktoscroll="true" class="statusbar-padding" />
+  <toolbarbutton id="workspacesCreateNewWorkspaceButton" class="sidepanel-icon toolbarbutton-1 chromeclass-toolbar-additional"
+        data-l10n-id="workspaces-create-new-workspace-button" context="tab-stacks-toolbar-item-context-menu"
+        oncommand="gWorkspaces.createNoNameWorkspace();" />
+  <spacer id="workspacesPopupSpacer" flex="1" />
+  `,
+
   manageOnBmsInjectionCSS: `
     .workspaceButton {
       margin-right: unset !important;
@@ -63,10 +72,6 @@ export const WorkspacesElementService = {
       display: none !important;
     }
      `,
-
-  workspaceSpacerElement: `
-      <spacer id="workspacesPopupSpacer" flex="1" />
-    `,
 
   workspaceBlockElement(
     workspaceId,

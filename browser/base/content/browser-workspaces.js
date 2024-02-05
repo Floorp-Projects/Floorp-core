@@ -57,6 +57,7 @@ var gWorkspaces = {
   _windowId: null,
   _currentWorkspaceId: null,
   _popuppanelNotFound: false,
+  _workspaceToolbarButtonNotFound: false,
   _workspaceManageOnBMSMode: false,
   _workspacesTemporarilyDisabled: false,
 
@@ -78,7 +79,9 @@ var gWorkspaces = {
   },
 
   get workspacesPopupContent() {
-    return document.getElementById("workspacesPopupContent");
+    return document.getElementById("workspacesBmsContent")
+      ? document.getElementById("workspacesBmsContent")
+      : document.getElementById("workspacesPopupContent");
   },
 
   get arrowscrollbox() {
@@ -160,6 +163,15 @@ var gWorkspaces = {
     let toolbarWorkspaceButtonFragment =
       window.MozXULElement.parseXULToFragment(toolbarWorkspaceButton);
     this.workspacesPopupContent.appendChild(toolbarWorkspaceButtonFragment);
+
+    let workspace = await this.getWorkspaceById(workspaceId);
+
+    let elem = document.querySelector(
+      `.workspaceButton[workspaceId="${workspaceId}"]`
+    );
+    elem.setAttribute("label", workspace.name);
+    elem.setAttribute("tooltiptext", workspace.name);
+    elem.style.listStyleImage = `url(${getWorkspaceIconUrl(workspace.icon)})`;
   },
 
   async changeToolbarSelectedWorkspaceView(workspaceId) {
@@ -189,29 +201,23 @@ var gWorkspaces = {
       this.workspacesToolbarButton.style.listStyleImage = `url(${getWorkspaceIconUrl(
         workspace.icon,
       )})`;
+    }
 
-      let popupElements = document.getElementsByClassName("workspaceButton");
+    let popupElements = this.workspaceButtons;
 
-      for (let popupElement of popupElements) {
-        let workspaceId = popupElement.getAttribute("workspaceId");
-        let workspace = await this.getWorkspaceById(workspaceId);
-
-        popupElement.setAttribute("label", workspace.name);
-        popupElement.style.listStyleImage = `url(${getWorkspaceIconUrl(
-          workspace.icon,
-        )})`;
-      }
+    for (let popupElement of popupElements) {
+      let workspaceId = popupElement.getAttribute("workspaceId");
+      let workspace = await this.getWorkspaceById(workspaceId);
+      popupElement.setAttribute("label", workspace.name);
+      popupElement.setAttribute("tooltiptext", workspace.name);
+      popupElement.style.listStyleImage = `url(${getWorkspaceIconUrl(
+        workspace.icon
+      )})`;
     }
   },
 
   enableWorkspacesManageOnBMSMode() {
     if (this._workspaceManageOnBMSMode) {
-      return;
-    }
-
-    // Check elements exists
-    if (!this.workspacesPopupContent) {
-      this._workspaceManageOnBMSMode = false;
       return;
     }
 
@@ -221,28 +227,26 @@ var gWorkspaces = {
       return;
     }
 
-    this.workspacesPopupContent.removeAttribute("flex");
+    let workspacesPopupContentFragment =
+      window.MozXULElement.parseXULToFragment(
+        WorkspacesElementService.manageOnBmsInjectionXHTML
+      );
 
-    bmsSidebar.prepend(this.workspacesPopupContent);
+    bmsSidebar.prepend(workspacesPopupContentFragment);
+
+    this.workspacesPopupContent.removeAttribute("flex");
 
     const CSS = WorkspacesElementService.manageOnBmsInjectionCSS;
     document.head.appendChild(document.createElement("style")).textContent =
       CSS;
     for (let workspaceButton of this.workspaceButtons) {
       workspaceButton.classList.add("sidepanel-icon");
+
+      // Move to BMS Sidebar
+      this.workspacesPopupContent.appendChild(workspaceButton);
     }
 
-    let spacerElem = window.MozXULElement.parseXULToFragment(
-      WorkspacesElementService.workspaceSpacerElement,
-    );
-    this.workspacesPopupContent.after(spacerElem);
-    this.workspacesPopupContent.after(
-      document.getElementById("workspacesCreateNewWorkspaceButton"),
-    );
-    document
-      .getElementById("workspacesCreateNewWorkspaceButton")
-      .classList.add("sidepanel-icon");
-
+    this.rebuildWorkspacesToolbar();
     this._workspaceManageOnBMSMode = true;
   },
 
@@ -266,8 +270,9 @@ var gWorkspaces = {
 
   async getCurrentWorkspace() {
     let windowId = this.getCurrentWindowId();
-    let workspaceId =
-      await WorkspacesWindowIdUtils.getSelectedWorkspaceId(windowId);
+    let workspaceId = await WorkspacesWindowIdUtils.getSelectedWorkspaceId(
+      windowId
+    );
 
     if (workspaceId == null) {
       let id = await WorkspacesWindowIdUtils.getDefaultWorkspaceId(windowId);
@@ -295,8 +300,9 @@ var gWorkspaces = {
 
   async getCurrentWorkspacesData() {
     let windowId = this.getCurrentWindowId();
-    let workspacesData =
-      await WorkspacesWindowIdUtils.getWindowWorkspacesData(windowId);
+    let workspacesData = await WorkspacesWindowIdUtils.getWindowWorkspacesData(
+      windowId
+    );
     return workspacesData;
   },
 
@@ -364,8 +370,9 @@ var gWorkspaces = {
 
   async getAllWorkspacesId() {
     let windowId = this.getCurrentWindowId();
-    let allWorkspacesId =
-      await WorkspacesWindowIdUtils.getAllWorkspacesId(windowId);
+    let allWorkspacesId = await WorkspacesWindowIdUtils.getAllWorkspacesId(
+      windowId
+    );
 
     return allWorkspacesId;
   },
@@ -485,8 +492,9 @@ var gWorkspaces = {
 
   async checkAllWorkspacesHasTab() {
     let windowId = this.getCurrentWindowId();
-    let allWorkspacesId =
-      await WorkspacesWindowIdUtils.getAllWorkspacesId(windowId);
+    let allWorkspacesId = await WorkspacesWindowIdUtils.getAllWorkspacesId(
+      windowId
+    );
 
     for (let workspaceId of allWorkspacesId) {
       let workspaceHasTab = await this.checkWorkspacesHasTab(workspaceId);
@@ -814,31 +822,38 @@ var gWorkspaces = {
 
   /* Visibility Service */
   async checkAllTabsForVisibility() {
-    // Check all tabs for visibility
-    // Get Current Workspace & Workspace Id
-    // Get Current Window Id
-
-    if (!this.workspacesToolbarButton) {
-      return;
-    }
-
-    let windowId = gWorkspaces.getCurrentWindowId();
-    // Remove all tab infomation from json
-    await WorkspacesIdUtils.removeWindowTabsDataById(windowId);
-
-    let currentWorkspaceId = await gWorkspaces.getCurrentWorkspaceId();
-    let workspacesData = await gWorkspaces.getCurrentWorkspacesData();
-    let workspacesCount = await gWorkspaces.getCurrentWorkspacesCount();
-
     // BMS Sidebar mode
     if (
       !this._workspaceManageOnBMSMode &&
       Services.prefs.getBoolPref(
-        workspacesPreferences.WORKSPACES_MANAGE_ON_BMS_PREF,
+        workspacesPreferences.WORKSPACES_MANAGE_ON_BMS_PREF
       )
     ) {
       gWorkspaces.enableWorkspacesManageOnBMSMode();
     }
+
+    if (!this.workspacesToolbarButton && !this._workspaceManageOnBMSMode) {
+      return;
+    }
+
+    if (gWorkspaces._popuppanelNotFound) {
+      gWorkspaces.rebuildWorkspacesToolbar();
+    }
+
+    if (this._workspaceToolbarButtonNotFound && this.workspacesToolbarButton) {
+      this._workspaceToolbarButtonNotFound = true;
+      this.rebuildWorkspacesToolbar();
+    }
+
+    // Get Current Window Id
+    let windowId = gWorkspaces.getCurrentWindowId();
+    // Remove all tab infomation from json
+    await WorkspacesIdUtils.removeWindowTabsDataById(windowId);
+
+    // Get Current Workspace & Workspace Id
+    let currentWorkspaceId = await gWorkspaces.getCurrentWorkspaceId();
+    let workspacesData = await gWorkspaces.getCurrentWorkspacesData();
+    let workspacesCount = await gWorkspaces.getCurrentWorkspacesCount();
 
     // Last Show Workspace Attribute
     let selectedTab = gBrowser.selectedTab;
@@ -1147,6 +1162,6 @@ var gWorkspaces = {
 
 window.SessionStore.promiseInitialized.then(() => {
   window.setTimeout(() => {
-      gWorkspaces.init();
+    gWorkspaces.init();
   }, 1000);
 });
