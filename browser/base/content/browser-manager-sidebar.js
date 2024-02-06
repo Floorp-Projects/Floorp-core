@@ -150,19 +150,23 @@ const bmsController = {
         );
       },
       changeUserAgent: () => {
+        let id = clickedWebpanel.replace("select-", "");
+        let pref = BROWSER_SIDEBAR_DATA.data[
+          id
+        ];
+        let currentUserAgentPref = pref.userAgent ? true : false;
+
         BROWSER_SIDEBAR_DATA.data[
-          clickedWebpanel.replace("select-", "")
-        ].userAgent =
-          (document
-            .getElementById(clickedWebpanel.replace("select-", "webpanel"))
-            .getAttribute("changeuseragent") ?? "false") == "false";
+          id
+        ].userAgent = !currentUserAgentPref;
+
         Services.prefs.setStringPref(
           `floorp.browser.sidebar2.data`,
           JSON.stringify(BROWSER_SIDEBAR_DATA),
         );
         //unload webpanel
         bmsController.controllFunctions.unloadWebpanel(
-          clickedWebpanel.replace("select-", ""),
+          id
         );
       },
       deleteWebpanel: () => {
@@ -278,8 +282,8 @@ const bmsController = {
             )
           ].color;
         document.getElementById(`select-${id}`).style.borderLeft = `solid 2px ${container_color == "toolbar"
-            ? "var(--toolbar-field-color)"
-            : container_color
+          ? "var(--toolbar-field-color)"
+          : container_color
           }`;
       } else if (
         document.getElementById(`select-${id}`).style.border != "1px solid blue"
@@ -391,7 +395,7 @@ const bmsController = {
           ((webpanobject?.getAttribute("changeuseragent") ?? "false") !==
             String(webpanel_userAgent) ||
             (webpanobject?.getAttribute("usercontextid") ?? "0") !==
-              String(webpanel_usercontext))) ||
+            String(webpanel_usercontext))) ||
           ((webpanobject.className.includes("isFloorp") ||
             webpanobject.className.includes("isWeb")) &&
             isFloorp))
@@ -412,9 +416,8 @@ const bmsController = {
         let webpanelElem = window.MozXULElement.parseXULToFragment(`
               <browser 
                 id="webpanel${webpanel_id}"
-                class="webpanels ${isFloorp ? "isFloorp" : "isWeb"} ${
-                  webpanelURL.slice(0, 9) == "extension" ? "isExtension" : ""
-                }"
+                class="webpanels ${isFloorp ? "isFloorp" : "isWeb"} ${webpanelURL.slice(0, 9) == "extension" ? "isExtension" : ""
+          }"
                 flex="1"
                 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
                 disablehistory="true"
@@ -425,14 +428,12 @@ const bmsController = {
                 messagemanagergroup="browsers"
                 autocompletepopup="PopupAutoComplete"
                 initialBrowsingContextGroupId="40"
-              ${
-                isWeb
-                  ? `
-                usercontextid="${
-                  typeof webpanel_usercontext == "number"
-                    ? String(webpanel_usercontext)
-                    : "0"
-                }"
+              ${isWeb
+            ? `
+                usercontextid="${typeof webpanel_usercontext == "number"
+              ? String(webpanel_usercontext)
+              : "0"
+            }"
                 changeuseragent="${webpanel_userAgent ? "true" : "false"}"
                 webextension-view-type="sidebar"
                 type="content"
@@ -440,8 +441,8 @@ const bmsController = {
                 maychangeremoteness="true"
                 context=""
                 `
-                  : ""
-              }
+            : ""
+          }
                />
                 `);
         if (webpanelURL.slice(0, 9) == "extension") {
@@ -458,6 +459,7 @@ const bmsController = {
             "src",
             `chrome://browser/content/browser.xhtml?${webpanelURL}?${webpanel_usercontext}?${webpanel_userAgent}`,
           );
+          console.log(webpanelURL, webpanel_usercontext, webpanel_userAgent);
         } else {
           webpanelElem.firstChild.setAttribute("src", webpanelURL);
         }
