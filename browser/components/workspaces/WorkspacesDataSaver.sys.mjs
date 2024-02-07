@@ -3,13 +3,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 /**
- * @fileOverview This file contains the implementation of the WorkspacesDataSaver module.
+ * @description Overview This file contains the implementation of the WorkspacesDataSaver module.
  * @module WorkspacesDataSaver
  */
 
 
 /**
  * The exported symbols from this module.
+ *
  * @type {Array<string>}
  */
 export const EXPORTED_SYMBOLS = ["WorkspacesDataSaver"];
@@ -22,11 +23,13 @@ ChromeUtils.defineESModuleGetters(lazy, {
 
 /**
  * The WorkspacesDataSaver module.
- * @type {Object}
+ *
+ * @type {object}
  */
 export const WorkspacesDataSaver = {
   /**
    * Get the path of the workspaces store file.
+   *
    * @type {string}
    */
   get _workspacesStoreFile() {
@@ -35,7 +38,8 @@ export const WorkspacesDataSaver = {
 
   /**
    * Save the workspaces data for a specific window.
-   * @param {Object} workspacesData - The workspaces data to be saved.
+   *
+   * @param {object} workspacesData - The workspaces data to be saved.
    * @param {number} windowId - The ID of the window.
    * @returns {Promise<void>} A promise that resolves when the data is saved.
    */
@@ -48,7 +52,8 @@ export const WorkspacesDataSaver = {
 
   /**
    * Save the data for a specific workspace in a window.
-   * @param {Object} workspaceData - The workspace data to be saved.
+   *
+   * @param {object} workspaceData - The workspace data to be saved.
    * @param {number} windowId - The ID of the window.
    * @returns {Promise<void>} A promise that resolves when the data is saved.
    */
@@ -61,7 +66,8 @@ export const WorkspacesDataSaver = {
 
   /**
    * Save the workspaces data for a specific window without overwriting preferences.
-   * @param {Object} workspacesData - The workspaces data to be saved.
+   *
+   * @param {object} workspacesData - The workspaces data to be saved.
    * @param {number} windowId - The ID of the window.
    * @returns {Promise<void>} A promise that resolves when the data is saved.
    */
@@ -79,7 +85,8 @@ export const WorkspacesDataSaver = {
 
   /**
    * Save the preferences for a specific window.
-   * @param {Object} preferences - The preferences to be saved.
+   *
+   * @param {object} preferences - The preferences to be saved.
    * @param {number} windowId - The ID of the window.
    * @returns {Promise<void>} A promise that resolves when the preferences are saved.
    */
