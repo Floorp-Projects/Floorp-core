@@ -12,7 +12,7 @@ let { ContextualIdentityService } = ChromeUtils.importESModule(
 );
 
 var gBrowserManagerSidebar = {
-  _inisialized: false,
+  _initialized: false,
   nowPage: null,
   clickedWebpanel: null,
   webpanel: null,
@@ -50,7 +50,7 @@ var gBrowserManagerSidebar = {
   },
 
   async init() {
-    if (this._inisialized) {
+    if (this._initialized) {
       return;
     }
 
@@ -146,7 +146,7 @@ var gBrowserManagerSidebar = {
       }
     });
 
-    this._inisialized = true;
+    this._initialized = true;
   },
 
   // Sidebar button functions
