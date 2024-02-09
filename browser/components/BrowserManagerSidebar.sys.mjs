@@ -99,14 +99,12 @@ export let BrowserManagerSidebar = {
           )}`;
           break;
         case "duckduckgo":
-          icon_url = `https://external-content.duckduckgo.com/ip3/${
-            new URL(sbar_url).hostname
-          }.ico`;
+          icon_url = `https://external-content.duckduckgo.com/ip3/${new URL(sbar_url).hostname
+            }.ico`;
           break;
         case "yandex":
-          icon_url = `https://favicon.yandex.net/favicon/v2/${
-            new URL(sbar_url).origin
-          }`;
+          icon_url = `https://favicon.yandex.net/favicon/v2/${new URL(sbar_url).origin
+            }`;
           break;
         case "hatena":
           icon_url = `https://cdn-ak.favicon.st-hatena.com/?url=${encodeURIComponent(
@@ -164,7 +162,7 @@ export let BrowserManagerSidebar = {
 
           let addon_icon_path =
             addon_manifest.icons[
-              Math.max(...Object.keys(addon_manifest.icons))
+            Math.max(...Object.keys(addon_manifest.icons))
             ];
           if (addon_icon_path === undefined) {
             throw new Error("Icon not found." + addon_manifest.icons);
@@ -260,4 +258,47 @@ export let BrowserManagerSidebar = {
       );
     }
   },
+};
+
+export const BrowserManagerSidebarPanelWindowUtils = {
+  reopenInSelectContainer(window, webpanelId, userContextId, parentWindow) {
+    let panelWindows = window.window;
+    let targetPanelWindow = null;
+
+    if (parentWindow) {
+      for (let panelWindow of panelWindows) {
+        let windowDocURI = panelWindow.document.documentURI;
+        if (windowDocURI.endsWith(webpanelId)) {
+          targetPanelWindow = panelWindow;
+          break;
+        }
+      }
+    } else {
+      targetPanelWindow = window;
+    }
+
+    if (!targetPanelWindow) {
+      return;
+    }
+
+    let reopenedTabs = targetPanelWindow.gBrowser.tabs;
+    let arry = window.location.toString().split("?");
+    let loadURL = arry[1];
+
+    for (let tab of reopenedTabs) {
+      if (tab.getAttribute("usercontextid") == userContextId) {
+        continue;
+      }
+      
+
+      let newTab = targetPanelWindow.gBrowser.addTab(loadURL, {
+        userContextId,
+        triggeringPrincipal: Services.scriptSecurityManager.createNullPrincipal({}),
+      });
+
+      targetPanelWindow.gBrowser.moveTabTo(newTab, tab._tPos);
+      targetPanelWindow.gBrowser.removeTab(tab);
+      targetPanelWindow.gBrowser.selectedTab = newTab;
+    }
+  }
 };

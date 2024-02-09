@@ -7,9 +7,15 @@ let { BrowserManagerSidebar } = ChromeUtils.importESModule(
   "resource:///modules/BrowserManagerSidebar.sys.mjs"
 );
 
+let { BrowserManagerSidebarPanelWindowUtils } = ChromeUtils.importESModule(
+  "resource:///modules/BrowserManagerSidebar.sys.mjs"
+);
+
 let { ContextualIdentityService } = ChromeUtils.importESModule(
   "resource://gre/modules/ContextualIdentityService.sys.mjs"
 );
+
+var gBrowser = window.gBrowser;
 
 var gBrowserManagerSidebar = {
   _initialized: false,
@@ -643,7 +649,7 @@ var gBrowserManagerSidebar = {
         ) {
           webpanelElem.firstChild.setAttribute(
             "src",
-            `chrome://browser/content/browser.xhtml?${webpanelURL}?${webpanel_usercontext}?${webpanel_userAgent}`
+            `chrome://browser/content/browser.xhtml?${webpanelURL}?${webpanel_usercontext}?${webpanel_userAgent}?${webpanel_id}`
           );
           console.log(webpanelURL, webpanel_usercontext, webpanel_userAgent);
         } else {
@@ -824,6 +830,54 @@ var gBrowserManagerSidebar = {
         }
       }
     },
+    },
+
+    bmsWindowFunctions: {
+      get mainWindow() {
+        return document.getElementById("main-window");
+      },
+
+      loadBMSURI() {
+        let arry = window.location.toString().split("?");
+        let loadURL = arry[1];
+        let userContextId = Number(arry[2]);
+        let userAgent = arry[3] == "true";
+        let webPanelId = arry[4];
+  
+        gBrowser.loadURI(Services.io.newURI(loadURL), {
+          triggeringPrincipal:
+            Services.scriptSecurityManager.getSystemPrincipal(),
+        });
+  
+        this.mainWindow
+          .setAttribute(
+            "chromehidden",
+            "toolbar",
+            "menubar directories extrachrome chrome,location=yes,centerscreen,dialog=no,resizable=yes,scrollbars=yes",
+          );
+        this.mainWindow.setAttribute("BSM-window", "true");
+        this.mainWindow.setAttribute("BMS-usercontextid", userContextId);
+        this.mainWindow.setAttribute("BMS-useragent", userAgent);
+
+        // Load CSS
+        const BMSSyleElement = document.createElement("style");
+        BMSSyleElement.textContent = `
+           @import url("chrome://browser/content/browser-bms-window.css");
+         `;
+        document.head.appendChild(BMSSyleElement);
+
+        // userContextId
+        if (userContextId != 0) {
+          window.setTimeout(() => {
+            BrowserManagerSidebarPanelWindowUtils.reopenInSelectContainer(
+              window,
+              webPanelId,
+              userContextId,
+              false
+            );
+          }, 0);
+        }
+      },
   },
 };
 
