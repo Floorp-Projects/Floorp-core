@@ -289,7 +289,6 @@ export const BrowserManagerSidebarPanelWindowUtils = {
       if (tab.getAttribute("usercontextid") == userContextId) {
         continue;
       }
-      
 
       let newTab = targetPanelWindow.gBrowser.addTab(loadURL, {
         userContextId,
@@ -299,6 +298,12 @@ export const BrowserManagerSidebarPanelWindowUtils = {
       targetPanelWindow.gBrowser.moveTabTo(newTab, tab._tPos);
       targetPanelWindow.gBrowser.removeTab(tab);
       targetPanelWindow.gBrowser.selectedTab = newTab;
+
+      targetPanelWindow.gBrowser.addTab("about:blank", {
+        userContextId,
+        triggeringPrincipal: Services.scriptSecurityManager.createNullPrincipal({}),
+        inBackground: true,
+      });
     }
   }
 };

@@ -217,3 +217,15 @@ changed: "Insert Floorp Sidebar & BMS codes."
 Line: 861
 
 URL: [VSCodeDev](https://insiders.vscode.dev/github/floorp-projects/Floorp/blob/ESR115/toolkit/components/extensions/webrequest/WebRequest.sys.mjs#L861)
+
+---
+
+22. browser\modules\AsyncTabSwitcher.jsm
+
+**Feature: "BMS"**
+
+changed: "Insert BMS codes."
+
+URL: [VSCodeDev](https://insiders.vscode.dev/github/floorp-projects/Floorp/blob/ESR115/browser/modules/AsyncTabSwitcher.jsm#L489)
+
+---
