@@ -1157,8 +1157,8 @@ var gWorkspaces = {
   },
 };
 
-window.SessionStore.promiseInitialized.then(() => {
+window.SessionStore.promiseAllWindowsRestored.then(() => {
   window.setTimeout(() => {
     gWorkspaces.init();
-  }, 1000);
+  }, 0);
 });
