@@ -39,7 +39,7 @@ export let BrowserManagerSidebar = {
     },
   },
 
-  DEFAULT_WEBPANEL: ["https://translate.google.com", "https://mastodon.social"],
+  DEFAULT_WEBPANEL: ["https://translate.google.com", "https://support.ablaze.one"],
   prefsUpdate() {
     let defaultPref = { data: {}, index: [] };
     for (let elem in this.STATIC_SIDEBAR_DATA) {
