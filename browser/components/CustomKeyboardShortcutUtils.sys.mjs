@@ -146,7 +146,7 @@ export const keyboradShortcutActions = {
     changeWorkspaceToNext: ["gWorkspaces.changeWorkspaceToNextOrBeforeWorkspace(true)", "open-next-workspace", "workspaces-action"],
 
     // BMS actions
-    toggleBMS: ["gBrowserManagerSidebar.controllFunctions.changeVisibleWenpanel()", "show-bsm", "bms-action"],
+    toggleBMS: ["gBrowserManagerSidebar.controllFunctions.toggleBMSShortcut()", "show-bsm", "bms-action"],
     showPanel1: ["gBrowserManagerSidebar.contextMenu.showWithNumber(0)", "show-panel-1", "bms-action"],
     showPanel2: ["gBrowserManagerSidebar.contextMenu.showWithNumber(1)", "show-panel-2", "bms-action"],
     showPanel3: ["gBrowserManagerSidebar.contextMenu.showWithNumber(2)", "show-panel-3", "bms-action"],

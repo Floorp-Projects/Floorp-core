@@ -869,6 +869,15 @@ var gBrowserManagerSidebar = {
         }
       }
     },
+
+    toggleBMSShortcut() {
+      if (gBrowserManagerSidebar.nowPage == null) {
+        gBrowserManagerSidebar.nowPage = gBrowserManagerSidebar.BROWSER_SIDEBAR_DATA.index[0];
+        gBrowserManagerSidebar.controllFunctions.visibleWebpanel();
+        gBrowserManagerSidebar.controllFunctions.changeVisibleWenpanel();
+      }
+      gBrowserManagerSidebar.controllFunctions.changeVisibleWenpanel();
+    },
   },
 
   bmsWindowFunctions: {
