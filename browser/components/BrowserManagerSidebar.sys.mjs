@@ -261,18 +261,116 @@ export let BrowserManagerSidebar = {
 };
 
 export const BrowserManagerSidebarPanelWindowUtils = {
-  reopenInSelectContainer(window, webpanelId, userContextId, parentWindow) {
-    let panelWindows = window.window;
+  getWindowByWebpanelId(webpanelId, parentWindow) {
+    let webpanelBrowserId = "webpanel" + webpanelId;
+    let webpanelBrowser = parentWindow.document.getElementById(webpanelBrowserId);
+
+    if (!webpanelBrowser) {
+      return null;
+    }
+
+    return webpanelBrowser.browsingContext.associatedWindow;
+  },
+
+  toggleMutePanel(window, webpanelId, isParentWindow) {
     let targetPanelWindow = null;
 
-    if (parentWindow) {
-      for (let panelWindow of panelWindows) {
-        let windowDocURI = panelWindow.document.documentURI;
-        if (windowDocURI.endsWith(webpanelId)) {
-          targetPanelWindow = panelWindow;
-          break;
-        }
-      }
+    if (isParentWindow) {
+      targetPanelWindow = this.getWindowByWebpanelId(webpanelId, window);
+    } else {
+      targetPanelWindow = window;
+    }
+
+    if (!targetPanelWindow) {
+      return;
+    }
+
+    let tab = targetPanelWindow.gBrowser.selectedTab;
+    let audioMuted = tab.linkedBrowser.audioMuted;
+
+    if (audioMuted) {
+      tab.linkedBrowser.unmute();
+    } else {
+      tab.linkedBrowser.mute();
+    }
+  },
+
+  reloadPanel(window, webpanelId, isParentWindow) {
+    let targetPanelWindow = null;
+
+    if (isParentWindow) {
+      targetPanelWindow = this.getWindowByWebpanelId(webpanelId, window);
+    } else {
+      targetPanelWindow = window;
+    }
+
+    if (!targetPanelWindow) {
+      return;
+    }
+
+    let tab = targetPanelWindow.gBrowser.selectedTab;
+    tab.linkedBrowser.reload();
+  },
+
+  goForwardPanel(window, webpanelId, isParentWindow) {
+    let targetPanelWindow = null;
+
+    if (isParentWindow) {
+      targetPanelWindow = this.getWindowByWebpanelId(webpanelId, window);
+    } else {
+      targetPanelWindow = window;
+    }
+
+    if (!targetPanelWindow) {
+      return;
+    }
+
+    let tab = targetPanelWindow.gBrowser.selectedTab;
+    tab.linkedBrowser.goForward();
+  },
+
+  goBackPanel(window, webpanelId, isParentWindow) {
+    let targetPanelWindow = null;
+
+    if (isParentWindow) {
+      targetPanelWindow = this.getWindowByWebpanelId(webpanelId, window);
+    } else {
+      targetPanelWindow = window;
+    }
+
+    if (!targetPanelWindow) {
+      return;
+    }
+
+    let tab = targetPanelWindow.gBrowser.selectedTab;
+    tab.linkedBrowser.goBack();
+  },
+
+  goIndexPagePanel(window, webpanelId, isParentWindow) {
+    let targetPanelWindow = null;
+
+    if (isParentWindow) {
+      targetPanelWindow = this.getWindowByWebpanelId(webpanelId, window);
+    } else {
+      targetPanelWindow = window;
+    }
+
+    if (!targetPanelWindow) {
+      return;
+    }
+
+    let uri = targetPanelWindow.bmsLoadedURI;
+    targetPanelWindow.gBrowser.loadURI(Services.io.newURI(uri), {
+      triggeringPrincipal:
+        Services.scriptSecurityManager.getSystemPrincipal(),
+    });
+  },
+
+  reopenInSelectContainer(window, webpanelId, userContextId, isParentWindow) {
+    let targetPanelWindow = null;
+
+    if (isParentWindow) {
+      targetPanelWindow = this.getWindowByWebpanelId(webpanelId, window);
     } else {
       targetPanelWindow = window;
     }

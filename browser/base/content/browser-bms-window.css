@@ -5,28 +5,8 @@
 
 /* Toolbars***************************************************************/
 
-#TabsToolbar {
-   display: none !important;
-}
-
-#PanelUI-menu-button {
-   display: none !important;
-}
-
-#PersonalToolbar {
-   display: none !important;
-}
-
-#titlebar {
+toolbar {
   display: none !important;
-}
-
-#statusBar {
-  display: none !important;
-}
-
-#urlbar-container {
-    display: none !important;
 }
 
 /* Toolbar buttons *****************************************************/
