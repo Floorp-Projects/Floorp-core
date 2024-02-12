@@ -917,6 +917,11 @@ var gBrowserManagerSidebar = {
           );
         }, 0);
       }
+
+      // Resolve the issue that open url by anoter application and that is not loaded on main window.
+      window.setTimeout(() => {
+        window.gBrowser.addTrustedTab("about:blank");
+      }, 0);
     },
   },
 };
