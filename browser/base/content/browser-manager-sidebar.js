@@ -309,15 +309,16 @@ var gBrowserManagerSidebar = {
         event.currentTarget
       );
       event.currentTarget.style.borderTop = "";
-      gBrowserManagerSidebar.BROWSER_SIDEBAR_DATA.index.splice(0);
+      let currentBSD = gBrowserManagerSidebar.BROWSER_SIDEBAR_DATA;
+      currentBSD.index.splice(0);
       for (let elem of document.querySelectorAll(".sicon-list")) {
-        gBrowserManagerSidebar.BROWSER_SIDEBAR_DATA.index.push(
+        currentBSD.index.push(
           gBrowserManagerSidebar.getWebpanelObjectById(elem.id)
         );
       }
       Services.prefs.setStringPref(
         `floorp.browser.sidebar2.data`,
-        JSON.stringify(gBrowserManagerSidebar.BROWSER_SIDEBAR_DATA)
+        JSON.stringify(currentBSD)
       );
     },
   },
