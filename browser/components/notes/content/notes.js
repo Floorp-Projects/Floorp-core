@@ -87,29 +87,21 @@ document.addEventListener("DOMContentLoaded", function () {
     return Services.prefs.getIntPref("floorp.browser.note.memos.using");
   }
 
-  function updateSelectedItem(id) {
-    const oldSelectedItem = document.querySelector(
-      ".memo-list-item.selected, #memo-add.selected",
-    );
-    if (oldSelectedItem != null) {
-      oldSelectedItem.classList.remove("selected");
-    }
-    if (id != -1) {
-      const newSelectedItem = document.querySelector(
-        `.memo-list-item:nth-child(${id + 1})`,
-      );
-      if (newSelectedItem != null) {
-        newSelectedItem.classList.add("selected");
-      }
-    } else {
-      const memoNewButton = document.querySelector("#memo-add");
-      memoNewButton.classList.add("selected");
-    }
+function updateSelectedItem(id) {
+  const oldSelectedItem = document.querySelector(".memo-list-item.selected, #memo-add.selected");
+  oldSelectedItem?.classList.remove("selected");
+
+  if (id !== -1) {
+    const newSelectedItem = document.querySelector(`.memo-list-item:nth-child(${id + 1})`);
+    newSelectedItem?.classList.add("selected");
+  } else {
+    document.querySelector("#memo-add").classList.add("selected");
   }
+}
 
   // メモリストのアイテムをクリックしたときの処理
   function memoListItemClick() {
-    let elements = document.getElementsByClassName("memo-list-item");
+    const elements = document.getElementsByClassName("memo-list-item");
     for (let i = 0; i < elements.length; i++) {
       elements[i].addEventListener("click", function () {
         memoInput.value = memos.contents[i];
@@ -121,8 +113,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   //メモを削除する
-  deleteMemo.onclick = function () {
-    let openningNoteID = returnNoteID();
+  deleteMemo.onclick = () => {
+    const openningNoteID = returnNoteID();
     memos.contents.splice(openningNoteID, 1);
     memos.titles.splice(openningNoteID, 1);
     Services.prefs.setStringPref(
@@ -137,18 +129,17 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   // 新規メモ作成ボタンがクリックされたときの処理
-  createNewMemo.onclick = function () {
+  createNewMemo.onclick = () => {
     memoInput.value = "";
-    let DefaultNewTitle = l10n.formatValueSync("memo-new-title");
-    if (memos.titles.includes(DefaultNewTitle)) {
-      let i = 1;
-      while (memos.titles.includes(DefaultNewTitle + ` (${i})`)) {
-        i++;
-      }
-      memoTitleInput.value = DefaultNewTitle + ` (${i})`;
-    } else {
-      memoTitleInput.value = DefaultNewTitle;
+    let defaultNewTitle = l10n.formatValueSync("memo-new-title");
+    let title = defaultNewTitle;
+    let i = 1;
+  
+    while (memos.titles.includes(title)) {
+      title = `${defaultNewTitle} (${i++})`;
     }
+  
+    memoTitleInput.value = title;
     setNoteID(-1);
   };
 
@@ -170,34 +161,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function saveNotes() {
     const memo = memoInput.value;
-    const memoTitle = memoTitleInput.value;
+    const memoTitle = memoTitleInput.value || l10n.formatValueSync("memo-new-title");
     const openningNoteID = returnNoteID();
-
-    if (openningNoteID == -1) {
+  
+    if (openningNoteID === -1) {
       memos.contents.push(memo);
-      if (memoTitle) {
-        memos.titles.push(memoTitle);
-      } else {
-        memos.titles.push(l10n.formatValueSync("memo-new-title"));
-      }
-      Services.prefs.setStringPref(
-        "floorp.browser.note.memos",
-        JSON.stringify(memos),
-      );
+      memos.titles.push(memoTitle);
       let currentNoteID = memos.contents.length - 1;
       setNoteID(currentNoteID);
     } else {
       memos.contents[openningNoteID] = memo;
-      if (memoTitle) {
-        memos.titles[openningNoteID] = memoTitle;
-      } else {
-        memos.titles[openningNoteID] = memoInput.value.substr(0, 10);
-      }
-      Services.prefs.setStringPref(
-        "floorp.browser.note.memos",
-        JSON.stringify(memos),
-      );
+      memos.titles[openningNoteID] = memoTitle || memoInput.value.substr(0, 10);
     }
+  
+    Services.prefs.setStringPref(
+      "floorp.browser.note.memos",
+      JSON.stringify(memos),
+    );
+  
     showMemos();
   }
 
@@ -209,7 +190,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function showMarkDownPreview() {
     const memo = memoInput.value;
-    if (!memo == "") {
+    if (memo !== "") {
       HTMLPreview.style.display = "block";
       memoInput.style.display = "none";
       memoSave.style.display = "none";
