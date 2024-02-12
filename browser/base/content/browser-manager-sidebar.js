@@ -372,10 +372,19 @@ var gBrowserManagerSidebar = {
         JSON.stringify(currentBSD),
       );
 
-      //unload webpanel
-      gBrowserManagerSidebar.controllFunctions.unloadWebpanel(
-        id
-      );
+      // reload webpanel if it is
+      // selected. If not, unload it
+      if (gBrowserManagerSidebar.nowPage == id) {
+        gBrowserManagerSidebar.controllFunctions.unloadWebpanel(
+          id
+        );
+        gBrowserManagerSidebar.nowPage = id;
+        gBrowserManagerSidebar.controllFunctions.visibleWebpanel();
+      } else {
+        gBrowserManagerSidebar.controllFunctions.unloadWebpanel(
+          id
+        );
+      }
     },
 
     deleteWebpanel() {
@@ -481,7 +490,7 @@ var gBrowserManagerSidebar = {
           gBrowserManagerSidebar.controllFunctions.changeVisibleWenpanel();
         }
       }
-      document.getElementById(`webpanel${id}`).remove();
+      document.getElementById(`webpanel${id}`)?.remove();
       document.getElementById(`select-${id}`).removeAttribute("muted");
     },
 
