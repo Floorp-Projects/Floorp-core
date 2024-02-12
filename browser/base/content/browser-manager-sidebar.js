@@ -381,7 +381,8 @@ var gBrowserManagerSidebar = {
     deleteWebpanel() {
       if (
         document.getElementById("sidebar-splitter2").getAttribute("hidden") !=
-        "true"
+        "true" &&
+        gBrowserManagerSidebar.nowPage == gBrowserManagerSidebar.clickedWebpanel
       ) {
         gBrowserManagerSidebar.controllFunctions.changeVisibleWenpanel();
       }
