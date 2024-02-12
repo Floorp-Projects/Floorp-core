@@ -56,6 +56,8 @@ pref("browser.newtabpage.activity-stream.floorp.background.images.folder", "");
 pref("browser.newtabpage.activity-stream.floorp.background.image.path", "");
 pref("browser.newtabpage.activity-stream.floorp.background.images.extensions", "png,jpg,jpeg,webp,gif,svg,tiff,tif,bmp,avif,jxl");
 pref("browser.newtabpage.activity-stream.floorp.newtab.backdrop.blur.disable",false);
+pref("browser.newtabpage.activity-stream.floorp.newtab.releasenote.hide",false);
+pref("browser.newtabpage.activity-stream.floorp.newtab.imagecredit.hide",false);
 
 pref("floorp.multitab.bottommode", false);
 

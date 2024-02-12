@@ -17,10 +17,7 @@ const gNotesPane = {
     this._pane = document.getElementById("paneNotes");
     document
       .getElementById("backtogeneral__")
-      .addEventListener("command", function () {
-        gotoPref("general");
-      });
-
+      .addEventListener("command", () => { gotoPref("general"); });
     const needreboot = document.getElementsByClassName("needreboot");
     for (let i = 0; i < needreboot.length; i++) {
       if (needreboot[i].getAttribute("rebootELIsSet") == "true") {
@@ -48,49 +45,43 @@ const gNotesPane = {
     }
 
     getAllBackupedNotes().then((content) => {
-      for (let i = 0; i < Object.keys(content.data).length; i++) {
+      const keys = Object.keys(content.data);
+      keys.forEach((key, i) => {
         if (i > 9) {
-          document.querySelectorAll(".backup-item")[0].remove();
+          document.querySelector(".backup-item").remove();
         }
         let elem = window.MozXULElement.parseXULToFragment(`
               <richlistitem class="backup-item">
-                <label value="${coventToDateAndTime(
-                  Number(Object.keys(content.data)[i]),
-                )}" class="backup-date"/>
-                <button class="restore-button" id="${
-                  Object.keys(content.data)[i]
-                }" data-l10n-id="restore-button"/>
+                <label value="${convertToDateAndTime(Number(key))}" class="backup-date"/>
+                <button class="restore-button" id="${key}" data-l10n-id="restore-button"/>
               </richlistitem>
             `);
         document.getElementById("backup-list").appendChild(elem);
-        let elems = document.getElementsByClassName("restore-button");
-        for (let i = 0; i < elems.length; i++) {
-          elems[i].onclick = function () {
-            restoreNote(elems[i].id);
-          };
-        }
-      }
+      });
+    
+      const elems = Array.from(document.getElementsByClassName("restore-button"));
+      elems.forEach((elem) => {
+        elem.onclick = () => restoreNote(elem.id);
+      });
     });
   },
 };
 //convert timestamp to date and time
-function coventToDateAndTime(timestamp) {
-  let date = new Date(timestamp);
-  let dateStr = date.toLocaleDateString();
-  let timeStr = date.toLocaleTimeString();
-  return dateStr + " " + timeStr;
+function convertToDateAndTime(timestamp) {
+  const date = new Date(timestamp);
+  return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
 }
+
 
 function getAllBackupedNotes() {
   const filePath = PathUtils.join(
     Services.dirsvc.get("ProfD", Ci.nsIFile).path,
     "floorp_notes_backup.json",
   );
-  const content = IOUtils.readUTF8(filePath).then((content) => {
+  return IOUtils.readUTF8(filePath).then((content) => {
     content = content.slice(0, -1) + "}}";
     return JSON.parse(content);
   });
-  return content;
 }
 
 async function restoreNote(timestamp) {
@@ -110,7 +101,7 @@ async function restoreNote(timestamp) {
     l10n.formatValueSync("restore-from-backup-prompt-title"),
     `${l10n.formatValueSync(
       "restore-from-this-backup",
-    )}\n${l10n.formatValueSync("backuped-time")}: ${coventToDateAndTime(
+    )}\n${l10n.formatValueSync("backuped-time")}: ${convertToDateAndTime(
       Number(timestamp),
     )}`,
     flags,
