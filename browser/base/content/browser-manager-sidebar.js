@@ -19,7 +19,7 @@ var gBrowser = window.gBrowser;
 
 var gBrowserManagerSidebar = {
   _initialized: false,
-  nowPage: null,
+  currentPanel: null,
   clickedWebpanel: null,
   webpanel: null,
   contextWebpanel: null,
@@ -94,7 +94,7 @@ var gBrowserManagerSidebar = {
 
     Services.prefs.addObserver(
       "floorp.browser.sidebar2.global.webpanel.width",
-      () => this.controllFunctions.setSidebarWidth(this.nowPage)
+      () => this.controllFunctions.setSidebarWidth(this.currentPanel)
     );
     Services.prefs.addObserver("floorp.browser.sidebar.enable", () =>
       this.controllFunctions.changeVisibleBrowserManagerSidebar(
@@ -111,7 +111,7 @@ var gBrowserManagerSidebar = {
           JSON.stringify(gBrowserManagerSidebar.BROWSER_SIDEBAR_DATA.data[elem])
         ) {
           if (
-            gBrowserManagerSidebar.nowPage == elem &&
+            gBrowserManagerSidebar.currentPanel == elem &&
             !(sidebarsplit2.getAttribute("hidden") == "true")
           ) {
             gBrowserManagerSidebar.controllFunctions.makeWebpanel(elem);
@@ -124,7 +124,7 @@ var gBrowserManagerSidebar = {
     });
     Services.obs.addObserver(gBrowserManagerSidebar.servicesObs, "obs-panel-re");
     Services.obs.addObserver(
-      gBrowserManagerSidebar.controllFunctions.changeVisibleWenpanel,
+      gBrowserManagerSidebar.controllFunctions.changeVisibilityOfWebPanel,
       "floorp-change-panel-show"
     );
     let addbutton = document.getElementById("add-button");
@@ -136,7 +136,7 @@ var gBrowserManagerSidebar = {
     // sidebar display
     let sidebarsplit2 = document.getElementById("sidebar-splitter2");
     if (!(sidebarsplit2.getAttribute("hidden") == "true")) {
-      this.controllFunctions.changeVisibleWenpanel();
+      this.controllFunctions.changeVisibilityOfWebPanel();
     }
     window.this = this;
 
@@ -157,7 +157,7 @@ var gBrowserManagerSidebar = {
 
   // Sidebar button functions
   sidebarButtons(action) {
-    const modeValuePref = this.nowPage;
+    const modeValuePref = this.currentPanel;
     let webpanel = document.getElementById(`webpanel${modeValuePref}`);
     switch (action) {
       case 0:
@@ -215,12 +215,13 @@ var gBrowserManagerSidebar = {
 
   // keep sidebar width for each webpanel
   keepWebPanelWidth() {
-    const pref = this.nowPage;
-    this.BROWSER_SIDEBAR_DATA.data[pref].width =
+    const pref = this.currentPanel;
+    let currentBSD = this.BROWSER_SIDEBAR_DATA;
+    currentBSD.data[pref].width =
       document.getElementById("sidebar2-box").clientWidth;
     Services.prefs.setStringPref(
       `floorp.browser.sidebar2.data`,
-      JSON.stringify(this.BROWSER_SIDEBAR_DATA)
+      JSON.stringify(currentBSD)
     );
   },
 
@@ -257,10 +258,10 @@ var gBrowserManagerSidebar = {
 
   selectSidebarItem(event) {
     let custom_url_id = event.target.id.replace("select-", "");
-    if (this.nowPage == custom_url_id) {
-      this.controllFunctions.changeVisibleWenpanel();
+    if (this.currentPanel == custom_url_id) {
+      this.controllFunctions.changeVisibilityOfWebPanel();
     } else {
-      this.nowPage = custom_url_id;
+      this.currentPanel = custom_url_id;
       this.controllFunctions.visibleWebpanel();
     }
   },
@@ -308,15 +309,16 @@ var gBrowserManagerSidebar = {
         event.currentTarget
       );
       event.currentTarget.style.borderTop = "";
-      gBrowserManagerSidebar.BROWSER_SIDEBAR_DATA.index.splice(0);
+      let currentBSD = gBrowserManagerSidebar.BROWSER_SIDEBAR_DATA;
+      currentBSD.index.splice(0);
       for (let elem of document.querySelectorAll(".sicon-list")) {
-        gBrowserManagerSidebar.BROWSER_SIDEBAR_DATA.index.push(
+        currentBSD.index.push(
           gBrowserManagerSidebar.getWebpanelObjectById(elem.id)
         );
       }
       Services.prefs.setStringPref(
         `floorp.browser.sidebar2.data`,
-        JSON.stringify(gBrowserManagerSidebar.BROWSER_SIDEBAR_DATA)
+        JSON.stringify(currentBSD)
       );
     },
   },
@@ -370,18 +372,28 @@ var gBrowserManagerSidebar = {
         JSON.stringify(currentBSD),
       );
 
-      //unload webpanel
-      gBrowserManagerSidebar.controllFunctions.unloadWebpanel(
-        id
-      );
+      // reload webpanel if it is
+      // selected. If not, unload it
+      if (gBrowserManagerSidebar.currentPanel == id) {
+        gBrowserManagerSidebar.controllFunctions.unloadWebpanel(
+          id
+        );
+        gBrowserManagerSidebar.currentPanel = id;
+        gBrowserManagerSidebar.controllFunctions.visibleWebpanel();
+      } else {
+        gBrowserManagerSidebar.controllFunctions.unloadWebpanel(
+          id
+        );
+      }
     },
 
     deleteWebpanel() {
       if (
         document.getElementById("sidebar-splitter2").getAttribute("hidden") !=
-        "true"
+        "true" &&
+        gBrowserManagerSidebar.currentPanel == gBrowserManagerSidebar.clickedWebpanel
       ) {
-        gBrowserManagerSidebar.controllFunctions.changeVisibleWenpanel();
+        gBrowserManagerSidebar.controllFunctions.changeVisibilityOfWebPanel();
       }
 
       let currentBSD = gBrowserManagerSidebar.BROWSER_SIDEBAR_DATA;
@@ -435,7 +447,7 @@ var gBrowserManagerSidebar = {
 
   controllFunctions: {
     visiblePanelBrowserElem() {
-      const modeValuePref = gBrowserManagerSidebar.nowPage;
+      const modeValuePref = gBrowserManagerSidebar.currentPanel;
       const selectedwebpanel = document.getElementById(
         `webpanel${modeValuePref}`
       );
@@ -459,7 +471,7 @@ var gBrowserManagerSidebar = {
         document.getElementById("sidebar-splitter2").getAttribute("hidden") ==
         "true"
       ) {
-        gBrowserManagerSidebar.controllFunctions.changeVisibleWenpanel();
+        gBrowserManagerSidebar.controllFunctions.changeVisibilityOfWebPanel();
       }
       gBrowserManagerSidebar.controllFunctions.changeCheckPanel(
         document.getElementById("sidebar-splitter2").getAttribute("hidden") !=
@@ -472,13 +484,13 @@ var gBrowserManagerSidebar = {
 
     unloadWebpanel(id) {
       let sidebarsplit2 = document.getElementById("sidebar-splitter2");
-      if (id == gBrowserManagerSidebar.nowPage) {
-        gBrowserManagerSidebar.nowPage = null;
+      if (id == gBrowserManagerSidebar.currentPanel) {
+        gBrowserManagerSidebar.currentPanel = null;
         if (sidebarsplit2.getAttribute("hidden") != "true") {
-          gBrowserManagerSidebar.controllFunctions.changeVisibleWenpanel();
+          gBrowserManagerSidebar.controllFunctions.changeVisibilityOfWebPanel();
         }
       }
-      document.getElementById(`webpanel${id}`).remove();
+      document.getElementById(`webpanel${id}`)?.remove();
       document.getElementById(`select-${id}`).removeAttribute("muted");
     },
 
@@ -489,7 +501,7 @@ var gBrowserManagerSidebar = {
       for (let elem of document.getElementsByClassName("sidepanel-icon")) {
         elem.removeAttribute("muted");
       }
-      gBrowserManagerSidebar.nowPage = null;
+      gBrowserManagerSidebar.currentPanel = null;
     },
 
     setUserContextColorLine(id) {
@@ -524,7 +536,7 @@ var gBrowserManagerSidebar = {
         elem.setAttribute("checked", "false");
       }
       if (doChecked) {
-        let selectedNode = document.querySelector(`#select-${gBrowserManagerSidebar.nowPage}`);
+        let selectedNode = document.querySelector(`#select-${gBrowserManagerSidebar.currentPanel}`);
         if (selectedNode != null) {
           selectedNode.setAttribute("checked", "true");
         }
@@ -545,7 +557,7 @@ var gBrowserManagerSidebar = {
       }
     },
 
-    changeVisibleWenpanel() {
+    changeVisibilityOfWebPanel() {
       let siderbar2header = document.getElementById("sidebar2-header");
       let sidebarsplit2 = document.getElementById("sidebar-splitter2");
       let sidebar2box = document.getElementById("sidebar2-box");
@@ -591,7 +603,7 @@ var gBrowserManagerSidebar = {
     },
 
     visibleWebpanel() {
-      const webpanel_id = gBrowserManagerSidebar.nowPage;
+      const webpanel_id = gBrowserManagerSidebar.currentPanel;
       if (
         webpanel_id != null &&
         gBrowserManagerSidebar.BROWSER_SIDEBAR_DATA.index.includes(webpanel_id)
@@ -842,11 +854,11 @@ var gBrowserManagerSidebar = {
             ) != null
           ) {
             let sidebarsplit2 = document.getElementById("sidebar-splitter2");
-            if (gBrowserManagerSidebar.nowPage == siconAll[i].id.replace("select-", "")) {
-              gBrowserManagerSidebar.nowPage = null;
+            if (gBrowserManagerSidebar.currentPanel == siconAll[i].id.replace("select-", "")) {
+              gBrowserManagerSidebar.currentPanel = null;
               gBrowserManagerSidebar.controllFunctions.visibleWebpanel();
               if (sidebarsplit2.getAttribute("hidden") != "true") {
-                gBrowserManagerSidebar.controllFunctions.changeVisibleWenpanel();
+                gBrowserManagerSidebar.controllFunctions.changeVisibilityOfWebPanel();
               }
             }
             document
@@ -868,6 +880,15 @@ var gBrowserManagerSidebar = {
           elem.style.removeProperty("--BMSIcon");
         }
       }
+    },
+
+    toggleBMSShortcut() {
+      if (gBrowserManagerSidebar.currentPanel == null) {
+        gBrowserManagerSidebar.currentPanel = gBrowserManagerSidebar.BROWSER_SIDEBAR_DATA.index[0];
+        gBrowserManagerSidebar.controllFunctions.visibleWebpanel();
+        gBrowserManagerSidebar.controllFunctions.changeVisibilityOfWebPanel();
+      }
+      gBrowserManagerSidebar.controllFunctions.changeVisibilityOfWebPanel();
     },
   },
 
