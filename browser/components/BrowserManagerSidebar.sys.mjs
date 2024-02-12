@@ -146,8 +146,29 @@ export let BrowserManagerSidebar = {
             elem.style.setProperty("--BMSIcon", `url(${icon_data_url})`);
           }
         })
-        .catch((reject) => {
-          elem.style.removeProperty("--BMSIcon");
+        .catch(reject => {
+          const origin = new URL(sbar_url).origin;
+          const iconExtensions = ['ico', 'png', 'jpg', 'jpeg'];
+        
+          const fetchIcon = async (extension) => {
+            const iconUrl = `${origin}/favicon.${extension}`;
+            const response = await fetch(iconUrl);
+            if (response.ok && elem.style.getPropertyValue("--BMSIcon") != iconUrl) {
+              elem.style.setProperty("--BMSIcon", `url(${iconUrl})`);
+              return true;
+            }
+            return false;
+          };
+        
+          const fetchIcons = iconExtensions.map(fetchIcon);
+        
+          Promise.allSettled(fetchIcons)
+            .then(results => {
+              const iconFound = results.some(result => result.status === 'fulfilled' && result.value);
+              if (!iconFound) {
+                elem.style.removeProperty("--BMSIcon");
+              }
+            });
         });
     } else if (sbar_url.startsWith("moz-extension://")) {
       let addon_id = new URL(sbar_url).hostname;
