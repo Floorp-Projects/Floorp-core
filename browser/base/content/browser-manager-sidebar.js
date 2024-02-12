@@ -216,11 +216,12 @@ var gBrowserManagerSidebar = {
   // keep sidebar width for each webpanel
   keepWebPanelWidth() {
     const pref = this.nowPage;
-    this.BROWSER_SIDEBAR_DATA.data[pref].width =
+    let currentBSD = this.BROWSER_SIDEBAR_DATA;
+    currentBSD.data[pref].width =
       document.getElementById("sidebar2-box").clientWidth;
     Services.prefs.setStringPref(
       `floorp.browser.sidebar2.data`,
-      JSON.stringify(this.BROWSER_SIDEBAR_DATA)
+      JSON.stringify(currentBSD)
     );
   },
 
