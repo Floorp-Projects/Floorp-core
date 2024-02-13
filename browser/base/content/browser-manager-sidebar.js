@@ -145,7 +145,6 @@ var gBrowserManagerSidebar = {
       // Browser Manager Sidebar embedded check
       let embedded = window.location.toString().split("?")[1];
       if (embedded != "" && embedded !== false && embedded != undefined) {
-        window.IsWebpanelWindow = true;
         window.SessionStore.promiseInitialized.then(() => {
           this.bmsWindowFunctions.loadBMSURI();
         });
@@ -655,7 +654,6 @@ var gBrowserManagerSidebar = {
         isWeb = false;
       }
 
-      // eslint-disable-next-line no-lonely-if
       if (webpanobject == null) {
         let webpanelElem = window.MozXULElement.parseXULToFragment(`
               <browser 
