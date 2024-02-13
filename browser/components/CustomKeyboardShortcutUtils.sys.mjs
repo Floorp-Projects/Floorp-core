@@ -49,8 +49,8 @@ export const SHORTCUT_KEY_CHANGED_ARRAY_PREF =
 export const keyboradShortcutActions = {
     /*
      * these are the actions that can be triggered by keyboard shortcuts.
-     * the first element of each array is the code that will be executed.
-     * the second element is use for Fluent localization.
+     * 1st element of each array is the code that will be executed.
+     * 2nd element is use for Fluent localization.
      * 3rd is the type of action. You can use it to filter actions or get all actions of a type.
      * If you want to add a new action, you need to add it here.
     */
@@ -157,6 +157,11 @@ export const keyboradShortcutActions = {
     showPanel8: ["gBrowserManagerSidebar.contextMenu.showWithNumber(7)", "show-panel-8", "bms-action"],
     showPanel9: ["gBrowserManagerSidebar.contextMenu.showWithNumber(8)", "show-panel-9", "bms-action"],
     showPanel10: ["gBrowserManagerSidebar.contextMenu.showWithNumber(9)", "show-panel-10", "bms-action"],
+
+    // Split View actions
+    openSplitViewOnLeft: ["gSplitView.Functions.setSplitView(gBrowser.selectedTab, 'left')", "open-split-view-on-left", "split-view-action"],
+    openSplitViewOnRight: ["gSplitView.Functions.setSplitView(gBrowser.selectedTab, 'right')", "open-split-view-on-right", "split-view-action"],
+    closeSplitView: ["gSplitView.Functions.removeSplitView()", "close-split-view", "split-view-action"],
 
     // Custom actions
     customAction1: ["customActionsFunctions.evalCustomeActionWithNum(1)", "custom-action-1", "custom-action"],
