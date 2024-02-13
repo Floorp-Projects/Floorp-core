@@ -139,18 +139,18 @@ var gBrowserManagerSidebar = {
       this.controllFunctions.changeVisibilityOfWebPanel();
     }
     window.this = this;
-
-    window.SessionStore.promiseInitialized.then(() => {
-      if (
-        Services.prefs.getBoolPref("floorp.browser.sidebar2.addons.enabled")
-      ) {
-        // Browser Manager Sidebar embedded check
-        let embedded = window.location.toString().split("?")[1];
-        if (embedded != "" && embedded !== false && embedded != undefined) {
+    if (
+      Services.prefs.getBoolPref("floorp.browser.sidebar2.addons.enabled")
+    ) {
+      // Browser Manager Sidebar embedded check
+      let embedded = window.location.toString().split("?")[1];
+      if (embedded != "" && embedded !== false && embedded != undefined) {
+        window.IsWebpanelWindow = true;
+        window.SessionStore.promiseInitialized.then(() => {
           this.bmsWindowFunctions.loadBMSURI();
-        }
+        });
       }
-    });
+    }
 
     this._initialized = true;
   },
@@ -521,8 +521,8 @@ var gBrowserManagerSidebar = {
             )
           ].color;
         document.getElementById(`select-${id}`).style.borderLeft = `solid 2px ${container_color == "toolbar"
-            ? "var(--toolbar-field-color)"
-            : container_color
+          ? "var(--toolbar-field-color)"
+          : container_color
           }`;
       } else if (
         document.getElementById(`select-${id}`).style.border != "1px solid blue"
@@ -908,6 +908,8 @@ var gBrowserManagerSidebar = {
         triggeringPrincipal:
           Services.scriptSecurityManager.getSystemPrincipal(),
       });
+
+      gBrowser.selectedTab.setAttribute("floorpWebpanelTab", "true");
 
       this.mainWindow
         .setAttribute(
