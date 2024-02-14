@@ -55,6 +55,16 @@ var gBrowserManagerSidebar = {
     return webpanelId.replace("select-", "");
   },
 
+
+  // Webpanel embedded check
+  beforeInit() {
+    // Browser Manager Sidebar
+    let embedded = window.location.toString().split("?")[1];
+    if (embedded) {
+      window.IsWebpanelWindow = true;
+    }
+  },
+
   async init() {
     if (this._initialized) {
       return;
@@ -947,4 +957,8 @@ var gBrowserManagerSidebar = {
   },
 };
 
-gBrowserManagerSidebar.init();
+// Initialize Browser Manager Sidebar
+gBrowserManagerSidebar.beforeInit();
+window.SessionStore.promiseInitialized.then(() => {
+  gBrowserManagerSidebar.init();
+});
