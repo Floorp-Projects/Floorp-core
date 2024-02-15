@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-let { BrowserManagerSidebar } = ChromeUtils.importESModule(
+var { BrowserManagerSidebar } = ChromeUtils.importESModule(
   "resource:///modules/BrowserManagerSidebar.sys.mjs"
 );
 
-let { BrowserManagerSidebarPanelWindowUtils } = ChromeUtils.importESModule(
+var { BrowserManagerSidebarPanelWindowUtils } = ChromeUtils.importESModule(
   "resource:///modules/BrowserManagerSidebar.sys.mjs"
 );
 
-let { ContextualIdentityService } = ChromeUtils.importESModule(
+var { ContextualIdentityService } = ChromeUtils.importESModule(
   "resource://gre/modules/ContextualIdentityService.sys.mjs"
 );
 
@@ -53,16 +53,6 @@ var gBrowserManagerSidebar = {
 
   getWebpanelObjectById(webpanelId) {
     return webpanelId.replace("select-", "");
-  },
-
-
-  // Webpanel embedded check
-  beforeInit() {
-    // Browser Manager Sidebar
-    let embedded = window.location.toString().split("?")[1];
-    if (embedded) {
-      window.IsWebpanelWindow = true;
-    }
   },
 
   async init() {
@@ -149,18 +139,6 @@ var gBrowserManagerSidebar = {
       this.controllFunctions.changeVisibilityOfWebPanel();
     }
     window.this = this;
-    if (
-      Services.prefs.getBoolPref("floorp.browser.sidebar2.addons.enabled")
-    ) {
-      // Browser Manager Sidebar embedded check
-      let embedded = window.location.toString().split("?")[1];
-      if (embedded != "" && embedded !== false && embedded != undefined) {
-        window.SessionStore.promiseInitialized.then(() => {
-          this.bmsWindowFunctions.loadBMSURI();
-        });
-      }
-    }
-
     this._initialized = true;
   },
 
@@ -899,66 +877,7 @@ var gBrowserManagerSidebar = {
       gBrowserManagerSidebar.controllFunctions.changeVisibilityOfWebPanel();
     },
   },
-
-  bmsWindowFunctions: {
-    get mainWindow() {
-      return document.getElementById("main-window");
-    },
-
-    loadBMSURI() {
-      let arry = window.location.toString().split("?");
-      let loadURL = arry[1];
-      let userContextId = Number(arry[2]);
-      let userAgent = arry[3] == "true";
-      let webPanelId = arry[4];
-
-      gBrowser.loadURI(Services.io.newURI(loadURL), {
-        triggeringPrincipal:
-          Services.scriptSecurityManager.getSystemPrincipal(),
-      });
-
-      gBrowser.selectedTab.setAttribute("floorpWebpanelTab", "true");
-
-      this.mainWindow
-        .setAttribute(
-          "chromehidden",
-          "toolbar",
-          "menubar directories extrachrome chrome,location=yes,centerscreen,dialog=no,resizable=yes,scrollbars=yes",
-        );
-      this.mainWindow.setAttribute("BSM-window", "true");
-      this.mainWindow.setAttribute("BMS-usercontextid", userContextId);
-      this.mainWindow.setAttribute("BMS-useragent", userAgent);
-      window.bmsLoadedURI = loadURL;
-
-      // Load CSS
-      const BMSSyleElement = document.createElement("style");
-      BMSSyleElement.textContent = `
-           @import url("chrome://browser/content/browser-bms-window.css");
-         `;
-      document.head.appendChild(BMSSyleElement);
-
-      // userContextId
-      if (userContextId != 0) {
-        window.setTimeout(() => {
-          BrowserManagerSidebarPanelWindowUtils.reopenInSelectContainer(
-            window,
-            webPanelId,
-            userContextId,
-            false
-          );
-        }, 0);
-      }
-
-      // Resolve the issue that open url by anoter application and that is not loaded on main window.
-      window.setTimeout(() => {
-        window.gBrowser.addTrustedTab("about:blank");
-      }, 0);
-    },
-  },
 };
 
 // Initialize Browser Manager Sidebar
-gBrowserManagerSidebar.beforeInit();
-window.SessionStore.promiseInitialized.then(() => {
-  gBrowserManagerSidebar.init();
-});
+gBrowserManagerSidebar.init();
