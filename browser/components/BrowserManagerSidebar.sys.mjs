@@ -409,8 +409,6 @@ export const BrowserManagerSidebarPanelWindowUtils = {
         continue;
       }
 
-      let webpanelTab = tab.getAttribute("floorpWebpanelTab");
-
       let newTab = targetPanelWindow.gBrowser.addTab(loadURL, {
         userContextId,
         triggeringPrincipal: Services.scriptSecurityManager.createNullPrincipal({}),
@@ -419,10 +417,6 @@ export const BrowserManagerSidebarPanelWindowUtils = {
       targetPanelWindow.gBrowser.moveTabTo(newTab, tab._tPos);
       targetPanelWindow.gBrowser.removeTab(tab);
       targetPanelWindow.gBrowser.selectedTab = newTab;
-
-      if (webpanelTab) {
-        newTab.setAttribute("floorpWebpanelTab", true);
-      }
 
       targetPanelWindow.gBrowser.addTab("about:blank", {
         userContextId,
