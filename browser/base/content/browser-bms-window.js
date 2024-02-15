@@ -77,6 +77,9 @@ var gBmsWindow = {
                 Services.scriptSecurityManager.getSystemPrincipal(),
         });
 
+        // Atribute modifications
+        gBrowser.selectedTab.setAttribute("BMS-webpanel-tab", "true");
+
         // userContextId
         if (userContextId != 0) {
             window.setTimeout(() => {

@@ -409,6 +409,9 @@ export const BrowserManagerSidebarPanelWindowUtils = {
         continue;
       }
 
+
+      tab.setAttribute("BMS-webpanel-tab", "true");
+
       let newTab = targetPanelWindow.gBrowser.addTab(loadURL, {
         userContextId,
         triggeringPrincipal: Services.scriptSecurityManager.createNullPrincipal({}),
