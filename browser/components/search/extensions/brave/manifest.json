@@ -1,0 +1,24 @@
+{
+  "name": "Brave Search",
+  "description": "Private search that puts you first, not big tech",
+  "manifest_version": 2,
+  "version": "1.0",
+  "applications": {
+    "gecko": {
+      "id": "brave@search.mozilla.org"
+    }
+  },
+  "hidden": true,
+  "icons": {
+    "16": "favicon.png"
+  },
+  "web_accessible_resources": ["favicon.png"],
+  "chrome_settings_overrides": {
+    "search_provider": {
+      "keyword": "@brave",
+      "name": "Brave",
+      "search_url": "https://search.brave.com/search?q={searchTerms}",
+      "suggest_url": "https://search.brave.com/api/suggest?q={searchTerms}"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+    "name": "Mojeek",
+    "description": "The alternative search engine that puts the people who use it first.",
+    "manifest_version": 2,
+    "version": "1.0",
+    "applications": {
+      "gecko": {
+        "id": "mojeek@search.mozilla.org"
+      }
+    },
+    "hidden": true,
+    "icons": {
+      "16": "favicon.png"
+    },
+    "web_accessible_resources": ["favicon.png"],
+    "chrome_settings_overrides": {
+      "search_provider": {
+        "keyword": "@mojeek",
+        "name": "Mojeek",
+        "search_url": "https://www.mojeek.com/search?q={searchTerms}"
+      }
+    }
+  }

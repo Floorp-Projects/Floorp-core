@@ -16,6 +16,7 @@
   "chrome_settings_overrides": {
     "search_provider": {
       "name": "Ecosia",
+      "keyword": "@ecosia, @ecs",
       "search_url": "https://www.ecosia.org/search",
       "search_form": "https://www.ecosia.org/",
       "search_url_get_params": "tt=mzl&q={searchTerms}",
