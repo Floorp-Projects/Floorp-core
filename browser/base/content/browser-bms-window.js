@@ -94,7 +94,8 @@ var gBmsWindow = {
 
         // Resolve the issue that open url by anoter application and that is not loaded on main window.
         window.setTimeout(() => {
-            window.gBrowser.addTrustedTab("about:blank");
+            let tab = window.gBrowser.addTrustedTab("about:blank");
+            window.gBrowser.removeTab(tab);
         }, 0);
 
 
