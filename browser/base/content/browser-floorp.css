@@ -252,7 +252,7 @@
 }
 
 #sidebar-hide-icon{
-  list-style-image: url("chrome://browser/skin/sidebars.svg");
+  list-style-image: url("chrome://browser/skin/bms-hide.svg");
 }
 
 #passwords-icon{
