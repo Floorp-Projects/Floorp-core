@@ -922,6 +922,14 @@ var gWorkspaces = {
     } catch (e) {
       console.log(e);
     }
+
+    // check popuppanel has child element
+    if (
+      gWorkspaces._popuppanelNotFound ||
+      gWorkspaces.workspacesPopupContent.childElementCount == 0
+    ) {
+      gWorkspaces.rebuildWorkspacesToolbar();
+    }
   },
 
   /* init */
