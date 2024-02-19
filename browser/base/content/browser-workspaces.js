@@ -1160,5 +1160,5 @@ var gWorkspaces = {
 window.SessionStore.promiseAllWindowsRestored.then(() => {
   window.setTimeout(() => {
     gWorkspaces.init();
-  }, 0);
+  }, 1000);
 });
