@@ -229,3 +229,12 @@ changed: "Insert BMS codes."
 URL: [VSCodeDev](https://insiders.vscode.dev/github/floorp-projects/Floorp/blob/ESR115/browser/modules/AsyncTabSwitcher.jsm#L489)
 
 ---
+
+23. browser\components\BrowserContentHandler.sys.mjs
+
+**Feature: "BMS"**
+
+changed: "Fix open link by 3rd party app."
+
+
+URL: [VSCodeDev](https://insiders.vscode.dev/github/floorp-projects/Floorp/blob/ESR115/browser/components/BrowserContentHandler.sys.mjs#L959)
