@@ -45,7 +45,7 @@ var gBmsWindow = {
         }
 
         // Against session restore issue
-        window.IsWebpanelWindow = true;
+        window.floorpWebPanelWindow = true;
 
         document.addEventListener("DOMContentLoaded", () => {
             window.SessionStore.promiseInitialized.then(() => {

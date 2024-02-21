@@ -255,3 +255,16 @@ Line: 560
 URL: [VSCodeDev](https://insiders.vscode.dev/github/floorp-projects/Floorp/blob/ESR115/browser/modules/URILoadingHelper.sys.mjs#L560)
 
 ---
+
+25. browser\modules\BrowserWindowTracker.jsm
+
+**Feature: "BMS"**
+
+changed: "Fix open link by SSB or PWA."
+
+Line: 165
+
+
+URL: [VSCodeDev](https://insiders.vscode.dev/github/floorp-projects/Floorp/blob/ESR115/browser/modules/BrowserWindowTracker.jsm#L165)
+
+---
