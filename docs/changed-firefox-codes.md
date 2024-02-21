@@ -226,6 +226,8 @@ URL: [VSCodeDev](https://insiders.vscode.dev/github/floorp-projects/Floorp/blob/
 
 changed: "Insert BMS codes."
 
+Line: 489
+
 URL: [VSCodeDev](https://insiders.vscode.dev/github/floorp-projects/Floorp/blob/ESR115/browser/modules/AsyncTabSwitcher.jsm#L489)
 
 ---
@@ -238,3 +240,18 @@ changed: "Fix open link by 3rd party app."
 
 
 URL: [VSCodeDev](https://insiders.vscode.dev/github/floorp-projects/Floorp/blob/ESR115/browser/components/BrowserContentHandler.sys.mjs#L959)
+
+
+---
+
+24. browser\modules\URILoadingHelper.sys.mjs
+
+**Feature: "BMS"**
+
+changed: "Fix open link by SSB or PWA."
+
+Line: 560
+
+URL: [VSCodeDev](https://insiders.vscode.dev/github/floorp-projects/Floorp/blob/ESR115/browser/modules/URILoadingHelper.sys.mjs#L560)
+
+---

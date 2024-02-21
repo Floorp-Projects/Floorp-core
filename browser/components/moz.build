@@ -23,6 +23,7 @@ EXTRA_JS_MODULES += [
     "DesktopFileParser.sys.mjs",
     "EscapeShell.sys.mjs",
     "FloorpActors.sys.mjs",
+    "FloorpServices.sys.mjs",
     "FloorpStartup.sys.mjs",
     "OpenLinkInExternal.sys.mjs",
     "PortableUpdate.sys.mjs",
