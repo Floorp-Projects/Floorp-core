@@ -163,6 +163,8 @@ export const keyboradShortcutActions = {
     openSplitViewOnRight: ["gSplitView.Functions.setSplitView(gBrowser.selectedTab, 'right')", "open-split-view-on-right", "split-view-action"],
     closeSplitView: ["gSplitView.Functions.removeSplitView()", "close-split-view", "split-view-action"],
 
+    hideInterface: [`hideUserInterface()`, "hide-user-interface", "page-action"],
+
     // Custom actions
     customAction1: ["customActionsFunctions.evalCustomeActionWithNum(1)", "custom-action-1", "custom-action"],
     customAction2: ["customActionsFunctions.evalCustomeActionWithNum(2)", "custom-action-2", "custom-action"],

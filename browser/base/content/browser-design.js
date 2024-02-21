@@ -107,6 +107,14 @@ Services.obs.addObserver(setPhotonUI, "set-photon-ui");
 Services.obs.addObserver(setLeptonUI, "set-lepton-ui");
 Services.obs.addObserver(setProtonFixUI, "set-protonfix-ui");
 
+function hideUserInterface(){
+  let elements = document.getElementsByClassName("browser-toolbar");
+
+  for (let i = 0; i < elements.length; i++) {
+      elements[i].style.display = elements[i].style.display ? '' : 'none';
+  }
+}
+
 function setPhotonUI() {
   Services.prefs.setIntPref("floorp.lepton.interface", 1);
   Services.prefs.setBoolPref("userChrome.tab.connect_to_window", true);
