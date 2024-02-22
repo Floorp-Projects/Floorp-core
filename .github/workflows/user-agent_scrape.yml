@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - name: Clone User-Agent_Scraper 🧬
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: Floorp-Projects/User-Agent_Scraper
           path: User-Agent_Scraper
@@ -138,12 +138,12 @@ jobs:
           for line in "${msedge_stable_ua_jsonp_text[@]}" ; do echo $line >> ~/ua_data.js ; done
 
       - name: Upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ua_data
           path: ~/ua_data.js
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         name: Clone 🧬
 
       - name: Commit & Push
