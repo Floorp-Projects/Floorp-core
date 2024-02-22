@@ -145,7 +145,7 @@ const tabbarDisplayStyleFunctions = {
           "3",
         );
         // set margin to the top of urlbar container & allow moving the window
-        document.getElementById("urlbar-container").style.marginTop = "10px";
+        document.getElementById("nav-bar").style.paddingTop = "10px";
         break;
     }
   },
