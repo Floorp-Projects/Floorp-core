@@ -164,8 +164,8 @@ const tabbarDisplayStyleFunctions = {
     tabbarContents.tabbarElement.removeAttribute("floorp-tabbar-display-style");
     // Remove tabbar margin from the top (when tabs are at the bottom)
     document
-      .getElementById("urlbar-container")
-      ?.style.removeProperty("margin-top");
+      .getElementById("nav-bar")
+      ?.style.removeProperty("padding-top");
     tabbarDisplayStyleFunctions.moveToDefaultSpace();
   },
 
