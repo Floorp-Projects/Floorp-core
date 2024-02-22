@@ -11,12 +11,9 @@ export var FloorpServices = {
   wm: {
     getRecentWindowExcludeFloorpSpecialWindows() {
       // If there is a suggested window provided by Firefox, we'll use it.
-      let suggestedWindow = Services.wm.getMostRecentWindow("navigator:browser");
+      let suggestedWindow = Services.wm.getMostRecentNonPBWindow("navigator:browser");
       if (suggestedWindow) {
-        if (
-          !this.IsFloorpSpecialWindow(suggestedWindow) ||
-          !PrivateBrowsingUtils.isWindowPrivate(suggestedWindow)
-        ) {
+        if (!this.IsFloorpSpecialWindow(suggestedWindow)) {
           return suggestedWindow;
         }
       }
@@ -25,13 +22,12 @@ export var FloorpServices = {
       let wins = Services.wm.getEnumerator("navigator:browser");
       for (let win of wins) {
         if (
-          this.IsFloorpSpecialWindow(win) ||
-          PrivateBrowsingUtils.isWindowPrivate(win)
+          !this.IsFloorpSpecialWindow(win) &&
+          !PrivateBrowsingUtils.isWindowPrivate(win)
         ) {
-          continue;
+          return win;
         }
-
-        return win;
+        continue;
       }
       // If we didn't find any window, we'll return the suggested window.
       return suggestedWindow;
