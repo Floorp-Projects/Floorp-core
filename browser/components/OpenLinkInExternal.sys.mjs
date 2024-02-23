@@ -339,7 +339,7 @@ async function OpenLinkInExternal(url) {
     }
     let shellscript = "#!/bin/sh\n";
     shellscript += browser.fileInfo["Desktop Entry"].Exec.replace(
-      "%u",
+      "/%[uU]/",
       EscapeShell(url),
     );
     let randomized = Math.random().toString(32).substring(2);
