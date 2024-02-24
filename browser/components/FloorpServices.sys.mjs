@@ -9,28 +9,24 @@ export var EXPORTED_SYMBOLS = ["FloorpServices"];
 
 export var FloorpServices = {
   wm: {
-    getRecentWindowExcludeFloorpSpecialWindows() {
-      // If there is a suggested window provided by Firefox, we'll use it.
-      let suggestedWindow = Services.wm.getMostRecentNonPBWindow("navigator:browser");
-      if (suggestedWindow) {
-        if (!this.IsFloorpSpecialWindow(suggestedWindow)) {
-          return suggestedWindow;
-        }
-      }
-
-      // If the suggested window is a floorp window, or if there is no suggested window, we'll try to find another window.
+    getRecentWindowExcludeFloorpSpecialWindows(options = {}) {
       let wins = Services.wm.getEnumerator("navigator:browser");
       for (let win of wins) {
         if (
           !this.IsFloorpSpecialWindow(win) &&
-          !PrivateBrowsingUtils.isWindowPrivate(win)
+          !win.closed &&
+          (options.allowPopups || win.toolbar.visible) &&
+          (
+            !("private" in options) ||
+            !PrivateBrowsingUtils.isWindowPrivate(win) ||
+            PrivateBrowsingUtils.permanentPrivateBrowsing
+          )
         ) {
           return win;
         }
         continue;
       }
-      // If we didn't find any window, we'll return the suggested window.
-      return suggestedWindow;
+      return null;
     },
 
     IsFloorpSpecialWindow(win) {
