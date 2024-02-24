@@ -16,6 +16,16 @@
       ],
       "platforms": ["win", "mac", "linux", "android"]
     },
+
+    {
+      /*bugs: https://github.com/Floorp-Projects/Floorp/issues/947
+      description: "Misskey.io doesn't work with Firefox ESR 115. This is a temporary fix for cannot react to user posts."*/
+      "matches": ["*://misskey.io/*"],
+      "js": [
+        { file: "webcompat/bug-947-misskey.io.js" }
+      ],
+      "platforms": ["win", "mac", "linux", "android"]
+    },
   ];
 
   let REGISTED_CONTENT_SCRIPTS = [];
