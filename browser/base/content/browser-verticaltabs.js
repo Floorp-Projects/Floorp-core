@@ -81,6 +81,8 @@ var gFloorpVerticalTabBar = {
     Services.prefs.setBoolPref("floorp.browser.tabs.verticaltab", true);
     Services.prefs.setIntPref("floorp.browser.tabbar.settings", 2);
 
+    document.getElementById("nav-bar-customization-target").style.paddingTop = "10px"
+
     // Move Tab Bar
     this.browserBox?.prepend(this.tabsToolbar || "");
 
@@ -186,6 +188,8 @@ var gFloorpVerticalTabBar = {
       this.arrowscrollbox.shadowRoot.querySelector("vbox[part='scrollbox']"),
       "scrollbox",
     );
+
+    document.getElementById("nav-bar-customization-target").style.removeProperty("padding-top")
 
     // Observer
     if (this._widthObserver) {
