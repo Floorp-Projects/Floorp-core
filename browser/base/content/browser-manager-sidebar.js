@@ -563,6 +563,11 @@ var gBrowserManagerSidebar = {
         doDisplay
       );
 
+      // We should focus to parent window to avoid focus to webpanel
+      if (!doDisplay) {
+        window.focus();
+      };
+
       if (
         Services.prefs.getBoolPref(
           "floorp.browser.sidebar2.hide.to.unload.panel.enabled",
