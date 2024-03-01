@@ -82,6 +82,9 @@ const tabbarDisplayStyleFunctions = {
             margin-inline-start: 7px !important;
           }
         `;
+
+        enablePadding()
+
         document.querySelector("head").appendChild(tabbarContents.modifyCSS);
         tabbarDisplayStyleFunctions.setWorkspaceLabelToNavbar();
         tabbarContents.tabbarElement.setAttribute(
@@ -224,6 +227,11 @@ SessionStore.promiseInitialized.then(() => {
 
 //-------------------------------------------------------------------------Multirow-tabs----------------------------------------------------------------------------
 
+function enablePadding(){
+  const isPaddingTopEnabled = Services.prefs.getBoolPref("floorp.verticaltab.paddingtop.enabled", false)
+  document.getElementById("titlebar").style.padding = isPaddingTopEnabled ? "10px" : "0px"
+}
+
 function setMultirowTabMaxHeight() {
   const arrowscrollbox = document.querySelector("#tabbrowser-arrowscrollbox");
   const scrollbox = arrowscrollbox.shadowRoot.querySelector("[part=scrollbox]");
@@ -301,6 +309,10 @@ document.addEventListener(
       "floorp.browser.tabbar.multirow.max.enabled",
       setMultirowTabMaxHeight,
     );
+    Services.prefs.addObserver(
+      "floorp.verticaltab.paddingtop.enabled",
+      enablePadding,
+    )
     Services.prefs.addObserver(
       "floorp.browser.tabbar.multirow.newtab-inside.enabled",
       setNewTabInTabs,
