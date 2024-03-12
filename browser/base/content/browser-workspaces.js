@@ -461,6 +461,20 @@ var gWorkspaces = {
     } else {
       await this.rebuildWorkspacesToolbar();
     }
+
+    window.setTimeout( async () => {
+      let workspace = await gWorkspaces.getWorkspaceById(createdWorkspaceId);
+      if (!workspace) {
+        this.createWorkspace(
+          name,
+          defaultWorkspace,
+          addNewTab,
+          change,
+          icon,
+          currentTabMigration
+        );
+      }
+    }, 100);
   },
 
   async createNoNameWorkspace() {
