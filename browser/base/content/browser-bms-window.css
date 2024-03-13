@@ -9,6 +9,10 @@ toolbar {
   display: none !important;
 }
 
+#titlebar {
+  display: none !important;
+}
+
 /* Toolbar buttons *****************************************************/
 
 #fxa-toolbar-menu-button {

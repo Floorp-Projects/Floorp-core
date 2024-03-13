@@ -105,8 +105,6 @@ pref("floorp.browser.note.memos.using", -1);
 pref("services.sync.prefs.sync.floorp.browser.note.memos", true);
 pref("floorp.browser.note.enabled", false);
 
-//Clock
-pref("floorp.browser.clock.enabled", false);
 
 //新規タブの開く位置
 pref("floorp.browser.tabs.openNewTabPosition", -1);
@@ -172,6 +170,9 @@ pref("floorp.browser.workspaces.enabled", true);
 pref("floorp.browser.workspace.manageOnBMS", false);
 pref("floorp.browser.workspace.closePopupAfterClick", false);
 pref("floorp.browser.workspace.showWorkspaceName", true);
+
+// Extension
+pref("floorp.extensions.allowPrivateBrowsingByDefault.is.enabled", false);
 
 /*----------------------------------------------------------------------------------------------------------------------------------*/
 
@@ -578,6 +579,11 @@ pref("userContent.page.proton",           true); // Need proton_color
 // ** Useful Options ***********************************************************
 // Integrated calculator at urlbar
 pref("browser.urlbar.suggest.calculator", true);
+
+// Disable ads
+
+pref("browser.vpn_promo.enabled", false);
+pref("browser.contentblocking.report.show_mobile_app", false);
 
 // Integrated unit convertor at urlbar
 // pref("browser.urlbar.unitConversion.enabled", true);

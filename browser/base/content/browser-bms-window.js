@@ -45,7 +45,7 @@ var gBmsWindow = {
         }
 
         // Against session restore issue
-        window.IsWebpanelWindow = true;
+        window.floorpWebPanelWindow = true;
 
         document.addEventListener("DOMContentLoaded", () => {
             window.SessionStore.promiseInitialized.then(() => {
@@ -94,7 +94,8 @@ var gBmsWindow = {
 
         // Resolve the issue that open url by anoter application and that is not loaded on main window.
         window.setTimeout(() => {
-            window.gBrowser.addTrustedTab("about:blank");
+            let tab = window.gBrowser.addTrustedTab("about:blank");
+            window.gBrowser.removeTab(tab);
         }, 0);
 
 

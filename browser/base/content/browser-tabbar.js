@@ -66,8 +66,12 @@ const tabbarDisplayStyleFunctions = {
             display: none !important;
           }
           #titlebar {
+            display: inherit;
             appearance: none !important;
-            display: none !important;
+            padding-top: 10px;
+          }
+          :root[sizemode="fullscreen"] #titlebar[id] {
+            flex-basis: auto;
           }
           #TabsToolbar #workspace-button[label] > .toolbarbutton-icon,
           #TabsToolbar #firefox-view-button[flex] > .toolbarbutton-icon {

@@ -33,5 +33,5 @@
 
 /** Fix for https://github.com/Floorp-Projects/Floorp/issues/889 **/
 #TabsToolbar {
-  z-index: 1 !important;
+  z-index: 0 !important;
 }
