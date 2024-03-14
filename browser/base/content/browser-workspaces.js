@@ -448,7 +448,8 @@ var gWorkspaces = {
       name,
       windowId,
       defaultWorkspace,
-      icon ? icon : null
+      icon ? icon : null,
+      change
     );
 
     if (change) {
@@ -456,25 +457,12 @@ var gWorkspaces = {
         createdWorkspaceId,
         1,
         addNewTab,
-        currentTabMigration
+        currentTabMigration,
+        false
       );
     } else {
       await this.rebuildWorkspacesToolbar();
     }
-
-    window.setTimeout( async () => {
-      let workspace = await gWorkspaces.getWorkspaceById(createdWorkspaceId);
-      if (!workspace) {
-        this.createWorkspace(
-          name,
-          defaultWorkspace,
-          addNewTab,
-          change,
-          icon,
-          currentTabMigration
-        );
-      }
-    }, 100);
   },
 
   async createNoNameWorkspace() {
@@ -536,7 +524,7 @@ var gWorkspaces = {
     return false;
   },
 
-  async changeWorkspace(workspaceId, option, addNewTab = false, currentTabMigration = false) {
+  async changeWorkspace(workspaceId, option, addNewTab = false, currentTabMigration = false, saveSelectWorkspace = true) {
     if (!this.workspaceEnabled) {
       return;
     }
@@ -572,7 +560,9 @@ var gWorkspaces = {
       gWorkspaces.workspacesToolbarButton.click();
     }
 
-    await gWorkspaces.setSelectWorkspace(workspaceId);
+    if (saveSelectWorkspace) {
+      await gWorkspaces.setSelectWorkspace(workspaceId);
+    }
 
     switch (option) {
       case 1:
