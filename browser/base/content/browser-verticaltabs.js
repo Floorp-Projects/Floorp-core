@@ -55,6 +55,14 @@ var gFloorpVerticalTabBar = {
     return document.getElementById("verticaltab-splitter");
   },
 
+  get tabContextCloseTabsToTheStart() {
+    return document.getElementById("context_closeTabsToTheStart");
+  },
+
+  get tabContextCloseTabsToTheEnd() {
+    return document.getElementById("context_closeTabsToTheEnd");
+  },
+
   init() {
     if (this._initialized) {
       return;
@@ -152,6 +160,18 @@ var gFloorpVerticalTabBar = {
 
     // Observer
     this.toggleCustomizeModeVerticaltabStyle();
+
+
+    // Context menu localization
+    this.tabContextCloseTabsToTheStart?.setAttribute(
+      "data-lazy-l10n-id",
+      "close-tabs-to-the-start-on-vertical-tab-bar",
+    );
+
+    this.tabContextCloseTabsToTheEnd?.setAttribute(
+      "data-lazy-l10n-id",
+      "close-tabs-to-the-end-on-vertical-tab-bar",
+    );
   },
 
   disableVerticalTabBar() {
@@ -192,6 +212,15 @@ var gFloorpVerticalTabBar = {
       this._widthObserver.disconnect();
       this._widthObserver = null;
     }
+
+    // Context menu localization
+    this.tabContextCloseTabsToTheStart?.removeAttribute(
+      "data-lazy-l10n-id",
+    );
+
+    this.tabContextCloseTabsToTheEnd?.removeAttribute(
+      "data-lazy-l10n-id",
+    );
   },
 
   setVerticalTabs() {
