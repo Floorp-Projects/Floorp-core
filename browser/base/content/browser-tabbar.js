@@ -68,7 +68,6 @@ const tabbarDisplayStyleFunctions = {
           #titlebar {
             display: inherit;
             appearance: none !important;
-            padding-top: 10px;
           }
           :root[sizemode="fullscreen"] #titlebar[id] {
             flex-basis: auto;
@@ -152,7 +151,7 @@ const tabbarDisplayStyleFunctions = {
           "3",
         );
         // set margin to the top of urlbar container & allow moving the window
-        document.getElementById("urlbar-container").style.marginTop = "10px";
+        document.getElementById("urlbar-container").style.marginTop = "5px";
         break;
     }
   },
@@ -229,7 +228,7 @@ SessionStore.promiseInitialized.then(() => {
 
 function enablePadding(){
   const isPaddingTopEnabled = Services.prefs.getBoolPref("floorp.verticaltab.paddingtop.enabled", false)
-  document.getElementById("titlebar").style.padding = isPaddingTopEnabled ? "10px" : "0px"
+  document.getElementById("titlebar").style.padding = isPaddingTopEnabled ? "5px" : "0px"
 }
 
 function setMultirowTabMaxHeight() {
