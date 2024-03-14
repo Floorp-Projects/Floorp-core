@@ -7,5 +7,10 @@
 
 // Immutable for export.
 export var FloorpAppConstants = Object.freeze({
-    
+  FLOORP_PRIVATE_COMPONENTS_ENABLED:
+#ifdef FLOORP_PRIVATE_COMPONENTS_ENABLED
+  true,
+#else
+  false,
+#endif
 });
