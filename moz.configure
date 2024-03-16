@@ -1,0 +1,18 @@
+# -*- Mode: python; indent-tabs-mode: nil; tab-width: 40 -*-
+# vim: set filetype=python:
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+# Floorp Private Components is a feature that is used for Floorp AI integration.
+# It is disabled by default. To enable it, use the --enable-private-components
+# All Floorp forks have to disable this feature by default.
+# It only should be enabled in the official Floorp repository.
+option(
+    "--enable-private-components",
+    default=False,
+    help="Enable Floorp all official private components. This is only for Floorp official repository."
+)
+
+set_config("FLOORP_OFFICIAL_COMPONENTS_ENABLED", True, when="--enable-private-components")
+set_define("FLOORP_OFFICIAL_COMPONENTS_ENABLED", True, when="--enable-private-components")

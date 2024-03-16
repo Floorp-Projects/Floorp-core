@@ -1,0 +1,6 @@
+[submodule "browser/locales/l10n-central"]
+	path = browser/locales/l10n-central
+	url = https://github.com/Floorp-Projects/Unified-l10n-central
+[submodule "Floorp-private-components"]
+	path = Floorp-private-components
+	url = https://github.com/floorp-Projects/Floorp-private-components
