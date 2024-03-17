@@ -41,13 +41,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // If script need more delay, use the following code.
     SessionStore.promiseInitialized.then(() => {
-        Services.scriptloader.loadSubScript("chrome://browser/content/browser-UI-customizing-menu.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-tabbar.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-design.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-verticaltabs.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-flex-order.js", this);
 
         if (FloorpAppConstants.FLOORP_OFFICIAL_COMPONENTS_ENABLED) {
+            Services.scriptloader.loadSubScript("chrome://browser/content/browser-UI-customizing-menu.js", this);
             Services.scriptloader.loadSubScript("chrome://browser/content/browser-ssb-manager.js", this);
         }
     });
