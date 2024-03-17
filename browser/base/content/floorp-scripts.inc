@@ -21,6 +21,7 @@ if (FloorpAppConstants.FLOORP_OFFICIAL_COMPONENTS_ENABLED) {
 // This function is called when the floorp browser window is loaded. needs Delay.
 document.addEventListener("DOMContentLoaded", () => {
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-context-menu.js", this);
+    Services.scriptloader.loadSubScript("chrome://browser/content/browser-onlocation-change.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-manager-sidebar.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-preferences.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-statusbar.js", this);
@@ -45,7 +46,6 @@ document.addEventListener("DOMContentLoaded", () => {
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-design.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-verticaltabs.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-flex-order.js", this);
-        Services.scriptloader.loadSubScript("chrome://browser/content/browser-onlocation-change.js", this);
 
         if (FloorpAppConstants.FLOORP_OFFICIAL_COMPONENTS_ENABLED) {
             Services.scriptloader.loadSubScript("chrome://browser/content/browser-ssb-manager.js", this);
