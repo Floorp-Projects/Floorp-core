@@ -2901,10 +2901,10 @@
         ]);
         var prefix;
         if (options.mobile) {
-          // Brasilian official reference (mobile): http://www.anatel.gov.br/setorregulado/plano-de-numeracao-brasileiro?id=330
+          // Brazilian official reference (mobile): http://www.anatel.gov.br/setorregulado/plano-de-numeracao-brasileiro?id=330
           prefix = "9" + self.string({ pool: "0123456789", length: 4 });
         } else {
-          // Brasilian official reference: http://www.anatel.gov.br/setorregulado/plano-de-numeracao-brasileiro?id=331
+          // Brazilian official reference: http://www.anatel.gov.br/setorregulado/plano-de-numeracao-brasileiro?id=331
           prefix = this.natural({ min: 2000, max: 5999 }).toString();
         }
         var mcdu = self.string({ pool: "0123456789", length: 4 });
@@ -3444,7 +3444,7 @@
 
   /*
      * this generator is written following the official algorithm
-     * all data can be passed explicitely or randomized by calling chance.cf() without options
+     * all data can be passed explicitly or randomized by calling chance.cf() without options
      * the code does not check that the input data is valid (it goes beyond the scope of the generator)
      *
      * @param  [Object] options = { first: first name,

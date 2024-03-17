@@ -85,7 +85,7 @@ changed: "Add Floorp pages for about:*"
 
 URL: https://github.com/Floorp-Projects/Floorp/commit/636326dcdea4db14401eca7f09fc2537deac1b98
 
-NOTICE: This commit is not completeley. Please see raw file on current branch.
+NOTICE: This commit is not complete. Please see raw file on current branch.
 
 ---
 

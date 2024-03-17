@@ -10,7 +10,7 @@ var { AppConstants } = ChromeUtils.import(
 );
 
 function setBrowserDesign() {
-  const browserDesign = document.getElementById("browserdesgin");
+  const browserDesign = document.getElementById("browserdesign");
   if (browserDesign) {
     browserDesign.remove();
   }
@@ -34,7 +34,7 @@ function setBrowserDesign() {
   };
 
   const tag = document.createElement("style");
-  tag.setAttribute("id", "browserdesgin");
+  tag.setAttribute("id", "browserdesign");
   const enableMultitab = Services.prefs.getIntPref("floorp.tabbar.style") == 1;
   const enableVerticalTabs =
     Services.prefs.getIntPref("floorp.browser.tabbar.settings") == 2;

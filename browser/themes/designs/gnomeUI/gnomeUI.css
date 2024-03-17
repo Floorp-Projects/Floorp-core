@@ -531,7 +531,7 @@ dialog {
 	border-bottom: 0 !important;
 }
 
-/* Buttons borders - only suppor for cancel/ok */
+/* Buttons borders - only support for cancel/ok */
 .dialog-button-box button[dlgtype="accept"] {
 	border-right: 0 !important;
 	border-left: 0 !important;
@@ -2881,7 +2881,7 @@ tab {
 	background: var(--gnome-tab-button-hover-background) !important;
 }
 
-/* Fix icon overlay posisition when sharing */
+/* Fix icon overlay position when sharing */
 .tab-icon-overlay:not([crashed], [pinned]):is([sharing])[selected] {
 	top: 0 !important;
 	inset-inline-end: 0 !important;

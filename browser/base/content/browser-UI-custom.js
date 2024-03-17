@@ -136,7 +136,7 @@ observePreference("floorp.search.top.mode", function (event) {
 observePreference("floorp.legacy.dlui.enable", function (event) {
   if (event.prefValue) {
     let Tag = document.createElement("style");
-    Tag.innerText = `@import url(chrome://browser/skin/options/browser-custum-dlmgr.css)`;
+    Tag.innerText = `@import url(chrome://browser/skin/options/browser-custom-dlmgr.css)`;
     Tag.setAttribute("id", "floorp-dlmgrcss");
     document.head.appendChild(Tag);
   } else {

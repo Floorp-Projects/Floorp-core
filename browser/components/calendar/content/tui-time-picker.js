@@ -1173,7 +1173,7 @@
         };
 
         /**
-         * Get matcher for unbind specific hander, context pair events
+         * Get matcher for unbind specific handler, context pair events
          * @param {function} handler - handler function
          * @param {object} context - context
          * @returns {function} handler, context matcher
@@ -1443,7 +1443,7 @@
          *
          * //-- #2. Use property --//
          * var Parent = defineClass({
-         *     init: function() { // constuructor
+         *     init: function() { // constructor
          *         this.name = 'made by def';
          *     },
          *     method: function() {

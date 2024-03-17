@@ -475,7 +475,7 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
 
   /**
    * Persists the data to the store if needed. When a change in configuration
-   * has occured call this.
+   * has occurred call this.
    */
   async _maybeSave() {
     // If this SSB is persisted then update it in the data store.

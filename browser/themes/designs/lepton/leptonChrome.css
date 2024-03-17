@@ -8754,7 +8754,7 @@
   }
 }
 /** Nav Bar UI ****************************************************************/
-/*= Nav Bar - Navbar comabine with sidebar===================================*/
+/*= Nav Bar - Navbar combined with sidebar===================================*/
 @supports -moz-bool-pref("userChrome.navbar.as_sidebar") {
   :root {
     --uc-navbar-margin-block: var(--toolbarbutton-inner-padding);
@@ -8861,13 +8861,13 @@
     right: 0;
   }
   :root[customizing="true"] #customization-container {
-    --uc-customization-conatiner-margin: var(--uc-navbar-height-default);
+    --uc-customization-container-margin: var(--uc-navbar-height-default);
     width: calc(100% - var(--uc-sidebar-activate-width));
-    height: calc(100% - var(--uc-customization-conatiner-margin));
+    height: calc(100% - var(--uc-customization-container-margin));
   }
   @supports -moz-bool-pref("userChrome.hidden.tabbar") {
     :root[customizing="true"] #customization-container {
-      --uc-customization-conatiner-margin: calc(var(--uc-navbar-height-default) - var(--uc-tabbar-height-default));
+      --uc-customization-container-margin: calc(var(--uc-navbar-height-default) - var(--uc-tabbar-height-default));
     }
   }
   :root[customizing="true"]:has(#sidebar-box:not([positionend="true"])) #customization-container {

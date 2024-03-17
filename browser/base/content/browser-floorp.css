@@ -455,7 +455,7 @@ toolbar #workspace-button:not([disabled="true"], [checked], [open], :active):hov
   min-height: 35px;
 }
 
-#workspaces-migation-menuitem-text {
+#workspaces-migration-menuitem-text {
   font-size: 13px;
   margin-inline-start: 10px;
   margin-inline-end: 10px;

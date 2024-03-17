@@ -72,7 +72,7 @@
   color: inherit;
 }
 
-/* Firefox View compatibity. Use "open" instead of open="true" */
+/* Firefox View compatibility. Use "open" instead of open="true" */
 #TabsToolbar-customization-target > .toolbarbutton-1[open] {
   background-color: var(--toolbarbutton-active-background);
   color: inherit;

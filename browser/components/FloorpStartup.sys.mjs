@@ -125,7 +125,7 @@ Quote: https://userChrome.org | https://github.com/topics/userchrome
         `
 /*************************************************************************************************************************************************************************************************************************************************************
 
-"userContent.css" is a custom CSS file that can be used to specify CSS style rules for Floorp's intenal site using "chrome" privileges.
+"userContent.css" is a custom CSS file that can be used to specify CSS style rules for Floorp's internal site using "chrome" privileges.
 For instance, if you want to apply CSS at "about:newtab" and "about:home", you can use the following CSS rule:
 
 ***********************************************************************

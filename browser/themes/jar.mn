@@ -21,7 +21,7 @@ browser.jar:
   skin/classic/browser/options/msbutton.css                               (designs/options/msbutton.css)
   skin/classic/browser/options/treestyletab.css                           (designs/options/treestyletab.css)
   skin/classic/browser/options/bookmarkbar_autohide.css                   (designs/options/bookmarkbar_autohide.css)
-  skin/classic/browser/options/browser-custum-dlmgr.css                   (designs/options/browser-custum-dlmgr.css)
+  skin/classic/browser/options/browser-custom-dlmgr.css                   (designs/options/browser-custom-dlmgr.css)
   skin/classic/browser/options/downloading-redcolor.css                   (designs/options/downloading-redcolor.css)
   skin/classic/browser/options/navbar-botttom.css                         (designs/options/navbar-botttom.css)
   skin/classic/browser/options/disableFullScreenNotification.css          (designs/options/disableFullScreenNotification.css)
@@ -514,7 +514,7 @@ browser.jar:
   skin/classic/browser/icons/welcome-image-second-option.png        (icons/welcome-image-second-option.png)
   skin/classic/browser/icons/welcome-image-third-option.png         (icons/welcome-image-third-option.png)
 
-# desgin images
+# design images
   skin/classic/browser/design-images/firefox-lepton-dark.jpg                (design-images/firefox-lepton-dark.jpg)
   skin/classic/browser/design-images/firefox-lepton-white.jpg               (design-images/firefox-lepton-white.jpg)
   skin/classic/browser/design-images/firefox-photon-dark.jpg                (design-images/firefox-photon-dark.jpg)

@@ -6,7 +6,7 @@
 
 /* This file is used to override existing Firefox functions and various variables. */
 
-// Override Forward & Backward button's custamizeble element.
+// Override Forward & Backward button's customizable element.
 //From "browser.js" line 750
 SetClickAndHoldHandlers = function () {
   // Bug 414797: Clone the back/forward buttons' context menu into both buttons.
