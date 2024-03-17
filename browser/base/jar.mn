@@ -24,7 +24,6 @@ browser.jar:
   content/browser/browser-flex-order.js         (content/browser-flex-order.js)
   content/browser/browser-overrides.js          (content/browser-overrides.js)
   content/browser/browser-preferences.js        (content/browser-preferences.js)
-  content/browser/browser-statusbar.js          (content/browser-statusbar.js)
   content/browser/browser-context-menu.js       (content/browser-context-menu.js)
   content/browser/BMS-extension-needs-white-bg.txt  (sidebar-extension/BMS-extension-needs-white-bg.txt)
   content/browser/ua_data.js                    (content/ua_data.js)

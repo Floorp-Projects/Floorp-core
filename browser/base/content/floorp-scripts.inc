@@ -24,7 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-onlocation-change.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-manager-sidebar.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-preferences.js", this);
-    Services.scriptloader.loadSubScript("chrome://browser/content/browser-statusbar.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-downloadbar.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-UI-custom.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-browserActions.js", this);
@@ -36,6 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-favicon-color.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-pageActions-floorp.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-splitView.js", this);
+        Services.scriptloader.loadSubScript("chrome://browser/content/browser-statusbar.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-private-container.js", this);
     }
 
