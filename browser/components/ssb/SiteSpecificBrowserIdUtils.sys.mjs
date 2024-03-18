@@ -18,9 +18,14 @@ ChromeUtils.defineESModuleGetters(lazy, {
 if (AppConstants.platform == "win") {
   ChromeUtils.defineESModuleGetters(lazy, {
     WindowsSupport: "resource:///modules/ssb/WindowsSupport.sys.mjs",
+  });
+}
+if (AppConstants.platform == "linux") {
+  ChromeUtils.defineESModuleGetters(lazy, {
     LinuxSupport: "resource:///modules/ssb/LinuxSupport.sys.mjs",
   });
 }
+
 
 export let SiteSpecificBrowserIdUtils = {
   async runSsbById(id) {
