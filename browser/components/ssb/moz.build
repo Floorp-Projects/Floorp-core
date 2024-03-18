@@ -10,8 +10,13 @@ XPCOM_MANIFESTS += [
 ]
 
 EXTRA_JS_MODULES += [
+    "SiteSpecificBrowserExternalFileService.sys.mjs",
     "SiteSpecificBrowserIdUtils.sys.mjs",
     "SiteSpecificBrowserService.sys.mjs",
+]
+
+DIRS += [
+    "windowUtils",
 ]
 
 EXTRA_JS_MODULES.ssb += [

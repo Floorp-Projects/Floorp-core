@@ -10,15 +10,11 @@ DIRS += [
     "search",
     "preferences",
     "profile-manager",
+    "ssb",
     "notes",
     "welcome",
     "tabsleep",
 ]
-
-if CONFIG["FLOORP_OFFICIAL_COMPONENTS_ENABLED"]:
-    DIRS += [
-        "ssb",
-    ]
 
 EXTRA_JS_MODULES += [
     "BrowserManagerSidebar.sys.mjs",
