@@ -34,8 +34,7 @@ export const LinuxSupport = {
       ignoreExisting: true,
     });
 
-    //TODO: fix icon generation
-    let iconFile = new File(PathUtils.join(dir, "icon.ico"));
+    let iconFile = new File(PathUtils.join(dir, "icon.png"));
     let icon = await SiteSpecificBrowserIdUtils.getIconBySSBId(ssb.id, 128);
     if (icon) {
       let { container } = await lazy.ImageTools.loadImage(
