@@ -118,7 +118,7 @@ export const ImageTools = {
   saveIcon(container, width, height, target) {
     let format;
     if (AppConstants.platform == "win") {
-      format = "image/vnd.microsoft.ico";
+      format = "image/vnd.microsoft.icon";
     } 
     if (AppConstants.platform == "linux") {
       format = "image/png";
