@@ -643,7 +643,8 @@ var gBrowserManagerSidebar = {
 
       // Add-on Capability
       if (
-        Services.prefs.getBoolPref("floorp.browser.sidebar2.addons.enabled")
+        Services.prefs.getBoolPref("floorp.browser.sidebar2.addons.enabled") &&
+        !isExtension
       ) {
         isWeb = false;
       }
@@ -652,8 +653,7 @@ var gBrowserManagerSidebar = {
         let webpanelElem = window.MozXULElement.parseXULToFragment(`
               <browser 
                 id="webpanel${webpanel_id}"
-                class="webpanels ${isFloorp ? "isFloorp" : "isWeb"} ${webpanelURL.slice(0, 9) == "extension" ? "isExtension" : ""
-          }"
+                class="webpanels ${isFloorp ? "isFloorp" : "isWeb"} ${ isExtension ? "isExtension" : "" }"
                 flex="1"
                 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
                 disablehistory="true"
@@ -664,20 +664,14 @@ var gBrowserManagerSidebar = {
                 messagemanagergroup="browsers"
                 autocompletepopup="PopupAutoComplete"
                 initialBrowsingContextGroupId="40"
-              ${isWeb
-            ? `
-                usercontextid="${typeof webpanel_usercontext == "number"
-              ? String(webpanel_usercontext)
-              : "0"
-            }"
+                ${ isWeb ? `usercontextid="${typeof webpanel_usercontext == "number" ? String(webpanel_usercontext) : "0"}"
                 changeuseragent="${webpanel_userAgent ? "true" : "false"}"
                 webextension-view-type="sidebar"
                 type="content"
                 remote="true"
                 maychangeremoteness="true"
                 context=""
-                `
-            : ""
+                ` : ""
           }
                />
                 `);
