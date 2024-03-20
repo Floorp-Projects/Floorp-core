@@ -1,5 +1,7 @@
 export const EXPORTED_SYMBOLS = ["LinuxSupport"];
 
+import { FileUtils } from "resource://gre/modules/FileUtils.sys.mjs";
+
 const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 const { XPCOMUtils } = ChromeUtils.import(
   "resource://gre/modules/XPCOMUtils.jsm"
@@ -46,6 +48,10 @@ export const LinuxSupport = {
       iconFile = null;
     }
 
+    let command = "/usr/bin/floorp"
+    if (FileUtils.File("/.flatpak-info").exists()) {
+      command = "flatpak run one.ablaze.floorp"
+    }
     let applicationDir = "~/.local/share/applications";
     let desktopFile = PathUtils.join(
       applicationDir,
@@ -58,7 +64,7 @@ export const LinuxSupport = {
 Type=Application
 Terminal=false
 Name=${ssb.name}
-Exec=/usr/bin/floorp --profile "${PathUtils.profileDir}" --start-ssb "${ssb.id}"
+Exec=${command} --profile "${PathUtils.profileDir}" --start-ssb "${ssb.id}"
 Icon=${iconFile.path}`
       )
     );
