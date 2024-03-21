@@ -9,7 +9,7 @@ export var EXPORTED_SYMBOLS = ["FloorpServices"];
 
 export var FloorpServices = {
   wm: {
-    getRecentWindowExcludeFloorpSpecialWindows(options = {}) {
+    getMainWindowExcludeFloorpSpecialWindows(options = {}) {
       let wins = Services.wm.getEnumerator("navigator:browser");
       for (let win of wins) {
         if (
