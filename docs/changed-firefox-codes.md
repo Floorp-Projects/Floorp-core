@@ -268,3 +268,13 @@ Line: 165
 URL: [VSCodeDev](https://insiders.vscode.dev/github/floorp-projects/Floorp/blob/ESR115/browser/modules/BrowserWindowTracker.jsm#L165)
 
 ---
+
+26. browser\base\content\browser.js
+
+**Feature: "BMS"**
+
+changed: "Disable XULBrowserWindow on webpanel."
+
+Line: 1619
+
+URL: [VSCodeDev](https://vscode.dev/github/Floorp-Projects/Floorp/blob/ESR115/browser/base/content/browser.js#L1619)
