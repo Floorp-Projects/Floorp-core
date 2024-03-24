@@ -30,13 +30,13 @@ export const LinuxSupport = {
    */
   async install(ssb) {
 
-    let dir = PathUtils.join(PathUtils.profileDir, "ssb", ssb.id);
-    await IOUtils.makeDirectory(dir, {
-      from: PathUtils.profileDir,
+    let iconDir = "~/.local/share/icons/Floorp_Web_Apps";
+    await IOUtils.makeDirectory(iconDir, {
+      from: "~/.local/share/icons",
       ignoreExisting: true,
     });
 
-    let iconFile = new File(PathUtils.join(dir, "icon.png"));
+    let iconFile = new File(PathUtils.join(iconDir, `${ssb.name}.png`));
     let icon = await SiteSpecificBrowserIdUtils.getIconBySSBId(ssb.id, 128);
     if (icon) {
       let { container } = await lazy.ImageTools.loadImage(
@@ -88,9 +88,12 @@ Icon=${iconFile.path}`
       console.error(e);
     }
 
-    let dir = PathUtils.join(PathUtils.profileDir, "ssb", ssb.id);
+    let icon = `~/.local/share/icons/Floorp_Web_Apps/${ssb.name}.png`;
     try {
-      await IOUtils.remove(dir, { recursive: true });
+      await IOUtils.remove(icon, {
+        recursive: true,
+        ignoreAbsent: true,
+      });
     } catch (e) {
       console.error(e);
     }
