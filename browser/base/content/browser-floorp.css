@@ -331,7 +331,7 @@
   font-size: 12px !important;
   font-weight: bold;
   margin: auto;
-  padding-right: 5px !important;
+  padding-right: 10px !important;
 }
 
 :root:not([privatebrowsingmode]) .private-text {
