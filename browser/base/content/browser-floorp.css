@@ -326,13 +326,16 @@
   max-height: 25px;
 }
 
- :root[privatebrowsingmode] #fxa-toolbar-menu-button::before {
-  content: "Private" !important;
+ :root[privatebrowsingmode] .private-text {
   display: -moz-box !important;
   font-size: 12px !important;
   font-weight: bold;
   margin: auto;
-  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
+:root:not([privatebrowsingmode]) .private-text {
+  display: none !important;
 }
 
  :root[privatebrowsingmode] #fxa-avatar-image {
