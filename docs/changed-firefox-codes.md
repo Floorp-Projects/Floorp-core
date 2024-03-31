@@ -278,3 +278,15 @@ changed: "Disable XULBrowserWindow on webpanel."
 Line: 1619
 
 URL: [VSCodeDev](https://vscode.dev/github/Floorp-Projects/Floorp/blob/ESR115/browser/base/content/browser.js#L1619)
+
+---
+
+27. browser\base\content\browser-fullZoom.js
+
+**Feature: "BMS"**
+
+changed: "Make donot use mause + wheel for zoom."
+
+Line: 424
+
+URL: [VSCodeDev](https://vscode.dev/github/Floorp-Projects/Floorp/blob/ESR115/browser/base/content/browser-fullZoom.js#L424)

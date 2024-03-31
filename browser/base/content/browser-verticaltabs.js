@@ -228,6 +228,8 @@ var gFloorpVerticalTabBar = {
   setVerticalTabs() {
     if (Services.prefs.getIntPref("floorp.tabbar.style") == 2) {
       this.enableVerticalTabBar();
+    } else {
+      Services.prefs.setBoolPref("floorp.browser.tabs.verticaltab", false);
     }
   },
 

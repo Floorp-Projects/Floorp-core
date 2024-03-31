@@ -332,6 +332,12 @@ function enableTabSleep() {
       if (nativeTab.getAttribute("busy") === "true") {
         continue;
       }
+      if (
+        nativeTab.hasAttribute("splitView") &&
+        nativeTab.getAttribute("splitView") === "true"
+      ) {
+        continue;
+      }
 
       try {
         if (
