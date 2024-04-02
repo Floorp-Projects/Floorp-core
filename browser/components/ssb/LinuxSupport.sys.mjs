@@ -1,8 +1,8 @@
 export const EXPORTED_SYMBOLS = ["LinuxSupport"];
 
 import { FileUtils } from "resource://gre/modules/FileUtils.sys.mjs";
-import { XPCOMUtils } from "resource://gre/modules/XPCOMUtils.jsm"
-import { SiteSpecificBrowserIdUtils } from "resource:///modules/SiteSpecificBrowserIdUtils.jsm"
+import { XPCOMUtils } from "resource://gre/modules/XPCOMUtils.jsm";
+import { SiteSpecificBrowserIdUtils } from "resource:///modules/SiteSpecificBrowserIdUtils.jsm";
 
 const lazy = {};
 XPCOMUtils.defineLazyModuleGetters(lazy, {
@@ -12,7 +12,7 @@ XPCOMUtils.defineLazyModuleGetters(lazy, {
 const File = Components.Constructor(
   "@mozilla.org/file/local;1",
   Ci.nsIFile,
-  "initWithPath",
+  "initWithPath"
 );
 
 export const LinuxSupport = {
@@ -22,7 +22,6 @@ export const LinuxSupport = {
    * @param {SiteSpecificBrowser} ssb the SSB to install.
    */
   async install(ssb) {
-
     let iconDir = "~/.local/share/icons/Floorp_Web_Apps";
     await IOUtils.makeDirectory(iconDir, {
       from: "~/.local/share/icons",
@@ -41,9 +40,9 @@ export const LinuxSupport = {
       iconFile = null;
     }
 
-    let command = "/usr/bin/floorp"
+    let command = "/usr/bin/floorp";
     if (FileUtils.File("/.flatpak-info").exists()) {
-      command = "flatpak run one.ablaze.floorp"
+      command = "flatpak run one.ablaze.floorp";
     }
     let applicationDir = "~/.local/share/applications";
     let desktopFile = PathUtils.join(
@@ -69,7 +68,6 @@ Icon=${iconFile.path}`
    * @param {SiteSpecificBrowser} ssb the SSB to uninstall.
    */
   async uninstall(ssb) {
-
     try {
       let applicationDir = "~/.local/share/applications";
       let desktopFile = PathUtils.join(
