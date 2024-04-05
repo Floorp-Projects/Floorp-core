@@ -1,8 +1,16 @@
 export const EXPORTED_SYMBOLS = ["LinuxSupport"];
 
-import { FileUtils } from "resource://gre/modules/FileUtils.sys.mjs";
-import { XPCOMUtils } from "resource://gre/modules/XPCOMUtils.jsm";
-import { SiteSpecificBrowserIdUtils } from "resource:///modules/SiteSpecificBrowserIdUtils.jsm";
+const { FileUtils } = ChromeUtils.importESModule(
+  "resource://gre/modules/FileUtils.sys.mjs"
+)
+
+const { XPCOMUtils } = ChromeUtils.importESModule(
+  "resource://gre/modules/XPCOMUtils.sys.mjs"
+);
+
+const { SiteSpecificBrowserIdUtils } = ChromeUtils.importESModule(
+  "resource:///modules/SiteSpecificBrowserIdUtils.sys.mjs"
+);
 
 const lazy = {};
 XPCOMUtils.defineLazyModuleGetters(lazy, {
