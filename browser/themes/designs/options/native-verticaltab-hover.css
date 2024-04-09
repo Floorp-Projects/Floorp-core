@@ -52,6 +52,14 @@
   #TabsToolbar[id]:not(:-moz-lwtheme) {
     background-color: ActiveCaption !important;
   }
+
+  #TabsToolbar {
+    margin-right: -27px;
+  }
+
+  #appcontent {
+    margin-left: 27px;
+  }
 }
 
 #TabsToolbar:not(:hover) #tabbrowser-tabs[closebuttons="activetab"] .tabbrowser-tab .tab-content[class] > .tab-close-button[class] {
