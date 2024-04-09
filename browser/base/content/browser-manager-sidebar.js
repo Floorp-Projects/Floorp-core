@@ -733,7 +733,7 @@ var gBrowserManagerSidebar = {
         ) {
           webpanelElem.firstChild.setAttribute(
             "src",
-            `chrome://browser/content/browser.xhtml?&url=${webpanelURL}&userContextId=${webpanel_usercontext}&userAgent=${webpanel_userAgent}&webPanelId=${webpanel_id}`
+            `chrome://browser/content/browser.xhtml?&floorpWebPanelId=${webpanel_id}`
           );
         } else {
           webpanelElem.firstChild.setAttribute("src", webpanelURL);
