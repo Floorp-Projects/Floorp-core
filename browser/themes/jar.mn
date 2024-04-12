@@ -492,6 +492,7 @@ browser.jar:
   skin/classic/browser/connection-2x.svg                       (icons/connection-2x.svg)
   skin/classic/browser/connection-warning-1x.svg               (icons/connection-warning-1x.svg)
   skin/classic/browser/connection-warning-2x.svg               (icons/connection-warning-2x.svg)
+  skin/classic/browser/floorp-monochrome.svg                   (icons/floorp-monochrome.svg)
   skin/classic/browser/floorplegacy/menu.svg                   (designs/floorp-legacy/menu.svg)
 
 # Floorp Fluenial 
