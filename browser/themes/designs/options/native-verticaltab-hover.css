@@ -43,6 +43,16 @@
   }
 }
 
+@media (-moz-platform: macos) {
+  #TabsToolbar {
+    margin-right: 20px;
+  }
+  
+  #appcontent {
+    margin-left: -20px;
+  }
+}
+
 @media (-moz-platform: linux) {
   #TabsToolbar:-moz-lwtheme {
     background-color: var(--lwt-accent-color) !important;
@@ -51,6 +61,14 @@
 
   #TabsToolbar[id]:not(:-moz-lwtheme) {
     background-color: ActiveCaption !important;
+  }
+
+  #TabsToolbar {
+    margin-right: -27px;
+  }
+
+  #appcontent {
+    margin-left: 27px;
   }
 }
 

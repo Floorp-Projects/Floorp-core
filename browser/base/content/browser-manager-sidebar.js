@@ -659,32 +659,12 @@ var gBrowserManagerSidebar = {
       let isWeb = true;
       let isFloorp = false;
       gBrowserManagerSidebar.controllFunctions.setSidebarWidth(webpanel_id);
+
       if (webpanelURL.startsWith("floorp//")) {
         isFloorp = true;
         webpanelURL = gBrowserManagerSidebar.STATIC_SIDEBAR_DATA[webpanelURL].url;
         isWeb = false;
-      }
-      if (
-        webpanobject != null &&
-        ((!(
-          webpanobject?.getAttribute("changeuseragent") == "" &&
-          !webpanel_userAgent
-        ) &&
-          !(
-            webpanobject?.getAttribute("usercontextid") == "" &&
-            webpanel_usercontext == 0
-          ) &&
-          ((webpanobject?.getAttribute("changeuseragent") ?? "false") !==
-            String(webpanel_userAgent) ||
-            (webpanobject?.getAttribute("usercontextid") ?? "0") !==
-            String(webpanel_usercontext))) ||
-          ((webpanobject.className.includes("isFloorp") ||
-            webpanobject.className.includes("isWeb")) &&
-            isFloorp))
-      ) {
-        webpanobject.remove();
-        webpanobject = null;
-      }
+    }
 
       // Add-on Capability
       if (
@@ -733,7 +713,7 @@ var gBrowserManagerSidebar = {
         ) {
           webpanelElem.firstChild.setAttribute(
             "src",
-            `chrome://browser/content/browser.xhtml?${webpanelURL}?${webpanel_usercontext}?${webpanel_userAgent}?${webpanel_id}`
+            `chrome://browser/content/browser.xhtml?&floorpWebPanelId=${webpanel_id}`
           );
         } else {
           webpanelElem.firstChild.setAttribute("src", webpanelURL);
