@@ -290,3 +290,23 @@ changed: "Make donot use mause + wheel for zoom."
 Line: 424
 
 URL: [VSCodeDev](https://vscode.dev/github/Floorp-Projects/Floorp/blob/ESR115/browser/base/content/browser-fullZoom.js#L424)
+
+---
+
+28. devtools\client\aboutdebugging\src\components\sidebar\Sidebar.js
+
+**Feature: "Branding"**
+
+changed: "Replace Firefox icon with Floorp icon"
+
+URL: https://github.com/Floorp-Projects/Floorp/commit/5d8f63f90f90c9538b75e9ef5dc41fd8efc05762
+
+---
+
+29. devtools\client\aboutdebugging\src\actions\runtimes.js
+
+**Feature: "Branding"**
+
+changed: "Replace Firefox icon with Floorp icon"
+
+URL: https://github.com/Floorp-Projects/Floorp/commit/5d8f63f90f90c9538b75e9ef5dc41fd8efc05762
