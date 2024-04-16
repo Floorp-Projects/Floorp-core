@@ -64,11 +64,15 @@
   }
 
   #TabsToolbar {
-    margin-right: -27px;
+    margin-right: -53px;
   }
 
   #appcontent {
-    margin-left: 27px;
+    margin-left: 53px;
+  }
+
+  .webpanels {
+    margin-left: -28px;
   }
 }
 
