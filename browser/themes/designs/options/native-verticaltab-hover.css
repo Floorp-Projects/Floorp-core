@@ -74,6 +74,10 @@
   .webpanels {
     margin-left: -28px;
   }
+  
+  #sidebar-splitter2 {
+    position: relative;
+  }
 }
 
 #TabsToolbar:not(:hover) #tabbrowser-tabs[closebuttons="activetab"] .tabbrowser-tab .tab-content[class] > .tab-close-button[class] {
