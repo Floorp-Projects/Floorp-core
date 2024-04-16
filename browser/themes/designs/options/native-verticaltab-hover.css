@@ -30,7 +30,7 @@
   width: var(--default-verticaltab-width) !important;
   transition: all 200ms !important;
   transition-delay: 0.2s !important;
-  z-index: 100 !important;
+  z-index: 1 !important;
   background-repeat: no-repeat !important;
   background-position: center center !important;
   background-size: cover !important;
