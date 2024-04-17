@@ -294,6 +294,9 @@ pref("devtools.toolbox.host", "right");
 
 
 // Smooth Scroll by Betterfox
+#ifdef XP_MACOSX
+// macOS version should not change the value
+#else
 pref("apz.overscroll.enabled", true);
 pref("general.smoothScroll", true);
 pref("general.smoothScroll.msdPhysics.enabled", true);
@@ -307,6 +310,7 @@ pref("general.smoothScroll.msdPhysics.regularSpringConstant", 650);
 pref("general.smoothScroll.msdPhysics.slowdownMinDeltaMS", 25);
 pref("general.smoothScroll.msdPhysics.slowdownSpringConstant", 250);
 pref("mousewheel.default.delta_multiplier_y", 300);
+#endif
 
 /*-----------------------------------------------------------------------------------all.js の設定-----------------------------------------------------------------------------------*/
 
