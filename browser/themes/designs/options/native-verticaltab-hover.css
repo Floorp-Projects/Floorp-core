@@ -30,7 +30,7 @@
   width: var(--default-verticaltab-width) !important;
   transition: all 200ms !important;
   transition-delay: 0.2s !important;
-  z-index: 1 !important;
+  z-index: 100 !important;
   background-repeat: no-repeat !important;
   background-position: center center !important;
   background-size: cover !important;
@@ -43,16 +43,6 @@
   }
 }
 
-@media (-moz-platform: macos) {
-  #TabsToolbar {
-    margin-right: 20px;
-  }
-  
-  #appcontent {
-    margin-left: -20px;
-  }
-}
-
 @media (-moz-platform: linux) {
   #TabsToolbar:-moz-lwtheme {
     background-color: var(--lwt-accent-color) !important;
@@ -61,14 +51,6 @@
 
   #TabsToolbar[id]:not(:-moz-lwtheme) {
     background-color: ActiveCaption !important;
-  }
-
-  #TabsToolbar {
-    margin-right: -27px;
-  }
-
-  #appcontent {
-    margin-left: 27px;
   }
 }
 
