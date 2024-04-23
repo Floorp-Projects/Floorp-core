@@ -10,7 +10,7 @@ var { FloorpAppConstants } = ChromeUtils.importESModule(
 );
 
 import("chrome://browser/content/browser-commands.mjs").then(({ gFloorpCommands }) => {
-    window.gFloorpCommands = gFloorpCommands;
+    window.gFloorpCommands = gFloorpCommands
 });
 
 // TODO: MIGRATE TO ESM
@@ -18,10 +18,10 @@ Services.scriptloader.loadSubScript("chrome://browser/content/browser-overrides.
 
 if (FloorpAppConstants.FLOORP_OFFICIAL_COMPONENTS_ENABLED) {
     import("chrome://browser/content/browser-workspaces.mjs").then(({ gWorkspaces }) => {
-        window.gWorkspaces = gWorkspaces;
+        window.gWorkspaces = gWorkspaces
     });
     import("chrome://browser/content/browser-bms-window.mjs").then(({ gBmsWindow }) => {
-        window.gBmsWindow = gBmsWindow;
+        window.gBmsWindow = gBmsWindow
     });
 }
 
@@ -36,6 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-UI-custom.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-browserActions.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-pinned-tabs-title.js", this);
+
+    // TODO: MIGRATE TO ESM after the other scripts are migrated to ESM
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-chromeCSS.js", this);
 
     if (FloorpAppConstants.FLOORP_OFFICIAL_COMPONENTS_ENABLED) {
