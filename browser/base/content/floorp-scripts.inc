@@ -4,7 +4,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 <script type="text/javascript">
-// "FloorpAppConstants" has build information.
+// This ESM has build configuration constants.
 var { FloorpAppConstants } = ChromeUtils.importESModule(
     "resource:///modules/FloorpAppConstants.sys.mjs"
 );
@@ -14,8 +14,12 @@ Services.scriptloader.loadSubScript("chrome://browser/content/browser-overrides.
 Services.scriptloader.loadSubScript("chrome://browser/content/browser-rest-mode.js", this);
 
 if (FloorpAppConstants.FLOORP_OFFICIAL_COMPONENTS_ENABLED) {
-    Services.scriptloader.loadSubScript("chrome://browser/content/browser-bms-window.js", this);
-    Services.scriptloader.loadSubScript("chrome://browser/content/browser-workspaces.js", this);
+    import("chrome://browser/content/browser-workspaces.mjs").then(({ gWorkspaces }) => {
+        window.gWorkspaces = gWorkspaces;
+    });
+    import("chrome://browser/content/browser-bms-window.mjs").then(({ gBmsWindow }) => {
+        window.gBmsWindow = gBmsWindow;
+    });
 }
 
 // This function is called when the floorp browser window is loaded. needs Delay.
