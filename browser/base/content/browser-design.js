@@ -86,11 +86,11 @@ function setBrowserDesign() {
   }, 1000);
 
   if (floorpInterfaceNum == 3) {
-    loadStyleSheetWithNsStyleSheetService(
+    gFloorpCommands.loadStyleSheetWithNsStyleSheetService(
       "chrome://browser/skin/lepton/leptonContent.css",
     );
   } else {
-    unloadStyleSheetWithNsStyleSheetService(
+    gFloorpCommands.unloadStyleSheetWithNsStyleSheetService(
       "chrome://browser/skin/lepton/leptonContent.css",
     );
   }

@@ -9,9 +9,12 @@ var { FloorpAppConstants } = ChromeUtils.importESModule(
     "resource:///modules/FloorpAppConstants.sys.mjs"
 );
 
-Services.scriptloader.loadSubScript("chrome://browser/content/browser-command.js", this);
+import("chrome://browser/content/browser-commands.mjs").then(({ gFloorpCommands }) => {
+    window.gFloorpCommands = gFloorpCommands;
+});
+
+// TODO: MIGRATE TO ESM
 Services.scriptloader.loadSubScript("chrome://browser/content/browser-overrides.js", this);
-Services.scriptloader.loadSubScript("chrome://browser/content/browser-rest-mode.js", this);
 
 if (FloorpAppConstants.FLOORP_OFFICIAL_COMPONENTS_ENABLED) {
     import("chrome://browser/content/browser-workspaces.mjs").then(({ gWorkspaces }) => {

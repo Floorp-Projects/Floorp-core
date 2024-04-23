@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /* -*- indent-tabs-mode: nil; js-indent-level: 2 -*-
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -129,7 +128,7 @@ var gFloorpVerticalTabBar = {
     this.tabsToolbar?.removeAttribute("hidden");
 
     // Change Scroll elem tag
-    this.changeXULElementTagName(
+    gFloorpCommands.changeXULElementTagName(
       this.arrowscrollbox.shadowRoot.querySelector(
         "scrollbox[part='scrollbox']",
       ),
@@ -204,7 +203,7 @@ var gFloorpVerticalTabBar = {
     this.splitter?.setAttribute("hidden", "true");
 
     // Change Scroll elem tag
-    this.changeXULElementTagName(
+    gFloorpCommands.changeXULElementTagName(
       this.arrowscrollbox.shadowRoot.querySelector("vbox[part='scrollbox']"),
       "scrollbox",
     );
@@ -234,24 +233,6 @@ var gFloorpVerticalTabBar = {
   },
 
   // Functions
-  changeXULElementTagName(oldElement, newTagName) {
-    const newElement = document.createElement(newTagName);
-
-    if (!oldElement) {
-      return;
-    }
-
-    const attrs = oldElement.attributes;
-    for (let i = 0; i < attrs.length; i++) {
-      newElement.setAttribute(attrs[i].name, attrs[i].value);
-    }
-
-    while (oldElement.firstChild) {
-      newElement.appendChild(oldElement.firstChild);
-    }
-    oldElement.parentNode.replaceChild(newElement, oldElement);
-  },
-
   mutationObserverCallback(mutations) {
     for (const mutation of mutations) {
       if (mutation.type === "attributes" && mutation.attributeName == "width") {
@@ -313,7 +294,7 @@ var gFloorpVerticalTabBar = {
     if (event.button != 1 || event.target != this.arrowscrollbox) {
       return;
     }
-    gBrowser.handleNewTabMiddleClick(this.arrowscrollbox, event)
+    window.gBrowser.handleNewTabMiddleClick(this.arrowscrollbox, event)
   },
 };
 

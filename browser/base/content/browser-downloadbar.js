@@ -9,21 +9,6 @@ if (
   Services.prefs.getBoolPref("floorp.browser.native.downloadbar.enabled", true)
 ) {
   window.setTimeout(() => {
-    function changeXULElementTagName(oldElementId, newTagName) {
-      const oldElement = document.getElementById(oldElementId);
-      const newElement = document.createElement(newTagName);
-
-      const attrs = oldElement.attributes;
-      for (let i = 0; i < attrs.length; i++) {
-        newElement.setAttribute(attrs[i].name, attrs[i].value);
-      }
-
-      while (oldElement.firstChild) {
-        newElement.appendChild(oldElement.firstChild);
-      }
-      oldElement.parentNode.replaceChild(newElement, oldElement);
-    }
-
     document
       .getElementById("appcontent")
       .appendChild(document.getElementById("downloadsPanel"));
@@ -33,10 +18,10 @@ if (
     document.getElementById("downloadsPanel").style.display = "block";
     document.getElementById("downloadsPanel").hidden = false;
     document.querySelector("#downloadsFooter > stack").remove();
-    changeXULElementTagName("downloadsPanel", "vbox");
-    changeXULElementTagName("downloadsPanel-multiView", "vbox");
-    changeXULElementTagName("downloadsPanel-mainView", "vbox");
-    changeXULElementTagName("downloadsFooter", "richlistitem");
+    gFloorpCommands.changeXULElementTagName(document.getElementById("downloadsPanel"), "vbox");
+    gFloorpCommands.changeXULElementTagName(document.getElementById("downloadsPanel-multiView"), "vbox");
+    gFloorpCommands.changeXULElementTagName(document.getElementById("downloadsPanel-mainView"), "vbox");
+    gFloorpCommands.changeXULElementTagName(document.getElementById("downloadsFooter"), "richlistitem");
 
     const elem = document.createElement("div");
     elem.id = "close";
