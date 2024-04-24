@@ -7,6 +7,11 @@ browser.jar:
 
 # Floorp build
   content/browser/browser-commands.mjs                (content/browser-commands.mjs)
+  content/browser/browser-context-menu.mjs            (content/browser-context-menu.mjs)
+  content/browser/browser-manager-sidebar.mjs         (content/browser-manager-sidebar.mjs)
+  content/browser/browser-onlocation-change.mjs       (content/browser-onlocation-change.mjs)
+  content/browser/browser-pageActions-floorp.mjs      (content/browser-pageActions.mjs)
+  content/browser/browser-share-mode.mjs              (content/browser-share-mode.mjs)
 
   content/browser/browser-UI-custom.js                (content/browser-UI-custom.js)
   content/browser/browser-design.js                   (content/browser-design.js)
@@ -18,14 +23,10 @@ browser.jar:
   content/browser/browser-verticaltabs.css            (content/browser-verticaltabs.css)
   content/browser/browser-verticaltabs.js             (content/browser-verticaltabs.js)
   content/browser/qr-code-styling/qr-code-styling.js  (library/qr-code-styling/qr-code-styling@1.5.0.js)
-  content/browser/browser-manager-sidebar.js          (content/browser-manager-sidebar.js)
-  content/browser/browser-onlocation-change.js        (content/browser-onlocation-change.js)
   content/browser/browser-ssb-manager.js              (content/browser-ssb-manager.js)
-  content/browser/browser-pageActions-floorp.js       (content/browser-pageActions.js)
   content/browser/browser-floorp.css                  (content/browser-floorp.css)
   content/browser/browser-flex-order.js               (content/browser-flex-order.js)
   content/browser/browser-overrides.js                (content/browser-overrides.js)
   content/browser/browser-preferences.js              (content/browser-preferences.js)
-  content/browser/browser-context-menu.js             (content/browser-context-menu.js)
   content/browser/BMS-extension-needs-white-bg.txt    (sidebar-extension/BMS-extension-needs-white-bg.txt)
   content/browser/ua_data.js                          (content/ua_data.js)

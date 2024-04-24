@@ -1,9 +1,30 @@
-/* eslint-disable no-undef */
 /* -*- indent-tabs-mode: nil; js-indent-level: 2 -*- */
 
 /****************************************************** QR Code ******************************************************/
 
-let gFloorpPageAction = {
+export var EXPORTED_SYMBOLS = ["gFloorpPageAction"];
+
+export let gFloorpPageAction = {
+  initialized: false,
+
+  init() {
+    if (this.initialized) {
+      return;
+    }
+    window.SessionStore.promiseInitialized.then(() => {
+      document
+        .getElementById("star-button-box")
+        .before(gFloorpPageAction.qrCode.QRCodeGeneratePageActionButton);
+    
+      if (Services.prefs.getBoolPref("floorp.browser.ssb.enabled")) {
+        document
+          .getElementById("star-button-box")
+          .before(gFloorpPageAction.Ssb.SsbPageActionButton);
+      }
+    });
+    this.initialized = true;
+  },
+
   qrCode: {
     QRCodeGeneratePageActionButton: window.MozXULElement.parseXULToFragment(`
      <hbox id="QRCodeGeneratePageAction" data-l10n-id="qrcode-generate-page-action"
@@ -30,9 +51,10 @@ let gFloorpPageAction = {
         window
       );
 
-      let currentTab = gBrowser.selectedTab;
+      let currentTab = window.gBrowser.selectedTab;
       let currentTabURL = currentTab.linkedBrowser.currentURI.spec;
 
+      // eslint-disable-next-line no-undef
       const qrCode = new QRCodeStyling({
         width: 250,
         height: 250,
@@ -103,7 +125,7 @@ let gFloorpPageAction = {
    `),
 
     async onCommand() {
-      gSsbChromeManager.functions.installOrRunCurrentPageAsSsb(true);
+      window.gSsbChromeManager.functions.installOrRunCurrentPageAsSsb(true);
 
       // Show installing gif
       let installingGif = document.getElementById("ssb-installing-icon");
@@ -135,14 +157,4 @@ let gFloorpPageAction = {
   },
 };
 
-SessionStore.promiseInitialized.then(() => {
-  document
-    .getElementById("star-button-box")
-    .before(gFloorpPageAction.qrCode.QRCodeGeneratePageActionButton);
-
-  if (Services.prefs.getBoolPref("floorp.browser.ssb.enabled")) {
-    document
-      .getElementById("star-button-box")
-      .before(gFloorpPageAction.Ssb.SsbPageActionButton);
-  }
-});
+gFloorpPageAction.init();

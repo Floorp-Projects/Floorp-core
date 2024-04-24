@@ -43,7 +43,7 @@ if (Services.prefs.getStringPref(newtabOverrideURL, "") != "") {
 // Override the create "browser" element function. Use for "Private Container".
 // https://searchfox.org/mozilla-central/source/browser/base/content/tabbrowser.js#2052
 SessionStore.promiseInitialized.then(() => {
-  gBrowser.createBrowser = function ({
+  window.gBrowser.createBrowser = function ({
     isPreloadBrowser,
     name,
     openWindowInfo,

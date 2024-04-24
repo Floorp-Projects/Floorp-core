@@ -27,10 +27,19 @@ if (FloorpAppConstants.FLOORP_OFFICIAL_COMPONENTS_ENABLED) {
 
 // This function is called when the floorp browser window is loaded. needs Delay.
 document.addEventListener("DOMContentLoaded", () => {
-    Services.scriptloader.loadSubScript("chrome://browser/content/browser-context-menu.js", this);
-    Services.scriptloader.loadSubScript("chrome://browser/content/browser-onlocation-change.js", this);
-    Services.scriptloader.loadSubScript("chrome://browser/content/browser-pageActions-floorp.js", this);
-    Services.scriptloader.loadSubScript("chrome://browser/content/browser-manager-sidebar.js", this);
+    import("chrome://browser/content/browser-context-menu.mjs").then(({ gFloorpContextMenu }) => {
+        window.gFloorpContextMenu = gFloorpContextMenu
+    });
+    import("chrome://browser/content/browser-onlocation-change.mjs").then(({ gFloorpOnLocationChange }) => {
+        window.gFloorpOnLocationChange = gFloorpOnLocationChange
+    });
+    import("chrome://browser/content/browser-pageActions-floorp.mjs").then(({ gFloorpPageAction }) => {
+        window.gFloorpPageAction = gFloorpPageAction
+    });
+    import("chrome://browser/content/browser-manager-sidebar.mjs").then(({ gBrowserManagerSidebar }) => {
+        window.gBrowserManagerSidebar = gBrowserManagerSidebar
+    });
+
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-preferences.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-downloadbar.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-UI-custom.js", this);
@@ -49,12 +58,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // If script need more delay, use the following code.
-    SessionStore.promiseInitialized.then(() => {
+    window.SessionStore.promiseInitialized.then(() => {
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-ssb-manager.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-tabbar.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-design.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-verticaltabs.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-flex-order.js", this);
+
+        import("chrome://browser/content/browser-share-mode.mjs").then(({ gFloorpShareMode }) => {
+            window.gFloorpShareMode = gFloorpShareMode
+        });
 
         if (FloorpAppConstants.FLOORP_OFFICIAL_COMPONENTS_ENABLED) {
             Services.scriptloader.loadSubScript("chrome://browser/content/browser-UI-customizing-menu.js", this);

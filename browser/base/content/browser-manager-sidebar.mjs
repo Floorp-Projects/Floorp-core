@@ -17,7 +17,9 @@ try {
   );
 } catch (e) {}
 
-var gBrowserManagerSidebar = {
+export var EXPORTED_SYMBOLS = ["gBrowserManagerSidebar"];
+
+export var gBrowserManagerSidebar = {
   _initialized: false,
   currentPanel: null,
   clickedWebpanel: null,
@@ -61,7 +63,7 @@ var gBrowserManagerSidebar = {
     }
 
     // eslint-disable-next-line no-undef
-    addContextBox(
+    gFloorpContextMenu.addContextBox(
       "bsb-context-add",
       "bsb-context-add",
       "fill-login",
@@ -77,7 +79,7 @@ var gBrowserManagerSidebar = {
       }
     );
     // eslint-disable-next-line no-undef
-    addContextBox(
+    gFloorpContextMenu.addContextBox(
       "bsb-context-link-add",
       "bsb-context-link-add",
       "context-sep-sendlinktodevice",
