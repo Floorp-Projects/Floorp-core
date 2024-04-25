@@ -17,8 +17,6 @@ try {
   );
 } catch (e) {}
 
-export var EXPORTED_SYMBOLS = ["gBrowserManagerSidebar"];
-
 export var gBrowserManagerSidebar = {
   _initialized: false,
   currentPanel: null,

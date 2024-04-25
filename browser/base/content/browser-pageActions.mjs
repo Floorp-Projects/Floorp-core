@@ -2,8 +2,6 @@
 
 /****************************************************** QR Code ******************************************************/
 
-export var EXPORTED_SYMBOLS = ["gFloorpPageAction"];
-
 export let gFloorpPageAction = {
   initialized: false,
 

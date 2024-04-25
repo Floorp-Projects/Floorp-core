@@ -13,6 +13,12 @@ import("chrome://browser/content/browser-commands.mjs").then(({ gFloorpCommands 
     window.gFloorpCommands = gFloorpCommands
 });
 
+import("chrome://browser/content/ua_data.mjs").then(({ FIREFOX_STABLE_UA, CHROME_STABLE_UA, MSEDGE_STABLE_UA }) => {
+    window.FIREFOX_STABLE_UA = FIREFOX_STABLE_UA;
+    window.CHROME_STABLE_UA = CHROME_STABLE_UA;
+    window.MSEDGE_STABLE_UA = MSEDGE_STABLE_UA;
+});
+
 // TODO: MIGRATE TO ESM
 Services.scriptloader.loadSubScript("chrome://browser/content/browser-overrides.js", this);
 
@@ -39,8 +45,10 @@ document.addEventListener("DOMContentLoaded", () => {
     import("chrome://browser/content/browser-manager-sidebar.mjs").then(({ gBrowserManagerSidebar }) => {
         window.gBrowserManagerSidebar = gBrowserManagerSidebar
     });
+    import("chrome://browser/content/browser-preferences.mjs").then(({ gFloorpPreferences }) => {
+        window.gFloorpPreferences = gFloorpPreferences
+    });
 
-    Services.scriptloader.loadSubScript("chrome://browser/content/browser-preferences.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-downloadbar.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-UI-custom.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-browserActions.js", this);

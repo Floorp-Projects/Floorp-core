@@ -5,8 +5,6 @@
 
 /*---------------------------------------------------------------- Context Menu ----------------------------------------------------------------*/
 
-export const EXPORTED_SYMBOLS = ["gFloorpContextMenu"];
-
 export const gFloorpContextMenu = {
   initialized: false,
 
