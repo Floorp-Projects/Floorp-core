@@ -1,6 +1,5 @@
 
-import { FIREFOX_STABLE_UA, CHROME_STABLE_UA, FIREFOX_STABLE_UA } from "./ua_data.mjs";
-
+await import("./ua_data.mjs")
 {
   const FLOORP_WEBCOMPAT_ENABLED_PREF = "floorp.webcompat.enabled";
 
