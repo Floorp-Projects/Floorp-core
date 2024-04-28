@@ -4,6 +4,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 <script type="text/javascript">
+
 // This ESM has build configuration constants.
 var { FloorpAppConstants } = ChromeUtils.importESModule(
     "resource:///modules/FloorpAppConstants.sys.mjs"
@@ -13,13 +14,8 @@ import("chrome://browser/content/browser-commands.mjs").then(({ gFloorpCommands 
     window.gFloorpCommands = gFloorpCommands
 });
 
-import("chrome://browser/content/ua_data.mjs").then(({ FIREFOX_STABLE_UA, CHROME_STABLE_UA, MSEDGE_STABLE_UA }) => {
-    window.FIREFOX_STABLE_UA = FIREFOX_STABLE_UA;
-    window.CHROME_STABLE_UA = CHROME_STABLE_UA;
-    window.MSEDGE_STABLE_UA = MSEDGE_STABLE_UA;
-});
-
 // TODO: MIGRATE TO ESM
+Services.scriptloader.loadSubScript("chrome://browser/content/ua_data.js", this);
 Services.scriptloader.loadSubScript("chrome://browser/content/browser-overrides.js", this);
 
 if (FloorpAppConstants.FLOORP_OFFICIAL_COMPONENTS_ENABLED) {

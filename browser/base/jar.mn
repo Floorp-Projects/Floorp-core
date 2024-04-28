@@ -13,7 +13,7 @@ browser.jar:
   content/browser/browser-pageActions-floorp.mjs      (content/browser-pageActions.mjs)
   content/browser/browser-preferences.mjs             (content/browser-preferences.mjs)
   content/browser/browser-share-mode.mjs              (content/browser-share-mode.mjs)
-  content/browser/ua_data.mjs                         (content/ua_data.mjs)
+  content/browser/ua_data.js                          (content/ua_data.js)
 
   content/browser/browser-UI-custom.js                (content/browser-UI-custom.js)
   content/browser/browser-design.js                   (content/browser-design.js)
