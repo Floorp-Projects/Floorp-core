@@ -52,10 +52,6 @@ export const gFloorpPreferences = {
     });
 
     /*------------------------------------- User Agent -------------------------------------*/
-    Services.scriptloader.loadSubScript(
-      "chrome://browser/content/ua_data.js",
-      this,
-    );
     const BROWSER_SETED_USERAGENT_PREF = "floorp.browser.UserAgent";
     const GENERAL_USERAGENT_OVERRIDE_PREF = "general.useragent.override";
     {

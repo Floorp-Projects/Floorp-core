@@ -117,7 +117,7 @@ jobs:
           "  \"mac\": \"$(echo "${{ needs.linux.outputs.firefox_stable_ua }}" | sed "s/X11; Linux x86_64/Macintosh; Intel Mac OS X 10.15/")\","
           '};'
           )
-          for line in "${firefox_stable_ua_jsonp_text[@]}" ; do echo $line >> ~/ua_data.js ; done
+          for line in "${firefox_stable_ua_jsonp_text[@]}" ; do echo $line >> ~/ua_data.mjs ; done
 
           chrome_stable_ua_jsonp_text=(
           'export const CHROME_STABLE_UA = {'
@@ -126,7 +126,7 @@ jobs:
           "  \"mac\": \"$(echo "${{ needs.linux.outputs.chrome_stable_ua }}" | sed "s/X11; Linux x86_64/Macintosh; Intel Mac OS X 10_15_7/")\","
           '};'
           )
-          for line in "${chrome_stable_ua_jsonp_text[@]}" ; do echo $line >> ~/ua_data.js ; done
+          for line in "${chrome_stable_ua_jsonp_text[@]}" ; do echo $line >> ~/ua_data.mjs ; done
 
           msedge_stable_ua_jsonp_text=(
           'export const MSEDGE_STABLE_UA = {'
@@ -135,21 +135,21 @@ jobs:
           "  \"mac\": \"$(echo "${{ needs.linux.outputs.msedge_stable_ua }}" | sed "s/X11; Linux x86_64/Macintosh; Intel Mac OS X 10_15_7/")\","
           '};'
           )
-          for line in "${msedge_stable_ua_jsonp_text[@]}" ; do echo $line >> ~/ua_data.js ; done
+          for line in "${msedge_stable_ua_jsonp_text[@]}" ; do echo $line >> ~/ua_data.mjs ; done
 
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: ua_data
-          path: ~/ua_data.js
+          path: ~/ua_data.mjs
 
       - uses: actions/checkout@v4
         name: Clone 🧬
 
       - name: Commit & Push
         run: |
-          cp ~/ua_data.js browser/extensions/webextensions/floorp-system/shared/ua_data.js
-          cp ~/ua_data.js browser/base/content/ua_data.js
+          cp ~/ua_data.mjs browser/extensions/webextensions/floorp-system/shared/ua_data.mjs
+          cp ~/ua_data.mjs browser/base/content/ua_data.mjs
           if [ "$(git diff HEAD)" != "" ]; then
             git config --global user.name "github-actions[bot]"
             git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
