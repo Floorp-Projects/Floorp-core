@@ -30,10 +30,11 @@ const gFloorpBrowserActions = {
 
     this.createUndoCloseTabButton();
     this.createSwitchSidebarPositionButton();
+    this.createProfileManagerButton();
     this._initialized = true;
   },
 
-  async _createToolbarButton(widgetId, l10nId, onCommand, type = "button") {
+  async _createToolbarButton(widgetId, l10nId, onCommand) {
     const widget = CustomizableUI.getWidget(widgetId);
     if (widget && widget.type !== "custom") {
       return;
@@ -42,7 +43,7 @@ const gFloorpBrowserActions = {
     const l10nText = await l10n.formatValue(l10nId);
     CustomizableUI.createWidget({
       id: widgetId,
-      type,
+      type: "button",
       label: l10nText,
       tooltiptext: l10nText,
       onCommand() {
@@ -60,12 +61,41 @@ const gFloorpBrowserActions = {
     });
   },
 
+  async _createToolbarButtonTypeMenu(
+    widgetId,
+    popupElem,
+    popupStyle,
+    l10nId,
+    onCommand
+  ) {
+    const widget = CustomizableUI.getWidget(widgetId);
+    if (widget && widget.type !== "custom") {
+      return;
+    }
+    const l10n = new Localization(["browser/floorp.ftl"]);
+    const l10nText = await l10n.formatValue(l10nId);
+    CustomizableUI.createWidget({
+      id: widgetId,
+      type: "button",
+      label: l10nText,
+      tooltiptext: l10nText,
+      onCommand() {
+        Function(onCommand)();
+      },
+      onCreated(aNode) {
+        aNode.setAttribute("type", "menu");
+        const popup = window.MozXULElement.parseXULToFragment(popupElem);
+        aNode.style = popupStyle;
+        aNode.appendChild(popup);
+      },
+    });
+  },
+
   async createUndoCloseTabButton() {
     await this._createToolbarButton(
       "undo-closed-tab",
       "undo-closed-tab",
-      "undoCloseTab();",
-      "button"
+      "undoCloseTab();"
     ).then(() => {
       if (
         ChromeUtils.importESModule("resource:///modules/FloorpStartup.sys.mjs")
@@ -84,8 +114,7 @@ const gFloorpBrowserActions = {
     await this._createToolbarButton(
       "sidebar-reverse-position-toolbar",
       "sidebar-reverse-position-toolbar",
-      "SidebarUI.reversePosition();",
-      "button"
+      "SidebarUI.reversePosition();"
     ).then(() => {
       if (
         ChromeUtils.importESModule("resource:///modules/FloorpStartup.sys.mjs")
@@ -106,8 +135,14 @@ const gFloorpBrowserActions = {
       return;
     }
 
-    await this._createToolbarButton(
+    await this._createToolbarButtonTypeMenu(
       "profile-manager",
+      `<menupopup id="profile-manager-popup" position="after_start" style="--panel-padding: 0 !important;">
+        <browser id="profile-switcher-browser" src="chrome://browser/content/profile-manager/profile-switcher.xhtml"
+                 flex="1" type="content" disablehistory="true" disableglobalhistory="true" context="profile-popup-contextmenu" />
+       </menupopup>
+      `,
+      "--panel-padding: 0 !important;",
       "floorp-profile-manager",
       `(async () => {
         const popup = document.getElementById("profile-manager-popup");
@@ -119,8 +154,7 @@ const gFloorpBrowserActions = {
           false,
           false
         );
-      })();`,
-      "button"
+      })();`
     );
   },
 };
