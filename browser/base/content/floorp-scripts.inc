@@ -45,8 +45,10 @@ document.addEventListener("DOMContentLoaded", () => {
         window.gFloorpPreferences = gFloorpPreferences
     });
 
-    Services.scriptloader.loadSubScript("chrome://browser/content/browser-downloadbar.js", this);
-    Services.scriptloader.loadSubScript("chrome://browser/content/browser-UI-custom.js", this);
+    import("chrome://browser/content/browser-UI-custom.mjs").then(({ observePreference }) => {
+        window.observePreference = observePreference
+    });
+
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-browserActions.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-pinned-tabs-title.js", this);
 
@@ -63,6 +65,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // If script need more delay, use the following code.
     window.SessionStore.promiseInitialized.then(() => {
+        import("chrome://browser/content/browser-downloadbar.mjs").then(({ gFloorpLegacyStyleDownloadBar }) => {
+            window.gFloorpLegacyStyleDownloadBar = gFloorpLegacyStyleDownloadBar
+        });
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-ssb-manager.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-tabbar.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-design.js", this);

@@ -8,16 +8,16 @@ browser.jar:
 # Floorp build
   content/browser/browser-commands.mjs                (content/browser-commands.mjs)
   content/browser/browser-context-menu.mjs            (content/browser-context-menu.mjs)
+  content/browser/browser-downloadbar.mjs             (content/browser-downloadbar.mjs)
   content/browser/browser-manager-sidebar.mjs         (content/browser-manager-sidebar.mjs)
   content/browser/browser-onlocation-change.mjs       (content/browser-onlocation-change.mjs)
   content/browser/browser-pageActions-floorp.mjs      (content/browser-pageActions.mjs)
   content/browser/browser-preferences.mjs             (content/browser-preferences.mjs)
   content/browser/browser-share-mode.mjs              (content/browser-share-mode.mjs)
+  content/browser/browser-UI-custom.mjs               (content/browser-UI-custom.mjs)
   content/browser/ua_data.js                          (content/ua_data.js)
 
-  content/browser/browser-UI-custom.js                (content/browser-UI-custom.js)
   content/browser/browser-design.js                   (content/browser-design.js)
-  content/browser/browser-downloadbar.js              (content/browser-downloadbar.js)
   content/browser/browser-tabbar.js                   (content/browser-tabbar.js)
   content/browser/browser-browserActions.js           (content/browser-browserActions.js)
   content/browser/browser-pinned-tabs-title.js        (content/browser-pinned-tabs-title.js)
