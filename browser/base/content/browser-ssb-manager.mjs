@@ -13,7 +13,7 @@ var { SiteSpecificBrowserIdUtils } = ChromeUtils.importESModule(
   "resource:///modules/SiteSpecificBrowserIdUtils.sys.mjs"
 );
 
-const gSsbChromeManager = {
+export const gSsbChromeManager = {
   _initialized: false,
 
   init() {
@@ -21,16 +21,33 @@ const gSsbChromeManager = {
       return;
     }
 
-    document.addEventListener("floorpOnLocationChangeEvent", function () {
-      gSsbChromeManager.eventListeners.onCurrentTabChangedOrLoaded();
-    });
+    if (Services.prefs.getBoolPref("floorp.browser.ssb.enabled", false)) {
+      document.addEventListener("floorpOnLocationChangeEvent", function () {
+        gSsbChromeManager.eventListeners.onCurrentTabChangedOrLoaded();
+      });
 
-    // This is needed to handle the case when the user opens a new tab in the same window.
-    window.setTimeout(() => {
-      gSsbChromeManager.eventListeners.onCurrentTabChangedOrLoaded();
-    }, 1000);
+      // This is needed to handle the case when the user opens a new tab in the same window.
+      window.setTimeout(() => {
+        gSsbChromeManager.eventListeners.onCurrentTabChangedOrLoaded();
+      }, 1000);
 
-    this._initialized = true;
+      this._initialized = true;
+    } else {
+      // Hide XUL elements
+      let css = `
+        #ssbPageAction,
+        #appMenu-ssb-button,
+        #appMenu-install-or-open-ssb-current-page-button,
+        #appMenu-ssb-button {
+          display: none !important;
+        }
+      `;
+      let sss = Cc["@mozilla.org/content/style-sheet-service;1"].getService(
+        Ci.nsIStyleSheetService
+      );
+      let uri = makeURI("data:text/css," + encodeURIComponent(css));
+      sss.loadAndRegisterSheet(uri, sss.USER_SHEET);
+    }
   },
 
   functions: {
@@ -240,11 +257,11 @@ const gSsbChromeManager = {
 
       for (let key in list) {
         let id = list[key].id;
-        let name = list[key].name;
-        let icon = list[key].manifest.icons[0].src;
+        let SsbName = list[key].name;
+        let SsbIcon = list[key].manifest.icons[0].src;
 
         let elem = window.MozXULElement.parseXULToFragment(`
-          <toolbarbutton id="ssb-${id}" class="subviewbutton ssb-app-info-button" label="${name}" image="${icon}"
+          <toolbarbutton id="ssb-${id}" class="subviewbutton ssb-app-info-button" label="${SsbName}" image="${SsbIcon}"
                          ssbId="${id}" oncommand="SiteSpecificBrowserIdUtils.runSsbById('${id}');"/>
         `);
 
@@ -357,21 +374,4 @@ const gSsbChromeManager = {
   },
 };
 
-if (Services.prefs.getBoolPref("floorp.browser.ssb.enabled")) {
-  gSsbChromeManager.init();
-} else {
-  // Hide XUL elements
-  let css = `
-    #ssbPageAction,
-    #appMenu-ssb-button,
-    #appMenu-install-or-open-ssb-current-page-button,
-    #appMenu-ssb-button {
-      display: none !important;
-    }
-  `;
-  let sss = Cc["@mozilla.org/content/style-sheet-service;1"].getService(
-    Ci.nsIStyleSheetService
-  );
-  let uri = makeURI("data:text/css," + encodeURIComponent(css));
-  sss.loadAndRegisterSheet(uri, sss.USER_SHEET);
-}
+gSsbChromeManager.init();

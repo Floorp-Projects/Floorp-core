@@ -69,8 +69,10 @@ document.addEventListener("DOMContentLoaded", () => {
         import("chrome://browser/content/browser-pinned-tabs-title.mjs").then(({ gFloorpPinnedTabsTitle }) => {
             window.gFloorpPinnedTabsTitle = gFloorpPinnedTabsTitle
         });
+        import("chrome://browser/content/browser-ssb-manager.mjs").then(({ gSsbChromeManager }) => {
+            window.gSsbChromeManager = gSsbChromeManager
+        });
 
-        Services.scriptloader.loadSubScript("chrome://browser/content/browser-ssb-manager.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-tabbar.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-design.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-verticaltabs.js", this);
