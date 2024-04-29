@@ -20,7 +20,8 @@ var { CustomizableUI } = ChromeUtils.importESModule(
  * @property {Function} createSwitchSidebarPositionButton - Creates the switch sidebar position button.
  * @property {Function} createProfileManagerButton - Creates the profile manager button.
  */
-const gFloorpBrowserActions = {
+
+export const gFloorpBrowserActions = {
   _initialized: false,
 
   init() {

@@ -44,14 +44,12 @@ document.addEventListener("DOMContentLoaded", () => {
     import("chrome://browser/content/browser-preferences.mjs").then(({ gFloorpPreferences }) => {
         window.gFloorpPreferences = gFloorpPreferences
     });
-
     import("chrome://browser/content/browser-UI-custom.mjs").then(({ observePreference }) => {
         window.observePreference = observePreference
     });
-
-    Services.scriptloader.loadSubScript("chrome://browser/content/browser-browserActions.js", this);
-    Services.scriptloader.loadSubScript("chrome://browser/content/browser-pinned-tabs-title.js", this);
-
+    import("chrome://browser/content/browser-browserActions.mjs").then(({ gFloorpBrowserActions }) => {
+        window.gFloorpBrowserActions = gFloorpBrowserActions
+    });
     // TODO: MIGRATE TO ESM after the other scripts are migrated to ESM
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-chromeCSS.js", this);
 
@@ -68,6 +66,10 @@ document.addEventListener("DOMContentLoaded", () => {
         import("chrome://browser/content/browser-downloadbar.mjs").then(({ gFloorpLegacyStyleDownloadBar }) => {
             window.gFloorpLegacyStyleDownloadBar = gFloorpLegacyStyleDownloadBar
         });
+        import("chrome://browser/content/browser-pinned-tabs-title.mjs").then(({ gFloorpPinnedTabsTitle }) => {
+            window.gFloorpPinnedTabsTitle = gFloorpPinnedTabsTitle
+        });
+
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-ssb-manager.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-tabbar.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-design.js", this);
