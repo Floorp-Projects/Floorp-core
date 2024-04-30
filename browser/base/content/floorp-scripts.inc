@@ -54,7 +54,11 @@ document.addEventListener("DOMContentLoaded", () => {
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-chromeCSS.js", this);
 
     if (FloorpAppConstants.FLOORP_OFFICIAL_COMPONENTS_ENABLED) {
-        Services.scriptloader.loadSubScript("chrome://browser/content/browser-custom-keyboard-shortcut.js", this);
+        import("chrome://browser/content/browser-custom-keyboard-shortcut.mjs").then(({ gFloorpCustomShortcutKeys, gFloorpCustomActionFunctions, gFloorpCSKActionFunctions }) => {
+            window.gFloorpCustomShortcutKeys = gFloorpCustomShortcutKeys
+            window.gFloorpCustomActionFunctions = gFloorpCustomActionFunctions
+            window.gFloorpCSKActionFunctions = gFloorpCSKActionFunctions
+        });
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-favicon-color.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-splitView.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-statusbar.js", this);
