@@ -68,9 +68,15 @@ document.addEventListener("DOMContentLoaded", () => {
         import("chrome://browser/content/browser-favicon-color.mjs").then(({ gFloorpFaviconColor }) => {
             window.gFloorpFaviconColor = gFloorpFaviconColor
         });
-        Services.scriptloader.loadSubScript("chrome://browser/content/browser-splitView.js", this);
-        Services.scriptloader.loadSubScript("chrome://browser/content/browser-statusbar.js", this);
-        Services.scriptloader.loadSubScript("chrome://browser/content/browser-private-container.js", this);
+        import("chrome://browser/content/browser-splitView.mjs").then(({ gSplitView }) => {
+            window.gSplitView = gSplitView
+        });
+        import("chrome://browser/content/browser-statusbar.mjs").then(({ gFloorpStatusBar }) => {
+            window.gFloorpStatusBar = gFloorpStatusBar
+        });
+        import("chrome://browser/content/browser-private-container.mjs").then(({ gFloorpPrivateContainer }) => {
+            window.gFloorpPrivateContainer = gFloorpPrivateContainer
+        });
     }
 
     // If script need more delay, use the following code.
