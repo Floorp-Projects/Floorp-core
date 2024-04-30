@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with This
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import { gFloorpDesign } from "./browser-design.mjs"
+
 /**
  * Object of Floorp Tab Bar style code.
  *
@@ -90,11 +92,11 @@ export const gFloorpTabBarStyle = {
       const tabbarStyle = Services.prefs.getIntPref("floorp.tabbar.style");
 
       if (tabbarStyle == 1 || tabbarStyle == 2) {
-        setBrowserDesign();
+        gFloorpDesign.setBrowserDesign();
         gFloorpTabBarStyle.setMultirowTabMaxHeight();
       } else {
         gFloorpTabBarStyle.removeMultirowTabMaxHeight();
-        setBrowserDesign();
+        gFloorpDesign.setBrowserDesign();
       }
     }
     Services.prefs.addObserver("floorp.tabbar.style", applyMultitab);

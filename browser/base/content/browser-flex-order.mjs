@@ -4,7 +4,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-let gFlexOrder = {
+/**
+ * Object of Floorp flex order module.
+ *
+ * @typedef {object} gFloorpFlexOrder
+ * @property {boolean} _flexOrderInitialized - Whether the flex order has been initialized.
+ * @property {Function} init - Initialize the flex order.
+ * @property {Function} setFlexOrder - Set the flex order of the elements.
+ */
+export const gFloorpFlexOrder = {
   _flexOrderInitialized: false,
 
   init() {
@@ -150,4 +158,4 @@ let gFlexOrder = {
   },
 };
 
-gFlexOrder.init();
+gFloorpFlexOrder.init();

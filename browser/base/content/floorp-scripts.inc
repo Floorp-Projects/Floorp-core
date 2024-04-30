@@ -93,17 +93,23 @@ document.addEventListener("DOMContentLoaded", () => {
         import("chrome://browser/content/browser-tabbar.js").then(({ gFloorpTabBarStyle }) => {
             window.gFloorpTabBarStyle = gFloorpTabBarStyle
         })
-
-        Services.scriptloader.loadSubScript("chrome://browser/content/browser-design.js", this);
-        Services.scriptloader.loadSubScript("chrome://browser/content/browser-verticaltabs.js", this);
-        Services.scriptloader.loadSubScript("chrome://browser/content/browser-flex-order.js", this);
-
+        import("chrome://browser/content/browser-design.mjs").then(({ gFloorpDesign }) => {
+            window.gFloorpDesign = gFloorpDesign
+        })
+        import("chrome://browser/content/browser-verticaltabs.mjs").then(({ gFloorpVerticalTabBar }) => {
+            window.gFloorpVerticalTabBar = gFloorpVerticalTabBar
+        })
+        import("chrome://browser/content/browser-flex-order.mjs").then(({ gFloorpFlexOrder }) => {
+            window.gFloorpFlexOrder = gFloorpFlexOrder
+        })
         import("chrome://browser/content/browser-share-mode.mjs").then(({ gFloorpShareMode }) => {
             window.gFloorpShareMode = gFloorpShareMode
         });
 
         if (FloorpAppConstants.FLOORP_OFFICIAL_COMPONENTS_ENABLED) {
-            Services.scriptloader.loadSubScript("chrome://browser/content/browser-UI-customizing-menu.js", this);
+            import("chrome://browser/content/browser-UI-customizing-menu.mjs").then(({ gFloorpCustomizeMode }) => {
+                window.gFloorpCustomizeMode = gFloorpCustomizeMode
+            });
         }
     });
 }, { once: true });

@@ -3,12 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const VERTICAL_TABS_WIDTH_PREF = "floorp.browser.tabs.verticaltab.width";
+import { gFloorpTabBarStyle } from "./browser-tabbar.mjs";
+import { gFloorpCommands } from "./browser-commands.mjs"
 
-var gFloorpVerticalTabBar = {
+export var gFloorpVerticalTabBar = {
   _initialized: false,
   _widthObserver: null,
   _listenerAdded: false,
+  get VERTICAL_TABS_WIDTH_PREF() {
+    return "floorp.browser.tabs.verticaltab.width";
+  },
 
   get enabled() {
     return Services.prefs.getBoolPref("floorp.browser.tabs.verticaltab", false);
@@ -17,7 +21,7 @@ var gFloorpVerticalTabBar = {
   get hoverModeEnabled() {
     return Services.prefs.getBoolPref(
       "floorp.verticaltab.hover.enabled",
-      false,
+      false
     );
   },
 
@@ -130,9 +134,9 @@ var gFloorpVerticalTabBar = {
     // Change Scroll elem tag
     gFloorpCommands.changeXULElementTagName(
       this.arrowscrollbox.shadowRoot.querySelector(
-        "scrollbox[part='scrollbox']",
+        "scrollbox[part='scrollbox']"
       ),
-      "vbox",
+      "vbox"
     );
 
     // Width observer
@@ -148,32 +152,40 @@ var gFloorpVerticalTabBar = {
       .getElementById("TabsToolbar")
       ?.setAttribute(
         "width",
-        Services.prefs.getIntPref(VERTICAL_TABS_WIDTH_PREF, 200),
+        Services.prefs.getIntPref(
+          gFloorpVerticalTabBar.VERTICAL_TABS_WIDTH_PREF,
+          200
+        )
       );
 
     if (this.tabsToolbar) {
-      document.getElementById("TabsToolbar").style.width =
-        `${Services.prefs.getIntPref(VERTICAL_TABS_WIDTH_PREF, 200)}px`;
+      document.getElementById(
+        "TabsToolbar"
+      ).style.width = `${Services.prefs.getIntPref(
+        gFloorpVerticalTabBar.VERTICAL_TABS_WIDTH_PREF,
+        200
+      )}px`;
     }
 
     // Observer
     this.toggleCustomizeModeVerticaltabStyle();
 
-
     // Context menu localization
     this.tabContextCloseTabsToTheStart?.setAttribute(
       "data-lazy-l10n-id",
-      "close-tabs-to-the-start-on-vertical-tab-bar",
+      "close-tabs-to-the-start-on-vertical-tab-bar"
     );
 
     this.tabContextCloseTabsToTheEnd?.setAttribute(
       "data-lazy-l10n-id",
-      "close-tabs-to-the-end-on-vertical-tab-bar",
+      "close-tabs-to-the-end-on-vertical-tab-bar"
     );
 
     // fix cannot use middle click to open new tab
     if (!this._listenerAdded) {
-      this.arrowscrollbox?.addEventListener("click", (event) => this.mouseMiddleClickEventListener(event));
+      this.arrowscrollbox?.addEventListener("click", event =>
+        this.mouseMiddleClickEventListener(event)
+      );
       this._listenerAdded = true;
     }
   },
@@ -205,7 +217,7 @@ var gFloorpVerticalTabBar = {
     // Change Scroll elem tag
     gFloorpCommands.changeXULElementTagName(
       this.arrowscrollbox.shadowRoot.querySelector("vbox[part='scrollbox']"),
-      "scrollbox",
+      "scrollbox"
     );
 
     // Observer
@@ -215,13 +227,9 @@ var gFloorpVerticalTabBar = {
     }
 
     // Context menu localization
-    this.tabContextCloseTabsToTheStart?.removeAttribute(
-      "data-lazy-l10n-id",
-    );
+    this.tabContextCloseTabsToTheStart?.removeAttribute("data-lazy-l10n-id");
 
-    this.tabContextCloseTabsToTheEnd?.removeAttribute(
-      "data-lazy-l10n-id",
-    );
+    this.tabContextCloseTabsToTheEnd?.removeAttribute("data-lazy-l10n-id");
   },
 
   setVerticalTabs() {
@@ -237,8 +245,8 @@ var gFloorpVerticalTabBar = {
     for (const mutation of mutations) {
       if (mutation.type === "attributes" && mutation.attributeName == "width") {
         Services.prefs.setIntPref(
-          VERTICAL_TABS_WIDTH_PREF,
-          parseInt(mutation.target.style.width),
+          gFloorpVerticalTabBar.VERTICAL_TABS_WIDTH_PREF,
+          parseInt(mutation.target.style.width)
         );
       }
     }
@@ -252,18 +260,24 @@ var gFloorpVerticalTabBar = {
         if (mutation.target.getAttribute("customizing") == "true") {
           Services.prefs.setBoolPref(
             "floorp.browser.tabs.verticaltab.temporary.disabled",
-            true,
+            true
           );
           Services.prefs.setIntPref("floorp.tabbar.style", 0);
-          Services.prefs.setIntPref(gFloorpTabBarStyle.tabbarDisplayStylePref, 0);
+          Services.prefs.setIntPref(
+            gFloorpTabBarStyle.tabbarDisplayStylePref,
+            0
+          );
           arrowscrollbox.hidden = true;
         } else {
           Services.prefs.setBoolPref(
             "floorp.browser.tabs.verticaltab.temporary.disabled",
-            false,
+            false
           );
           Services.prefs.setIntPref("floorp.tabbar.style", 2);
-          Services.prefs.setIntPref(gFloorpTabBarStyle.tabbarDisplayStylePref, 2);
+          Services.prefs.setIntPref(
+            gFloorpTabBarStyle.tabbarDisplayStylePref,
+            2
+          );
           arrowscrollbox.hidden = false;
         }
       });
@@ -275,14 +289,14 @@ var gFloorpVerticalTabBar = {
       if (
         Services.prefs.getIntPref("floorp.tabbar.style") != 2 &&
         !Services.prefs.getBoolPref(
-          "floorp.browser.tabs.verticaltab.temporary.disabled",
+          "floorp.browser.tabs.verticaltab.temporary.disabled"
         )
       ) {
         observer.disconnect();
       } else if (
         Services.prefs.getIntPref("floorp.tabbar.style") == 2 &&
         Services.prefs.getBoolPref(
-          "floorp.browser.tabs.verticaltab.temporary.disabled",
+          "floorp.browser.tabs.verticaltab.temporary.disabled"
         )
       ) {
         observer.observe(customizationContainer, config);
@@ -294,7 +308,7 @@ var gFloorpVerticalTabBar = {
     if (event.button != 1 || event.target != this.arrowscrollbox) {
       return;
     }
-    window.gBrowser.handleNewTabMiddleClick(this.arrowscrollbox, event)
+    window.gBrowser.handleNewTabMiddleClick(this.arrowscrollbox, event);
   },
 };
 

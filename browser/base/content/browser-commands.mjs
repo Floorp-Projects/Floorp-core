@@ -3,6 +3,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+/**
+ * Object representing various commands related to the Floorp functionality.
+ *
+ * @typedef {object} gFloorpCommands
+ * @property {boolean} initialized - Indicates whether the commands have been initialized.
+ * @property {Function} sss - Returns the style-sheet-service object.
+ * @property {Function} init - Initializes the commands.
+ * @property {Function} OpenChromeDirectory - Opens the Chrome directory.
+ * @property {Function} changeXULElementTagName - Changes the tag name of a XUL element.
+ * @property {Function} enableRestMode - Enables the rest mode.
+ * @property {Function} restartbrowser - Restarts the browser.
+ * @property {Function} loadStyleSheetWithNsStyleSheetService - Loads a style sheet using the nsIStyleSheetService.
+ * @property {Function} checkProvidedStyleSheetLoaded - Checks if a provided style sheet is loaded.
+ * @property {Function} unloadStyleSheetWithNsStyleSheetService - Unloads a style sheet using the nsIStyleSheetService.
+ */
+
 export const gFloorpCommands = {
   initialized: false,
 
