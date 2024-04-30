@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import { gFloorpContextMenu } from "./browser-context-menu.mjs";
+
 var { BrowserManagerSidebar } = ChromeUtils.importESModule(
   "resource:///modules/BrowserManagerSidebar.sys.mjs"
 );
@@ -60,7 +62,6 @@ export var gBrowserManagerSidebar = {
       return;
     }
 
-    // eslint-disable-next-line no-undef
     gFloorpContextMenu.addContextBox(
       "bsb-context-add",
       "bsb-context-add",
@@ -76,7 +77,7 @@ export var gBrowserManagerSidebar = {
           !document.getElementById("context-viewimage").hidden;
       }
     );
-    // eslint-disable-next-line no-undef
+
     gFloorpContextMenu.addContextBox(
       "bsb-context-link-add",
       "bsb-context-link-add",

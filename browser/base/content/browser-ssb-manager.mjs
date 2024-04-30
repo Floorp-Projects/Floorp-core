@@ -1,5 +1,6 @@
-/* eslint-disable no-undef */
 /* -*- indent-tabs-mode: nil; js-indent-level: 2 -*- */
+
+import { gFloorpPageAction } from "./browser-pageActions.mjs";
 
 var { SiteSpecificBrowserExternalFileService } = ChromeUtils.importESModule(
   "resource:///modules/SiteSpecificBrowserExternalFileService.sys.mjs"
@@ -45,7 +46,7 @@ export const gSsbChromeManager = {
       let sss = Cc["@mozilla.org/content/style-sheet-service;1"].getService(
         Ci.nsIStyleSheetService
       );
-      let uri = makeURI("data:text/css," + encodeURIComponent(css));
+      let uri = window.makeURI("data:text/css," + encodeURIComponent(css));
       sss.loadAndRegisterSheet(uri, sss.USER_SHEET);
     }
   },
@@ -55,7 +56,7 @@ export const gSsbChromeManager = {
       let isInstalled =
         await gSsbChromeManager.functions.checkCurrentPageIsInstalled();
 
-      if (!gBrowser.currentURI.schemeIs("https")) {
+      if (!window.gBrowser.currentURI.schemeIs("https")) {
         return;
       }
 
@@ -69,20 +70,20 @@ export const gSsbChromeManager = {
         if (ssbObj) {
           let id = ssbObj.id;
           await SiteSpecificBrowserIdUtils.runSsbByUrlAndId(
-            gBrowser.currentURI.spec,
+            window.gBrowser.currentURI.spec,
             id
           );
 
           // The site's manifest may point to a different start page so explicitly
           // open the SSB to the current page.
-          gBrowser.removeTab(gBrowser.selectedTab, {
+          window.gBrowser.removeTab(window.gBrowser.selectedTab, {
             closeWindowWithLastTab: false,
           });
           gFloorpPageAction.Ssb.closePopup();
         }
       } else {
         let ssb = await SiteSpecificBrowser.createFromBrowser(
-          gBrowser.selectedBrowser,
+          window.AbortControllergBrowser.selectedBrowser,
           {
             // Configure the SSB to use the site's manifest if it exists.
             useWebManifest: asPwa,
@@ -97,7 +98,7 @@ export const gSsbChromeManager = {
 
           // The site's manifest may point to a different start page so explicitly
           // open the SSB to the current page.
-          gBrowser.removeTab(gBrowser.selectedTab, {
+          window.gBrowser.removeTab(window.gBrowser.selectedTab, {
             closeWindowWithLastTab: false,
           });
 
@@ -107,8 +108,8 @@ export const gSsbChromeManager = {
     },
 
     async checkCurrentPageCanBeInstalled() {
-      let currentURI = gBrowser.currentURI;
-      let currentTab = gBrowser.selectedTab;
+      let currentURI = window.gBrowser.currentURI;
+      let currentTab = window.gBrowser.selectedTab;
       let currentTabURL = currentTab.linkedBrowser.currentURI.spec;
 
       if (
@@ -124,19 +125,19 @@ export const gSsbChromeManager = {
 
     async checkCurrentPageHasSsbManifest() {
       if (
-        gBrowser.currentURI.schemeIs("about") ||
-        gBrowser.currentURI.schemeIs("chrome") ||
-        gBrowser.currentURI.schemeIs("resource") ||
-        gBrowser.currentURI.schemeIs("view-source") ||
-        gBrowser.currentURI.schemeIs("moz-extension") ||
+        window.gBrowser.currentURI.schemeIs("about") ||
+        window.gBrowser.currentURI.schemeIs("chrome") ||
+        window.gBrowser.currentURI.schemeIs("resource") ||
+        window.gBrowser.currentURI.schemeIs("view-source") ||
+        window.gBrowser.currentURI.schemeIs("moz-extension") ||
         // Exclude "about:blank"
-        gBrowser.currentURI.spec === "about:blank"
+        window.gBrowser.currentURI.spec === "about:blank"
       ) {
         return null;
       }
 
       let actor =
-        gBrowser.selectedBrowser.browsingContext.currentWindowGlobal.getActor(
+        window.gBrowser.selectedBrowser.browsingContext.currentWindowGlobal.getActor(
           "SiteSpecificBrowser"
         );
       // If true, return the manifest href, otherwise return null
@@ -147,13 +148,13 @@ export const gSsbChromeManager = {
 
     async checkCurrentPageIsInstalled() {
       if (
-        gBrowser.currentURI.schemeIs("about") ||
-        gBrowser.currentURI.schemeIs("chrome") ||
-        gBrowser.currentURI.schemeIs("resource") ||
-        gBrowser.currentURI.schemeIs("view-source") ||
-        gBrowser.currentURI.schemeIs("moz-extension") ||
+        window.gBrowser.currentURI.schemeIs("about") ||
+        window.gBrowser.currentURI.schemeIs("chrome") ||
+        window.gBrowser.currentURI.schemeIs("resource") ||
+        window.gBrowser.currentURI.schemeIs("view-source") ||
+        window.gBrowser.currentURI.schemeIs("moz-extension") ||
         // Exclude "about:blank"
-        gBrowser.currentURI.spec === "about:blank"
+        window.gBrowser.currentURI.spec === "about:blank"
       ) {
         return false;
       }
@@ -196,7 +197,7 @@ export const gSsbChromeManager = {
       };
 
       let currentURISsbObj = await SiteSpecificBrowser.createFromBrowser(
-        gBrowser.selectedBrowser,
+        window.gBrowser.selectedBrowser,
         options
       );
 
@@ -204,7 +205,7 @@ export const gSsbChromeManager = {
     },
 
     async setImageToInstallButton() {
-      gBrowser.currentURI;
+      window.gBrowser.currentURI;
 
       let currentURISsbObj = await this.getCurrentTabSsb();
       let isInstalled = await this.checkCurrentPageIsInstalled();
@@ -303,7 +304,7 @@ export const gSsbChromeManager = {
     },
 
     async showSsbPanelSubView() {
-      await PanelUI.showSubView(
+      await window.PanelUI.showSubView(
         "PanelUI-ssb",
         document.getElementById("appMenu-ssb-button")
       );

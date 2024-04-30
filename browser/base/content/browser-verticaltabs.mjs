@@ -70,9 +70,6 @@ export var gFloorpVerticalTabBar = {
       return;
     }
 
-    // Global
-    window.gFloorpVerticalTabBar = this;
-
     Services.prefs.addObserver("floorp.tabbar.style", function () {
       if (Services.prefs.getIntPref("floorp.tabbar.style") == 2) {
         Services.prefs.setIntPref(gFloorpTabBarStyle.tabbarDisplayStylePref, 2);

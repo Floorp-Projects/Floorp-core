@@ -2,7 +2,18 @@
 
 /****************************************************** QR Code ******************************************************/
 
-export let gFloorpPageAction = {
+/**
+ * The `gFloorpPageAction` object represents the page action for the Floorp browser.
+ * It contains properties and methods related to the page action functionality.
+ *
+ * @typedef {object} gFloorpPageAction
+ * @property {boolean} initialized - Indicates whether the page action has been initialized.
+ * @property {Function} init - Initializes the page action by adding necessary elements to the DOM.
+ * @property {object} qrCode - Contains properties and methods related to the QR code functionality.
+ * @property {object} Ssb - Contains properties and methods related to the Ssb functionality.
+ */
+
+export const gFloorpPageAction = {
   initialized: false,
 
   init() {

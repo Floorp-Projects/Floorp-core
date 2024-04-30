@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import { gFloorpOnLocationChange } from "./browser-onlocation-change.mjs";
+
 export const gFloorpObservePreference = (prefName, callback) => {
   let prefValue = Services.prefs.getBoolPref(prefName, false);
 
@@ -84,7 +86,7 @@ gFloorpObservePreference("floorp.bookmarks.fakestatus.mode", function (event) {
     eventListener = document.addEventListener(
       "floorpOnLocationChangeEvent",
       function () {
-        let currentUrl = window.gFloorpOnLocationChange.locationURI.spec;
+        let currentUrl = gFloorpOnLocationChange.locationURI.spec;
         let pref = Services.prefs.getStringPref(
           "browser.toolbars.bookmarks.visibility",
           "always",
