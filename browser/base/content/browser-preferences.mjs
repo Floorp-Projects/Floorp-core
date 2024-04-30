@@ -63,19 +63,19 @@ export const gFloorpPreferences = {
           case 1:
             Services.prefs.setStringPref(
               GENERAL_USERAGENT_OVERRIDE_PREF,
-              CHROME_STABLE_UA.win,
+              window.CHROME_STABLE_UA.win,
             );
             break;
           case 2:
             Services.prefs.setStringPref(
               GENERAL_USERAGENT_OVERRIDE_PREF,
-              CHROME_STABLE_UA.mac,
+              window.CHROME_STABLE_UA.mac,
             );
             break;
           case 3:
             Services.prefs.setStringPref(
               GENERAL_USERAGENT_OVERRIDE_PREF,
-              CHROME_STABLE_UA.linux,
+              window.CHROME_STABLE_UA.linux,
             );
             break;
           case 4:
@@ -98,9 +98,6 @@ export const gFloorpPreferences = {
       setUserAgent(BROWSER_SETED_USERAGENT);
 
       Services.prefs.addObserver(BROWSER_SETED_USERAGENT_PREF, function () {
-        let BROWSER_SETED_USERAGENT = Services.prefs.getIntPref(
-          BROWSER_SETED_USERAGENT_PREF,
-        );
         setUserAgent(BROWSER_SETED_USERAGENT);
       });
     }
@@ -176,9 +173,9 @@ export const gFloorpPreferences = {
       Services.dirsvc.get("ProfD", Ci.nsIFile).path,
       "floorp_notes_backup.json",
     );
-    const content = IOUtils.readUTF8(filePath).then((content) => {
-      content = content.slice(0, -1) + "}}";
-      return JSON.parse(content);
+    const content = IOUtils.readUTF8(filePath).then((fileContent) => {
+      const result = fileContent.slice(0, -1) + "}}";
+      return JSON.parse(result);
     });
     return content;
   },
