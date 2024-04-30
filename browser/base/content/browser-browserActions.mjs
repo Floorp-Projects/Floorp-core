@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /* -*- indent-tabs-mode: nil; js-indent-level: 2 -*-
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -103,7 +102,7 @@ export const gFloorpBrowserActions = {
           .isFirstRun
       ) {
         CustomizableUI.addWidgetToArea(
-          widgetId,
+          "sidebar-button",
           CustomizableUI.AREA_NAVBAR,
           -1
         );
@@ -126,7 +125,7 @@ export const gFloorpBrowserActions = {
           CustomizableUI.AREA_NAVBAR,
           3
         );
-        CustomizableUI.addWidgetToArea(widgetId, CustomizableUI.AREA_NAVBAR, 4);
+        CustomizableUI.addWidgetToArea("sidebar-reverse-position-toolbar", CustomizableUI.AREA_NAVBAR, 4);
       }
     });
   },
