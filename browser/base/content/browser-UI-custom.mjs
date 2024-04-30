@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-export const observePreference = function (prefName, callback) {
+export const gFloorpObservePreference = (prefName, callback) => {
   let prefValue = Services.prefs.getBoolPref(prefName, false);
 
   const notifyCallback = (reason) => {
@@ -27,7 +27,7 @@ export const observePreference = function (prefName, callback) {
 };
 
 // prefs
-observePreference("floorp.material.effect.enable", function (event) {
+gFloorpObservePreference("floorp.material.effect.enable", function (event) {
   if (event.prefValue) {
     let Tag = document.createElement("style");
     Tag.innerText = `@import url(chrome://browser/skin/options/micaforeveryone.css)`;
@@ -38,7 +38,7 @@ observePreference("floorp.material.effect.enable", function (event) {
   }
 });
 
-observePreference(
+gFloorpObservePreference(
   "floorp.Tree-type.verticaltab.optimization",
   function (event) {
     if (event.prefValue) {
@@ -52,7 +52,7 @@ observePreference(
   },
 );
 
-observePreference("floorp.optimized.msbutton.ope", function (event) {
+gFloorpObservePreference("floorp.optimized.msbutton.ope", function (event) {
   if (event.prefValue) {
     let Tag = document.createElement("style");
     Tag.innerText = `@import url(chrome://browser/skin/options/msbutton.css)`;
@@ -63,7 +63,7 @@ observePreference("floorp.optimized.msbutton.ope", function (event) {
   }
 });
 
-observePreference("floorp.bookmarks.bar.focus.mode", function (event) {
+gFloorpObservePreference("floorp.bookmarks.bar.focus.mode", function (event) {
   if (event.prefValue) {
     let Tag = document.createElement("style");
     Tag.innerText = `@import url(chrome://browser/skin/options/bookmarkbar_autohide.css)`;
@@ -74,7 +74,7 @@ observePreference("floorp.bookmarks.bar.focus.mode", function (event) {
   }
 });
 
-observePreference("floorp.bookmarks.fakestatus.mode", function (event) {
+gFloorpObservePreference("floorp.bookmarks.fakestatus.mode", function (event) {
   let eventListener = null;
 
   if (event.prefValue) {
@@ -119,7 +119,7 @@ observePreference("floorp.bookmarks.fakestatus.mode", function (event) {
   }
 });
 
-observePreference("floorp.search.top.mode", function (event) {
+gFloorpObservePreference("floorp.search.top.mode", function (event) {
   if (event.prefValue) {
     let Tag = document.createElement("style");
     Tag.innerText = `@import url(chrome://browser/skin/options/move_page_inside_searchbar.css)`;
@@ -130,7 +130,7 @@ observePreference("floorp.search.top.mode", function (event) {
   }
 });
 
-observePreference("floorp.legacy.dlui.enable", function (event) {
+gFloorpObservePreference("floorp.legacy.dlui.enable", function (event) {
   if (event.prefValue) {
     let Tag = document.createElement("style");
     Tag.innerText = `@import url(chrome://browser/skin/options/browser-custom-dlmgr.css)`;
@@ -141,7 +141,7 @@ observePreference("floorp.legacy.dlui.enable", function (event) {
   }
 });
 
-observePreference("floorp.downloading.red.color", function (event) {
+gFloorpObservePreference("floorp.downloading.red.color", function (event) {
   if (event.prefValue) {
     let Tag = document.createElement("style");
     Tag.innerText = `@import url(chrome://browser/skin/options/downloading-redcolor.css`;
@@ -152,7 +152,7 @@ observePreference("floorp.downloading.red.color", function (event) {
   }
 });
 
-observePreference("floorp.navbar.bottom", function (event) {
+gFloorpObservePreference("floorp.navbar.bottom", function (event) {
   if (event.prefValue) {
     var Tag = document.createElement("style");
     Tag.setAttribute("id", "floorp-navvarcss");
@@ -188,7 +188,7 @@ observePreference("floorp.navbar.bottom", function (event) {
   }
 });
 
-observePreference("floorp.disable.fullscreen.notification", function (event) {
+gFloorpObservePreference("floorp.disable.fullscreen.notification", function (event) {
   if (event.prefValue) {
     var Tag = document.createElement("style");
     Tag.innerText = `@import url(chrome://browser/skin/options/disableFullScreenNotification.css)`;
@@ -199,7 +199,7 @@ observePreference("floorp.disable.fullscreen.notification", function (event) {
   }
 });
 
-observePreference("floorp.delete.browser.border", function (event) {
+gFloorpObservePreference("floorp.delete.browser.border", function (event) {
   if (event.prefValue) {
     var Tag = document.createElement("style");
     Tag.innerText = `@import url(chrome://browser/skin/options/delete-border.css)`;
@@ -210,7 +210,7 @@ observePreference("floorp.delete.browser.border", function (event) {
   }
 });
 
-observePreference("floorp.hide.unifiedExtensionsButtton", function (event) {
+gFloorpObservePreference("floorp.hide.unifiedExtensionsButtton", function (event) {
   if (event.prefValue) {
     let Tag = document.createElement("style");
     Tag.innerText = `#unified-extensions-button {display: none !important;}`;
@@ -221,7 +221,7 @@ observePreference("floorp.hide.unifiedExtensionsButtton", function (event) {
   }
 });
 
-observePreference(
+gFloorpObservePreference(
   "floorp.extensions.STG.like.floorp.workspaces.enabled",
   function (event) {
     if (event.prefValue) {
@@ -237,7 +237,7 @@ observePreference(
 
 /*------------------------------------------- multirowtab -------------------------------------------*/
 
-observePreference("floorp.browser.tabbar.multirow.newtab-inside.enabled", function(event) {
+gFloorpObservePreference("floorp.browser.tabbar.multirow.newtab-inside.enabled", function(event) {
   if (Services.prefs.getIntPref("floorp.tabbar.style", false) != 1) {
     return;
   }
@@ -258,7 +258,7 @@ observePreference("floorp.browser.tabbar.multirow.newtab-inside.enabled", functi
 
 /*------------------------------------------- verticaltab -------------------------------------------*/
 
-observePreference("floorp.verticaltab.show.newtab.button", function (event) {
+gFloorpObservePreference("floorp.verticaltab.show.newtab.button", function (event) {
   if (Services.prefs.getIntPref("floorp.tabbar.style", false) != 2) {
     return;
   }

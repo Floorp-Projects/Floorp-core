@@ -44,8 +44,8 @@ document.addEventListener("DOMContentLoaded", () => {
     import("chrome://browser/content/browser-preferences.mjs").then(({ gFloorpPreferences }) => {
         window.gFloorpPreferences = gFloorpPreferences
     });
-    import("chrome://browser/content/browser-UI-custom.mjs").then(({ observePreference }) => {
-        window.observePreference = observePreference
+    import("chrome://browser/content/browser-UI-custom.mjs").then(({ gFloorpObservePreference }) => {
+        window.gFloorpObservePreference = gFloorpObservePreference
     });
     import("chrome://browser/content/browser-browserActions.mjs").then(({ gFloorpBrowserActions }) => {
         window.gFloorpBrowserActions = gFloorpBrowserActions
