@@ -90,8 +90,10 @@ document.addEventListener("DOMContentLoaded", () => {
         import("chrome://browser/content/browser-ssb-manager.mjs").then(({ gSsbChromeManager }) => {
             window.gSsbChromeManager = gSsbChromeManager
         });
+        import("chrome://browser/content/browser-tabbar.js").then(({ gFloorpTabBarStyle }) => {
+            window.gFloorpTabBarStyle = gFloorpTabBarStyle
+        })
 
-        Services.scriptloader.loadSubScript("chrome://browser/content/browser-tabbar.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-design.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-verticaltabs.js", this);
         Services.scriptloader.loadSubScript("chrome://browser/content/browser-flex-order.js", this);

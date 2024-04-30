@@ -71,9 +71,9 @@ var gFloorpVerticalTabBar = {
 
     Services.prefs.addObserver("floorp.tabbar.style", function () {
       if (Services.prefs.getIntPref("floorp.tabbar.style") == 2) {
-        Services.prefs.setIntPref(tabbarContents.tabbarDisplayStylePref, 2);
+        Services.prefs.setIntPref(gFloorpTabBarStyle.tabbarDisplayStylePref, 2);
       } else {
-        Services.prefs.setIntPref(tabbarContents.tabbarDisplayStylePref, 0);
+        Services.prefs.setIntPref(gFloorpTabBarStyle.tabbarDisplayStylePref, 0);
       }
       gFloorpVerticalTabBar.setVerticalTabs();
     });
@@ -255,7 +255,7 @@ var gFloorpVerticalTabBar = {
             true,
           );
           Services.prefs.setIntPref("floorp.tabbar.style", 0);
-          Services.prefs.setIntPref(tabbarContents.tabbarDisplayStylePref, 0);
+          Services.prefs.setIntPref(gFloorpTabBarStyle.tabbarDisplayStylePref, 0);
           arrowscrollbox.hidden = true;
         } else {
           Services.prefs.setBoolPref(
@@ -263,7 +263,7 @@ var gFloorpVerticalTabBar = {
             false,
           );
           Services.prefs.setIntPref("floorp.tabbar.style", 2);
-          Services.prefs.setIntPref(tabbarContents.tabbarDisplayStylePref, 2);
+          Services.prefs.setIntPref(gFloorpTabBarStyle.tabbarDisplayStylePref, 2);
           arrowscrollbox.hidden = false;
         }
       });
