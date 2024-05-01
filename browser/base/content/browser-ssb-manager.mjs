@@ -1,6 +1,6 @@
 /* -*- indent-tabs-mode: nil; js-indent-level: 2 -*- */
 
-import { gFloorpPageAction } from "./browser-pageActions.mjs";
+import { gFloorpPageAction } from "./browser-floorp-pageActions.mjs";
 
 var { SiteSpecificBrowserExternalFileService } = ChromeUtils.importESModule(
   "resource:///modules/SiteSpecificBrowserExternalFileService.sys.mjs"

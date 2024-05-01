@@ -63,19 +63,22 @@ export const gFloorpPreferences = {
           case 1:
             Services.prefs.setStringPref(
               GENERAL_USERAGENT_OVERRIDE_PREF,
-              window.CHROME_STABLE_UA.win,
+              // eslint-disable-next-line no-undef
+              CHROME_STABLE_UA.win,
             );
             break;
           case 2:
             Services.prefs.setStringPref(
               GENERAL_USERAGENT_OVERRIDE_PREF,
-              window.CHROME_STABLE_UA.mac,
+              // eslint-disable-next-line no-undef
+              CHROME_STABLE_UA.mac,
             );
             break;
           case 3:
             Services.prefs.setStringPref(
               GENERAL_USERAGENT_OVERRIDE_PREF,
-              window.CHROME_STABLE_UA.linux,
+              // eslint-disable-next-line no-undef
+              CHROME_STABLE_UA.linux,
             );
             break;
           case 4:

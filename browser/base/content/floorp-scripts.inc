@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
     import("chrome://browser/content/browser-onlocation-change.mjs").then(({ gFloorpOnLocationChange }) => {
         window.gFloorpOnLocationChange = gFloorpOnLocationChange
     });
-    import("chrome://browser/content/browser-pageActions-floorp.mjs").then(({ gFloorpPageAction }) => {
+    import("chrome://browser/content/browser-floorp-pageActions.mjs").then(({ gFloorpPageAction }) => {
         window.gFloorpPageAction = gFloorpPageAction
     });
     import("chrome://browser/content/browser-manager-sidebar.mjs").then(({ gBrowserManagerSidebar }) => {
