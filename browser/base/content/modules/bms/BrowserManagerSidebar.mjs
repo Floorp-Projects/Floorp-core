@@ -4,11 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-export const EXPORTED_SYMBOLS = ["BrowserManagerSidebar"];
-
-const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
-
-export let BrowserManagerSidebar = {
+export const BrowserManagerSidebar = {
   STATIC_SIDEBAR_DATA: {
     "floorp//bmt": {
       url: "chrome://browser/content/places/places.xhtml",
@@ -147,11 +143,11 @@ export let BrowserManagerSidebar = {
           }
         })
         .catch(reject => {
-          const origin = new URL(sbar_url).origin;
+          const sbar_origin = new URL(sbar_url).origin;
           const iconExtensions = ['ico', 'png', 'jpg', 'jpeg'];
         
           const fetchIcon = async (extension) => {
-            const iconUrl = `${origin}/favicon.${extension}`;
+            const iconUrl = `${sbar_origin}/favicon.${extension}`;
             const response = await fetch(iconUrl);
             if (response.ok && elem.style.getPropertyValue("--BMSIcon") != iconUrl) {
               elem.style.setProperty("--BMSIcon", `url(${iconUrl})`);

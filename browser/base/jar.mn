@@ -24,6 +24,9 @@ browser.jar:
   content/browser/browser-UI-custom.mjs               (content/browser-UI-custom.mjs)
   content/browser/browser-verticaltabs.mjs            (content/browser-verticaltabs.mjs)
 
+# ES Modules (Not used directly modules)
+  content/browser/modules/bms/BrowserManagerSidebar.mjs (content/modules/bms/BrowserManagerSidebar.mjs)
+
 # Style Sheets
   content/browser/browser-floorp.css                  (content/browser-floorp.css)
   content/browser/browser-verticaltabs.css            (content/browser-verticaltabs.css)

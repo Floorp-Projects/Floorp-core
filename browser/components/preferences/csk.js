@@ -7,7 +7,7 @@ var { AppConstants } = ChromeUtils.import(
   "resource://gre/modules/AppConstants.jsm",
 );
 const CustomKeyboardShortcutUtils = ChromeUtils.importESModule(
-  "resource:///modules/CustomKeyboardShortcutUtils.sys.mjs",
+  "chrome://browser/content/modules/csk/CustomKeyboardShortcutUtils.mjs",
 );
 
 XPCOMUtils.defineLazyGetter(this, "L10n", () => {

@@ -5,18 +5,10 @@
 
 export const EXPORTED_SYMBOLS = ["isFirstRun", "isUpdated", "isMainBrowser"];
 
-/*
-Scripts written here are executed only once at browser startup.
-*/
-
 import { AppConstants } from "resource://gre/modules/AppConstants.sys.mjs";
 import { setTimeout } from "resource://gre/modules/Timer.sys.mjs";
 import { FileUtils } from "resource://gre/modules/FileUtils.sys.mjs";
 import { CustomizableUI } from "resource:///modules/CustomizableUI.sys.mjs";
-import { FloorpAppConstants } from "resource:///modules/FloorpAppConstants.sys.mjs";
-
-// Migration from JSM to ES Module in the future.
-const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 
 export const env = Services.env;
 // Check information about startup.
@@ -60,7 +52,7 @@ const isMainBrowser = env.get("MOZ_BROWSER_TOOLBOX_PORT") === "";
 export async function onFinalUIStartup() {
   Services.obs.removeObserver(onFinalUIStartup, "final-ui-startup");
   let { BrowserManagerSidebar } = ChromeUtils.importESModule(
-    "resource:///modules/BrowserManagerSidebar.sys.mjs",
+    "chrome://browser/content/modules/bms/BrowserManagerSidebar.mjs",
   );
   BrowserManagerSidebar.prefsUpdate();
 

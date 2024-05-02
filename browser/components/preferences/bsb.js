@@ -6,11 +6,8 @@
 /* import-globals-from extensionControlled.js */
 /* import-globals-from preferences.js */
 
-var { AppConstants } = ChromeUtils.import(
-  "resource://gre/modules/AppConstants.jsm",
-);
 let { BrowserManagerSidebar } = ChromeUtils.importESModule(
-  "resource:///modules/BrowserManagerSidebar.sys.mjs",
+  "chrome://browser/content/modules/bms/BrowserManagerSidebar.mjs"
 );
 XPCOMUtils.defineLazyGetter(this, "L10n", () => {
   return new Localization(["branding/brand.ftl", "browser/floorp"]);
@@ -33,12 +30,12 @@ var gBSBPane = {
     switch (data.eventType) {
       case "mouseOver":
         document.getElementById(
-          data.id.replace("select-", "BSB-"),
+          data.id.replace("select-", "BSB-")
         ).style.border = "1px solid blue";
         break;
       case "mouseOut":
         document.getElementById(
-          data.id.replace("select-", "BSB-"),
+          data.id.replace("select-", "BSB-")
         ).style.border = "";
         break;
     }
@@ -46,7 +43,7 @@ var gBSBPane = {
   mouseOver(id) {
     Services.obs.notifyObservers(
       { eventType: "mouseOver", id },
-      "obs-panel-re",
+      "obs-panel-re"
     );
   },
   mouseOut(id) {
@@ -54,11 +51,11 @@ var gBSBPane = {
   },
 
   deleteWebpanel(id) {
-    this.BSBs.index = this.BSBs.index.filter((n) => n != id);
+    this.BSBs.index = this.BSBs.index.filter(n => n != id);
     delete this.BSBs.data[id];
     Services.prefs.setStringPref(
       `floorp.browser.sidebar2.data`,
-      JSON.stringify(this.BSBs),
+      JSON.stringify(this.BSBs)
     );
   },
 
@@ -70,11 +67,11 @@ var gBSBPane = {
       this.BSBs.index[index - 1] = tempValue;
       Services.prefs.setStringPref(
         `floorp.browser.sidebar2.data`,
-        JSON.stringify(this.BSBs),
+        JSON.stringify(this.BSBs)
       );
       Services.obs.notifyObservers(
         { eventType: "mouseOut", id: `BSB-${id}` },
-        "obs-panel-re",
+        "obs-panel-re"
       );
     }
   },
@@ -87,11 +84,11 @@ var gBSBPane = {
       this.BSBs.index[index + 1] = tempValue;
       Services.prefs.setStringPref(
         `floorp.browser.sidebar2.data`,
-        JSON.stringify(this.BSBs),
+        JSON.stringify(this.BSBs)
       );
       Services.obs.notifyObservers(
         { eventType: "mouseOut", id: `BSB-${id}` },
-        "obs-panel-re",
+        "obs-panel-re"
       );
     }
   },
@@ -105,11 +102,11 @@ var gBSBPane = {
         this.BSBs = JSON.parse(
           Services.prefs.getStringPref(
             `floorp.browser.sidebar2.data`,
-            undefined,
-          ),
+            undefined
+          )
         );
         this.panelSet();
-      }.bind(this),
+      }.bind(this)
     );
     this._list = document.getElementById("BSBView");
     this._pane = document.getElementById("paneBSB");
@@ -126,14 +123,14 @@ var gBSBPane = {
             let userConfirm = await confirmRestartPrompt(null);
             if (userConfirm == CONFIRM_RESTART_PROMPT_RESTART_NOW) {
               Services.startup.quit(
-                Ci.nsIAppStartup.eAttemptQuit | Ci.nsIAppStartup.eRestart,
+                Ci.nsIAppStartup.eAttemptQuit | Ci.nsIAppStartup.eRestart
               );
             }
           })();
         } else {
           window.setTimeout(function () {
             Services.startup.quit(
-              Services.startup.eAttemptQuit | Services.startup.eRestart,
+              Services.startup.eAttemptQuit | Services.startup.eRestart
             );
           }, 500);
         }
@@ -159,7 +156,7 @@ var gBSBPane = {
       gSubDialog.open(
         "chrome://browser/content/preferences/dialogs/customURLs.xhtml",
         undefined,
-        { id: updateNumber, new: true },
+        { id: updateNumber, new: true }
       );
     });
     document
@@ -173,7 +170,7 @@ var gBSBPane = {
     if (elemUrl.startsWith("floorp//")) {
       elem.setAttribute(
         "data-l10n-id",
-        "sidebar2-" + BrowserManagerSidebar.STATIC_SIDEBAR_DATA[elemUrl].l10n,
+        "sidebar2-" + BrowserManagerSidebar.STATIC_SIDEBAR_DATA[elemUrl].l10n
       );
     } else if (elemUrl.startsWith("extension")) {
       elem.removeAttribute("data-l10n-id");
@@ -186,14 +183,15 @@ var gBSBPane = {
 
   panelSet() {
     this.BSBs = JSON.parse(
-      Services.prefs.getStringPref(`floorp.browser.sidebar2.data`, undefined),
+      Services.prefs.getStringPref(`floorp.browser.sidebar2.data`, undefined)
     );
     let isFirst = true;
     let lastElem = null;
     for (let container of this.BSBs.index) {
       let listItem = null;
       if (document.getElementById(`BSB-${container}`) == null) {
-        listItem = window.MozXULElement.parseXULToFragment(`
+        listItem = window.MozXULElement.parseXULToFragment(
+          `
         <richlistitem id="BSB-${container}" class="BSB-list">
           <hbox flex="1" align="center">
             <hbox class="userContext-icon userContext-icon-inprefs" width="24" height="24"></hbox>
@@ -216,15 +214,16 @@ var gBSBPane = {
             <button class="BMS-Remove"></button>
           </hbox>
         </richlistitem>
-        `).querySelector("*");
-        {
-          listItem.onmouseover = function () {
-            this.mouseOver(`BSB-${container}`);
-          }.bind(this);
-          listItem.onmouseout = function () {
-            this.mouseOut(`BSB-${container}`);
-          }.bind(this);
-        }
+        `
+        ).querySelector("*");
+
+        listItem.onmouseover = function () {
+          this.mouseOver(`BSB-${container}`);
+        }.bind(this);
+        listItem.onmouseout = function () {
+          this.mouseOut(`BSB-${container}`);
+        }.bind(this);
+
         {
           let elem = listItem.querySelector(".bsb_label");
           this.setURL(this.BSBs.data[container].url, elem);
@@ -235,7 +234,7 @@ var gBSBPane = {
             gSubDialog.open(
               "chrome://browser/content/preferences/dialogs/customURLs.xhtml",
               undefined,
-              { id: event.target.getAttribute("value"), new: false },
+              { id: event.target.getAttribute("value"), new: false }
             );
           });
           elem.setAttribute("value", container);
@@ -247,7 +246,7 @@ var gBSBPane = {
             "command",
             function (event) {
               this.deleteWebpanel(event.target.getAttribute("value"));
-            }.bind(this),
+            }.bind(this)
           );
           elem.setAttribute("value", container);
           document.l10n.setAttributes(elem, "sidebar2-pref-delete");
@@ -258,7 +257,7 @@ var gBSBPane = {
             "command",
             function (event) {
               this.upWebpanel(event.target.getAttribute("value"));
-            }.bind(this),
+            }.bind(this)
           );
           elem.setAttribute("value", container);
         }
@@ -268,7 +267,7 @@ var gBSBPane = {
             "command",
             function (event) {
               this.downWebpanel(event.target.getAttribute("value"));
-            }.bind(this),
+            }.bind(this)
           );
           elem.setAttribute("value", container);
         }
@@ -278,7 +277,7 @@ var gBSBPane = {
         this._list.insertBefore(listItem, document.getElementById("BSBSpace"));
         this.setURL(
           this.BSBs.data[container].url,
-          listItem.querySelector(".bsb_label"),
+          listItem.querySelector(".bsb_label")
         );
       }
       listItem

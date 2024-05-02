@@ -7,7 +7,7 @@ const { ContextualIdentityService } = ChromeUtils.import(
   "resource://gre/modules/ContextualIdentityService.jsm",
 );
 let { BrowserManagerSidebar } = ChromeUtils.importESModule(
-  "resource:///modules/BrowserManagerSidebar.sys.mjs",
+  "chrome://browser/content/modules/bms/BrowserManagerSidebar.mjs",
 );
 function setTitle() {
   let params = window.arguments[0] || {};

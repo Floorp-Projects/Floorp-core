@@ -17,7 +17,6 @@ DIRS += [
 ]
 
 EXTRA_JS_MODULES += [
-    "BrowserManagerSidebar.sys.mjs",
     "DesktopFileParser.sys.mjs",
     "EscapeShell.sys.mjs",
     "FloorpActors.sys.mjs",
