@@ -19,11 +19,11 @@ Services.scriptloader.loadSubScript("chrome://browser/content/ua_data.js", this)
 Services.scriptloader.loadSubScript("chrome://browser/content/browser-overrides.js", this);
 
 if (FloorpAppConstants.FLOORP_OFFICIAL_COMPONENTS_ENABLED) {
-    import("chrome://browser/content/browser-workspaces.mjs").then(({ gWorkspaces }) => {
-        window.gWorkspaces = gWorkspaces
-    });
     import("chrome://browser/content/browser-bms-window.mjs").then(({ gBmsWindow }) => {
         window.gBmsWindow = gBmsWindow
+    });
+    import("chrome://browser/content/browser-statusbar.mjs").then(({ gFloorpStatusBar }) => {
+        window.gFloorpStatusBar = gFloorpStatusBar
     });
 }
 
@@ -71,9 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
         import("chrome://browser/content/browser-splitView.mjs").then(({ gSplitView }) => {
             window.gSplitView = gSplitView
         });
-        import("chrome://browser/content/browser-statusbar.mjs").then(({ gFloorpStatusBar }) => {
-            window.gFloorpStatusBar = gFloorpStatusBar
-        });
         import("chrome://browser/content/browser-private-container.mjs").then(({ gFloorpPrivateContainer }) => {
             window.gFloorpPrivateContainer = gFloorpPrivateContainer
         });
@@ -90,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
         import("chrome://browser/content/browser-ssb-manager.mjs").then(({ gSsbChromeManager }) => {
             window.gSsbChromeManager = gSsbChromeManager
         });
-        import("chrome://browser/content/browser-tabbar.js").then(({ gFloorpTabBarStyle }) => {
+        import("chrome://browser/content/browser-tabbar.mjs").then(({ gFloorpTabBarStyle }) => {
             window.gFloorpTabBarStyle = gFloorpTabBarStyle
         })
         import("chrome://browser/content/browser-design.mjs").then(({ gFloorpDesign }) => {
@@ -109,6 +106,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (FloorpAppConstants.FLOORP_OFFICIAL_COMPONENTS_ENABLED) {
             import("chrome://browser/content/browser-UI-customizing-menu.mjs").then(({ gFloorpCustomizeMode }) => {
                 window.gFloorpCustomizeMode = gFloorpCustomizeMode
+            });
+            import("chrome://browser/content/browser-workspaces.mjs").then(({ gWorkspaces }) => {
+                window.gWorkspaces = gWorkspaces
             });
         }
     });
