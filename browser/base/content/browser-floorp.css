@@ -593,9 +593,9 @@ toolbarpaletteitem #workspaces-toolbar-button > label {
   display: none !important;
 }
 #workspaces-toolbar-button > * {
+  background: unset !important;
   background-color: unset !important;
   background-image: unset !important;
-  background: unset !important;
 }
 .workspaceSeparator {
   margin: 5px 0px !important;
@@ -613,9 +613,9 @@ toolbarpaletteitem #workspaces-toolbar-button > label {
   background-color: var(--toolbarbutton-active-background) !important;
 }
 #workspacesCreateNewWorkspaceButton > * {
+  background: unset !important;
   background-color: unset !important;
   background-image: unset !important;
-  background: unset !important;
 }
 #workspacesCreateNewWorkspaceButton > label {
   display: inherit;

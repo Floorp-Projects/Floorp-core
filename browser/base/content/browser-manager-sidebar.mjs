@@ -16,7 +16,34 @@ var { ContextualIdentityService } = ChromeUtils.importESModule(
   "resource://gre/modules/ContextualIdentityService.sys.mjs"
 );
 
-export var gBrowserManagerSidebar = {
+/**
+ * The `gBrowserManagerSidebar` object represents the browser manager sidebar.
+ * It contains various properties and methods related to the sidebar functionality.
+ *
+ * @typedef {object} gBrowserManagerSidebar
+ * @property {boolean} _initialized - Indicates whether the sidebar has been initialized.
+ * @property {string} currentPanel - The ID of the currently selected panel.
+ * @property {string} clickedWebpanel - The ID of the webpanel that was clicked.
+ * @property {string} webpanel - The ID of the webpanel.
+ * @property {string} contextWebpanel - The ID of the webpanel in the context menu.
+ * @property {Array<string>} STATIC_SIDEBAR_DATA - The static sidebar data.
+ * @property {object} BROWSER_SIDEBAR_DATA - The browser sidebar data.
+ * @property {Array<string>} sidebar_icons - The sidebar icons.
+ *
+ * @property {Function} getWebpanelIdBySelectedButtonId - Retrieves the webpanel ID based on the selected button ID.
+ * @property {Function} getSelectIdByWebpanelId - Retrieves the select ID based on the webpanel ID.
+ * @property {Function} getWebpanelObjectById - Retrieves the webpanel object based on the webpanel ID.
+ * @property {Function} init - Initializes the browser manager sidebar.
+ * @property {Function} sidebarButtons - Handles the actions performed by the sidebar buttons.
+ * @property {Function} keepWebPanelWidth - Keeps the width of the webpanel.
+ * @property {Function} keepWidthToGlobalValue - Keeps the width of the sidebar globally.
+ * @property {Function} servicesObs - Handles the services observer events.
+ * @property {Function} selectSidebarItem - Handles the selection of a sidebar item.
+ * @property {object} mouseEvent - Contains various mouse event handlers.
+ * @property {object} contextMenu - Contains the context menu related functionality.
+ */
+
+export const gBrowserManagerSidebar = {
   _initialized: false,
   currentPanel: null,
   clickedWebpanel: null,

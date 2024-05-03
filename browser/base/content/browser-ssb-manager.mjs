@@ -5,11 +5,9 @@ import { gFloorpPageAction } from "./browser-floorp-pageActions.mjs";
 var { SiteSpecificBrowserExternalFileService } = ChromeUtils.importESModule(
   "resource:///modules/SiteSpecificBrowserExternalFileService.sys.mjs"
 );
-
 var { SiteSpecificBrowser } = ChromeUtils.importESModule(
   "resource:///modules/SiteSpecificBrowserService.sys.mjs"
 );
-
 var { SiteSpecificBrowserIdUtils } = ChromeUtils.importESModule(
   "resource:///modules/SiteSpecificBrowserIdUtils.sys.mjs"
 );

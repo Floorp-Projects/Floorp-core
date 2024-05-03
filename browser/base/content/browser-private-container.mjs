@@ -1,10 +1,7 @@
 /* -*- indent-tabs-mode: nil; js-indent-level: 2 -*- */
 
 import { gFloorpContextMenu } from "./browser-context-menu.mjs";
-
-const { PrivateContainer } = ChromeUtils.importESModule(
-  "resource:///modules/PrivateContainer.sys.mjs"
-);
+import { PrivateContainer } from "./modules/private-container/PrivateContainer.mjs";
 
 export const gFloorpPrivateContainer = {
   initialized: false,

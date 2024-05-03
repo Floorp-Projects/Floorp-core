@@ -1,14 +1,14 @@
-/* eslint-disable no-undef */
 /* -*- indent-tabs-mode: nil; js-indent-level: 2 -*-
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 /* This file is used to override existing Firefox functions and various variables. */
+import { PrivateContainer } from  "./modules/private-container/PrivateContainer.mjs";
 
 // Override Forward & Backward button's customizable element.
 //From "browser.js" line 750
-SetClickAndHoldHandlers = function () {
+window.SetClickAndHoldHandlers = function () {
   // Bug 414797: Clone the back/forward buttons' context menu into both buttons.
   let popup = document.getElementById("backForwardMenu").cloneNode(true);
   popup.removeAttribute("id");
@@ -19,6 +19,7 @@ SetClickAndHoldHandlers = function () {
   if (backButton != null) {
     backButton.setAttribute("type", "menu");
     backButton.prepend(popup);
+    // eslint-disable-next-line no-undef
     gClickAndHoldListenersOnElement.add(backButton);
   }
 
@@ -27,6 +28,7 @@ SetClickAndHoldHandlers = function () {
     popup = popup.cloneNode(true);
     forwardButton.setAttribute("type", "menu");
     forwardButton.prepend(popup);
+    // eslint-disable-next-line no-undef
     gClickAndHoldListenersOnElement.add(forwardButton);
   }
 };
@@ -35,17 +37,17 @@ SetClickAndHoldHandlers = function () {
 // Experimental feature. Malware can change this pref to redirect user to malware site.
 const newtabOverrideURL = "floorp.newtab.overrides.newtaburl";
 if (Services.prefs.getStringPref(newtabOverrideURL, "") != "") {
-  ChromeUtils.import("resource:///modules/AboutNewTab.jsm");
+  var { AboutNewTab } = ChromeUtils.import("resource:///modules/AboutNewTab.jsm");
   const newTabURL = Services.prefs.getStringPref(newtabOverrideURL);
   AboutNewTab.newTabURL = newTabURL;
 }
 
 // Override the create "browser" element function. Use for "Private Container".
 // https://searchfox.org/mozilla-central/source/browser/base/content/tabbrowser.js#2052
-SessionStore.promiseInitialized.then(() => {
+window.SessionStore.promiseInitialized.then( () => {
   window.gBrowser.createBrowser = function ({
     isPreloadBrowser,
-    name,
+    tabName,
     openWindowInfo,
     remoteType,
     initialBrowsingContextGroupId,
@@ -54,10 +56,6 @@ SessionStore.promiseInitialized.then(() => {
     skipLoad,
     initiallyActive,
   } = {}) {
-    const { PrivateContainer } = ChromeUtils.importESModule(
-      "resource:///modules/PrivateContainer.sys.mjs",
-    );
-
     let b = document.createXULElement("browser");
 
     if (
@@ -78,10 +76,10 @@ SessionStore.promiseInitialized.then(() => {
     // content process before we this browser's remoteness.
     if (!Services.appinfo.sessionHistoryInParent) {
       b.prepareToChangeRemoteness = () =>
-        SessionStore.prepareToChangeRemoteness(b);
+      window.SessionStore.prepareToChangeRemoteness(b);
       b.afterChangeRemoteness = (switchId) => {
         let tab = this.getTabForBrowser(b);
-        SessionStore.finishTabRemotenessChange(tab, switchId);
+        window.SessionStore.finishTabRemotenessChange(tab, switchId);
         return true;
       };
     }
@@ -97,7 +95,7 @@ SessionStore.promiseInitialized.then(() => {
       b.setAttribute(attribute, defaultBrowserAttributes[attribute]);
     }
 
-    if (gMultiProcessBrowser || remoteType) {
+    if (window.gMultiProcessBrowser || remoteType) {
       b.setAttribute("maychangeremoteness", "true");
     }
 
@@ -150,10 +148,10 @@ SessionStore.promiseInitialized.then(() => {
 
     // This will be used by gecko to control the name of the opened
     // window.
-    if (name) {
+    if (tabName) {
       // XXX: The `name` property is special in HTML and XUL. Should
       // we use a different attribute name for this?
-      b.setAttribute("name", name);
+      b.setAttribute("name", tabName);
     }
 
     let notificationbox = document.createXULElement("notificationbox");
