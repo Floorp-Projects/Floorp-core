@@ -90,10 +90,7 @@ export const gBrowserManagerSidebar = {
       "bsb-context-add",
       "bsb-context-add",
       "fill-login",
-      `BrowserManagerSidebar.addPanel(
-        gContextMenu.browser.currentURI.spec,
-        gContextMenu.browser.getAttribute("usercontextid") ?? 0
-      )`,
+      `gBrowserManagerSidebar.openAdditionalWebPanelWindow()`,
       "context-viewsource",
       function () {
         document.getElementById("bsb-context-add").hidden =
@@ -106,10 +103,7 @@ export const gBrowserManagerSidebar = {
       "bsb-context-link-add",
       "bsb-context-link-add",
       "context-sep-sendlinktodevice",
-      `BrowserManagerSidebar.addPanel(
-        gContextMenu.linkURL,
-        gContextMenu.browser.getAttribute("usercontextid") ?? 0
-      )`,
+      `gBrowserManagerSidebar.openAdditionalWebPanelWindow()`,
       "context-openlink",
       function () {
         document.getElementById("bsb-context-link-add").hidden =
@@ -277,6 +271,12 @@ export const gBrowserManagerSidebar = {
       this.currentPanel = custom_url_id;
       this.controllFunctions.visibleWebpanel();
     }
+  },
+
+  openAdditionalWebPanelWindow() {
+    BrowserManagerSidebar.addPanel(
+      window.gBrowser.currentURI.spec ?? "",
+      window.gBrowser.selectedBrowser.getAttribute("usercontextid"))
   },
 
   mouseEvent: {
