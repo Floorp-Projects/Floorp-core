@@ -3,13 +3,13 @@
 import { gFloorpPageAction } from "./browser-floorp-pageActions.mjs";
 
 var { SiteSpecificBrowserExternalFileService } = ChromeUtils.importESModule(
-  "resource:///modules/SiteSpecificBrowserExternalFileService.sys.mjs"
+  "chrome://browser/content/modules/ssb/SiteSpecificBrowserExternalFileService.mjs"
 );
 var { SiteSpecificBrowser } = ChromeUtils.importESModule(
-  "resource:///modules/SiteSpecificBrowserService.sys.mjs"
+  "chrome://browser/content/modules/ssb/SiteSpecificBrowserService.mjs"
 );
 var { SiteSpecificBrowserIdUtils } = ChromeUtils.importESModule(
-  "resource:///modules/SiteSpecificBrowserIdUtils.sys.mjs"
+  "chrome://browser/content/modules/ssb/SiteSpecificBrowserIdUtils.mjs"
 );
 
 export const gSsbChromeManager = {

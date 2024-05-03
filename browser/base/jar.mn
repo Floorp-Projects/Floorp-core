@@ -27,8 +27,14 @@ browser.jar:
   content/browser/browser-verticaltabs.mjs            (content/browser-verticaltabs.mjs)
 
 # ES Modules (Not used directly modules)
-  content/browser/modules/bms/BrowserManagerSidebar.mjs                  (content/modules/bms/BrowserManagerSidebar.mjs)
-  content/browser/modules/private-container/PrivateContainer.mjs         (content/modules/private-container/PrivateContainer.mjs)
+  content/browser/modules/bms/BrowserManagerSidebar.mjs                      (content/modules/bms/BrowserManagerSidebar.mjs)
+  content/browser/modules/private-container/PrivateContainer.mjs             (content/modules/private-container/PrivateContainer.mjs)
+  content/browser/modules/ssb/ImageTools.mjs                                 (content/modules/ssb/ImageTools.mjs)
+  content/browser/modules/ssb/LinuxSupport.mjs                               (content/modules/ssb/LinuxSupport.mjs)
+  content/browser/modules/ssb/SiteSpecificBrowserExternalFileService.mjs     (content/modules/ssb/SiteSpecificBrowserExternalFileService.mjs)
+  content/browser/modules/ssb/SiteSpecificBrowserIdUtils.mjs                 (content/modules/ssb/SiteSpecificBrowserIdUtils.mjs)
+  content/browser/modules/ssb/SiteSpecificBrowserService.mjs                 (content/modules/ssb/SiteSpecificBrowserService.mjs)
+  content/browser/modules/ssb/WindowsSupport.mjs                             (content/modules/ssb/WindowsSupport.mjs)
 
 # Style Sheets
   content/browser/browser-floorp.css                  (content/browser-floorp.css)

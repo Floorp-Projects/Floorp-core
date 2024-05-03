@@ -2,9 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { SiteSpecificBrowserService } from "resource:///modules/SiteSpecificBrowserService.sys.mjs";
-import { SiteSpecificBrowserIdUtils } from "resource:///modules/SiteSpecificBrowserIdUtils.sys.mjs";
-import { ImageTools } from "resource:///modules/ssb/ImageTools.sys.mjs";
+import { SiteSpecificBrowserService } from "chrome://browser/content/modules/ssb/SiteSpecificBrowserService.mjs";
+import { SiteSpecificBrowserIdUtils } from "chrome://browser/content/modules/ssb/SiteSpecificBrowserIdUtils.mjs";
+import { ImageTools } from "chrome://browser/content/modules/ssb/ImageTools.mjs";
 
 let shellService = Cc["@mozilla.org/browser/shell-service;1"].getService(
   Ci.nsIWindowsShellService
