@@ -2,10 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { SiteSpecificBrowserExternalFileService } from "chrome://browser/content/modules/ssb/SiteSpecificBrowserExternalFileService.mjs";
-import { SiteSpecificBrowser } from "chrome://browser/content/modules/ssb/SiteSpecificBrowserService.mjs";
-import { WindowsSupport } from "chrome://browser/content/modules/ssb/WindowsSupport.mjs";
-import { LinuxSupport } from "chrome://browser/content/modules/ssb/LinuxSupport.mjs";
+import { SiteSpecificBrowserExternalFileService } from "./SiteSpecificBrowserExternalFileService.mjs";
+import { SiteSpecificBrowser } from "./SiteSpecificBrowserService.mjs";
+import { WindowsSupport } from "./WindowsSupport.mjs";
+import { LinuxSupport } from "./LinuxSupport.mjs";
 
 const { AppConstants } = ChromeUtils.importESModule(
   "resource://gre/modules/AppConstants.sys.mjs"

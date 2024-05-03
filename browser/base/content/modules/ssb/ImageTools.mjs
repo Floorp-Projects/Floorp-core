@@ -47,14 +47,14 @@ export const ImageTools = {
       lazy.ImgTools.decodeImageFromChannelAsync(
         dataURI,
         channel,
-        (container, status) => {
-          if (Components.isSuccessCode(status)) {
+        (container, aStatus) => {
+          if (Components.isSuccessCode(aStatus)) {
             resolve({
               type: channel.contentType,
               container,
             });
           } else {
-            reject(Components.Exception("Failed to load image.", status));
+            reject(Components.Exception("Failed to load image.", aStatus));
           }
         },
         null
@@ -133,11 +133,11 @@ export const ImageTools = {
         height,
         ""
       );
-      lazy.NetUtil.asyncCopy(stream, output, status => {
-        if (Components.isSuccessCode(status)) {
+      lazy.NetUtil.asyncCopy(stream, output, aStatus => {
+        if (Components.isSuccessCode(aStatus)) {
           resolve();
         } else {
-          reject(Components.Exception("Failed to save icon.", status));
+          reject(Components.Exception("Failed to save icon.", aStatus));
         }
       });
     });

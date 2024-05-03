@@ -1,16 +1,9 @@
 /* -*- indent-tabs-mode: nil; js-indent-level: 2 -*- */
 
 import { gFloorpPageAction } from "./browser-floorp-pageActions.mjs";
-
-var { SiteSpecificBrowserExternalFileService } = ChromeUtils.importESModule(
-  "chrome://browser/content/modules/ssb/SiteSpecificBrowserExternalFileService.mjs"
-);
-var { SiteSpecificBrowser } = ChromeUtils.importESModule(
-  "chrome://browser/content/modules/ssb/SiteSpecificBrowserService.mjs"
-);
-var { SiteSpecificBrowserIdUtils } = ChromeUtils.importESModule(
-  "chrome://browser/content/modules/ssb/SiteSpecificBrowserIdUtils.mjs"
-);
+import { SiteSpecificBrowserExternalFileService } from "./modules/ssb/SiteSpecificBrowserExternalFileService.mjs";
+import { SiteSpecificBrowser } from "./modules/ssb/SiteSpecificBrowserService.mjs";
+import { SiteSpecificBrowserIdUtils } from "./modules/ssb/SiteSpecificBrowserIdUtils.mjs";
 
 export const gSsbChromeManager = {
   _initialized: false,
