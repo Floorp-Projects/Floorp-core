@@ -17,7 +17,7 @@ XPCOMUtils.defineLazyModuleGetters(lazy, {
   ImageTools: "resource:///modules/ssb/ImageTools.jsm",
 });
 
-const File = Components.Constructor(
+const nsIFile = Components.Constructor(
   "@mozilla.org/file/local;1",
   Ci.nsIFile,
   "initWithPath"
@@ -36,7 +36,7 @@ export const LinuxSupport = {
       ignoreExisting: true,
     });
 
-    let iconFile = new File(PathUtils.join(iconDir, `${ssb.name}.png`));
+    let iconFile = new nsIFile(PathUtils.join(iconDir, `${ssb.name}.png`));
     let icon = await SiteSpecificBrowserIdUtils.getIconBySSBId(ssb.id, 128);
     if (icon) {
       let { container } = await lazy.ImageTools.loadImage(

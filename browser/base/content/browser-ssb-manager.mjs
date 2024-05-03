@@ -81,7 +81,7 @@ export const gSsbChromeManager = {
         }
       } else {
         let ssb = await SiteSpecificBrowser.createFromBrowser(
-          window.AbortControllergBrowser.selectedBrowser,
+          window.gBrowser.selectedBrowser,
           {
             // Configure the SSB to use the site's manifest if it exists.
             useWebManifest: asPwa,
