@@ -2,12 +2,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { XPCOMUtils } from "resource://gre/modules/XPCOMUtils.sys.mjs";
-import { AppConstants } from "resource://gre/modules/AppConstants.sys.mjs";
+const { AppConstants } = ChromeUtils.importESModule(
+  "resource://gre/modules/AppConstants.sys.mjs"
+);
 
-var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
-
-export const EXPORTED_SYMBOLS = ["ImageTools"];
+const { XPCOMUtils } = ChromeUtils.importESModule(
+  "resource://gre/modules/XPCOMUtils.sys.mjs"
+);
 
 const lazy = {};
 
@@ -20,7 +21,7 @@ XPCOMUtils.defineLazyServiceGetter(
   lazy,
   "ImgTools",
   "@mozilla.org/image/tools;1",
-  Ci.imgITools,
+  Ci.imgITools
 );
 
 export const ImageTools = {
@@ -56,7 +57,7 @@ export const ImageTools = {
             reject(Components.Exception("Failed to load image.", status));
           }
         },
-        null,
+        null
       );
     });
   },
@@ -68,7 +69,7 @@ export const ImageTools = {
         "image/png",
         width,
         height,
-        "",
+        ""
       );
 
       try {
@@ -77,13 +78,13 @@ export const ImageTools = {
         reject(
           Components.Exception(
             "imgIEncoder must implement nsIAsyncInputStream",
-            e,
-          ),
+            e
+          )
         );
       }
 
       let binaryStream = Cc["@mozilla.org/binaryinputstream;1"].createInstance(
-        Ci.nsIBinaryInputStream,
+        Ci.nsIBinaryInputStream
       );
       binaryStream.setInputStream(stream);
 
@@ -119,7 +120,7 @@ export const ImageTools = {
     let format;
     if (AppConstants.platform == "win") {
       format = "image/vnd.microsoft.icon";
-    } 
+    }
     if (AppConstants.platform == "linux") {
       format = "image/png";
     }
@@ -130,9 +131,9 @@ export const ImageTools = {
         format,
         width,
         height,
-        "",
+        ""
       );
-      lazy.NetUtil.asyncCopy(stream, output, (status) => {
+      lazy.NetUtil.asyncCopy(stream, output, status => {
         if (Components.isSuccessCode(status)) {
           resolve();
         } else {

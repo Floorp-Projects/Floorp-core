@@ -4,8 +4,8 @@
 
 export const EXPORTED_SYMBOLS = ["SiteSpecificBrowserChild"];
 
-const { SiteSpecificBrowserBase } = ChromeUtils.import(
-  "resource:///modules/SiteSpecificBrowserService.jsm",
+const { SiteSpecificBrowserBase } = ChromeUtils.importESModule(
+  "resource:///modules/SiteSpecificBrowserService.sys.mjs",
 );
 const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 const { E10SUtils } = ChromeUtils.import(

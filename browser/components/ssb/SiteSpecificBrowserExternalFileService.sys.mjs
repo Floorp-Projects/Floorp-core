@@ -24,11 +24,10 @@ export const SiteSpecificBrowserExternalFileService = {
   async saveSsbsData(ssbData) {
     await IOUtils.writeJSON(this._ssbStoreFile, ssbData);
   },
-  
+
   async saveSsbData(ssbData) {
     let start_url = ssbData.startURI;
-    let currentSsbData =
-      await this.getCurrentSsbData();
+    let currentSsbData = await this.getCurrentSsbData();
     currentSsbData[start_url] = ssbData;
     await this.saveSsbData(currentSsbData);
   },

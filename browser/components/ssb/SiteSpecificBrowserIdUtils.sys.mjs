@@ -2,34 +2,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { AppConstants } from "resource://gre/modules/AppConstants.sys.mjs";
+import { SiteSpecificBrowserExternalFileService } from "resource:///modules/SiteSpecificBrowserExternalFileService.sys.mjs";
+import { SiteSpecificBrowser } from "resource:///modules/SiteSpecificBrowserService.sys.mjs";
+import { WindowsSupport } from "resource:///modules/ssb/WindowsSupport.sys.mjs";
+import { LinuxSupport } from "resource:///modules/ssb/LinuxSupport.sys.mjs";
 
-export const EXPORTED_SYMBOLS = ["SiteSpecificBrowserIdUtils"];
-
-const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
-
-const lazy = {};
-ChromeUtils.defineESModuleGetters(lazy, {
-  SiteSpecificBrowserExternalFileService:
-    "resource:///modules/SiteSpecificBrowserExternalFileService.sys.mjs",
-  SiteSpecificBrowser: "resource:///modules/SiteSpecificBrowserService.sys.mjs",
-});
-
-if (AppConstants.platform == "win") {
-  ChromeUtils.defineESModuleGetters(lazy, {
-    WindowsSupport: "resource:///modules/ssb/WindowsSupport.sys.mjs",
-  });
-}
-if (AppConstants.platform == "linux") {
-  ChromeUtils.defineESModuleGetters(lazy, {
-    LinuxSupport: "resource:///modules/ssb/LinuxSupport.sys.mjs",
-  });
-}
-
+const { AppConstants } = ChromeUtils.importESModule(
+  "resource://gre/modules/AppConstants.sys.mjs"
+);
 
 export let SiteSpecificBrowserIdUtils = {
   async runSsbById(id) {
-    let ssb = await lazy.SiteSpecificBrowser.load(id);
+    let ssb = await SiteSpecificBrowser.load(id);
     if (!ssb) {
       return;
     }
@@ -38,7 +22,7 @@ export let SiteSpecificBrowserIdUtils = {
   },
 
   async runSsbByUrlAndId(url, id) {
-    let ssb = await lazy.SiteSpecificBrowser.load(id);
+    let ssb = await SiteSpecificBrowser.load(id);
     if (!ssb) {
       return;
     }
@@ -48,7 +32,7 @@ export let SiteSpecificBrowserIdUtils = {
   },
 
   async getIconBySSBId(id, size) {
-    let ssb = await lazy.SiteSpecificBrowser.load(id);
+    let ssb = await SiteSpecificBrowser.load(id);
 
     if (!ssb._iconSizes) {
       ssb._iconSizes = buildIconList(ssb.manifest.icons);
@@ -69,30 +53,30 @@ export let SiteSpecificBrowserIdUtils = {
   },
 
   async uninstallById(id) {
-    let ssb = await lazy.SiteSpecificBrowser.load(id);
+    let ssb = await SiteSpecificBrowser.load(id);
 
     if (AppConstants.platform == "win") {
-      await lazy.WindowsSupport.uninstall(ssb);
+      await WindowsSupport.uninstall(ssb);
     }
 
     if (AppConstants.platform == "linux") {
-      await lazy.LinuxSupport.uninstall(ssb);
+      await LinuxSupport.uninstall(ssb);
     }
 
     // Remve the SSB from ssb.json
-    await lazy.SiteSpecificBrowserExternalFileService.removeSsbData(ssb.id);
+    await SiteSpecificBrowserExternalFileService.removeSsbData(ssb.id);
 
     Services.obs.notifyObservers(
       null,
       "site-specific-browser-uninstall",
-      ssb.id,
+      ssb.id
     );
   },
 
   async getSsbById(id) {
     let currentSsbData =
-      await lazy.SiteSpecificBrowserExternalFileService.getCurrentSsbData();
-    
+      await SiteSpecificBrowserExternalFileService.getCurrentSsbData();
+
     for (let key in currentSsbData) {
       if (currentSsbData[key].id == id) {
         return currentSsbData[key];
@@ -103,9 +87,6 @@ export let SiteSpecificBrowserIdUtils = {
   },
 
   async getIdByUrl(uri) {
-    const { SiteSpecificBrowserExternalFileService } = ChromeUtils.import(
-      "resource:///modules/SiteSpecificBrowserExternalFileService.jsm",
-    );
     let ssbData =
       await SiteSpecificBrowserExternalFileService.getCurrentSsbData();
 
@@ -134,7 +115,7 @@ function createSsbWidow(ssb) {
     //"chrome,location=yes,centerscreen,dialog=no,resizable=yes,scrollbars=yes";
 
     let args = Cc["@mozilla.org/supports-string;1"].createInstance(
-      Ci.nsISupportsString,
+      Ci.nsISupportsString
     );
 
     // URL
@@ -145,11 +126,11 @@ function createSsbWidow(ssb) {
       AppConstants.BROWSER_CHROME_URL,
       "_blank",
       browserWindowFeatures,
-      args,
+      args
     );
 
     if (Services.appinfo.OS == "WINNT") {
-      lazy.WindowsSupport.applyOSIntegration(ssb, win);
+      WindowsSupport.applyOSIntegration(ssb, win);
     }
   }
 }

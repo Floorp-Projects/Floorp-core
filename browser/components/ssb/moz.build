@@ -15,25 +15,13 @@ EXTRA_JS_MODULES += [
     "SiteSpecificBrowserService.sys.mjs",
 ]
 
-DIRS += [
-    "windowUtils",
-]
-
 EXTRA_JS_MODULES.ssb += [
     "ImageTools.sys.mjs",
+    "LinuxSupport.sys.mjs",
+    "WindowsSupport.sys.mjs",
 ]
 
 FINAL_TARGET_FILES.actors += [
     "actors/SiteSpecificBrowserChild.sys.mjs",
     "actors/SiteSpecificBrowserParent.sys.mjs",
 ]
-
-if CONFIG["MOZ_WIDGET_TOOLKIT"] == "windows":
-    EXTRA_JS_MODULES.ssb += [
-        "WindowsSupport.sys.mjs",
-    ]
-
-if CONFIG["MOZ_WIDGET_TOOLKIT"] == "gtk":
-    EXTRA_JS_MODULES.ssb += [
-        "LinuxSupport.sys.mjs",
-    ]

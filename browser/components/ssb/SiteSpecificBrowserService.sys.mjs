@@ -2,11 +2,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { AppConstants } from "resource://gre/modules/AppConstants.sys.mjs";
 import { SiteSpecificBrowserExternalFileService } from "resource:///modules/SiteSpecificBrowserExternalFileService.sys.mjs";
-import { XPCOMUtils } from "resource://gre/modules/XPCOMUtils.sys.mjs";
+import { ImageTools } from "resource:///modules/ssb/ImageTools.sys.mjs"
+import { SiteSpecificBrowserIdUtils } from "resource:///modules/SiteSpecificBrowserIdUtils.sys.mjs"
+import { WindowsSupport } from "resource:///modules/ssb/WindowsSupport.sys.mjs"
+import { LinuxSupport } from "resource:///modules/ssb/LinuxSupport.sys.mjs"
 
-const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
+const { AppConstants } = ChromeUtils.importESModule(
+  "resource://gre/modules/AppConstants.sys.mjs"
+);
+
+const { XPCOMUtils } = ChromeUtils.importESModule(
+  "resource://gre/modules/XPCOMUtils.sys.mjs"
+);
 
 export const EXPORTED_SYMBOLS = [
   "SiteSpecificBrowserService",
@@ -19,21 +27,8 @@ const lazy = {};
 ChromeUtils.defineESModuleGetters(lazy, {
   ManifestObtainer: "resource://gre/modules/ManifestObtainer.sys.mjs",
   ManifestProcessor: "resource://gre/modules/ManifestProcessor.sys.mjs",
-  ImageTools: "resource:///modules/ssb/ImageTools.sys.mjs",
-  SiteSpecificBrowserIdUtils:
-    "resource:///modules/SiteSpecificBrowserIdUtils.sys.mjs",
 });
 
-if (AppConstants.platform == "win") {
-  ChromeUtils.defineESModuleGetters(lazy, {
-    WindowsSupport: "resource:///modules/ssb/WindowsSupport.sys.mjs",
-  });
-}
-if (AppConstants.platform == "linux") {
-  ChromeUtils.defineESModuleGetters(lazy, {
-    LinuxSupport: "resource:///modules/ssb/LinuxSupport.sys.mjs",
-  });
-}
 
 function uuid() {
   return Services.uuid.generateUUID().toString();
@@ -122,7 +117,7 @@ function manifestForURI(uri) {
  */
 async function getIconResource(iconData) {
   // This should be a data url so no network traffic.
-  let imageData = await lazy.ImageTools.loadImage(
+  let imageData = await ImageTools.loadImage(
     Services.io.newURI(iconData.iconURL)
   );
   if (imageData.container.type == Ci.imgIContainer.TYPE_VECTOR) {
@@ -518,11 +513,11 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
     await this._maybeSave();
 
     if (AppConstants.platform == "win") {
-      await lazy.WindowsSupport.install(this);
+      await WindowsSupport.install(this);
     }
 
     if (AppConstants.platform == "linux") {
-      await lazy.LinuxSupport.install(this);
+      await LinuxSupport.install(this);
     }
 
     Services.obs.notifyObservers(
@@ -613,10 +608,10 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
       return null;
     }
 
-    let { container } = await lazy.ImageTools.loadImage(
+    let { container } = await ImageTools.loadImage(
       Services.io.newURI(icon.src)
     );
-    return lazy.ImageTools.scaleImage(container, size, size);
+    return ImageTools.scaleImage(container, size, size);
   }
 
   /**
@@ -670,7 +665,7 @@ async function startSSB(id) {
 
   // Whatever happens we must exitLastWindowClosingSurvivalArea when done.
   try {
-    await lazy.SiteSpecificBrowserIdUtils.runSsbById(id);
+    await SiteSpecificBrowserIdUtils.runSsbById(id);
   } finally {
     Services.startup.exitLastWindowClosingSurvivalArea();
   }
