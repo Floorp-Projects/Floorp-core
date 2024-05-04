@@ -8,15 +8,19 @@
 export const gFloorpContextMenu = {
   initialized: false,
 
+  get toolbarContextMenuBeforeElement() {
+    return document.getElementById("window-modal-dialog");
+  },
+
   init() {
     window.SessionStore.promiseInitialized.then(() => {
       const contentAreaContextMenu = document.getElementById(
-        "contentAreaContextMenu",
+        "contentAreaContextMenu"
       );
 
       contentAreaContextMenu.addEventListener("popupshowing", function (event) {
         let menuSeparators = document.querySelectorAll(
-          "#contentAreaContextMenu > menuseparator",
+          "#contentAreaContextMenu > menuseparator"
         );
 
         let screenShot = document.getElementById("context-take-screenshot");
@@ -44,32 +48,25 @@ export const gFloorpContextMenu = {
     });
   },
 
-  addContextBox(
-    id,
-    l10n,
-    insert,
-    runFunction,
-    checkID,
-    checkedFunction,
-  ) {
+  addContextBox(id, l10n, insert, runFunction, checkID, checkedFunction) {
     const contextMenu = document.createXULElement("menuitem");
     contextMenu.setAttribute("data-l10n-id", l10n);
     contextMenu.id = id;
     contextMenu.setAttribute("oncommand", runFunction);
-  
+
     const contentAreaContextMenu = document.getElementById(
-      "contentAreaContextMenu",
+      "contentAreaContextMenu"
     );
     contentAreaContextMenu.insertBefore(
       contextMenu,
-      document.getElementById(insert),
+      document.getElementById(insert)
     );
-  
+
     contextMenuObserver.observe(document.getElementById(checkID), {
       attributes: true,
     });
     checkItems.push(checkedFunction);
-  
+
     this.contextMenuObserverFunc();
   },
 
@@ -78,9 +75,16 @@ export const gFloorpContextMenu = {
       elem();
     }
   },
+
+  addToolbarContentMenuPopupSet(xulElementStr) {
+    const parsedXULElement =  window.MozXULElement.parseXULToFragment(xulElementStr);
+    this.toolbarContextMenuBeforeElement.before(parsedXULElement);
+  },
 };
 
 let checkItems = [];
-const contextMenuObserver = new MutationObserver(gFloorpContextMenu.contextMenuObserverFunc);
+const contextMenuObserver = new MutationObserver(
+  gFloorpContextMenu.contextMenuObserverFunc
+);
 
 gFloorpContextMenu.init();
