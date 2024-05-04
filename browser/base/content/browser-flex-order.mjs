@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /* -*- indent-tabs-mode: nil; js-indent-level: 2 -*-
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -14,6 +13,31 @@
  */
 export const gFloorpFlexOrder = {
   _flexOrderInitialized: false,
+
+  get fxSidebarId() {
+    return "sidebar-box";
+  },
+  get fxSidebarSplitterId() {
+    return "sidebar-splitter";
+  },
+  get floorpSidebarId() {
+    return "sidebar2-box";
+  },
+  get floorpSidebarSplitterId() {
+    return "sidebar-splitter2";
+  },
+  get floorpSidebarSelectBoxId() {
+    return "sidebar-select-box";
+  },
+  get verticalTabBarId() {
+    return "TabsToolbar";
+  },
+  get verticalTabBarSplitterId() {
+    return "verticaltab-splitter";
+  },
+  get getBrowserBoxId() {
+    return "appcontent";
+  },
 
   init() {
     this.setFlexOrder();
@@ -31,31 +55,53 @@ export const gFloorpFlexOrder = {
     Services.prefs.addObserver(verticaltabPosition, this.setFlexOrder);
   },
 
+  applyNewFlexOrder(orders) {
+    if (document.getElementById("floorp-flex-order")) {
+      document.getElementById("floorp-flex-order").remove();
+    }
+
+    const newStyleSheetElem = document.createElement("style");
+    newStyleSheetElem.id = "floorp-flex-order";
+    newStyleSheetElem.textContent = `
+      #${gFloorpFlexOrder.fxSidebarId} {
+        order: ${orders.fxSidebar} !important;
+      }
+      #${gFloorpFlexOrder.fxSidebarSplitterId} {
+        order: ${orders.fxSidebarSplitter} !important;
+      }
+      #${gFloorpFlexOrder.floorpSidebarId} {
+        order: ${orders.floorpSidebar} !important;
+      }
+      #${gFloorpFlexOrder.floorpSidebarSplitterId} {
+        order: ${orders.floorpSidebarSplitter} !important;
+      }
+      #${gFloorpFlexOrder.floorpSidebarSelectBoxId} {
+        order: ${orders.floorpSidebarSelectBox} !important;
+      }
+      #${gFloorpFlexOrder.getBrowserBoxId} {
+        order: ${orders.browserBox} !important;
+      }
+      #${gFloorpFlexOrder.verticalTabBarId} {
+        order: ${orders.verticaltabbar} !important;
+      }
+      #${gFloorpFlexOrder.verticalTabBarSplitterId} {
+        order: ${orders.verticaltabbarSplitter} !important;
+      }
+    `;
+    document.head.appendChild(newStyleSheetElem);
+  },
+
   setFlexOrder() {
     const fxSidebarPosition = "sidebar.position_start";
     const floorpSidebarPosition = "floorp.browser.sidebar.right";
-    let fxSidebarPositionPref = Services.prefs.getBoolPref(fxSidebarPosition);
-    let floorpSidebarPositionPref = Services.prefs.getBoolPref(
+    const fxSidebarPositionPref = Services.prefs.getBoolPref(fxSidebarPosition);
+    const floorpSidebarPositionPref = Services.prefs.getBoolPref(
       floorpSidebarPosition,
     );
-    let verticaltabPositionPref = Services.prefs.getBoolPref(
+    const verticaltabPositionPref = Services.prefs.getBoolPref(
       "floorp.browser.tabs.verticaltab.right",
     );
-
-    let fxSidebar = document.getElementById("sidebar-box");
-    let fxSidebarSplitter = document.getElementById("sidebar-splitter");
-
-    let floorpSidebar = document.getElementById("sidebar2-box");
-    let floorpSidebarSplitter = document.getElementById("sidebar-splitter2");
-    let floorpSidebarSelectBox = document.getElementById("sidebar-select-box");
-
-    let verticaltabbar = document.getElementById("TabsToolbar");
-    let verticaltabbarSplitter = document.getElementById(
-      "verticaltab-splitter",
-    );
-
-    let browserBox = document.getElementById("appcontent");
-
+    const verticaltabbar = document.getElementById("TabsToolbar");
     // Set flex order to all elements
     // floorpSidebarSelectBox has to always be the window's last child
     // Vetical tab bar has to always be the window's first child.
@@ -66,45 +112,58 @@ export const gFloorpFlexOrder = {
       if (fxSidebarPositionPref && floorpSidebarPositionPref) {
         // Default
         // Fx's sidebar -> browser -> Vertical tab bar -> Floorp's sidebar
-        fxSidebar.style.order = "0";
-        fxSidebarSplitter.style.order = "1";
-        browserBox.style.order = "2";
-        verticaltabbarSplitter.style.order = "3";
-        verticaltabbar.style.order = "4";
-        floorpSidebarSplitter.style.order = "5";
-        floorpSidebar.style.order = "6";
-        floorpSidebarSelectBox.style.order = "7";
+        const orders = {
+          fxSidebar: 0,
+          fxSidebarSplitter: 1,
+          browserBox: 2,
+          verticaltabbarSplitter: 3,
+          verticaltabbar: 4,
+          floorpSidebarSplitter: 5,
+          floorpSidebar: 6,
+          floorpSidebarSelectBox: 7,
+        };
+        gFloorpFlexOrder.applyNewFlexOrder(orders);
       } else if (fxSidebarPositionPref && !floorpSidebarPositionPref) {
         // Floorp sidebar -> Fx's sidebar -> browser -> Vertical tab bar
-        floorpSidebarSelectBox.style.order = "0";
-        floorpSidebar.style.order = "1";
-        floorpSidebarSplitter.style.order = "2";
-        fxSidebar.style.order = "3";
-        fxSidebarSplitter.style.order = "4";
-        browserBox.style.order = "5";
-        verticaltabbarSplitter.style.order = "6";
-        verticaltabbar.style.order = "7";
+        const orders = {
+          floorpSidebarSelectBox: 0,
+          floorpSidebar: 1,
+          floorpSidebarSplitter: 2,
+          fxSidebar: 3,
+          fxSidebarSplitter: 4,
+          browserBox: 5,
+          verticaltabbarSplitter: 6,
+          verticaltabbar: 7,
+        };
+
+        gFloorpFlexOrder.applyNewFlexOrder(orders);
       } else if (!fxSidebarPositionPref && floorpSidebarPositionPref) {
         // browser -> Vertical tab bar -> Fx's sidebar -> Floorp's sidebar
-        browserBox.style.order = "0";
-        verticaltabbarSplitter.style.order = "1";
-        verticaltabbar.style.order = "2";
-        fxSidebar.style.order = "3";
-        fxSidebarSplitter.style.order = "4";
-        floorpSidebarSplitter.style.order = "5";
-        floorpSidebar.style.order = "6";
-        floorpSidebarSelectBox.style.order = "7";
+        const orders = {
+          browserBox: 0,
+          verticaltabbarSplitter: 1,
+          verticaltabbar: 2,
+          fxSidebar: 3,
+          fxSidebarSplitter: 4,
+          floorpSidebarSplitter: 5,
+          floorpSidebar: 6,
+          floorpSidebarSelectBox: 7,
+        };
+        gFloorpFlexOrder.applyNewFlexOrder(orders);
       } else {
         // !fxSidebarPositionPref && !floorpSidebarPositionPref
         // Floorp's sidebar -> browser -> Vertical tab bar -> Fx's sidebar
-        floorpSidebarSelectBox.style.order = "0";
-        floorpSidebar.style.order = "1";
-        floorpSidebarSplitter.style.order = "2";
-        browserBox.style.order = "3";
-        verticaltabbarSplitter.style.order = "4";
-        verticaltabbar.style.order = "5";
-        fxSidebar.style.order = "6";
-        fxSidebarSplitter.style.order = "7";
+        const orders = {
+          floorpSidebarSelectBox: 0,
+          floorpSidebar: 1,
+          floorpSidebarSplitter: 2,
+          browserBox: 3,
+          verticaltabbarSplitter: 4,
+          verticaltabbar: 5,
+          fxSidebar: 6,
+          fxSidebarSplitter: 7,
+        };
+        gFloorpFlexOrder.applyNewFlexOrder(orders);
       }
 
       // Add attribute to vertical tab bar
@@ -112,45 +171,59 @@ export const gFloorpFlexOrder = {
     } else if (!verticaltabPositionPref) {
       if (fxSidebarPositionPref && floorpSidebarPositionPref) {
         // Fx's sidebar -> vertical tab bar -> browser -> Floorp's sidebar
-        fxSidebar.style.order = "0";
-        fxSidebarSplitter.style.order = "1";
-        verticaltabbar.style.order = "2";
-        verticaltabbarSplitter.style.order = "3";
-        browserBox.style.order = "4";
-        floorpSidebarSplitter.style.order = "5";
-        floorpSidebar.style.order = "6";
-        floorpSidebarSelectBox.style.order = "7";
+        const orders = {
+          fxSidebar: 0,
+          fxSidebarSplitter: 1,
+          verticaltabbar: 2,
+          verticaltabbarSplitter: 3,
+          browserBox: 4,
+          floorpSidebarSplitter: 5,
+          floorpSidebar: 6,
+          floorpSidebarSelectBox: 7,
+        };
+
+        gFloorpFlexOrder.applyNewFlexOrder(orders);
       } else if (fxSidebarPositionPref && !floorpSidebarPositionPref) {
         // Floorp sidebar -> Fx's sidebar -> vertical tab bar -> browser
-        floorpSidebarSelectBox.style.order = "0";
-        floorpSidebar.style.order = "1";
-        floorpSidebarSplitter.style.order = "2";
-        fxSidebar.style.order = "3";
-        fxSidebarSplitter.style.order = "4";
-        verticaltabbar.style.order = "5";
-        verticaltabbarSplitter.style.order = "6";
-        browserBox.style.order = "7";
+        const orders = {
+          floorpSidebarSelectBox: 0,
+          floorpSidebar: 1,
+          floorpSidebarSplitter: 2,
+          fxSidebar: 3,
+          fxSidebarSplitter: 4,
+          verticaltabbar: 5,
+          verticaltabbarSplitter: 6,
+          browserBox: 7,
+        };
+        gFloorpFlexOrder.applyNewFlexOrder(orders);
       } else if (!fxSidebarPositionPref && floorpSidebarPositionPref) {
         // vertical tab bar -> browser -> Fx's sidebar -> Floorp's sidebar
-        verticaltabbar.style.order = "0";
-        verticaltabbarSplitter.style.order = "1";
-        browserBox.style.order = "2";
-        fxSidebarSplitter.style.order = "3";
-        fxSidebar.style.order = "4";
-        floorpSidebarSplitter.style.order = "5";
-        floorpSidebar.style.order = "6";
-        floorpSidebarSelectBox.style.order = "7";
+        const orders = {
+          verticaltabbar: 0,
+          verticaltabbarSplitter: 1,
+          browserBox: 2,
+          fxSidebarSplitter: 3,
+          fxSidebar: 4,
+          floorpSidebarSplitter: 5,
+          floorpSidebar: 6,
+          floorpSidebarSelectBox: 7,
+        };
+
+        gFloorpFlexOrder.applyNewFlexOrder(orders);
       } else {
         // !fxSidebarPositionPref && !floorpSidebarPositionPref
         // Floorp's sidebar -> browser -> vertical tab bar -> Fx's sidebar
-        floorpSidebarSelectBox.style.order = "0";
-        floorpSidebar.style.order = "1";
-        floorpSidebarSplitter.style.order = "2";
-        browserBox.style.order = "3";
-        verticaltabbar.style.order = "4";
-        verticaltabbarSplitter.style.order = "5";
-        fxSidebar.style.order = "6";
-        fxSidebarSplitter.style.order = "7";
+        const orders = {
+          floorpSidebarSelectBox: 0,
+          floorpSidebar: 1,
+          floorpSidebarSplitter: 2,
+          browserBox: 3,
+          verticaltabbar: 4,
+          verticaltabbarSplitter: 5,
+          fxSidebar: 6,
+          fxSidebarSplitter: 7,
+        };
+        gFloorpFlexOrder.applyNewFlexOrder(orders);
       }
       // Remove attribute from vertical tab bar
       verticaltabbar?.removeAttribute("positionend");

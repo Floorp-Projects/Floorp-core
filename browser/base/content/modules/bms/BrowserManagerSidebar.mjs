@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /* -*- indent-tabs-mode: nil; js-indent-level: 2 -*-
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -35,7 +34,46 @@ export const BrowserManagerSidebar = {
     },
   },
 
-  DEFAULT_WEBPANEL: ["https://translate.google.com", "https://support.ablaze.one", "https://docs.floorp.app"],
+  BrowserManagerSidebarXULElement: `
+<vbox id="sidebar2-box" style="min-width: 25em;" class="browser-sidebar2 chromeclass-extrachrome">
+  <box id="sidebar2-header" style="min-height: 2.5em" align="center">
+    <toolbarbutton id="sidebar2-back" class="sidebar2-icon" style="margin-left: 0.5em;"
+      data-l10n-id="sidebar-back-button" oncommand="gBrowserManagerSidebar.sidebarButtons(0);" />
+    <toolbarbutton id="sidebar2-forward" class="sidebar2-icon" style="margin-left: 1em;"
+      data-l10n-id="sidebar-forward-button" oncommand="gBrowserManagerSidebar.sidebarButtons(1);" />
+    <toolbarbutton id="sidebar2-reload" class="sidebar2-icon" style="margin-left: 1em;"
+      data-l10n-id="sidebar-reload-button" oncommand="gBrowserManagerSidebar.sidebarButtons(2);" />
+    <toolbarbutton id="sidebar2-go-index" class="sidebar2-icon" style="margin-left: 1em;"
+      data-l10n-id="sidebar-go-index-button" oncommand="gBrowserManagerSidebar.sidebarButtons(3);" />
+    <spacer flex="1" />
+    <toolbarbutton id="sidebar2-keeppanelwidth" context="width-size-context" class="sidebar2-icon"
+      style="margin-right: 0.5em;" data-l10n-id="sidebar-keepWidth-button"
+      oncommand="gBrowserManagerSidebar.keepWebPanelWidth();" />
+    <toolbarbutton id="sidebar2-close" class="sidebar2-icon" style="margin-right: 0.5em;"
+      data-l10n-id="sidebar2-close-button"
+      oncommand="gBrowserManagerSidebar.controllFunctions.changeVisibilityOfWebPanel();" />
+  </box>
+</vbox>
+<splitter id="sidebar-splitter2" class="browser-sidebar2 chromeclass-extrachrome" hidden="false" />
+<vbox id="sidebar-select-box" style="overflow: hidden auto;" class="webpanel-box chromeclass-extrachrome">
+   <vbox id="panelBox">
+     <toolbarbutton class="sidepanel-browser-icon" data-l10n-id="sidebar-add-button"  oncommand="gBrowserManagerSidebar.openAdditionalWebPanelWindow();" id="add-button"/>
+   </vbox>
+   <spacer flex="1"/>
+   <vbox id="bottomButtonBox">
+     <toolbarbutton class="sidepanel-browser-icon" data-l10n-id="sidebar2-hide-sidebar"  oncommand="Services.prefs.setBoolPref('floorp.browser.sidebar.enable', false);" id="sidebar-hide-icon"/>
+     <toolbarbutton class="sidepanel-browser-icon" data-l10n-id="sidebar-addons-button"  oncommand="BrowserOpenAddonsMgr();" id="addons-icon"/>
+     <toolbarbutton class="sidepanel-browser-icon" data-l10n-id="sidebar-passwords-button"  oncommand="LoginHelper.openPasswordManager(window, { entryPoint: 'mainmenu' });" id="passwords-icon"/>
+     <toolbarbutton class="sidepanel-browser-icon" data-l10n-id="sidebar-preferences-button"  oncommand="openPreferences();" id="preferences-icon"/>
+   </vbox>
+</vbox>
+`,
+
+  DEFAULT_WEBPANEL: [
+    "https://translate.google.com",
+    "https://support.ablaze.one",
+    "https://docs.floorp.app",
+  ],
   prefsUpdate() {
     let defaultPref = { data: {}, index: [] };
     for (let elem in this.STATIC_SIDEBAR_DATA) {
@@ -57,12 +95,12 @@ export const BrowserManagerSidebar = {
       .getDefaultBranch(null)
       .setStringPref(
         "floorp.browser.sidebar2.data",
-        JSON.stringify(defaultPref),
+        JSON.stringify(defaultPref)
       );
 
     if (Services.prefs.prefHasUserValue("floorp.browser.sidebar2.data")) {
       let prefTemp = JSON.parse(
-        Services.prefs.getStringPref("floorp.browser.sidebar2.data"),
+        Services.prefs.getStringPref("floorp.browser.sidebar2.data")
       );
       let setPref = { data: {}, index: [] };
       for (let elem of prefTemp.index) {
@@ -71,10 +109,11 @@ export const BrowserManagerSidebar = {
       }
       Services.prefs.setStringPref(
         "floorp.browser.sidebar2.data",
-        JSON.stringify(setPref),
+        JSON.stringify(setPref)
       );
     }
   },
+
   getFavicon(sbar_url, elem) {
     try {
       new URL(sbar_url);
@@ -85,37 +124,39 @@ export const BrowserManagerSidebar = {
     if (sbar_url.startsWith("http://") || sbar_url.startsWith("https://")) {
       let iconProvider = Services.prefs.getStringPref(
         "floorp.browser.sidebar.useIconProvider",
-        null,
+        null
       );
       let icon_url;
       switch (iconProvider) {
         case "google":
           icon_url = `https://www.google.com/s2/favicons?domain_url=${encodeURIComponent(
-            sbar_url,
+            sbar_url
           )}`;
           break;
         case "duckduckgo":
-          icon_url = `https://external-content.duckduckgo.com/ip3/${new URL(sbar_url).hostname
-            }.ico`;
+          icon_url = `https://external-content.duckduckgo.com/ip3/${
+            new URL(sbar_url).hostname
+          }.ico`;
           break;
         case "yandex":
-          icon_url = `https://favicon.yandex.net/favicon/v2/${new URL(sbar_url).origin
-            }`;
+          icon_url = `https://favicon.yandex.net/favicon/v2/${
+            new URL(sbar_url).origin
+          }`;
           break;
         case "hatena":
           icon_url = `https://cdn-ak.favicon.st-hatena.com/?url=${encodeURIComponent(
-            sbar_url,
+            sbar_url
           )}`; // or `https://favicon.hatena.ne.jp/?url=${encodeURIComponent(sbar_url)}`
           break;
         default:
           icon_url = `https://www.google.com/s2/favicons?domain_url=${encodeURIComponent(
-            sbar_url,
+            sbar_url
           )}`;
           break;
       }
 
       fetch(icon_url)
-        .then(async (response) => {
+        .then(async response => {
           if (response.status !== 200) {
             throw new Error(`${response.status} ${response.statusText}`);
           }
@@ -124,7 +165,7 @@ export const BrowserManagerSidebar = {
 
           let blob_data = await response.blob();
 
-          let icon_data_url = await new Promise((resolve) => {
+          let icon_data_url = await new Promise(resolve => {
             reader.addEventListener("load", function () {
               resolve(this.result);
             });
@@ -144,61 +185,31 @@ export const BrowserManagerSidebar = {
         })
         .catch(reject => {
           const sbar_origin = new URL(sbar_url).origin;
-          const iconExtensions = ['ico', 'png', 'jpg', 'jpeg'];
-        
-          const fetchIcon = async (extension) => {
+          const iconExtensions = ["ico", "png", "jpg", "jpeg"];
+
+          const fetchIcon = async extension => {
             const iconUrl = `${sbar_origin}/favicon.${extension}`;
             const response = await fetch(iconUrl);
-            if (response.ok && elem.style.getPropertyValue("--BMSIcon") != iconUrl) {
+            if (
+              response.ok &&
+              elem.style.getPropertyValue("--BMSIcon") != iconUrl
+            ) {
               elem.style.setProperty("--BMSIcon", `url(${iconUrl})`);
               return true;
             }
             return false;
           };
-        
+
           const fetchIcons = iconExtensions.map(fetchIcon);
-        
-          Promise.allSettled(fetchIcons)
-            .then(results => {
-              const iconFound = results.some(result => result.status === 'fulfilled' && result.value);
-              if (!iconFound) {
-                elem.style.removeProperty("--BMSIcon");
-              }
-            });
-        });
-    } else if (sbar_url.startsWith("moz-extension://")) {
-      let addon_id = new URL(sbar_url).hostname;
-      let addon_base_url = `moz-extension://${addon_id}`;
-      fetch(addon_base_url + "/manifest.json")
-        .then(async (response) => {
-          if (response.status !== 200) {
-            throw new Error(`${response.status} ${response.statusText}`);
-          }
 
-          let addon_manifest = await response.json();
-
-          let addon_icon_path =
-            addon_manifest.icons[
-            Math.max(...Object.keys(addon_manifest.icons))
-            ];
-          if (addon_icon_path === undefined) {
-            throw new Error("Icon not found." + addon_manifest.icons);
-          }
-
-          let addon_icon_url = addon_icon_path.startsWith("/")
-            ? `${addon_base_url}${addon_icon_path}`
-            : `${addon_base_url}/${addon_icon_path}`;
-
-          if (BROWSER_SIDEBAR_DATA.data[sbar_id.slice(7)].url === sbar_url) {
-            // Check that the URL has not changed after the icon is retrieved.
-            elem.style.setProperty("--BMSIcon", `url(${addon_icon_url})`);
-          }
-        })
-        .catch((reject) => {
-          elem.style.setProperty(
-            "--BMSIcon",
-            `url(chrome://mozapps/skin/extensions/extensionGeneric.svg)`,
-          );
+          Promise.allSettled(fetchIcons).then(results => {
+            const iconFound = results.some(
+              result => result.status === "fulfilled" && result.value
+            );
+            if (!iconFound) {
+              elem.style.removeProperty("--BMSIcon");
+            }
+          });
         });
     } else if (sbar_url.startsWith("file://")) {
       elem.style.setProperty("--BMSIcon", `url(moz-icon:${sbar_url}?size=128)`);
@@ -209,10 +220,10 @@ export const BrowserManagerSidebar = {
       let listTexts =
         "chrome://browser/content/BMS-extension-needs-white-bg.txt";
       fetch(listTexts)
-        .then((response) => {
+        .then(response => {
           return response.text();
         })
-        .then((text) => {
+        .then(text => {
           let lines = text.split(/\r?\n/);
           for (let line of lines) {
             if (line == sbar_url.split(",")[2]) {
@@ -232,7 +243,7 @@ export const BrowserManagerSidebar = {
   },
   async getAdoonSidebarPage(addonId) {
     let addonUUID = JSON.parse(
-      Services.prefs.getStringPref("extensions.webextensions.uuids"),
+      Services.prefs.getStringPref("extensions.webextensions.uuids")
     );
     let manifestJSON = await (
       await fetch(`moz-extension://${addonUUID[addonId]}/manifest.json`)
@@ -243,6 +254,7 @@ export const BrowserManagerSidebar = {
     }
     return new URL(toURL, `moz-extension://${addonUUID[addonId]}/`).href;
   },
+
   addPanel(url, uc) {
     let parentWindow = Services.wm.getMostRecentWindow("navigator:browser");
     let updateNumberDate = new Date();
@@ -263,7 +275,7 @@ export const BrowserManagerSidebar = {
     if (parentWindow?.gDialogBox) {
       parentWindow.gDialogBox.open(
         "chrome://browser/content/preferences/dialogs/customURLs.xhtml",
-        object,
+        object
       );
     } else {
       Services.ww.openWindow(
@@ -271,7 +283,7 @@ export const BrowserManagerSidebar = {
         "chrome://browser/content/preferences/dialogs/customURLs.xhtml",
         "AddWebpanel",
         "chrome,titlebar,dialog,centerscreen,modal",
-        object,
+        object
       );
     }
   },

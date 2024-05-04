@@ -86,6 +86,11 @@ export const gBrowserManagerSidebar = {
       return;
     }
 
+    // Add the browser manager sidebar elements to the browser window
+    const elems = window.MozXULElement.parseXULToFragment(BrowserManagerSidebar.BrowserManagerSidebarXULElement);
+    const beforeElem = document.getElementById("appcontent");
+    beforeElem.before(elems);
+
     gFloorpContextMenu.addContextBox(
       "bsb-context-add",
       "bsb-context-add",
