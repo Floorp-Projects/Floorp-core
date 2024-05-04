@@ -87,9 +87,16 @@ export const gBrowserManagerSidebar = {
     }
 
     // Add the browser manager sidebar elements to the browser window
-    const elems = window.MozXULElement.parseXULToFragment(BrowserManagerSidebar.BrowserManagerSidebarXULElement);
+    const SidebarElems = window.MozXULElement.parseXULToFragment(
+      BrowserManagerSidebar.BrowserManagerSidebarXULElement
+    );
     const beforeElem = document.getElementById("appcontent");
-    beforeElem.before(elems);
+    beforeElem.before(SidebarElems);
+
+    // Add the toolbar content menu popup set
+    gFloorpContextMenu.addToolbarContentMenuPopupSet(
+      BrowserManagerSidebar.BrowserManagerSidebarToolbarContextMenuElement
+    );
 
     gFloorpContextMenu.addContextBox(
       "bsb-context-add",
@@ -281,7 +288,8 @@ export const gBrowserManagerSidebar = {
   openAdditionalWebPanelWindow() {
     BrowserManagerSidebar.addPanel(
       window.gBrowser.currentURI.spec ?? "",
-      window.gBrowser.selectedBrowser.getAttribute("usercontextid"))
+      window.gBrowser.selectedBrowser.getAttribute("usercontextid")
+    );
   },
 
   mouseEvent: {

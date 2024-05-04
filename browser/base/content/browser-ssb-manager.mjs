@@ -1,6 +1,7 @@
 /* -*- indent-tabs-mode: nil; js-indent-level: 2 -*- */
 
 import { gFloorpPageAction } from "./browser-floorp-pageActions.mjs";
+import { gFloorpContextMenu } from "./browser-context-menu.mjs";
 import { SiteSpecificBrowserExternalFileService } from "./modules/ssb/SiteSpecificBrowserExternalFileService.mjs";
 import { SiteSpecificBrowser } from "./modules/ssb/SiteSpecificBrowserService.mjs";
 import { SiteSpecificBrowserIdUtils } from "./modules/ssb/SiteSpecificBrowserIdUtils.mjs";
@@ -12,6 +13,13 @@ export const gSsbChromeManager = {
     if (this._initialized) {
       return;
     }
+
+    const toolbarContextMenuElem = `
+      <popupset>
+        <menupopup id="ssbInstalledAppMenu-context" onpopupshowing="gSsbChromeManager.contextMenu.panelUIInstalledAppContextMenu.onPopupShowing(event);"/>
+      </popupset>
+    `
+    gFloorpContextMenu.addToolbarContentMenuPopupSet(toolbarContextMenuElem);
 
     if (Services.prefs.getBoolPref("floorp.browser.ssb.enabled", false)) {
       document.addEventListener("floorpOnLocationChangeEvent", function () {

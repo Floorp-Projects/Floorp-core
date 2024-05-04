@@ -69,6 +69,47 @@ export const BrowserManagerSidebar = {
 </vbox>
 `,
 
+  BrowserManagerSidebarToolbarContextMenuElement: `
+<popupset>
+  <menupopup id="webpanel-context" onpopupshowing="gBrowserManagerSidebar.contextMenu.show(event);">
+    <menuitem id="unloadWebpanelMenu" class="needLoadedWebpanel" data-l10n-id="sidebar2-unload-panel"
+      label="Unload this webpanel" accesskey="U" oncommand="gBrowserManagerSidebar.contextMenu.unloadWebpanel();" />
+    <menuseparator class="context-webpanel-separator" />
+    <menuitem id="muteMenu" class="needLoadedWebpanel" data-l10n-id="sidebar2-mute-and-unmute"
+      label="Mute/Unmute this webpanel" accesskey="M" oncommand="gBrowserManagerSidebar.contextMenu.muteWebpanel();" />
+    <menu id="changeZoomLevelMenu" class="needLoadedWebpanel needRunningExtensionsPanel" data-l10n-id="sidebar2-change-zoom-level" accesskey="Z">
+      <menupopup id="changeZoomLevelPopup">
+        <menuitem id="zoomInMenu" accesskey="I" data-l10n-id="sidebar2-zoom-in"
+          oncommand="gBrowserManagerSidebar.contextMenu.zoomIn();" />
+        <menuitem id="zoomOutMenu" accesskey="O" data-l10n-id="sidebar2-zoom-out"
+          oncommand="gBrowserManagerSidebar.contextMenu.zoomOut();" />
+        <menuitem id="resetZoomMenu" accesskey="R" data-l10n-id="sidebar2-reset-zoom"
+          oncommand="gBrowserManagerSidebar.contextMenu.resetZoom();" />
+      </menupopup>
+    </menu>
+    <menuitem id="changeUAWebpanelMenu" data-l10n-id="sidebar2-change-ua-panel"
+      label="Switch User agent to Mobile/Desktop Version at this Webpanel" accesskey="R"
+      oncommand="gBrowserManagerSidebar.contextMenu.changeUserAgent();" />
+    <menuseparator class="context-webpanel-separator" />
+    <menuitem id="deleteWebpanelMenu" data-l10n-id="sidebar2-delete-panel" accesskey="D"
+      oncommand="gBrowserManagerSidebar.contextMenu.deleteWebpanel();" />
+  </menupopup>
+
+  <menupopup id="all-panel-context" onpopupshowing="gBrowserManagerSidebar.contextMenu.show(event);">
+    <menuitem id="unloadWebpanelMenu" class="needLoadedWebpanel" data-l10n-id="sidebar2-unload-panel"
+      label="Unload this webpanel" accesskey="U" oncommand="gBrowserManagerSidebar.contextMenu.unloadWebpanel();" />
+    <menuseparator class="context-webpanel-separator" />
+    <menuitem id="deleteWebpanelMenu" data-l10n-id="sidebar2-delete-panel" accesskey="D"
+      oncommand="gBrowserManagerSidebar.contextMenu.deleteWebpanel();" />
+  </menupopup>
+
+  <menupopup id="width-size-context">
+    <menuitem id="setWidthMenu" data-l10n-id="sidebar2-keep-width-for-global" label="Set width for All Panel"
+      accesskey="S" oncommand="gBrowserManagerSidebar.keepWidthToGlobalValue();" />
+  </menupopup>
+</popupset>
+`,
+
   DEFAULT_WEBPANEL: [
     "https://translate.google.com",
     "https://support.ablaze.one",
