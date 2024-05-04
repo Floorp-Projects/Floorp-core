@@ -10,9 +10,9 @@ var { FloorpAppConstants } = ChromeUtils.importESModule(
     "resource:///modules/FloorpAppConstants.sys.mjs"
 );
 
-Services.scriptloader.loadSubScript("chrome://browser/content/ua_data.js", this);
-
+import("chrome://browser/content/browser-ua-data.mjs");
 import("chrome://browser/content/browser-overrides.mjs");
+
 import("chrome://browser/content/browser-commands.mjs").then(({ gFloorpCommands }) => {
     window.gFloorpCommands = gFloorpCommands
 });
