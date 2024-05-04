@@ -10,13 +10,12 @@ var { FloorpAppConstants } = ChromeUtils.importESModule(
     "resource:///modules/FloorpAppConstants.sys.mjs"
 );
 
+Services.scriptloader.loadSubScript("chrome://browser/content/ua_data.js", this);
+
 import("chrome://browser/content/browser-overrides.mjs");
 import("chrome://browser/content/browser-commands.mjs").then(({ gFloorpCommands }) => {
     window.gFloorpCommands = gFloorpCommands
 });
-
-// TODO: MIGRATE TO ESM
-Services.scriptloader.loadSubScript("chrome://browser/content/ua_data.js", this);
 
 if (FloorpAppConstants.FLOORP_OFFICIAL_COMPONENTS_ENABLED) {
     import("chrome://browser/content/browser-bms-window.mjs").then(({ gBmsWindow }) => {
@@ -50,8 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
     import("chrome://browser/content/browser-browserActions.mjs").then(({ gFloorpBrowserActions }) => {
         window.gFloorpBrowserActions = gFloorpBrowserActions
     });
-    // TODO: MIGRATE TO ESM after the other scripts are migrated to ESM
-    Services.scriptloader.loadSubScript("chrome://browser/content/browser-chromeCSS.js", this);
+    import("chrome://browser/content/browser-chromeCSS.mjs");
 
     if (FloorpAppConstants.FLOORP_OFFICIAL_COMPONENTS_ENABLED) {
         import("chrome://browser/content/browser-custom-keyboard-shortcut.mjs").then(

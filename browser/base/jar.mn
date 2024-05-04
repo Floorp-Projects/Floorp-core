@@ -7,6 +7,7 @@ browser.jar:
 
 # ES modules
   content/browser/browser-browserActions.mjs          (content/browser-browserActions.mjs)
+  content/browser/browser-chromeCSS.mjs               (content/browser-chromeCSS.mjs)
   content/browser/browser-commands.mjs                (content/browser-commands.mjs)
   content/browser/browser-context-menu.mjs            (content/browser-context-menu.mjs)
   content/browser/browser-design.mjs                  (content/browser-design.mjs)
@@ -46,5 +47,3 @@ browser.jar:
   content/browser/qr-code-styling/qr-code-styling.js  (library/qr-code-styling/qr-code-styling@1.5.0.js)
   content/browser/ua_data.js                          (content/ua_data.js)
 
-# JavaScripts
-  content/browser/browser-chromeCSS.js                (content/browser-chromeCSS.js)

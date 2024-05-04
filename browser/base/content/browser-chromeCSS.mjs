@@ -34,17 +34,16 @@ chrome フォルダに CSS フォルダが作成されるのでそこに .css �
 フォルダは "UserCSSLoader.FOLDER" にパスを入れれば変更可能
 
  **** 説明終わり ****/
-var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
-var { FileUtils } = ChromeUtils.import("resource://gre/modules/FileUtils.jsm");
-var { AppConstants } = ChromeUtils.import(
-  "resource://gre/modules/AppConstants.jsm",
+
+var { FileUtils } = ChromeUtils.importESModule(
+  "resource://gre/modules/FileUtils.sys.mjs"
 );
 
-// プロファイルフォルダのパス
-const PROFILE_DIR = Services.dirsvc.get("ProfD", Ci.nsIFile).path;
+var { AppConstants } = ChromeUtils.importESModule(
+  "resource://gre/modules/AppConstants.sys.mjs"
+);
 
 (function () {
-  // 起動時に他の窓がある（２窓目の）場合は抜ける
   let list = Services.wm.getEnumerator("navigator:browser");
   while (list.hasMoreElements()) {
     if (list.getNext() != window) {
@@ -157,17 +156,17 @@ const PROFILE_DIR = Services.dirsvc.get("ProfD", Ci.nsIFile).path;
         if (!ext.test(fileName) || not.test(fileName)) {
           continue;
         }
-        const CSS = this.loadCSS(fileName, cssFolder);
-        CSS.flag = true;
+        const cssFile = this.loadCSS(fileName, cssFolder);
+        cssFile.flag = true;
       }
 
       for (const leafName of Object.keys(this.readCSS)) {
-        const CSS = this.readCSS[leafName];
-        if (!CSS.flag) {
-          CSS.enabled = false;
+        const cssFile = this.readCSS[leafName];
+        if (!cssFile.flag) {
+          cssFile.enabled = false;
           delete this.readCSS[leafName];
         }
-        delete CSS.flag;
+        delete cssFile.flag;
         this.rebuildMenu(leafName);
       }
       if (this.initialized) {
@@ -180,21 +179,21 @@ const PROFILE_DIR = Services.dirsvc.get("ProfD", Ci.nsIFile).path;
       }
     },
     loadCSS(aFile, folder) {
-      let CSS = this.readCSS[aFile];
-      if (!CSS) {
-        CSS = this.readCSS[aFile] = new CSSEntry(aFile, folder);
-        CSS.enabled = !decodeURIComponent(
+      let cssFile = this.readCSS[aFile];
+      if (!cssFile) {
+        cssFile = this.readCSS[aFile] = new CSSEntry(aFile, folder);
+        cssFile.enabled = !decodeURIComponent(
           Services.prefs.getStringPref("UserCSSLoader.disabled_list", ""),
         ).includes(aFile);
-      } else if (CSS.enabled) {
-        CSS.enabled = true;
+      } else if (cssFile.enabled) {
+        cssFile.enabled = true;
       }
-      return CSS;
+      return cssFile;
     },
     rebuildMenu(aLeafName) {
-      var CSS = this.readCSS[aLeafName];
+      var cssFile = this.readCSS[aLeafName];
       var menuitem = document.getElementById("usercssloader-" + aLeafName);
-      if (!CSS) {
+      if (!cssFile) {
         if (menuitem) {
           menuitem.remove();
         }
@@ -205,19 +204,19 @@ const PROFILE_DIR = Services.dirsvc.get("ProfD", Ci.nsIFile).path;
 				<menuitem label="${aLeafName}" id="usercssloader-${aLeafName}"
                   type="checkbox" autocheck="false"
                   oncommand="UCL.toggle(\'${aLeafName}\')" onclick="UCL.itemClick(event);"
-                  class="usercssloader-item  ${this.selectSheet(CSS)}"/>
+                  class="usercssloader-item  ${this.selectSheet(cssFile)}"/>
 				`).children[0];
         document
           .getElementById("usercssloader-menupopup")
           .appendChild(menuitem);
       }
-      menuitem.setAttribute("checked", CSS.enabled);
+      menuitem.setAttribute("checked", cssFile.enabled);
     },
-    selectSheet(CSS) {
+    selectSheet(cssFile) {
       let result;
-      if (CSS.SHEET == this.AGENT_SHEET) {
+      if (cssFile.SHEET == this.AGENT_SHEET) {
         result = "AGENT_SHEET";
-      } else if (CSS.SHEET == this.AUTHOR_SHEET) {
+      } else if (cssFile.SHEET == this.AUTHOR_SHEET) {
         result = "AUTHOR_SHEET";
       } else {
         result = "USER_SHEET";
@@ -225,11 +224,11 @@ const PROFILE_DIR = Services.dirsvc.get("ProfD", Ci.nsIFile).path;
       return result;
     },
     toggle(aLeafName) {
-      var CSS = this.readCSS[aLeafName];
-      if (!CSS) {
+      var cssFile = this.readCSS[aLeafName];
+      if (!cssFile) {
         return;
       }
-      CSS.enabled = !CSS.enabled;
+      cssFile.enabled = !cssFile.enabled;
       this.rebuildMenu(aLeafName);
     },
     itemClick(event) {
@@ -405,8 +404,8 @@ const PROFILE_DIR = Services.dirsvc.get("ProfD", Ci.nsIFile).path;
       IOUtils.exists(this.path).then((value) => {
         if (value && isEnable) {
           if (this.sss.sheetRegistered(uri, this.SHEET)) {
-            IOUtils.stat(this.path).then((value) => {
-              if (this.lastModifiedTime != value.lastModified) {
+            IOUtils.stat(this.path).then((pathValue) => {
+              if (this.lastModifiedTime != pathValue.lastModified) {
                 this.sss.unregisterSheet(uri, this.SHEET);
                 this.sss.loadAndRegisterSheet(uri, this.SHEET);
               }
@@ -422,7 +421,7 @@ const PROFILE_DIR = Services.dirsvc.get("ProfD", Ci.nsIFile).path;
   };
 
   (async () => {
-    folderPath = UCL.getCSSFolder();
+    const folderPath = UCL.getCSSFolder();
     if (!(await IOUtils.exists(folderPath))) {
       await IOUtils.makeDirectory(folderPath);
     }
