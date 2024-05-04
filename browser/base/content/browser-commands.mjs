@@ -33,7 +33,6 @@ export const gFloorpCommands = {
       return;
     }
 
-    Services.obs.addObserver(this.restartbrowser, "floorp-restart-browser");
     this.initialized = true;
   },
 

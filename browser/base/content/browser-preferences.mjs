@@ -2,6 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+ let { userJsList } = ChromeUtils.importESModule(
+  "resource:///modules/UserjsUtils.sys.mjs",
+);
+
 // I glared at the source code for about 3 hours, but for some reason I decided to use the server because it would be unclear because of the Floorp interface settings. God forgive me
 
 export const gFloorpPreferences = {
@@ -184,13 +188,10 @@ export const gFloorpPreferences = {
   },
 
   async applyUserJSCustomize() {
-    let UserjsUtils = ChromeUtils.importESModule(
-      "resource:///modules/UserjsUtils.sys.mjs",
-    );
     const pref = Services.prefs.getStringPref("floorp.user.js.customize", "");
 
     if (pref != "") {
-      let url = UserjsUtils.userJsList[pref][0];
+      let url = userJsList[pref][0];
       const PROFILE_DIR = Services.dirsvc.get("ProfD", Ci.nsIFile).path;
       const userjs = PathUtils.join(PROFILE_DIR, "user.js");
 
