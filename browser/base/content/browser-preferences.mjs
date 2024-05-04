@@ -23,6 +23,20 @@ export const gFloorpPreferences = {
     return "floorp.browser.note.memos";
   },
 
+  get BROWSER_SETED_USERAGENT() {
+    return Services.prefs.getIntPref(
+        this.BROWSER_SETED_USERAGENT_PREF,
+    );
+  },
+
+  get BROWSER_SETED_USERAGENT_PREF()  {
+    return "floorp.browser.UserAgent";
+  },
+
+  get GENERAL_USERAGENT_OVERRIDE_PREF() {
+    return "general.useragent.override";
+  },
+
   init() {
     if (this.initialized) {
       return;
@@ -56,57 +70,49 @@ export const gFloorpPreferences = {
     });
 
     /*------------------------------------- User Agent -------------------------------------*/
-    const BROWSER_SETED_USERAGENT_PREF = "floorp.browser.UserAgent";
-    const GENERAL_USERAGENT_OVERRIDE_PREF = "general.useragent.override";
     {
       let setUserAgent = function (BROWSER_SETED_USERAGENT) {
         switch (BROWSER_SETED_USERAGENT) {
-          case 0:
-            Services.prefs.clearUserPref(GENERAL_USERAGENT_OVERRIDE_PREF);
+          default:
+            Services.prefs.clearUserPref(gFloorpPreferences.GENERAL_USERAGENT_OVERRIDE_PREF);
             break;
           case 1:
             Services.prefs.setStringPref(
-              GENERAL_USERAGENT_OVERRIDE_PREF,
-              // eslint-disable-next-line no-undef
-              CHROME_STABLE_UA.win,
+              gFloorpPreferences.GENERAL_USERAGENT_OVERRIDE_PREF,
+              window.CHROME_STABLE_UA.win,
             );
             break;
           case 2:
             Services.prefs.setStringPref(
-              GENERAL_USERAGENT_OVERRIDE_PREF,
-              // eslint-disable-next-line no-undef
-              CHROME_STABLE_UA.mac,
+              gFloorpPreferences.GENERAL_USERAGENT_OVERRIDE_PREF,
+              window.CHROME_STABLE_UA.mac,
             );
             break;
           case 3:
             Services.prefs.setStringPref(
-              GENERAL_USERAGENT_OVERRIDE_PREF,
-              // eslint-disable-next-line no-undef
-              CHROME_STABLE_UA.linux,
+              gFloorpPreferences.GENERAL_USERAGENT_OVERRIDE_PREF,
+              window.CHROME_STABLE_UA.linux,
             );
             break;
           case 4:
             Services.prefs.setStringPref(
-              GENERAL_USERAGENT_OVERRIDE_PREF,
+              gFloorpPreferences.GENERAL_USERAGENT_OVERRIDE_PREF,
               "Mozilla/5.0 (iPhone; CPU iPhone OS 16_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/110.0.5481.83 Mobile/15E148 Safari/604.1",
             );
             break;
           case 5:
             Services.prefs.setStringPref(
-              GENERAL_USERAGENT_OVERRIDE_PREF,
+              gFloorpPreferences.GENERAL_USERAGENT_OVERRIDE_PREF,
               Services.prefs.getCharPref("floorp.general.useragent.override"),
             );
         }
       };
 
-      let BROWSER_SETED_USERAGENT = Services.prefs.getIntPref(
-        BROWSER_SETED_USERAGENT_PREF,
-      );
-      setUserAgent(BROWSER_SETED_USERAGENT);
-
-      Services.prefs.addObserver(BROWSER_SETED_USERAGENT_PREF, function () {
-        setUserAgent(BROWSER_SETED_USERAGENT);
+      Services.prefs.addObserver(gFloorpPreferences.BROWSER_SETED_USERAGENT_PREF, function () {
+        setUserAgent(gFloorpPreferences.BROWSER_SETED_USERAGENT);
       });
+
+      setUserAgent(gFloorpPreferences.BROWSER_SETED_USERAGENT);
     }
 
     if (!Services.prefs.prefHasUserValue(this.FLOORP_NOTES_PREF)) {
