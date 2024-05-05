@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { SiteSpecificBrowser } from "chrome://browser/content/modules/ssb/SiteSpecificBrowserService.mjs";
+import { SiteSpecificBrowser } from "./modules/ssb/SiteSpecificBrowserService.mjs";
 
 export const gSsbSupport = {
   _initialized: false,

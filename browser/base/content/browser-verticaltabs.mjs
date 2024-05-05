@@ -116,7 +116,7 @@ export var gFloorpVerticalTabBar = {
     if (this.hoverStyleElem == null && this.hoverModeEnabled) {
       window.setTimeout(() => {
         Tag = document.createElement("style");
-        Tag.innerText = `@import url(chrome://browser/skin/options/native-verticaltab-hover.css)`;
+        Tag.innerText = `@import url(chrome://browser/skin/designs/options/native-verticaltab-hover.css)`;
         Tag.setAttribute("id", "floorp-vthover");
         document.head.appendChild(Tag);
       }, 1000);

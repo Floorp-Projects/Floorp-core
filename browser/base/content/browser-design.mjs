@@ -32,17 +32,17 @@ export const gFloorpDesign = {
   },
   get themeCSSs() {
     return {
-      LeptonUI: `@import url(chrome://browser/skin/lepton/leptonChrome.css?${this.updateDateAndTime}); @import url(chrome://browser/skin/lepton/leptonContent.css?${this.updateDateAndTime});`,
-      fluentUI: `@import url(chrome://browser/skin/fluentUI/fluentUI.css);`,
-      gnomeUI: `@import url(chrome://browser/skin/gnomeUI/gnomeUI.css);`,
-      FluerialUI: `@import url(chrome://browser/skin/floorplegacy/test_legacy.css?${this.updateDateAndTime});`,
-      FluerialUIMultitab: `@import url(chrome://browser/skin/floorplegacy/test_legacy.css?${this.updateDateAndTime}); @import url(chrome://browser/skin/floorplegacy/test_legacy_multitab.css);`,
+      LeptonUI: `@import url(chrome://browser/skin/designs/lepton/leptonChrome.css?${this.updateDateAndTime}); @import url(chrome://browser/skin/designs/lepton/leptonContent.css?${this.updateDateAndTime});`,
+      fluentUI: `@import url(chrome://browser/skin/designs/fluentUI/fluentUI.css);`,
+      gnomeUI: `@import url(chrome://browser/skin/designs/gnomeUI/gnomeUI.css);`,
+      FluerialUI: `@import url(chrome://browser/skin/designs/fluerialUI/fluerialUI.css?${this.updateDateAndTime});`,
+      FluerialUIMultitab: `@import url(chrome://browser/skin/designs/fluerialUI/fluerialUI.css?${this.updateDateAndTime}); @import url(chrome://browser/skin/designs/fluerialUI/fluerial-multitab.css);`,
 
       // Vertical Tabs CSS Injection
-      LeptonVerticalTabs: `@import url(chrome://browser/skin/lepton/leptonVerticalTabs.css);`,
-      fluentVerticalTabs: `@import url(chrome://browser/skin/fluentUI/fluentVerticalTabs.css);`,
-      gnomeVerticalTabs: `@import url(chrome://browser/skin/gnomeUI/gnomeVerticalTabs.css);`,
-      FluerialVerticalTabs: `@import url(chrome://browser/skin/floorplegacy/test_legacy_verticalTabs.css?${this.updateDateAndTime});`,
+      LeptonVerticalTabs: `@import url(chrome://browser/skin/designs/lepton/leptonVerticalTabs.css);`,
+      fluentVerticalTabs: `@import url(chrome://browser/skin/designs/fluentUI/fluentVerticalTabs.css);`,
+      gnomeVerticalTabs: `@import url(chrome://browser/skin/designs/gnomeUI/gnomeVerticalTabs.css);`,
+      FluerialVerticalTabs: `@import url(chrome://browser/skin/designs/fluerialUI/fluerialUI-verticalTabs.css?${this.updateDateAndTime});`,
     };
   },
 
@@ -64,6 +64,15 @@ export const gFloorpDesign = {
     Services.obs.addObserver(gFloorpDesign.setPhotonUI, "set-photon-ui");
     Services.obs.addObserver(gFloorpDesign.setLeptonUI, "set-lepton-ui");
     Services.obs.addObserver(gFloorpDesign.setProtonFixUI, "set-protonfix-ui");
+
+    // Add browser-floorp.css to the browser
+    const browserCssTag = document.createElement("link");
+    browserCssTag.setAttribute("id", "browser-floorp-css");
+    browserCssTag.rel = "stylesheet";
+    browserCssTag.href = "chrome://browser/content/browser-floorp.css";
+
+    document.head?.appendChild(browserCssTag);
+    window.gURLBar._updateLayoutBreakoutDimensions();
 
     this._initialized = true;
   },
@@ -134,11 +143,11 @@ export const gFloorpDesign = {
 
     if (floorpInterfaceNum == 3) {
       gFloorpCommands.loadStyleSheetWithNsStyleSheetService(
-        "chrome://browser/skin/lepton/leptonContent.css"
+        "chrome://browser/skin/designs/lepton/leptonContent.css"
       );
     } else {
       gFloorpCommands.unloadStyleSheetWithNsStyleSheetService(
-        "chrome://browser/skin/lepton/leptonContent.css"
+        "chrome://browser/skin/designs/lepton/leptonContent.css"
       );
     }
   },

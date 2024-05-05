@@ -21,7 +21,7 @@ browser.jar:
   content/browser/browser-preferences.mjs             (content/browser-preferences.mjs)
   content/browser/browser-private-container.mjs       (content/browser-private-container.mjs)
   content/browser/browser-share-mode.mjs              (content/browser-share-mode.mjs)
-  content/browser/browser-ssb-manager.mjs             (content/browser-ssb-manager.mjs)
+  content/browser/browser-ssb-support.mjs             (content/browser-ssb-support.mjs)
   content/browser/browser-ssb-window.mjs              (content/browser-ssb-window.mjs)
   content/browser/browser-tabbar.mjs                  (content/browser-tabbar.mjs)
   content/browser/browser-ua-data.mjs                 (content/browser-ua-data.mjs)

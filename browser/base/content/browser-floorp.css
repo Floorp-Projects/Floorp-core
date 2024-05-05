@@ -198,7 +198,7 @@
 }
 
 #sidebar2-keeppanelwidth {
-    list-style-image: url("chrome://browser/skin/lepton/screenshot.svg");
+    list-style-image: url("chrome://browser/skin/designs/lepton/screenshot.svg");
 }
 
 #sidebar2-close {
@@ -216,7 +216,7 @@
 }
 
 [data-l10n-id="show-browser-manager-sidebar"] {
-  --BMSIcon: url("chrome://browser/skin/lepton/toolbox.svg");
+  --BMSIcon: url("chrome://browser/skin/designs/lepton/toolbox.svg");
 }
 
 [data-l10n-id="show-bookmark-sidebar"]{
@@ -240,7 +240,7 @@
 }
 
 [data-l10n-id="show-notes-sidebar"] {
-  --BMSIcon: url("chrome://browser/skin/notes-bms.svg");
+  --BMSIcon: url("chrome://browser/skin/icons/notes-bms.svg");
 }
 
 #select-CustomURL{
@@ -265,7 +265,7 @@
 }
 
 #add-button{
-  list-style-image: url("chrome://browser/skin/floorplegacy/newtab.svg");
+  list-style-image: url("chrome://browser/skin/designs/fluerialUI/newtab.svg");
 }
 
 .sidepanel-icon{
@@ -286,7 +286,7 @@
 }
 
 #bsb-context-add, #bsb-context-link-add {
-  --menuitem-image: url("chrome://browser/skin/lepton/movetowindow-16.svg");
+  --menuitem-image: url("chrome://browser/skin/designs/lepton/movetowindow-16.svg");
 }
 
 #undo-closed-tab {
@@ -294,7 +294,7 @@
 }
 
 #sidebar-reverse-position-toolbar {
-  list-style-image: url("chrome://browser/skin/verticaltab.svg");
+  list-style-image: url("chrome://browser/skin/icons/verticaltab.svg");
 }
 
 :root[lwt-default-theme-in-dark-mode="true"] #tabbrowser-tabpanels, :root[style*="--lwt-accent-color: rgb(28, 27, 34)"] #tabbrowser-tabpanels[flex] {
@@ -416,7 +416,7 @@
 }
 
 #QRCodeGeneratePageAction-image {
-  list-style-image: url("chrome://browser/skin/floorp-share.svg");
+  list-style-image: url("chrome://browser/skin/icons/floorp-share.svg");
 }
 
 @media (min-resolution: 1.1dppx){
@@ -516,19 +516,19 @@
 }
 
 #ssbPageAction-image {
-  list-style-image: url("chrome://browser/skin/lepton/pwa-install.svg");
+  list-style-image: url("chrome://browser/skin/designs/lepton/pwa-install.svg");
 }
 
 #ssbPageAction-image[open-ssb="true"] {
-  list-style-image: url("chrome://browser/skin/lepton/pwa-launch.svg");
+  list-style-image: url("chrome://browser/skin/designs/lepton/pwa-launch.svg");
 }
 
 #run-ssb-contextmenu {
-  --menuitem-image: url("chrome://browser/skin/lepton/pwa-launch.svg");
+  --menuitem-image: url("chrome://browser/skin/designs/lepton/pwa-launch.svg");
 }
 
 #uninstall-ssb-contextmenu {
-  --menuitem-image: url("chrome://browser/skin/lepton/pwa-remove.svg");
+  --menuitem-image: url("chrome://browser/skin/designs/lepton/pwa-remove.svg");
 }
 
 #workspacesToolbar {
@@ -571,7 +571,7 @@
   display: none !important;
 }
 #workspaces-toolbar-button {
-  list-style-image: url("chrome://browser/skin/workspace-floorp.png");
+  list-style-image: url("chrome://browser/skin/icons/workspace-floorp.png");
   border-radius: 0px !important;
 }
 #workspaces-toolbar-button:hover {

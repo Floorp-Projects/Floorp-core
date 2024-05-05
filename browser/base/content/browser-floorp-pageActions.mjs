@@ -102,7 +102,7 @@ export const gFloorpPageAction = {
      class="urlbar-page-action" tooltiptext="ssb-page-action"
      role="button" popup="ssb-panel">
      <image id="ssbPageAction-image" class="urlbar-icon"/>
-     <panel id="ssb-panel" type="arrow" position="bottomright topright" onpopupshowing="gSsbChromeManager.functions.setImageToInstallButton();">
+     <panel id="ssb-panel" type="arrow" position="bottomright topright" onpopupshowing="gSsbSupport.functions.setImageToInstallButton();">
      <vbox id="ssb-box">
        <vbox class="panel-header">
          <html:h1>
@@ -123,7 +123,7 @@ export const gFloorpPageAction = {
        </hbox>
        <hbox id="ssb-button-hbox">
         <vbox id="ssb-installing-vbox">
-          <html:img id="ssb-installing-icon" hidden="true" src="chrome://browser/skin/pwa/installing.gif" width="48" height="48"/>
+          <html:img id="ssb-installing-icon" hidden="true" src="chrome://browser/skin/icons/installing.gif " width="48" height="48"/>
         </vbox>
         <button id="ssb-app-install-button" class="panel-button ssb-install-buttons" oncommand="gFloorpPageAction.Ssb.onCommand()"/>
         <button id="ssb-app-cancel-button" class="panel-button ssb-install-buttons" data-l10n-id="ssb-app-cancel-button" oncommand="gFloorpPageAction.Ssb.closePopup()"/>
@@ -134,7 +134,7 @@ export const gFloorpPageAction = {
    `),
 
     async onCommand() {
-      window.gSsbChromeManager.functions.installOrRunCurrentPageAsSsb(true);
+      window.gSsbSupport.functions.installOrRunCurrentPageAsSsb(true);
 
       // Show installing gif
       let installingGif = document.getElementById("ssb-installing-icon");

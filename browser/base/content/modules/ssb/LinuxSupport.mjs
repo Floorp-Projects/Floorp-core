@@ -3,19 +3,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { SiteSpecificBrowserIdUtils } from "./SiteSpecificBrowserIdUtils.mjs";
+import { ImageTools } from "./ImageTools.mjs"
 
 const { FileUtils } = ChromeUtils.importESModule(
   "resource://gre/modules/FileUtils.sys.mjs"
 );
-
-const { XPCOMUtils } = ChromeUtils.importESModule(
-  "resource://gre/modules/XPCOMUtils.sys.mjs"
-);
-
-const lazy = {};
-XPCOMUtils.defineLazyModuleGetters(lazy, {
-  ImageTools: "resource:///modules/ssb/ImageTools.jsm",
-});
 
 const nsIFile = Components.Constructor(
   "@mozilla.org/file/local;1",
@@ -39,10 +31,10 @@ export const LinuxSupport = {
     let iconFile = new nsIFile(PathUtils.join(iconDir, `${ssb.name}.png`));
     let icon = await SiteSpecificBrowserIdUtils.getIconBySSBId(ssb.id, 128);
     if (icon) {
-      let { container } = await lazy.ImageTools.loadImage(
+      let { container } = await ImageTools.loadImage(
         Services.io.newURI(icon.src)
       );
-      lazy.ImageTools.saveIcon(container, 128, 128, iconFile);
+      ImageTools.saveIcon(container, 128, 128, iconFile);
     } else {
       // TODO use a default icon file.
       iconFile = null;

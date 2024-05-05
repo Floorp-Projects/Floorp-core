@@ -82,8 +82,8 @@ document.addEventListener("DOMContentLoaded", () => {
         import("chrome://browser/content/browser-pinned-tabs-title.mjs").then(({ gFloorpPinnedTabsTitle }) => {
             window.gFloorpPinnedTabsTitle = gFloorpPinnedTabsTitle
         });
-        import("chrome://browser/content/browser-ssb-manager.mjs").then(({ gSsbChromeManager }) => {
-            window.gSsbChromeManager = gSsbChromeManager
+        import("chrome://browser/content/browser-ssb-support.mjs").then(({ gSsbSupport }) => {
+            window.gSsbSupport = gSsbSupport
         });
         import("chrome://browser/content/browser-tabbar.mjs").then(({ gFloorpTabBarStyle }) => {
             window.gFloorpTabBarStyle = gFloorpTabBarStyle

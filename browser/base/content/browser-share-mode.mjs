@@ -30,7 +30,7 @@ export const gFloorpShareMode = {
             const css = document.createElement("style");
             css.id = "sharemode";
             css.textContent =
-                "@import url(chrome://browser/skin/options/sharemode.css);";
+                "@import url(chrome://browser/skin/designs/options/sharemode.css);";
             document.head.appendChild(css);
         } else {
             cssExist.remove();
