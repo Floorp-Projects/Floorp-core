@@ -3,19 +3,18 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 floorp.jar:
-% resource floorp %resource/floorp/
+% resource floorp %resource/
+  resource/DesktopFileParser.sys.mjs
+  resource/EscapeShell.sys.mjs
+  resource/FloorpActors.sys.mjs
+  resource/FloorpServices.sys.mjs
+  resource/OpenLinkInExternal.sys.mjs
+  resource/PortableUpdate.sys.mjs
+  resource/UserjsUtils.sys.mjs
+  resource/FloorpStartup.sys.mjs
+* resource/FloorpAppConstants.sys.mjs
 
-  resource/floorp/DesktopFileParser.sys.mjs
-  resource/floorp/EscapeShell.sys.mjs
-  resource/floorp/FloorpActors.sys.mjs
-  resource/floorp/FloorpServices.sys.mjs
-  resource/floorp/OpenLinkInExternal.sys.mjs
-  resource/floorp/PortableUpdate.sys.mjs
-  resource/floorp/UserjsUtils.sys.mjs
-  resource/floorp/FloorpStartup.sys.mjs
-* resource/floorp/FloorpAppConstants.sys.mjs
+  resource/tabsleep/TabSleep.sys.mjs (tabsleep/TabSleep.sys.mjs)
 
-  resource/floorp/tabsleep/TabSleep.sys.mjs (tabsleep/TabSleep.sys.mjs)
-
-  resource/floorp/ssb/SiteSpecificBrowserChild.sys.mjs   (ssb/SiteSpecificBrowserChild.sys.mjs)
-  resource/floorp/ssb/SiteSpecificBrowserParent.sys.mjs  (ssb/SiteSpecificBrowserParent.sys.mjs)
+  resource/ssb/SiteSpecificBrowserChild.sys.mjs   (ssb/SiteSpecificBrowserChild.sys.mjs)
+  resource/ssb/SiteSpecificBrowserParent.sys.mjs  (ssb/SiteSpecificBrowserParent.sys.mjs)
