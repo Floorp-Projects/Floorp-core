@@ -7,7 +7,7 @@
 
 // This ESM has build configuration constants.
 var { FloorpAppConstants } = ChromeUtils.importESModule(
-    "resource:///modules/FloorpAppConstants.sys.mjs"
+    "resource://floorp/FloorpAppConstants.sys.mjs"
 );
 
 import("chrome://browser/content/browser-ua-data.mjs");

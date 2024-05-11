@@ -6,7 +6,7 @@
 
 const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 const { workspaceIcons } = ChromeUtils.importESModule(
-  "chrome://browser/content/modules/workspaces/WorkspacesService.mjs",
+  "resource://floorp/WorkspacesService.mjs",
 );
 const { ContextualIdentityService } = ChromeUtils.importESModule(
   "resource://gre/modules/ContextualIdentityService.sys.mjs",

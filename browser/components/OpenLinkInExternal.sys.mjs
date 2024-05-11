@@ -9,8 +9,8 @@ import { FileUtils } from "resource://gre/modules/FileUtils.sys.mjs";
 import { ExtensionCommon } from "resource://gre/modules/ExtensionCommon.sys.mjs";
 import { AppConstants } from "resource://gre/modules/AppConstants.sys.mjs";
 import { Subprocess } from "resource://gre/modules/Subprocess.sys.mjs";
-import { DesktopFileParser } from "resource:///modules/DesktopFileParser.sys.mjs";
-import { EscapeShell } from "resource:///modules/EscapeShell.sys.mjs";
+import { DesktopFileParser } from "resource://floorp/DesktopFileParser.sys.mjs";
+import { EscapeShell } from "resource://floorp/EscapeShell.sys.mjs";
 
 // Migration from JSM to ES Module in the future.
 const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");

@@ -8,18 +8,15 @@ export const EXPORTED_SYMBOLS = [];
 import { ActorManagerParent } from "resource://gre/modules/ActorManagerParent.sys.mjs";
 
 export let JSWINDOWACTORS = {
-  AboutCalendar: {
+  SiteSpecificBrowser: {
     parent: {
-      esModuleURI: "resource:///actors/AboutCalendarParent.sys.mjs",
+      esModuleURI: "resource://floorp/ssb/SiteSpecificBrowserParent.sys.mjs",
     },
     child: {
-      esModuleURI: "resource:///actors/AboutCalendarChild.sys.mjs",
-      events: {
-        DOMDocElementInserted: {},
-      },
+      esModuleURI: "resource://floorp/ssb/SiteSpecificBrowserChild.sys.mjs",
     },
-    matches: ["about:calendar*"],
-    remoteTypes: ["privilegedabout"],
+
+    allFrames: true,
   },
 };
 

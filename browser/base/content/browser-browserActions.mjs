@@ -98,7 +98,7 @@ export const gFloorpBrowserActions = {
       "undoCloseTab();"
     ).then(() => {
       if (
-        ChromeUtils.importESModule("resource:///modules/FloorpStartup.sys.mjs")
+        ChromeUtils.importESModule("resource://floorp/FloorpStartup.sys.mjs")
           .isFirstRun
       ) {
         CustomizableUI.addWidgetToArea(
@@ -117,7 +117,7 @@ export const gFloorpBrowserActions = {
       "SidebarUI.reversePosition();"
     ).then(() => {
       if (
-        ChromeUtils.importESModule("resource:///modules/FloorpStartup.sys.mjs")
+        ChromeUtils.importESModule("resource://floorp/FloorpStartup.sys.mjs")
           .isFirstRun
       ) {
         CustomizableUI.addWidgetToArea(

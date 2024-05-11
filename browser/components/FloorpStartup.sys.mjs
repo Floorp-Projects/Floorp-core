@@ -185,7 +185,7 @@ if (isMainBrowser) {
 if (isMainBrowser) {
   // Load actors
   try {
-    ChromeUtils.importESModule("resource:///modules/FloorpActors.sys.mjs");
+    ChromeUtils.importESModule("resource://floorp/FloorpActors.sys.mjs");
   } catch (e) {
     console.error(e);
   }
@@ -223,7 +223,7 @@ if (isMainBrowser) {
   // Load PortableUpdate feature
   try {
     if (Services.prefs.getBoolPref("floorp.isPortable", false)) {
-      ChromeUtils.importESModule("resource:///modules/PortableUpdate.sys.mjs");
+      ChromeUtils.importESModule("resource://floorp/PortableUpdate.sys.mjs");
     }
   } catch (e) {
     console.error(e);

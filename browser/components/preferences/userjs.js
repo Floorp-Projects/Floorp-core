@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 var { UserjsUtilsFunctions } = ChromeUtils.importESModule(
-  "resource:///modules/UserjsUtils.sys.mjs"
+  "resource://floorp/UserjsUtils.sys.mjs"
 );
 var { FileUtils } = ChromeUtils.importESModule(
   "resource://gre/modules/FileUtils.sys.mjs"

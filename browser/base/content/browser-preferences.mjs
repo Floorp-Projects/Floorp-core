@@ -3,7 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
  let { userJsList } = ChromeUtils.importESModule(
-  "resource:///modules/UserjsUtils.sys.mjs",
+  "resource://floorp/UserjsUtils.sys.mjs",
 );
 
 // I glared at the source code for about 3 hours, but for some reason I decided to use the server because it would be unclear because of the Floorp interface settings. God forgive me

@@ -27,9 +27,9 @@ export const gSsbSupport = {
       });
 
       // This is needed to handle the case when the user opens a new tab in the same window.
-      window.setTimeout(() => {
-        gSsbSupport.eventListeners.onCurrentTabChangedOrLoaded();
-      }, 1000);
+        window.setInterval(() => {
+          gSsbSupport.eventListeners.onCurrentTabChangedOrLoaded();
+        } , 1000);
 
       this._initialized = true;
     } else {
