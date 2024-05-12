@@ -138,7 +138,7 @@ export const gFloorpBrowserActions = {
     await this._createToolbarButtonTypeMenu(
       "profile-manager",
       `<menupopup id="profile-manager-popup" position="after_start" style="--panel-padding: 0 !important;">
-        <browser id="profile-switcher-browser" src="chrome://browser/content/profile-manager/profile-switcher.xhtml"
+        <browser id="profile-switcher-browser" src="chrome://floorp/content/profile-manager/profile-switcher.xhtml"
                  flex="1" type="content" disablehistory="true" disableglobalhistory="true" context="profile-popup-contextmenu" />
        </menupopup>
       `,

@@ -52,7 +52,7 @@ const isMainBrowser = env.get("MOZ_BROWSER_TOOLBOX_PORT") === "";
 export async function onFinalUIStartup() {
   Services.obs.removeObserver(onFinalUIStartup, "final-ui-startup");
   let { BrowserManagerSidebar } = ChromeUtils.importESModule(
-    "chrome://browser/content/modules/bms/BrowserManagerSidebar.mjs",
+    "chrome://floorp/content/modules/bms/BrowserManagerSidebar.mjs",
   );
   BrowserManagerSidebar.prefsUpdate();
 

@@ -7,7 +7,7 @@
 /* import-globals-from preferences.js */
 
 let { BrowserManagerSidebar } = ChromeUtils.importESModule(
-  "chrome://browser/content/modules/bms/BrowserManagerSidebar.mjs"
+  "chrome://floorp/content/modules/bms/BrowserManagerSidebar.mjs"
 );
 XPCOMUtils.defineLazyGetter(this, "L10n", () => {
   return new Localization(["branding/brand.ftl", "browser/floorp"]);
@@ -154,7 +154,7 @@ var gBSBPane = {
       let updateNumberDate = new Date();
       let updateNumber = `w${updateNumberDate.getFullYear()}${updateNumberDate.getMonth()}${updateNumberDate.getDate()}${updateNumberDate.getHours()}${updateNumberDate.getMinutes()}${updateNumberDate.getSeconds()}`;
       gSubDialog.open(
-        "chrome://browser/content/preferences/dialogs/customURLs.xhtml",
+        "chrome://floorp/content/preferences/dialogs/customURLs.xhtml",
         undefined,
         { id: updateNumber, new: true }
       );
@@ -232,7 +232,7 @@ var gBSBPane = {
           let elem = listItem.querySelector(".BMS-Edit");
           elem.addEventListener("command", function (event) {
             gSubDialog.open(
-              "chrome://browser/content/preferences/dialogs/customURLs.xhtml",
+              "chrome://floorp/content/preferences/dialogs/customURLs.xhtml",
               undefined,
               { id: event.target.getAttribute("value"), new: false }
             );

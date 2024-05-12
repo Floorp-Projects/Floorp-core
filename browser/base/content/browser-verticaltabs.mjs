@@ -109,14 +109,14 @@ export var gFloorpVerticalTabBar = {
     //toolbar modification
     let Tag = document.createElement("style");
     Tag.id = "verticalTabsStyle";
-    Tag.textContent = `@import url("chrome://browser/content/browser-verticaltabs.css");`;
+    Tag.textContent = `@import url("chrome://floorp/content/browser-verticaltabs.css");`;
     document.head.appendChild(Tag);
 
     // Hover effect CSS check
     if (this.hoverStyleElem == null && this.hoverModeEnabled) {
       window.setTimeout(() => {
         Tag = document.createElement("style");
-        Tag.innerText = `@import url(chrome://browser/skin/designs/options/native-verticaltab-hover.css)`;
+        Tag.innerText = `@import url(chrome://floorp/skin/designs//options/native-verticaltab-hover.css)`;
         Tag.setAttribute("id", "floorp-vthover");
         document.head.appendChild(Tag);
       }, 1000);

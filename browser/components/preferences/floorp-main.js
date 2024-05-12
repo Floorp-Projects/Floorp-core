@@ -112,7 +112,7 @@ window.addEventListener(
       .getElementById("TabSleepSettings")
       .addEventListener("click", function () {
         gSubDialog.open(
-          "chrome://browser/content/preferences/dialogs/tabsleep.xhtml",
+          "chrome://floorp/content/preferences/dialogs/tabsleep.xhtml",
           undefined,
           undefined,
         );

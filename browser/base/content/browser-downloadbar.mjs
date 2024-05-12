@@ -9,7 +9,7 @@ export const gFloorpLegacyStyleDownloadBar = {
   _initialized: false,
 
   get legacyStyleDownloadBarCSS() {
-    return "@import url('chrome://browser/skin/designs/options/legacy-style-downloadbar.css');"
+    return "@import url('chrome://floorp/skin/designs//options/legacy-style-downloadbar.css');"
   },
 
   init() {

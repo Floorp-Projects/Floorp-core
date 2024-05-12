@@ -8,7 +8,7 @@ import { BrowserManagerSidebar } from "./modules/bms/BrowserManagerSidebar.mjs";
 
 try {
   var { BrowserManagerSidebarPanelWindowUtils } = await import(
-    "chrome://browser/content/modules/bms/BrowserManagerSidebarPanelWindowUtils.mjs"
+    "chrome://floorp/content/modules/bms/BrowserManagerSidebarPanelWindowUtils.mjs"
   );
 } catch (e) {}
 
@@ -857,7 +857,7 @@ export const gBrowserManagerSidebar = {
             );
             sidebarItem.className += " extension-icon";
             let listTexts =
-              "chrome://browser/content/BMS-extension-needs-white-bg.txt";
+              "chrome://floorp/content/BMS-extension-needs-white-bg.txt";
             fetch(listTexts)
               .then(response => {
                 return response.text();

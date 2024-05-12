@@ -3,6 +3,8 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 browser.jar:
-        search-extensions/ (extensions/**)
+        search-extensions/startpage (extensions/startpage/**)
+        search-extensions/you.com (extensions/you.com/**)
+        search-extensions/floorp (extensions/floorp/**)
 
 % resource search-extensions %search-extensions/ contentaccessible=yes

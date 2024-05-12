@@ -163,7 +163,7 @@ const portableUpdateUtils = {
   let result = await portableUpdateUtils.applyRedirectorUpdate();
   if (result.success) {
     AlertsService.showAlertNotification(
-      "chrome://browser/skin/updater/link-48-last.png", // Image URL
+      "chrome://floorp/skin/updater/link-48-last.png", // Image URL
       await L10N.formatValue("update-portable-notification-success-title"), // Title
       await L10N.formatValue("update-portable-notification-success-message"), // Body
       true, // textClickable
@@ -173,7 +173,7 @@ const portableUpdateUtils = {
   } else if (!result.success && result.fatal) {
     console.error(result);
     AlertsService.showAlertNotification(
-      "chrome://browser/skin/updater/failed.png",
+      "chrome://floorp/skin/updater/failed.png",
       await L10N.formatValue("update-portable-notification-failed-title"),
       await L10N.formatValue(
         "update-portable-notification-failed-redirector-message",
@@ -195,7 +195,7 @@ const portableUpdateUtils = {
   if (!updateInfo.isLatest) {
     console.log("Update found.");
     AlertsService.showAlertNotification(
-      "chrome://browser/skin/updater/link-48.png",
+      "chrome://floorp/skin/updater/link-48.png",
       await L10N.formatValue("update-portable-notification-found-title"),
       await L10N.formatValue("update-portable-notification-found-message"),
       true,
@@ -208,7 +208,7 @@ const portableUpdateUtils = {
     } catch (e) {
       console.error(e);
       AlertsService.showAlertNotification(
-        "chrome://browser/skin/updater/failed.png",
+        "chrome://floorp/skin/updater/failed.png",
         await L10N.formatValue("update-portable-notification-failed-title"),
         await L10N.formatValue(
           "update-portable-notification-failed-prepare-message",
@@ -221,7 +221,7 @@ const portableUpdateUtils = {
     }
 
     AlertsService.showAlertNotification(
-      "chrome://browser/skin/updater/link-48.png",
+      "chrome://floorp/skin/updater/link-48.png",
       await L10N.formatValue("update-portable-notification-ready-title"),
       await L10N.formatValue("update-portable-notification-ready-message"),
       true,

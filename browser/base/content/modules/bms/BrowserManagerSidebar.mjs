@@ -27,7 +27,7 @@ export const BrowserManagerSidebar = {
     },
     //notes is available in floorp for v11.0.0.
     "floorp//notes": {
-      url: "chrome://browser/content/notes/notes-bms.html",
+      url: "chrome://floorp/content/notes/notes-bms.html",
       l10n: `notes-sidebar`,
       defaultWidth: 550,
       enabled: true,
@@ -259,7 +259,7 @@ export const BrowserManagerSidebar = {
       elem.style.setProperty("--BMSIcon", `url(${iconURL})`);
       elem.className += " extension-icon";
       let listTexts =
-        "chrome://browser/content/BMS-extension-needs-white-bg.txt";
+        "chrome://floorp/content/BMS-extension-needs-white-bg.txt";
       fetch(listTexts)
         .then(response => {
           return response.text();
@@ -309,19 +309,19 @@ export const BrowserManagerSidebar = {
     }
     if (
       parentWindow?.document.documentURI ==
-      "chrome://browser/content/hiddenWindowMac.xhtml"
+      "chrome://floorp/content/hiddenWindowMac.xhtml"
     ) {
       parentWindow = null;
     }
     if (parentWindow?.gDialogBox) {
       parentWindow.gDialogBox.open(
-        "chrome://browser/content/preferences/dialogs/customURLs.xhtml",
+        "chrome://floorp/content/preferences/dialogs/customURLs.xhtml",
         object
       );
     } else {
       Services.ww.openWindow(
         parentWindow,
-        "chrome://browser/content/preferences/dialogs/customURLs.xhtml",
+        "chrome://floorp/content/preferences/dialogs/customURLs.xhtml",
         "AddWebpanel",
         "chrome,titlebar,dialog,centerscreen,modal",
         object

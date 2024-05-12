@@ -15,7 +15,7 @@
 }
 
 .profiles-icon {
-  list-style-image: url("chrome://browser/skin/designs/lepton/mail-inbox-all.svg");
+  list-style-image: url("chrome://floorp/skin/designs//lepton/mail-inbox-all.svg");
 }
 
 #leptonButton {
@@ -39,7 +39,7 @@
 }
 
 #category-CSK>.category-icon {
-  list-style-image: url("chrome://browser/skin/designs/lepton/select-all-on.svg") !important;
+  list-style-image: url("chrome://floorp/skin/designs//lepton/select-all-on.svg") !important;
 }
 
 #category-workspaces>.category-icon {
@@ -47,7 +47,7 @@
 }
 
 #category-ssb>.category-icon {
-  list-style-image: url("chrome://browser/skin/designs/lepton/pwa-manage.svg") !important;
+  list-style-image: url("chrome://floorp/skin/designs//lepton/pwa-manage.svg") !important;
 }
 
 #communityDesc {
@@ -207,7 +207,7 @@
   border-radius: 4px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.2);
   transform: scaleX(1);
-  content: url("chrome://browser/skin/designs/lepton/photon.svg");
+  content: url("chrome://floorp/skin/designs//lepton/photon.svg");
 }
 
 #sub-preference {

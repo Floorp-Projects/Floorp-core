@@ -86,7 +86,7 @@ export const gSsbSupport = {
 
     let styleElement = document.createElement("style");
     styleElement.id = "ssb-support";
-    styleElement.textContent = `@import url("chrome://browser/content/browser-ssb-window.css");`;
+    styleElement.textContent = `@import url("chrome://floorp/content/browser-ssb-window.css");`;
     document.head.appendChild(styleElement);
 
     if (this.disableToolbar) {

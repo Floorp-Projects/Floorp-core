@@ -56,7 +56,7 @@ export const gFloorpPageAction = {
     `),
     onPopupShowing() {
       Services.scriptloader.loadSubScript(
-        "chrome://browser/content/qr-code-styling/qr-code-styling.js",
+        "chrome://floorp/content/qr-code-styling/qr-code-styling.js",
         window
       );
 
@@ -123,7 +123,7 @@ export const gFloorpPageAction = {
        </hbox>
        <hbox id="ssb-button-hbox">
         <vbox id="ssb-installing-vbox">
-          <html:img id="ssb-installing-icon" hidden="true" src="chrome://browser/skin/icons/installing.gif " width="48" height="48"/>
+          <html:img id="ssb-installing-icon" hidden="true" src="chrome://floorp/skin/icons/installing.gif " width="48" height="48"/>
         </vbox>
         <button id="ssb-app-install-button" class="panel-button ssb-install-buttons" oncommand="gFloorpPageAction.Ssb.onCommand()"/>
         <button id="ssb-app-cancel-button" class="panel-button ssb-install-buttons" data-l10n-id="ssb-app-cancel-button" oncommand="gFloorpPageAction.Ssb.closePopup()"/>

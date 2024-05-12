@@ -5,7 +5,7 @@
 export const EXPORTED_SYMBOLS = ["SiteSpecificBrowserChild"];
 
 const { SiteSpecificBrowserBase } = ChromeUtils.importESModule(
-  "chrome://browser/content/modules/ssb/SiteSpecificBrowserService.mjs",
+  "chrome://floorp/content/modules/ssb/SiteSpecificBrowserService.mjs",
 );
 const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 const { E10SUtils } = ChromeUtils.import(

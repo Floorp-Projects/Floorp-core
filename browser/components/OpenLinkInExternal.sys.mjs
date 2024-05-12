@@ -465,7 +465,7 @@ let documentObserver = {
         })();
       } else if (
         uriWithoutQueryRef ==
-          "chrome://browser/content/preferences/preferences.xhtml" ||
+          "chrome://floorp/content/preferences/preferences.xhtml" ||
         uriWithoutQueryRef == "about:preferences"
       ) {
         window_.addEventListener(

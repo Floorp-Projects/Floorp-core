@@ -32,7 +32,7 @@ export const gFloorpObservePreference = (prefName, callback) => {
 gFloorpObservePreference("floorp.material.effect.enable", function (event) {
   if (event.prefValue) {
     let Tag = document.createElement("style");
-    Tag.innerText = `@import url(chrome://browser/skin/designs/options/micaforeveryone.css)`;
+    Tag.innerText = `@import url(chrome://floorp/skin/designs//options/micaforeveryone.css)`;
     Tag.setAttribute("id", "floorp-micaforeveryone");
     document.head.appendChild(Tag);
   } else {
@@ -45,7 +45,7 @@ gFloorpObservePreference(
   function (event) {
     if (event.prefValue) {
       let Tag = document.createElement("style");
-      Tag.innerText = `@import url(chrome://browser/skin/designs/options/treestyletab.css)`;
+      Tag.innerText = `@import url(chrome://floorp/skin/designs//options/treestyletab.css)`;
       Tag.setAttribute("id", "floorp-optimizefortreestyletab");
       document.head.appendChild(Tag);
     } else {
@@ -57,7 +57,7 @@ gFloorpObservePreference(
 gFloorpObservePreference("floorp.optimized.msbutton.ope", function (event) {
   if (event.prefValue) {
     let Tag = document.createElement("style");
-    Tag.innerText = `@import url(chrome://browser/skin/designs/options/msbutton.css)`;
+    Tag.innerText = `@import url(chrome://floorp/skin/designs//options/msbutton.css)`;
     Tag.setAttribute("id", "floorp-optimizedmsbuttonope");
     document.head.appendChild(Tag);
   } else {
@@ -68,7 +68,7 @@ gFloorpObservePreference("floorp.optimized.msbutton.ope", function (event) {
 gFloorpObservePreference("floorp.bookmarks.bar.focus.mode", function (event) {
   if (event.prefValue) {
     let Tag = document.createElement("style");
-    Tag.innerText = `@import url(chrome://browser/skin/designs/options/bookmarkbar_autohide.css)`;
+    Tag.innerText = `@import url(chrome://floorp/skin/designs//options/bookmarkbar_autohide.css)`;
     Tag.setAttribute("id", "floorp-bookmarkbarfocus");
     document.head.appendChild(Tag);
   } else {
@@ -124,7 +124,7 @@ gFloorpObservePreference("floorp.bookmarks.fakestatus.mode", function (event) {
 gFloorpObservePreference("floorp.search.top.mode", function (event) {
   if (event.prefValue) {
     let Tag = document.createElement("style");
-    Tag.innerText = `@import url(chrome://browser/skin/designs/options/move_page_inside_searchbar.css)`;
+    Tag.innerText = `@import url(chrome://floorp/skin/designs//options/move_page_inside_searchbar.css)`;
     Tag.setAttribute("id", "floorp-searchbartop");
     document.head.appendChild(Tag);
   } else {
@@ -135,7 +135,7 @@ gFloorpObservePreference("floorp.search.top.mode", function (event) {
 gFloorpObservePreference("floorp.legacy.dlui.enable", function (event) {
   if (event.prefValue) {
     let Tag = document.createElement("style");
-    Tag.innerText = `@import url(chrome://browser/skin/designs/options/browser-custom-dlmgr.css)`;
+    Tag.innerText = `@import url(chrome://floorp/skin/designs//options/browser-custom-dlmgr.css)`;
     Tag.setAttribute("id", "floorp-dlmgrcss");
     document.head.appendChild(Tag);
   } else {
@@ -146,7 +146,7 @@ gFloorpObservePreference("floorp.legacy.dlui.enable", function (event) {
 gFloorpObservePreference("floorp.downloading.red.color", function (event) {
   if (event.prefValue) {
     let Tag = document.createElement("style");
-    Tag.innerText = `@import url(chrome://browser/skin/designs/options/downloading-redcolor.css`;
+    Tag.innerText = `@import url(chrome://floorp/skin/designs//options/downloading-redcolor.css`;
     Tag.setAttribute("id", "floorp-dlredcolor");
     document.head.appendChild(Tag);
   } else {
@@ -158,7 +158,7 @@ gFloorpObservePreference("floorp.navbar.bottom", function (event) {
   if (event.prefValue) {
     var Tag = document.createElement("style");
     Tag.setAttribute("id", "floorp-navvarcss");
-    Tag.innerText = `@import url(chrome://browser/skin/designs/options/navbar-botttom.css)`;
+    Tag.innerText = `@import url(chrome://floorp/skin/designs//options/navbar-botttom.css)`;
     document.head.appendChild(Tag);
     document
       .getElementById("fullscreen-and-pointerlock-wrapper")
@@ -193,7 +193,7 @@ gFloorpObservePreference("floorp.navbar.bottom", function (event) {
 gFloorpObservePreference("floorp.disable.fullscreen.notification", function (event) {
   if (event.prefValue) {
     var Tag = document.createElement("style");
-    Tag.innerText = `@import url(chrome://browser/skin/designs/options/disableFullScreenNotification.css)`;
+    Tag.innerText = `@import url(chrome://floorp/skin/designs//options/disableFullScreenNotification.css)`;
     Tag.setAttribute("id", "floorp-DFSN");
     document.head.appendChild(Tag);
   } else {
@@ -204,7 +204,7 @@ gFloorpObservePreference("floorp.disable.fullscreen.notification", function (eve
 gFloorpObservePreference("floorp.delete.browser.border", function (event) {
   if (event.prefValue) {
     var Tag = document.createElement("style");
-    Tag.innerText = `@import url(chrome://browser/skin/designs/options/delete-border.css)`;
+    Tag.innerText = `@import url(chrome://floorp/skin/designs//options/delete-border.css)`;
     Tag.setAttribute("id", "floorp-DB");
     document.head.appendChild(Tag);
   } else {
@@ -228,7 +228,7 @@ gFloorpObservePreference(
   function (event) {
     if (event.prefValue) {
       let Tag = document.createElement("style");
-      Tag.innerText = `@import url(chrome://browser/skin/designs/options/STG-like-floorp-workspaces.css)`;
+      Tag.innerText = `@import url(chrome://floorp/skin/designs//options/STG-like-floorp-workspaces.css)`;
       Tag.id = "floorp-STG-like-floorp-workspaces";
       document.head.appendChild(Tag);
     } else {
@@ -246,13 +246,13 @@ gFloorpObservePreference("floorp.browser.tabbar.multirow.newtab-inside.enabled",
   if (event.prefValue) {
     document.getElementById("floorp-newtabbuttonatendofmultirowtabbar")?.remove();
     const Tag = document.createElement("style");
-    Tag.innerText = `@import url(chrome://browser/skin/designs/options/multirowtab-show-newtab-button-in-tabbar.css)`;
+    Tag.innerText = `@import url(chrome://floorp/skin/designs//options/multirowtab-show-newtab-button-in-tabbar.css)`;
     Tag.setAttribute("id", "floorp-newtabbuttoninmultirowtabbbar");
     document.head.appendChild(Tag);
   } else {
     document.getElementById("floorp-newtabbuttoninmultirowtabbbar")?.remove();
     const Tag = document.createElement("style");
-    Tag.innerText = `@import url(chrome://browser/skin/designs/options/multirowtab-show-newtab-button-at-end.css)`;
+    Tag.innerText = `@import url(chrome://floorp/skin/designs//options/multirowtab-show-newtab-button-at-end.css)`;
     Tag.setAttribute("id", "floorp-newtabbuttonatendofmultirowtabbar");
     document.head.appendChild(Tag);
   }
@@ -266,7 +266,7 @@ gFloorpObservePreference("floorp.verticaltab.show.newtab.button", function (even
   }
   if (event.prefValue) {
     var Tag = document.createElement("style");
-    Tag.innerText = `@import url(chrome://browser/skin/designs/options/verticaltab-show-newtab-button-in-tabbar.css)`;
+    Tag.innerText = `@import url(chrome://floorp/skin/designs//options/verticaltab-show-newtab-button-in-tabbar.css)`;
     Tag.setAttribute("id", "floorp-newtabbuttonintabbar");
     document.head.appendChild(Tag);
   } else {
