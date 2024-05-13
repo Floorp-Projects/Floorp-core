@@ -1,0 +1,25 @@
+{
+  "typeAcquisition": {
+    "enable": true
+  },
+  "compilerOptions": {
+    "useDefineForClassFields": true,
+    "lib": ["es2022", "DOM"],
+    "module": "NodeNext",
+    "moduleResolution": "Bundler",
+    "noEmit": true,
+    "allowJs": true,
+    "checkJs": true,
+    "jsx": "preserve",
+    "strict": true,
+    "skipLibCheck": true,
+    "allowImportingTsExtensions": true,
+    "resolvePackageJsonExports": false,
+    "isolatedModules": true,
+    "jsxImportSource": "solid-js",
+    "paths": {
+      "@private/*": ["../Floorp-private-components/nora/*"]
+    }
+  },
+  "exclude": ["dist/**"]
+}

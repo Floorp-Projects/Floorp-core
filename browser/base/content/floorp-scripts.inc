@@ -10,6 +10,8 @@ var { FloorpAppConstants } = ChromeUtils.importESModule(
     "resource://floorp/FloorpAppConstants.sys.mjs"
 );
 
+import("chrome://nora/content/content.js");
+
 import("chrome://floorp/content/browser-ua-data.mjs");
 import("chrome://floorp/content/browser-overrides.mjs");
 

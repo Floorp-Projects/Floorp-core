@@ -12,7 +12,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MPL-2.0",
   "devDependencies": {
     "@babel/eslint-parser": "^7.23.3",
     "@biomejs/biome": "1.5.2",
@@ -23,10 +23,15 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-mozilla": "^3.3.2",
     "prettier": "^3.1.1",
+    "solid-styled-jsx": "^0.27.1",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3",
-    "typescript-transform-paths": "^3.4.6",
-    "xpidl2dts": "file:tools/xpidl2dts@0.2.0"
+    "unocss": "^0.60.2",
+    "vite": "^5.2.11"
   },
-  "private": true
+  "private": true,
+  "dependencies": {
+    "solid-js": "^1.8.17",
+    "zod": "^3.23.8"
+  }
 }

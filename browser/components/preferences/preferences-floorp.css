@@ -38,7 +38,7 @@
   list-style-image: url("chrome://browser/skin/downloads/downloads.svg") !important;
 }
 
-#category-CSK>.category-icon {
+#category-csk >.category-icon {
   list-style-image: url("chrome://floorp/skin/designs/lepton/select-all-on.svg") !important;
 }
 
