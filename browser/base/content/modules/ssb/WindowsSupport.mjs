@@ -6,34 +6,39 @@ import { SiteSpecificBrowserService } from "./SiteSpecificBrowserService.mjs";
 import { SiteSpecificBrowserIdUtils } from "./SiteSpecificBrowserIdUtils.mjs";
 import { ImageTools } from "./ImageTools.mjs";
 
-let shellService = Cc["@mozilla.org/browser/shell-service;1"].getService(
-  Ci.nsIWindowsShellService
-);
-
-const uiUtils = Cc["@mozilla.org/windows-ui-utils;1"].getService(
-  Ci.nsIWindowsUIUtils
-);
-
-const taskbar = Cc["@mozilla.org/windows-taskbar;1"].getService(
-  Ci.nsIWinTaskbar
-);
-
-const nsIFile = Components.Constructor(
-  "@mozilla.org/file/local;1",
-  Ci.nsIFile,
-  "initWithPath"
-);
-
-function buildGroupId(id) {
-  return `ablaze.floorp.ssb.${id}`;
-}
-
 export const WindowsSupport = {
   /**
    * Installs an SSB by creating a shortcut to launch it on the user's desktop.
    *
    * @param {SiteSpecificBrowser} ssb the SSB to install.
    */
+  get shellService() {
+    return Cc["@mozilla.org/browser/shell-service;1"].getService(
+      Ci.nsIWindowsShellService
+    )
+  },
+  get uiUtils() {
+    return Cc["@mozilla.org/windows-ui-utils;1"].getService(
+      Ci.nsIWindowsUIUtils
+    );
+  },
+  get taskbar() {
+    return Cc["@mozilla.org/windows-taskbar;1"].getService(
+      Ci.nsIWinTaskbar
+    );
+  },
+  get nsIFile() {
+    return Components.Constructor(
+      "@mozilla.org/file/local;1",
+      Ci.nsIFile,
+      "initWithPath"
+    );
+  },
+
+  buildGroupId(id) {
+    return `ablaze.floorp.ssb.${id}`;
+  },
+
   async install(ssb) {
     if (!SiteSpecificBrowserService.useOSIntegration) {
       return;
@@ -45,7 +50,7 @@ export const WindowsSupport = {
       ignoreExisting: true,
     });
 
-    let iconFile = new nsIFile(PathUtils.join(dir, "icon.ico"));
+    let iconFile = new WindowsSupport.nsIFile(PathUtils.join(dir, "icon.ico"));
 
     // We should be embedding multiple icon sizes, but the current icon encoder
     // does not support this. For now just embed a sensible size.
@@ -60,7 +65,7 @@ export const WindowsSupport = {
       iconFile = null;
     }
 
-    shellService.createShortcut(
+    WindowsSupport.shellService.createShortcut(
       Services.dirsvc.get("XREExeF", Ci.nsIFile),
       ["-profile", PathUtils.profileDir, "-start-ssb", ssb.id],
       ssb.name,
@@ -106,7 +111,7 @@ export const WindowsSupport = {
    * @param {DOMWindow} aWindow the window showing the SSB.
    */
   async applyOSIntegration(ssb, aWindow) {
-    taskbar.setGroupIdForWindow(aWindow, buildGroupId(ssb.id));
+    WindowsSupport.taskbar.setGroupIdForWindow(aWindow, buildGroupId(ssb.id));
     const getIcon = async size => {
       let icon = await SiteSpecificBrowserIdUtils.getIconBySSBId(ssb.id, size);
       if (!icon) {
@@ -127,12 +132,12 @@ export const WindowsSupport = {
     }
 
     let icons = await Promise.all([
-      getIcon(uiUtils.systemSmallIconSize),
-      getIcon(uiUtils.systemLargeIconSize),
+      getIcon(WindowsSupport.uiUtils.systemSmallIconSize),
+      getIcon(WindowsSupport.uiUtils.systemLargeIconSize),
     ]);
 
     if (icons[0] || icons[1]) {
-      uiUtils.setWindowIcon(aWindow, icons[0], icons[1]);
+      WindowsSupport.uiUtils.setWindowIcon(aWindow, icons[0], icons[1]);
     }
   },
 };
