@@ -111,7 +111,7 @@ export let SiteSpecificBrowserIdUtils = {
 function createSsbWidow(ssb) {
   if (ssb) {
     let browserWindowFeatures =
-      "chrome,location=yes,centerscreen,dialog=no,resizable=yes,scrollbars=yes";
+      "chrome,centerscreen,dialog=no,resizable=yes,scrollbars=yes";
     //"chrome,location=yes,centerscreen,dialog=no,resizable=yes,scrollbars=yes";
 
     let args = Cc["@mozilla.org/supports-string;1"].createInstance(

@@ -262,7 +262,7 @@ export const gSsbSupport = {
 
         let elem = window.MozXULElement.parseXULToFragment(`
           <toolbarbutton id="ssb-${id}" class="subviewbutton ssb-app-info-button" label="${SsbName}" image="${SsbIcon}"
-                         ssbId="${id}" oncommand="SiteSpecificBrowserIdUtils.runSsbById('${id}');"/>
+                         ssbId="${id}" oncommand="gSsbSupport.functions.runSsbById('${id}');"/>
         `);
 
         parentElem?.appendChild(elem);
@@ -309,6 +309,10 @@ export const gSsbSupport = {
       );
       this.onSsbSubViewOpened();
     },
+
+    async runSsbById(id) {
+      SiteSpecificBrowserIdUtils.runSsbById(id);
+    }
   },
 
   contextMenu: {

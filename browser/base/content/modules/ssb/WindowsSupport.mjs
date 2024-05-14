@@ -71,7 +71,7 @@ export const WindowsSupport = {
       ssb.name,
       iconFile,
       0,
-      buildGroupId(ssb.id),
+      WindowsSupport.buildGroupId(ssb.id),
       "Programs",
       `${ssb.name}.lnk`
     );
@@ -111,7 +111,7 @@ export const WindowsSupport = {
    * @param {DOMWindow} aWindow the window showing the SSB.
    */
   async applyOSIntegration(ssb, aWindow) {
-    WindowsSupport.taskbar.setGroupIdForWindow(aWindow, buildGroupId(ssb.id));
+    WindowsSupport.taskbar.setGroupIdForWindow(aWindow, WindowsSupport.buildGroupId(ssb.id));
     const getIcon = async size => {
       let icon = await SiteSpecificBrowserIdUtils.getIconBySSBId(ssb.id, size);
       if (!icon) {
