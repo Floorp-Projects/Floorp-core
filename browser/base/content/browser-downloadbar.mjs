@@ -95,6 +95,6 @@ export const gFloorpLegacyStyleDownloadBar = {
   },
 };
 
-if (Services.prefs.getBooleanPref("floorp.browser.native.downloadbar.enabled")) {
+if (Services.prefs.getBoolPref("floorp.browser.native.downloadbar.enabled")) {
   gFloorpLegacyStyleDownloadBar.init();
 }
