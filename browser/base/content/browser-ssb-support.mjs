@@ -26,11 +26,6 @@ export const gSsbSupport = {
         gSsbSupport.eventListeners.onCurrentTabChangedOrLoaded();
       });
 
-      // This is needed to handle the case when the user opens a new tab in the same window.
-        const interval = window.setInterval(() => {
-          gSsbSupport.eventListeners.onCurrentTabChangedOrLoaded();
-        } , 2000);
-
         window.setTimeout(() => {
           window.clearInterval(interval);
         }, 10000);
@@ -357,6 +352,15 @@ export const gSsbSupport = {
 
   eventListeners: {
     async onCurrentTabChangedOrLoaded() {
+      // This is needed to handle the case when the user opens a new tab in the same window.
+      const interval = window.setInterval(() => {
+        gSsbSupport.eventListeners.onCurrentTabChangedOrLoaded();
+      } , 2000);
+
+      window.setTimeout(() => {
+        interval.clearInterval();
+      }, 10000);
+
       // set image to the install button
       let currentPageCanBeInstalled =
         await gSsbSupport.functions.checkCurrentPageCanBeInstalled();
