@@ -125,7 +125,11 @@ export const gFloorpBrowserActions = {
           CustomizableUI.AREA_NAVBAR,
           3
         );
-        CustomizableUI.addWidgetToArea("sidebar-reverse-position-toolbar", CustomizableUI.AREA_NAVBAR, 4);
+        CustomizableUI.addWidgetToArea(
+          "sidebar-reverse-position-toolbar",
+          CustomizableUI.AREA_NAVBAR,
+          4
+        );
       }
     });
   },

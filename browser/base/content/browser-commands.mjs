@@ -64,32 +64,32 @@ export const gFloorpCommands = {
   enableRestMode() {
     const selectedTab = window.gBrowser.selectedTab;
     const selectedTabLocation = selectedTab.linkedBrowser.documentURI.spec;
-  
+
     for (const tab of window.gBrowser.tabs) {
       window.gBrowser.discardBrowser(tab);
     }
-  
+
     if (selectedTabLocation) {
       window.openTrustedLinkIn("about:blank", "current");
     }
-  
+
     const tag = document.createElement("style");
     tag.textContent = `* { display:none !important; }`;
     tag.setAttribute("id", "floorp-rest-mode");
     document.head.appendChild(tag);
-  
+
     const l10n = new Localization(
       ["browser/floorp.ftl", "branding/brand.ftl"],
-      true,
+      true
     );
     Services.prompt.alert(
       null,
       l10n.formatValueSync("rest-mode"),
-      l10n.formatValueSync("rest-mode-description"),
+      l10n.formatValueSync("rest-mode-description")
     );
-  
+
     document.getElementById("floorp-rest-mode").remove();
-  
+
     if (selectedTabLocation) {
       window.openTrustedLinkIn(selectedTabLocation, "current");
     }

@@ -3,10 +3,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { SiteSpecificBrowserExternalFileService } from "./SiteSpecificBrowserExternalFileService.mjs";
-import { ImageTools } from "./ImageTools.mjs"
-import { SiteSpecificBrowserIdUtils } from "./SiteSpecificBrowserIdUtils.mjs"
-import { WindowsSupport } from "./WindowsSupport.mjs"
-import { LinuxSupport } from "./LinuxSupport.mjs"
+import { ImageTools } from "./ImageTools.mjs";
+import { SiteSpecificBrowserIdUtils } from "./SiteSpecificBrowserIdUtils.mjs";
+import { WindowsSupport } from "./WindowsSupport.mjs";
+import { LinuxSupport } from "./LinuxSupport.mjs";
 
 const { AppConstants } = ChromeUtils.importESModule(
   "resource://gre/modules/AppConstants.sys.mjs"
@@ -28,7 +28,6 @@ ChromeUtils.defineESModuleGetters(lazy, {
   ManifestObtainer: "resource://gre/modules/ManifestObtainer.sys.mjs",
   ManifestProcessor: "resource://gre/modules/ManifestProcessor.sys.mjs",
 });
-
 
 function uuid() {
   return Services.uuid.generateUUID().toString();
@@ -427,7 +426,7 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
       throw new Error("Site specific browsing is disabled.");
     }
 
-    if (!browser.currentURI.schemeIs("https")) {
+    if (!browser.currentURI.schemeIs("https") && createManifestOptions.useWebManifest) {
       throw new Error(
         "Site specific browsers can only be opened for secure sites."
       );

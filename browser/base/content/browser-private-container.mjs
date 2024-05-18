@@ -20,7 +20,10 @@ export const gFloorpPrivateContainer = {
         gFloorpPrivateContainer.removeDataIfPrivateContainerTabNotExist
       );
 
-      window.gBrowser.tabContainer.addEventListener("TabOpen", gFloorpPrivateContainer.handleTabModifications);
+      window.gBrowser.tabContainer.addEventListener(
+        "TabOpen",
+        gFloorpPrivateContainer.handleTabModifications
+      );
 
       // Add a tab context menu to reopen in private container.
       let beforeElem = document.getElementById("context_selectAllTabs");
@@ -51,7 +54,7 @@ export const gFloorpPrivateContainer = {
     if (!privateContainer || !privateContainer.userContextId) {
       return false;
     }
-  
+
     let tabs = window.gBrowser.tabs;
     for (let i = 0; i < tabs.length; i++) {
       if (tabs[i].userContextId === privateContainer.userContextId) {
@@ -99,7 +102,10 @@ export const gFloorpPrivateContainer = {
   handleTabModifications() {
     let tabs = window.gBrowser.tabs;
     for (let i = 0; i < tabs.length; i++) {
-      if (gFloorpPrivateContainer.checkTabIsPrivateContainer(tabs[i]) && !gFloorpPrivateContainer.tabIsSaveHistory(tabs[i])) {
+      if (
+        gFloorpPrivateContainer.checkTabIsPrivateContainer(tabs[i]) &&
+        !gFloorpPrivateContainer.tabIsSaveHistory(tabs[i])
+      ) {
         gFloorpPrivateContainer.applyDoNotSaveHistoryToTab(tabs[i]);
       }
     }
@@ -141,14 +147,14 @@ export const gFloorpPrivateContainer = {
     let reopenedTabs = window.TabContextMenu.contextTab.multiselected
       ? window.gBrowser.selectedTabs
       : [window.TabContextMenu.contextTab];
-  
+
     for (let tab of reopenedTabs) {
       /* Create a triggering principal that is able to load the new tab
          For content principals that are about: chrome: or resource: we need system to load them.
          Anything other than system principal needs to have the new userContextId.
       */
       let triggeringPrincipal;
-  
+
       if (tab.linkedPanel) {
         triggeringPrincipal = tab.linkedBrowser.contentPrincipal;
       } else {
@@ -163,14 +169,15 @@ export const gFloorpPrivateContainer = {
           continue;
         }
       }
-  
+
       if (!triggeringPrincipal || triggeringPrincipal.isNullPrincipal) {
         // Ensure that we have a null principal if we couldn't
         // deserialize it (for lazy tab browsers) ...
         // This won't always work however is safe to use.
-        triggeringPrincipal = Services.scriptSecurityManager.createNullPrincipal({
-          userContextId,
-        });
+        triggeringPrincipal =
+          Services.scriptSecurityManager.createNullPrincipal({
+            userContextId,
+          });
       } else if (triggeringPrincipal.isContentPrincipal) {
         triggeringPrincipal = Services.scriptSecurityManager.principalWithOA(
           triggeringPrincipal,
@@ -179,26 +186,26 @@ export const gFloorpPrivateContainer = {
           }
         );
       }
-  
+
       let currentTabUserContextId = tab.getAttribute("usercontextid");
       if (currentTabUserContextId == userContextId) {
         userContextId = 0;
       }
-  
+
       let newTab = window.gBrowser.addTab(tab.linkedBrowser.currentURI.spec, {
         userContextId,
         pinned: tab.pinned,
         index: tab._tPos + 1,
         triggeringPrincipal,
       });
-  
+
       if (window.gBrowser.selectedTab == tab) {
         window.gBrowser.selectedTab = newTab;
       }
       if (tab.muted && !newTab.muted) {
         newTab.toggleMuteAudio(tab.muteReason);
       }
-  
+
       window.gBrowser.removeTab(tab);
     }
   },

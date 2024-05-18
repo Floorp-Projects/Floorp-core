@@ -3,12 +3,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { SiteSpecificBrowserIdUtils } from "./SiteSpecificBrowserIdUtils.mjs";
-import { ImageTools } from "./ImageTools.mjs"
+import { ImageTools } from "./ImageTools.mjs";
 
 const { FileUtils } = ChromeUtils.importESModule(
   "resource://gre/modules/FileUtils.sys.mjs"
 );
-
 
 export const LinuxSupport = {
   get nsIFile() {
@@ -31,7 +30,9 @@ export const LinuxSupport = {
       ignoreExisting: true,
     });
 
-    let iconFile = new LinuxSupport.nsIFile(PathUtils.join(iconDir, `${ssb.name}.png`));
+    let iconFile = new LinuxSupport.nsIFile(
+      PathUtils.join(iconDir, `${ssb.name}.png`)
+    );
     let icon = await SiteSpecificBrowserIdUtils.getIconBySSBId(ssb.id, 128);
     if (icon) {
       let { container } = await ImageTools.loadImage(

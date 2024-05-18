@@ -15,7 +15,7 @@ export const WindowsSupport = {
   get shellService() {
     return Cc["@mozilla.org/browser/shell-service;1"].getService(
       Ci.nsIWindowsShellService
-    )
+    );
   },
   get uiUtils() {
     return Cc["@mozilla.org/windows-ui-utils;1"].getService(
@@ -23,9 +23,7 @@ export const WindowsSupport = {
     );
   },
   get taskbar() {
-    return Cc["@mozilla.org/windows-taskbar;1"].getService(
-      Ci.nsIWinTaskbar
-    );
+    return Cc["@mozilla.org/windows-taskbar;1"].getService(Ci.nsIWinTaskbar);
   },
   get nsIFile() {
     return Components.Constructor(
@@ -111,7 +109,10 @@ export const WindowsSupport = {
    * @param {DOMWindow} aWindow the window showing the SSB.
    */
   async applyOSIntegration(ssb, aWindow) {
-    WindowsSupport.taskbar.setGroupIdForWindow(aWindow, WindowsSupport.buildGroupId(ssb.id));
+    WindowsSupport.taskbar.setGroupIdForWindow(
+      aWindow,
+      WindowsSupport.buildGroupId(ssb.id)
+    );
     const getIcon = async size => {
       let icon = await SiteSpecificBrowserIdUtils.getIconBySSBId(ssb.id, size);
       if (!icon) {

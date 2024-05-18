@@ -96,10 +96,10 @@ export const gFloorpFlexOrder = {
     const floorpSidebarPosition = "floorp.browser.sidebar.right";
     const fxSidebarPositionPref = Services.prefs.getBoolPref(fxSidebarPosition);
     const floorpSidebarPositionPref = Services.prefs.getBoolPref(
-      floorpSidebarPosition,
+      floorpSidebarPosition
     );
     const verticaltabPositionPref = Services.prefs.getBoolPref(
-      "floorp.browser.tabs.verticaltab.right",
+      "floorp.browser.tabs.verticaltab.right"
     );
     const verticaltabbar = document.getElementById("TabsToolbar");
     // Set flex order to all elements

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const { ContextualIdentityService } = ChromeUtils.importESModule(
-  "resource://gre/modules/ContextualIdentityService.sys.mjs",
+  "resource://gre/modules/ContextualIdentityService.sys.mjs"
 );
 
 export const EXPORTED_SYMBOLS = ["PrivateContainer"];
@@ -62,7 +62,7 @@ export const PrivateContainer = {
         icon: "chill",
         color: "purple",
         name: await l10n.formatValue(
-          PrivateContainer.PRIVATE_CONTAINER_L10N_ID,
+          PrivateContainer.PRIVATE_CONTAINER_L10N_ID
         ),
         floorpPrivateContainer: true,
       };
@@ -71,7 +71,7 @@ export const PrivateContainer = {
       ContextualIdentityService.saveSoon();
       Services.obs.notifyObservers(
         ContextualIdentityService.getIdentityObserverOutput(identity),
-        "contextual-identity-created",
+        "contextual-identity-created"
       );
     },
   },

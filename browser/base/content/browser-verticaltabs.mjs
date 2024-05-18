@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { gFloorpTabBarStyle } from "./browser-tabbar.mjs";
-import { gFloorpCommands } from "./browser-commands.mjs"
+import { gFloorpCommands } from "./browser-commands.mjs";
 
 export var gFloorpVerticalTabBar = {
   _initialized: false,
