@@ -309,6 +309,4 @@ export var gFloorpVerticalTabBar = {
   },
 };
 
-window.setTimeout(() => {
-  gFloorpVerticalTabBar.init();
-}, 1000);
+gFloorpVerticalTabBar.init();

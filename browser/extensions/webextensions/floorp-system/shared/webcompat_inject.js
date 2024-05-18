@@ -10,7 +10,7 @@
     {
      /*bugs: https://github.com/Floorp-Projects/Floorp/issues/894"
       description: "Twitter (X)'s direct messages doesn't work on Firefox/Floorp if user uses Meiryo font.*/
-      "matches": ["*://twitter.com/*"],
+      "matches": ["*://twitter.com/*", "*://x.com/*"],
       "css": [
         { file: "webcompat/bug-894-twitter-com.css" }
       ],
