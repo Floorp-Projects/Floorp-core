@@ -2,11 +2,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { SiteSpecificBrowserExternalFileService } from "./SiteSpecificBrowserExternalFileService.mjs";
 import { ImageTools } from "./ImageTools.mjs";
+import { LinuxSupport } from "./LinuxSupport.mjs";
+import { SiteSpecificBrowserExternalFileService } from "./SiteSpecificBrowserExternalFileService.mjs";
 import { SiteSpecificBrowserIdUtils } from "./SiteSpecificBrowserIdUtils.mjs";
 import { WindowsSupport } from "./WindowsSupport.mjs";
-import { LinuxSupport } from "./LinuxSupport.mjs";
 
 const { AppConstants } = ChromeUtils.importESModule(
   "resource://gre/modules/AppConstants.sys.mjs"
@@ -404,7 +404,7 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
       throw new Error("Site specific browsing is disabled.");
     }
 
-    if (!manifest.scope.startsWith("https:")) {
+    if (!manifest.scope.startsWith("https:") && !/.*localhost[:/].*/.test(manifest.scope)) {
       throw new Error(
         "Site specific browsers can only be opened for secure sites."
       );
@@ -426,7 +426,7 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
       throw new Error("Site specific browsing is disabled.");
     }
 
-    if (!browser.currentURI.schemeIs("https") && createManifestOptions.useWebManifest) {
+    if (!browser.currentURI.schemeIs("https") && createManifestOptions.useWebManifest  && (browser.currentURI.host !== "localhost" && browser.currentURI.host !== "127.0.0.1")) {
       throw new Error(
         "Site specific browsers can only be opened for secure sites."
       );
@@ -455,7 +455,7 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
       throw new Error("Site specific browsing is disabled.");
     }
 
-    if (!uri.schemeIs("https")) {
+    if (!uri.schemeIs("https") && (uri.host !== "localhost" && uri.host !== "127.0.0.1")) {
       return null;
     }
 
