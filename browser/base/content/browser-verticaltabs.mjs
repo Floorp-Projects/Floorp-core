@@ -97,6 +97,9 @@ export var gFloorpVerticalTabBar = {
     this.arrowScrollbox?.setAttribute("orient", "vertical");
     this.tabBrowserTabs?.setAttribute("orient", "vertical");
 
+    // Disable Overflow detection
+    this.arrowScrollbox?.removeAttribute("overflowing");
+
     // Lepton Integration
     this.tabsToolbar?.setAttribute("multibar", "true");
 
