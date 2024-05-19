@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* -*- indent-tabs-mode: nil; js-indent-level: 2 -*-
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -7,11 +8,6 @@ import { SiteSpecificBrowserIdUtils } from "./SiteSpecificBrowserIdUtils.mjs";
 import { ImageTools } from "./ImageTools.mjs";
 
 export const WindowsSupport = {
-  /**
-   * Installs an SSB by creating a shortcut to launch it on the user's desktop.
-   *
-   * @param {SiteSpecificBrowser} ssb the SSB to install.
-   */
   get shellService() {
     return Cc["@mozilla.org/browser/shell-service;1"].getService(
       Ci.nsIWindowsShellService
