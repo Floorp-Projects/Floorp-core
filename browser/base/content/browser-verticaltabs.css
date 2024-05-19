@@ -11,22 +11,22 @@
 #TabsToolbar {
   max-width: 350px !important;
   min-width: 150px !important;
-  transition :min-width 150ms ease-out, max-width 150ms ease-out!important;
-  overflow: hidden!important;
+  transition :min-width 150ms ease-out, max-width 150ms ease-out !important;
+  overflow: hidden !important;
 }
 
 #TabsToolbar:-moz-lwtheme {
-  background-image: var(--lwt-additional-images)!important;
-  background-repeat: no-repeat!important;
-  background-position: center!important;
-  background-size: cover!important;
-  background-color: var(--lwt-accent-color-inactive, var(--lwt-accent-color))!important;
+  background-image: var(--lwt-additional-images) !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: cover !important;
+  background-color: var(--lwt-accent-color-inactive, var(--lwt-accent-color)) !important;
 }
 
 .tabbrowser-tab {
-  max-width: unset!important;
-  width: 100%!important;
-  min-height: unset!important;
+  max-width: unset !important;
+  width: 100% !important;
+  min-height: unset !important;
   height: 40px !important;
   max-height: 40px !important;
   margin: 0 !important;
@@ -74,8 +74,8 @@
 
 /* Firefox View compatibility. Use "open" instead of open="true" */
 #TabsToolbar-customization-target > .toolbarbutton-1[open] {
-  background-color: var(--toolbarbutton-active-background)!important;
-  color: inherit!important;
+  background-color: var(--toolbarbutton-active-background) !important;
+  color: inherit !important;
 }
 
 #TabsToolbar-customization-target > .toolbarbutton-1 > .toolbarbutton-icon {
@@ -88,7 +88,7 @@
   background: none !important;
   background-color: unset !important;
   box-shadow: none !important;
-  padding: inherit!important;
+  padding: inherit !important;
 }
 
 #TabsToolbar-customization-target > .toolbarbutton-1 > .toolbarbutton-text {
@@ -99,19 +99,19 @@
 }
 
 .tab-label-container[pinned="true"]::after {
-  content: "Pinned"!important;
-  font-size: 8.5px!important;
-  margin-top: -3px!important;
-  color: var(--panel-description-color)!important;
-  font-weight: bold!important;
+  content: "Pinned" !important;
+  font-size: 8.5px !important;
+  margin-top: -3px !important;
+  color: var(--panel-description-color) !important;
+  font-weight: bold !important;
 }
 
 #TabsToolbar .toolbarbutton-1 > .toolbarbutton-text {
-  display: inherit!important;
+  display: inherit;
 }
 
 #tabbrowser-arrowscrollbox::part(scrollbutton-up), #tabbrowser-arrowscrollbox::part(scrollbutton-down) {
-  display: none!important;
+  display: none !important;
 }
 
 #TabsToolbar .toolbarbutton-icon {
@@ -123,14 +123,14 @@
 #tabbrowser-tabs {
   border-inline-start: none !important;
   padding-inline-start: 0 !important;
-  border-bottom: solid var(--toolbarseparator-color) 0.1px!important;
+  border-bottom: solid var(--toolbarseparator-color) 0.1px !important;
   padding-bottom: 0 !important;
   margin: 5px !important;
   margin-left: 2px !important;
 }
 
 #tabbrowser-arrowscrollbox-periphery {
-  display: none!important;
+  display: none;
 }
 
 #tabbrowser-arrowscrollbox {
@@ -167,7 +167,7 @@
 }
 
 #verticaltab-splitter {
-  background: var(--toolbar-bgcolor)!important;
+  background: var(--toolbar-bgcolor) !important;
 }
 
 
@@ -185,6 +185,6 @@
 :root[inFullscreen]:not([macOSNativeFullscreen]),
 *|*:root[chromehidden~="toolbar"])
 #verticaltab-splitter {
-  display: none!important;
-  transition: opacity 0.3s ease-in-out!important;
+  display: none !important;
+  transition: opacity 0.3s ease-in-out !important;
 }
