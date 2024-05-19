@@ -404,7 +404,10 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
       throw new Error("Site specific browsing is disabled.");
     }
 
-    if (!manifest.scope.startsWith("https:") && !/.*localhost[:/].*/.test(manifest.scope)) {
+    if (
+      !manifest.scope.startsWith("https:") &&
+      !/.*localhost[:/].*/.test(manifest.scope)
+    ) {
       throw new Error(
         "Site specific browsers can only be opened for secure sites."
       );
@@ -426,7 +429,12 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
       throw new Error("Site specific browsing is disabled.");
     }
 
-    if (!browser.currentURI.schemeIs("https") && createManifestOptions.useWebManifest  && (browser.currentURI.host !== "localhost" && browser.currentURI.host !== "127.0.0.1")) {
+    if (
+      !browser.currentURI.schemeIs("https") &&
+      createManifestOptions.useWebManifest &&
+      browser.currentURI.host !== "localhost" &&
+      browser.currentURI.host !== "127.0.0.1"
+    ) {
       throw new Error(
         "Site specific browsers can only be opened for secure sites."
       );
@@ -455,7 +463,11 @@ export class SiteSpecificBrowser extends SiteSpecificBrowserBase {
       throw new Error("Site specific browsing is disabled.");
     }
 
-    if (!uri.schemeIs("https") && (uri.host !== "localhost" && uri.host !== "127.0.0.1")) {
+    if (
+      !uri.schemeIs("https") &&
+      uri.host !== "localhost" &&
+      uri.host !== "127.0.0.1"
+    ) {
       return null;
     }
 
@@ -644,6 +656,22 @@ export const SiteSpecificBrowserService = {
     }
 
     return Services.prefs.getBoolPref("browser.ssb.osintegration", true);
+  },
+
+  checkSiteCanBeInstall(aURI) {
+    if (aURI.scheme === "https" || aURI.scheme === "file") {
+      return true;
+    }
+
+    // Exclude localhost and local IP addresses.
+    if (
+      aURI.scheme === "http" &&
+      (aURI.host === "localhost" || aURI.host === "127.0.0.1")
+    ) {
+      return true;
+    }
+
+    return false;
   },
 };
 

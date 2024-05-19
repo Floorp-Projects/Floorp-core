@@ -1,10 +1,20 @@
-/* -*- indent-tabs-mode: nil; js-indent-level: 2 -*- */
+/* -*- indent-tabs-mode: nil; js-indent-level: 2 -*-
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { gFloorpContextMenu } from "./browser-context-menu.mjs";
 import { gFloorpPageAction } from "./browser-floorp-pageActions.mjs";
 import { SiteSpecificBrowserExternalFileService } from "./modules/ssb/SiteSpecificBrowserExternalFileService.mjs";
 import { SiteSpecificBrowserIdUtils } from "./modules/ssb/SiteSpecificBrowserIdUtils.mjs";
-import { SiteSpecificBrowser } from "./modules/ssb/SiteSpecificBrowserService.mjs";
+import {
+  SiteSpecificBrowser,
+  SiteSpecificBrowserService,
+} from "./modules/ssb/SiteSpecificBrowserService.mjs";
+
+const { ManifestObtainer } = ChromeUtils.importESModule(
+  "resource://gre/modules/ManifestObtainer.sys.mjs"
+);
 
 export const gSsbSupport = {
   _initialized: false,
@@ -18,7 +28,7 @@ export const gSsbSupport = {
       <popupset>
         <menupopup id="ssbInstalledAppMenu-context" onpopupshowing="gSsbSupport.contextMenu.panelUIInstalledAppContextMenu.onPopupShowing(event);"/>
       </popupset>
-    `
+    `;
     gFloorpContextMenu.addToolbarContentMenuPopupSet(toolbarContextMenuElem);
 
     if (Services.prefs.getBoolPref("floorp.browser.ssb.enabled", false)) {
@@ -50,13 +60,16 @@ export const gSsbSupport = {
       let isInstalled =
         await gSsbSupport.functions.checkCurrentPageIsInstalled();
 
-      if (!window.gBrowser.currentURI.schemeIs("https") && (window.gBrowser.currentURI.host !== "localhost" && window.gBrowser.currentURI.host !== "127.0.0.1")) {
+      if (
+        !SiteSpecificBrowserService.checkSiteCanBeInstall(
+          window.gBrowser.currentURI
+        )
+      ) {
         return;
       }
 
       if (isInstalled) {
-        let currentTabSsb =
-          await gSsbSupport.functions.getCurrentTabSsb();
+        let currentTabSsb = await gSsbSupport.functions.getCurrentTabSsb();
         let ssbObj = await SiteSpecificBrowserIdUtils.getIdByUrl(
           currentTabSsb._manifest.start_url
         );
@@ -101,55 +114,21 @@ export const gSsbSupport = {
       }
     },
 
-    async checkCurrentPageCanBeInstalled() {
-      let currentURI = window.gBrowser.currentURI;
-      let currentTab = window.gBrowser.selectedTab;
-      let currentTabURL = currentTab.linkedBrowser.currentURI.spec;
-
-      if (
-        currentTabURL.startsWith("https://") ||
-        currentTabURL.startsWith("file://") ||
-        currentURI.asciiHost === "localhost"
-      ) {
-        return true;
-      }
-
-      return false;
-    },
-
     async checkCurrentPageHasSsbManifest() {
-      if (
-        window.gBrowser.currentURI.schemeIs("about") ||
-        window.gBrowser.currentURI.schemeIs("chrome") ||
-        window.gBrowser.currentURI.schemeIs("resource") ||
-        window.gBrowser.currentURI.schemeIs("view-source") ||
-        window.gBrowser.currentURI.schemeIs("moz-extension") ||
-        // Exclude "about:blank"
-        window.gBrowser.currentURI.spec === "about:blank"
-      ) {
-        return null;
+      const currentURI = window.gBrowser.currentURI;
+      if (!SiteSpecificBrowserService.checkSiteCanBeInstall(currentURI)) {
+        return false;
       }
-
-      let actor =
-        window.gBrowser.selectedBrowser.browsingContext.currentWindowGlobal.getActor(
-          "SiteSpecificBrowser"
-        );
       // If true, return the manifest href, otherwise return null
-      let result = await actor.sendQuery("checkSsbManifestIsExistent");
-
+      let result = await ManifestObtainer.browserObtainManifest(
+        window.gBrowser.selectedBrowser
+      );
       return result;
     },
 
     async checkCurrentPageIsInstalled() {
-      if (
-        window.gBrowser.currentURI.schemeIs("about") ||
-        window.gBrowser.currentURI.schemeIs("chrome") ||
-        window.gBrowser.currentURI.schemeIs("resource") ||
-        window.gBrowser.currentURI.schemeIs("view-source") ||
-        window.gBrowser.currentURI.schemeIs("moz-extension") ||
-        // Exclude "about:blank"
-        window.gBrowser.currentURI.spec === "about:blank"
-      ) {
+      const currentURI = window.gBrowser.currentURI;
+      if (!SiteSpecificBrowserService.checkSiteCanBeInstall(currentURI)) {
         return false;
       }
 
@@ -265,7 +244,9 @@ export const gSsbSupport = {
 
       // Check current page ssb is installed
       let currentPageCanBeInstalled =
-        await gSsbSupport.functions.checkCurrentPageCanBeInstalled();
+        SiteSpecificBrowserService.checkSiteCanBeInstall(
+          window.gBrowser.currentURI
+        );
       let installButtonOnPanelUI = document.getElementById(
         "appMenu-install-or-open-ssb-current-page-button"
       );
@@ -307,7 +288,7 @@ export const gSsbSupport = {
 
     async runSsbById(id) {
       SiteSpecificBrowserIdUtils.runSsbById(id);
-    }
+    },
   },
 
   contextMenu: {
@@ -350,7 +331,9 @@ export const gSsbSupport = {
     async onCurrentTabChangedOrLoaded() {
       // set image to the install button
       let currentPageCanBeInstalled =
-        await gSsbSupport.functions.checkCurrentPageCanBeInstalled();
+        SiteSpecificBrowserService.checkSiteCanBeInstall(
+          window.gBrowser.currentURI
+        );
       let currentPageHasSsbManifest =
         await gSsbSupport.functions.checkCurrentPageHasSsbManifest();
       let currentPageIsInstalled =
