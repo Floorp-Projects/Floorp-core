@@ -1,10 +1,10 @@
 /* -*- indent-tabs-mode: nil; js-indent-level: 2 -*- */
 
-import { gFloorpContextMenu } from "./browser-context-menu.mjs";
 import { gFloorpPageAction } from "./browser-floorp-pageActions.mjs";
+import { gFloorpContextMenu } from "./browser-context-menu.mjs";
 import { SiteSpecificBrowserExternalFileService } from "./modules/ssb/SiteSpecificBrowserExternalFileService.mjs";
-import { SiteSpecificBrowserIdUtils } from "./modules/ssb/SiteSpecificBrowserIdUtils.mjs";
 import { SiteSpecificBrowser } from "./modules/ssb/SiteSpecificBrowserService.mjs";
+import { SiteSpecificBrowserIdUtils } from "./modules/ssb/SiteSpecificBrowserIdUtils.mjs";
 
 export const gSsbSupport = {
   _initialized: false,
@@ -49,9 +49,8 @@ export const gSsbSupport = {
     async installOrRunCurrentPageAsSsb(asPwa) {
       let isInstalled =
         await gSsbSupport.functions.checkCurrentPageIsInstalled();
-        let currentPageCanBeInstalled =
-        await gSsbSupport.functions.checkCurrentPageCanBeInstalled();
-      if (!currentPageCanBeInstalled) {
+
+      if (!window.gBrowser.currentURI.schemeIs("https")) {
         return;
       }
 
