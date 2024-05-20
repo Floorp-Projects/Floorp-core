@@ -160,6 +160,7 @@ pref("floorp.newtab.overrides.newtaburl", "");
 
 // Split View
 pref("floorp.browser.splitView.working", false);
+pref("floorp.browser.splitView.width", 0);
 
 // user.js
 pref("floorp.user.js.customize", "");
