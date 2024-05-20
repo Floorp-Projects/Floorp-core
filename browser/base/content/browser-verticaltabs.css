@@ -188,3 +188,15 @@
   display: none !important;
   transition: opacity 0.3s ease-in-out !important;
 }
+
+.tab-stack[class]::before ,#tabs-newtab-button[id]::before {
+  content: "";
+  display: inherit !important;
+  position: absolute;
+  top: 50%;
+  width: 1px;
+  height: 20px;
+  opacity: 0;
+  background-color: unset !important;
+  transform: translateX(var(--tab-separator-position-x)) translateY(var(--tab-separator-position-y));
+}
