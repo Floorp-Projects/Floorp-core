@@ -8,7 +8,7 @@ import { gFloorpOnLocationChange } from "./browser-onlocation-change.mjs";
 export const gFloorpObservePreference = (prefName, callback) => {
   let prefValue = Services.prefs.getBoolPref(prefName, false);
 
-  const notifyCallback = (reason) => {
+  const notifyCallback = reason => {
     try {
       callback({
         pref: prefName,
@@ -51,7 +51,7 @@ gFloorpObservePreference(
     } else {
       document.getElementById("floorp-optimizefortreestyletab")?.remove();
     }
-  },
+  }
 );
 
 gFloorpObservePreference("floorp.optimized.msbutton.ope", function (event) {
@@ -89,10 +89,11 @@ gFloorpObservePreference("floorp.bookmarks.fakestatus.mode", function (event) {
         let currentUrl = gFloorpOnLocationChange.locationURI.spec;
         let pref = Services.prefs.getStringPref(
           "browser.toolbars.bookmarks.visibility",
-          "always",
+          "always"
         );
         if (
-          ((currentUrl == "about:newtab" || currentUrl == "about:home") && pref == "newtab") ||
+          ((currentUrl == "about:newtab" || currentUrl == "about:home") &&
+            pref == "newtab") ||
           pref == "always"
         ) {
           document
@@ -190,16 +191,19 @@ gFloorpObservePreference("floorp.navbar.bottom", function (event) {
   }
 });
 
-gFloorpObservePreference("floorp.disable.fullscreen.notification", function (event) {
-  if (event.prefValue) {
-    var Tag = document.createElement("style");
-    Tag.innerText = `@import url(chrome://floorp/skin/designs/options/disableFullScreenNotification.css)`;
-    Tag.setAttribute("id", "floorp-DFSN");
-    document.head.appendChild(Tag);
-  } else {
-    document.getElementById("floorp-DFSN")?.remove();
+gFloorpObservePreference(
+  "floorp.disable.fullscreen.notification",
+  function (event) {
+    if (event.prefValue) {
+      var Tag = document.createElement("style");
+      Tag.innerText = `@import url(chrome://floorp/skin/designs/options/disableFullScreenNotification.css)`;
+      Tag.setAttribute("id", "floorp-DFSN");
+      document.head.appendChild(Tag);
+    } else {
+      document.getElementById("floorp-DFSN")?.remove();
+    }
   }
-});
+);
 
 gFloorpObservePreference("floorp.delete.browser.border", function (event) {
   if (event.prefValue) {
@@ -212,16 +216,21 @@ gFloorpObservePreference("floorp.delete.browser.border", function (event) {
   }
 });
 
-gFloorpObservePreference("floorp.hide.unifiedExtensionsButtton", function (event) {
-  if (event.prefValue) {
-    let Tag = document.createElement("style");
-    Tag.innerText = `#unified-extensions-button {display: none !important;}`;
-    Tag.id = "floorp-hide-unified-extensions-button";
-    document.head.appendChild(Tag);
-  } else {
-    document.getElementById("floorp-hide-unified-extensions-button")?.remove();
+gFloorpObservePreference(
+  "floorp.hide.unifiedExtensionsButtton",
+  function (event) {
+    if (event.prefValue) {
+      let Tag = document.createElement("style");
+      Tag.innerText = `#unified-extensions-button {display: none !important;}`;
+      Tag.id = "floorp-hide-unified-extensions-button";
+      document.head.appendChild(Tag);
+    } else {
+      document
+        .getElementById("floorp-hide-unified-extensions-button")
+        ?.remove();
+    }
   }
-});
+);
 
 gFloorpObservePreference(
   "floorp.extensions.STG.like.floorp.workspaces.enabled",
@@ -234,42 +243,50 @@ gFloorpObservePreference(
     } else {
       document.getElementById("floorp-STG-like-floorp-workspaces")?.remove();
     }
-  },
+  }
 );
 
 /*------------------------------------------- multirowtab -------------------------------------------*/
 
-gFloorpObservePreference("floorp.browser.tabbar.multirow.newtab-inside.enabled", function(event) {
-  if (Services.prefs.getIntPref("floorp.tabbar.style", false) != 1) {
-    return;
+gFloorpObservePreference(
+  "floorp.browser.tabbar.multirow.newtab-inside.enabled",
+  function (event) {
+    if (Services.prefs.getIntPref("floorp.tabbar.style", false) != 1) {
+      return;
+    }
+    if (event.prefValue) {
+      document
+        .getElementById("floorp-newtabbuttonatendofmultirowtabbar")
+        ?.remove();
+      const Tag = document.createElement("style");
+      Tag.innerText = `@import url(chrome://floorp/skin/designs/options/multirowtab-show-newtab-button-in-tabbar.css)`;
+      Tag.setAttribute("id", "floorp-newtabbuttoninmultirowtabbbar");
+      document.head.appendChild(Tag);
+    } else {
+      document.getElementById("floorp-newtabbuttoninmultirowtabbbar")?.remove();
+      const Tag = document.createElement("style");
+      Tag.innerText = `@import url(chrome://floorp/skin/designs/options/multirowtab-show-newtab-button-at-end.css)`;
+      Tag.setAttribute("id", "floorp-newtabbuttonatendofmultirowtabbar");
+      document.head.appendChild(Tag);
+    }
   }
-  if (event.prefValue) {
-    document.getElementById("floorp-newtabbuttonatendofmultirowtabbar")?.remove();
-    const Tag = document.createElement("style");
-    Tag.innerText = `@import url(chrome://floorp/skin/designs/options/multirowtab-show-newtab-button-in-tabbar.css)`;
-    Tag.setAttribute("id", "floorp-newtabbuttoninmultirowtabbbar");
-    document.head.appendChild(Tag);
-  } else {
-    document.getElementById("floorp-newtabbuttoninmultirowtabbbar")?.remove();
-    const Tag = document.createElement("style");
-    Tag.innerText = `@import url(chrome://floorp/skin/designs/options/multirowtab-show-newtab-button-at-end.css)`;
-    Tag.setAttribute("id", "floorp-newtabbuttonatendofmultirowtabbar");
-    document.head.appendChild(Tag);
-  }
-})
+);
 
 /*------------------------------------------- verticaltab -------------------------------------------*/
 
-gFloorpObservePreference("floorp.verticaltab.show.newtab.button", function (event) {
-  if (Services.prefs.getIntPref("floorp.tabbar.style", false) != 2) {
-    return;
+gFloorpObservePreference(
+  "floorp.verticaltab.show.newtab.button",
+  function (event) {
+    if (Services.prefs.getIntPref("floorp.tabbar.style", false) != 2) {
+      return;
+    }
+    if (event.prefValue) {
+      var Tag = document.createElement("style");
+      Tag.innerText = `@import url(chrome://floorp/skin/designs/options/verticaltab-show-newtab-button-in-tabbar.css)`;
+      Tag.setAttribute("id", "floorp-newtabbuttonintabbar");
+      document.head.appendChild(Tag);
+    } else {
+      document.getElementById("floorp-newtabbuttonintabbar")?.remove();
+    }
   }
-  if (event.prefValue) {
-    var Tag = document.createElement("style");
-    Tag.innerText = `@import url(chrome://floorp/skin/designs/options/verticaltab-show-newtab-button-in-tabbar.css)`;
-    Tag.setAttribute("id", "floorp-newtabbuttonintabbar");
-    document.head.appendChild(Tag);
-  } else {
-    document.getElementById("floorp-newtabbuttonintabbar")?.remove();
-  }
-});
+);

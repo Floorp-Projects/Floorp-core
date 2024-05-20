@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { gFloorpTabBarStyle } from "./browser-tabbar.mjs";
-import { gFloorpCommands } from "./browser-commands.mjs"
+import { gFloorpCommands } from "./browser-commands.mjs";
 
 var { AppConstants } = ChromeUtils.importESModule(
   "resource://gre/modules/AppConstants.sys.mjs"
@@ -60,7 +60,10 @@ export const gFloorpDesign = {
       "floorp.fluerial.roundVerticalTabs",
       gFloorpDesign.setBrowserDesign
     );
-    Services.obs.addObserver(gFloorpDesign.setBrowserDesign, "update-photon-pref");
+    Services.obs.addObserver(
+      gFloorpDesign.setBrowserDesign,
+      "update-photon-pref"
+    );
     Services.obs.addObserver(gFloorpDesign.setPhotonUI, "set-photon-ui");
     Services.obs.addObserver(gFloorpDesign.setLeptonUI, "set-lepton-ui");
     Services.obs.addObserver(gFloorpDesign.setProtonFixUI, "set-protonfix-ui");
@@ -98,20 +101,23 @@ export const gFloorpDesign = {
         break;
       case 3:
         tag.innerText = enableVerticalTabs
-          ? gFloorpDesign.themeCSSs.LeptonUI + gFloorpDesign.themeCSSs.LeptonVerticalTabs
+          ? gFloorpDesign.themeCSSs.LeptonUI +
+            gFloorpDesign.themeCSSs.LeptonVerticalTabs
           : gFloorpDesign.themeCSSs.LeptonUI;
         break;
       case 5:
         if (AppConstants.platform !== "linux") {
           tag.innerText = enableVerticalTabs
-            ? gFloorpDesign.themeCSSs.fluentUI + gFloorpDesign.themeCSSs.fluentVerticalTabs
+            ? gFloorpDesign.themeCSSs.fluentUI +
+              gFloorpDesign.themeCSSs.fluentVerticalTabs
             : gFloorpDesign.themeCSSs.fluentUI;
         }
         break;
       case 6:
         if (AppConstants.platform == "linux") {
           tag.innerText = enableVerticalTabs
-            ? gFloorpDesign.themeCSSs.gnomeUI + gFloorpDesign.themeCSSs.gnomeVerticalTabs
+            ? gFloorpDesign.themeCSSs.gnomeUI +
+              gFloorpDesign.themeCSSs.gnomeVerticalTabs
             : gFloorpDesign.themeCSSs.gnomeUI;
         }
         break;
@@ -119,7 +125,9 @@ export const gFloorpDesign = {
         if (enableMultitab) {
           tag.innerText = gFloorpDesign.themeCSSs.FluerialUIMultitab;
         } else if (enableVerticalTabs) {
-          tag.innerText = gFloorpDesign.themeCSSs.FluerialUI + gFloorpDesign.themeCSSs.FluerialVerticalTabs;
+          tag.innerText =
+            gFloorpDesign.themeCSSs.FluerialUI +
+            gFloorpDesign.themeCSSs.FluerialVerticalTabs;
         } else {
           tag.innerText = gFloorpDesign.themeCSSs.FluerialUI;
         }

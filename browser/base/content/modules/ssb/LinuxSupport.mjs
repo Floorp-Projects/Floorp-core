@@ -3,19 +3,21 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { SiteSpecificBrowserIdUtils } from "./SiteSpecificBrowserIdUtils.mjs";
-import { ImageTools } from "./ImageTools.mjs"
+import { ImageTools } from "./ImageTools.mjs";
 
 const { FileUtils } = ChromeUtils.importESModule(
   "resource://gre/modules/FileUtils.sys.mjs"
 );
 
-const nsIFile = Components.Constructor(
-  "@mozilla.org/file/local;1",
-  Ci.nsIFile,
-  "initWithPath"
-);
-
 export const LinuxSupport = {
+  get nsIFile() {
+    return Components.Constructor(
+      "@mozilla.org/file/local;1",
+      Ci.nsIFile,
+      "initWithPath"
+    );
+  },
+
   /**
    * Installs an SSB by creating a .desktop file to launch it.
    *
@@ -28,7 +30,9 @@ export const LinuxSupport = {
       ignoreExisting: true,
     });
 
-    let iconFile = new nsIFile(PathUtils.join(iconDir, `${ssb.name}.png`));
+    let iconFile = new LinuxSupport.nsIFile(
+      PathUtils.join(iconDir, `${ssb.name}.png`)
+    );
     let icon = await SiteSpecificBrowserIdUtils.getIconBySSBId(ssb.id, 128);
     if (icon) {
       let { container } = await ImageTools.loadImage(

@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 /* This file is used to override existing Firefox functions and various variables. */
-import { PrivateContainer } from  "./modules/private-container/PrivateContainer.mjs";
+import { PrivateContainer } from "./modules/private-container/PrivateContainer.mjs";
 
 // Override Forward & Backward button's customizable element.
 //From "browser.js" line 750
@@ -37,14 +37,16 @@ window.SetClickAndHoldHandlers = function () {
 // Experimental feature. Malware can change this pref to redirect user to malware site.
 const newtabOverrideURL = "floorp.newtab.overrides.newtaburl";
 if (Services.prefs.getStringPref(newtabOverrideURL, "") != "") {
-  var { AboutNewTab } = ChromeUtils.import("resource:///modules/AboutNewTab.jsm");
+  var { AboutNewTab } = ChromeUtils.import(
+    "resource:///modules/AboutNewTab.jsm"
+  );
   const newTabURL = Services.prefs.getStringPref(newtabOverrideURL);
   AboutNewTab.newTabURL = newTabURL;
 }
 
 // Override the create "browser" element function. Use for "Private Container".
 // https://searchfox.org/mozilla-central/source/browser/base/content/tabbrowser.js#2052
-window.SessionStore.promiseInitialized.then( () => {
+window.SessionStore.promiseInitialized.then(() => {
   window.gBrowser.createBrowser = function ({
     isPreloadBrowser,
     tabName,
@@ -76,8 +78,8 @@ window.SessionStore.promiseInitialized.then( () => {
     // content process before we this browser's remoteness.
     if (!Services.appinfo.sessionHistoryInParent) {
       b.prepareToChangeRemoteness = () =>
-      window.SessionStore.prepareToChangeRemoteness(b);
-      b.afterChangeRemoteness = (switchId) => {
+        window.SessionStore.prepareToChangeRemoteness(b);
+      b.afterChangeRemoteness = switchId => {
         let tab = this.getTabForBrowser(b);
         window.SessionStore.finishTabRemotenessChange(tab, switchId);
         return true;
@@ -137,7 +139,7 @@ window.SessionStore.promiseInitialized.then( () => {
     if (initialBrowsingContextGroupId) {
       b.setAttribute(
         "initialBrowsingContextGroupId",
-        initialBrowsingContextGroupId,
+        initialBrowsingContextGroupId
       );
     }
 

@@ -2768,7 +2768,7 @@ spacer[part="overflow-end-indicator"] {
 }
 
 #appMenu-extensions-themes-button {
-  list-style-image: url("chrome://browser/skin/addons.svg");
+  list-style-image: url("chrome://floorp/skin/addons.svg");
 }
 
 #appMenu-print-button2 {

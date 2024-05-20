@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { gFloorpTabBarStyle } from "./browser-tabbar.mjs";
-import { gFloorpCommands } from "./browser-commands.mjs"
+import { gFloorpCommands } from "./browser-commands.mjs";
 
 export var gFloorpVerticalTabBar = {
   _initialized: false,
@@ -96,6 +96,9 @@ export var gFloorpVerticalTabBar = {
     this.tabBrowserTabs = document.getElementById("tabbrowser-tabs");
     this.arrowScrollbox?.setAttribute("orient", "vertical");
     this.tabBrowserTabs?.setAttribute("orient", "vertical");
+
+    // Disable Overflow detection
+    this.arrowScrollbox?.removeAttribute("overflowing");
 
     // Lepton Integration
     this.tabsToolbar?.setAttribute("multibar", "true");
@@ -309,6 +312,4 @@ export var gFloorpVerticalTabBar = {
   },
 };
 
-window.setTimeout(() => {
-  gFloorpVerticalTabBar.init();
-}, 1000);
+gFloorpVerticalTabBar.init();

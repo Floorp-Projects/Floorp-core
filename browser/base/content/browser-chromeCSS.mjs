@@ -68,9 +68,9 @@ var { AppConstants } = ChromeUtils.importESModule(
           PathUtils.join(
             Services.dirsvc.get("ProfD", Ci.nsIFile).path,
             "chrome",
-            "CSS",
+            "CSS"
           ),
-        "a",
+        "a"
       ).slice(0, -1);
       return result;
     },
@@ -99,13 +99,13 @@ var { AppConstants } = ChromeUtils.importESModule(
 				</menupopup>
 			</menu>
 			`),
-        document.getElementById("helpMenu"),
+        document.getElementById("helpMenu")
       );
 
       document.getElementById("mainKeyset").appendChild(
         window.MozXULElement.parseXULToFragment(`
 				<key id="usercssloader-rebuild-key" oncommand="window.UCL.rebuild();" key="R" modifiers="alt"/>
-				`),
+				`)
       );
 
       this.rebuild();
@@ -121,7 +121,7 @@ var { AppConstants } = ChromeUtils.importESModule(
       }
       Services.prefs.setStringPref(
         "UserCSSLoader.disabled_list",
-        encodeURIComponent(dis.join("|")),
+        encodeURIComponent(dis.join("|"))
       );
       window.removeEventListener("unload", this);
     },
@@ -183,7 +183,7 @@ var { AppConstants } = ChromeUtils.importESModule(
       if (!cssFile) {
         cssFile = this.readCSS[aFile] = new CSSEntry(aFile, folder);
         cssFile.enabled = !decodeURIComponent(
-          Services.prefs.getStringPref("UserCSSLoader.disabled_list", ""),
+          Services.prefs.getStringPref("UserCSSLoader.disabled_list", "")
         ).includes(aFile);
       } else if (cssFile.enabled) {
         cssFile.enabled = true;
@@ -255,15 +255,15 @@ var { AppConstants } = ChromeUtils.importESModule(
         PathUtils.join(
           Services.dirsvc.get("ProfD", Ci.nsIFile).path,
           "chrome",
-          "a",
-        ).slice(0, -1) + aLeafName,
+          "a"
+        ).slice(0, -1) + aLeafName
       );
     },
     edit(aFile) {
       function openInEditor() {
         try {
           const editor = Services.prefs.getStringPref(
-            "view_source.editor.path",
+            "view_source.editor.path"
           );
           var path =
             AppConstants.platform == "win"
@@ -272,7 +272,7 @@ var { AppConstants } = ChromeUtils.importESModule(
           var app = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
           app.initWithPath(editor);
           var process = Cc["@mozilla.org/process/util;1"].createInstance(
-            Ci.nsIProcess,
+            Ci.nsIProcess
           );
           process.init(app);
           process.run(false, [path], 1);
@@ -323,9 +323,9 @@ var { AppConstants } = ChromeUtils.importESModule(
         return editorPath;
       }
 
-      let setPathPromise = new Promise((resolve) => {
+      let setPathPromise = new Promise(resolve => {
         if (editor == "") {
-          getEditorPath().then((path) => {
+          getEditorPath().then(path => {
             textEditorPath.value = path;
             if (
               Services.prompt.prompt(
@@ -334,12 +334,12 @@ var { AppConstants } = ChromeUtils.importESModule(
                 l10n.formatValueSync("set-pref-description"),
                 textEditorPath,
                 null,
-                { value: false },
+                { value: false }
               )
             ) {
               Services.prefs.setStringPref(
                 "view_source.editor.path",
-                textEditorPath.value,
+                textEditorPath.value
               );
             }
             resolve();
@@ -358,7 +358,7 @@ var { AppConstants } = ChromeUtils.importESModule(
       if (!aLeafName) {
         aLeafName = prompt(
           l10n.formatValueSync("please-enter-filename"),
-          new Date().getTime(),
+          new Date().getTime()
         );
       }
       if (aLeafName) {
@@ -392,7 +392,7 @@ var { AppConstants } = ChromeUtils.importESModule(
   }
   CSSEntry.prototype = {
     sss: Cc["@mozilla.org/content/style-sheet-service;1"].getService(
-      Ci.nsIStyleSheetService,
+      Ci.nsIStyleSheetService
     ),
     _enabled: false,
     get enabled() {
@@ -401,10 +401,10 @@ var { AppConstants } = ChromeUtils.importESModule(
     set enabled(isEnable) {
       this._enabled = isEnable;
       let uri = Services.io.newFileURI(FileUtils.File(this.path));
-      IOUtils.exists(this.path).then((value) => {
+      IOUtils.exists(this.path).then(value => {
         if (value && isEnable) {
           if (this.sss.sheetRegistered(uri, this.SHEET)) {
-            IOUtils.stat(this.path).then((pathValue) => {
+            IOUtils.stat(this.path).then(pathValue => {
               if (this.lastModifiedTime != pathValue.lastModified) {
                 this.sss.unregisterSheet(uri, this.SHEET);
                 this.sss.loadAndRegisterSheet(uri, this.SHEET);

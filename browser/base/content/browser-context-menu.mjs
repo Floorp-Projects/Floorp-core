@@ -77,7 +77,8 @@ export const gFloorpContextMenu = {
   },
 
   addToolbarContentMenuPopupSet(xulElementStr) {
-    const parsedXULElement = window.MozXULElement.parseXULToFragment(xulElementStr);
+    const parsedXULElement =
+      window.MozXULElement.parseXULToFragment(xulElementStr);
     this.toolbarContextMenuBeforeElement.before(parsedXULElement);
   },
 };

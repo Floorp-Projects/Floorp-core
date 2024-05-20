@@ -4,39 +4,37 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 export const gFloorpShareMode = {
-    initialized: false,
+  initialized: false,
 
-    init() {
-        if (this.initialized) {
-            return;
-        }
+  init() {
+    if (this.initialized) {
+      return;
+    }
 
-        let beforeElem = document.getElementById("menu_openFirefoxView");
-        let addElem = window.MozXULElement.parseXULToFragment(`
+    let beforeElem = document.getElementById("menu_openFirefoxView");
+    let addElem = window.MozXULElement.parseXULToFragment(`
             <menuitem data-l10n-id="sharemode-menuitem" type="checkbox" id="toggle_sharemode" checked="false"
                   oncommand="gFloorpShareMode.addOrRemoveShareModeCSS();" accesskey="S">
             </menuitem>
         `);
-        beforeElem.after(addElem);
+    beforeElem.after(addElem);
 
-        this.initialized = true;
-    },
+    this.initialized = true;
+  },
 
+  addOrRemoveShareModeCSS() {
+    const cssExist = document.getElementById("sharemode");
 
-    addOrRemoveShareModeCSS() {
-        const cssExist = document.getElementById("sharemode");
-
-        if (!cssExist) {
-            const css = document.createElement("style");
-            css.id = "sharemode";
-            css.textContent =
-                "@import url(chrome://floorp/skin/designs/options/sharemode.css);";
-            document.head.appendChild(css);
-        } else {
-            cssExist.remove();
-        }
+    if (!cssExist) {
+      const css = document.createElement("style");
+      css.id = "sharemode";
+      css.textContent =
+        "@import url(chrome://floorp/skin/designs/options/sharemode.css);";
+      document.head.appendChild(css);
+    } else {
+      cssExist.remove();
     }
-
+  },
 };
 
 gFloorpShareMode.init();

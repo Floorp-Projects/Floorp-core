@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { gFloorpCommands } from "./browser-commands.mjs"
+import { gFloorpCommands } from "./browser-commands.mjs";
 
 export const gFloorpLegacyStyleDownloadBar = {
   _initialized: false,
 
   get legacyStyleDownloadBarCSS() {
-    return "@import url('chrome://floorp/skin/designs/options/legacy-style-downloadbar.css');"
+    return "@import url('chrome://floorp/skin/designs/options/legacy-style-downloadbar.css');";
   },
 
   init() {
@@ -95,4 +95,6 @@ export const gFloorpLegacyStyleDownloadBar = {
   },
 };
 
-gFloorpLegacyStyleDownloadBar.init();
+if (Services.prefs.getBoolPref("floorp.browser.native.downloadbar.enabled")) {
+  gFloorpLegacyStyleDownloadBar.init();
+}

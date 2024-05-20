@@ -35,7 +35,7 @@ export const BrowserManagerSidebar = {
   },
 
   BrowserManagerSidebarXULElement: `
-<vbox id="sidebar2-box" style="min-width: 25em;" class="browser-sidebar2 chromeclass-extrachrome">
+<vbox id="sidebar2-box" style="min-width: 25em; z-index: 1" class="browser-sidebar2 chromeclass-extrachrome">
   <box id="sidebar2-header" style="min-height: 2.5em" align="center">
     <toolbarbutton id="sidebar2-back" class="sidebar2-icon" style="margin-left: 0.5em;"
       data-l10n-id="sidebar-back-button" oncommand="gBrowserManagerSidebar.sidebarButtons(0);" />
@@ -55,7 +55,7 @@ export const BrowserManagerSidebar = {
   </box>
 </vbox>
 <splitter id="sidebar-splitter2" class="browser-sidebar2 chromeclass-extrachrome" hidden="false" />
-<vbox id="sidebar-select-box" style="overflow: hidden auto;" class="webpanel-box chromeclass-extrachrome">
+<vbox id="sidebar-select-box" style="overflow: hidden auto; z-index: 1" class="webpanel-box chromeclass-extrachrome">
    <vbox id="panelBox">
      <toolbarbutton class="sidepanel-browser-icon" data-l10n-id="sidebar-add-button"  oncommand="gBrowserManagerSidebar.openAdditionalWebPanelWindow();" id="add-button"/>
    </vbox>

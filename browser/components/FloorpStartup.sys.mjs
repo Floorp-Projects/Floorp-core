@@ -192,7 +192,7 @@ if (isMainBrowser) {
 
   // Load Tab Sleep feature
   try {
-    ChromeUtils.importESModule("resource://floorp/TabSleep/TabSleep.sys.mjs");
+    ChromeUtils.importESModule("resource://floorp/tabsleep/TabSleep.sys.mjs");
   } catch (e) {
     console.error(e);
   }
