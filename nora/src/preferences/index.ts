@@ -12,8 +12,7 @@ export default function initScripts() {
     insert(
       document.querySelector("#categories"),
       category(),
-      //document.getElementById("category-Downloads"),
-      document.getElementById("category-more-from-mozilla"),
+      document.getElementById("category-Downloads"),
     );
     render(csk, document.querySelector(".pane-container"));
     initHashChange();
