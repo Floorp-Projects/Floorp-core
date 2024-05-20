@@ -15,7 +15,6 @@
   "devDependencies": {
     "solid-styled-jsx": "^0.27.1",
     "tsx": "^4.10.1",
-    "unocss": "^0.60.2",
     "vite": "^5.2.11",
     "vite-plugin-solid": "^2.10.2"
   },
