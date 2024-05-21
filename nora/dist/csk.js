@@ -202,7 +202,7 @@ function runComputation(node, value, time) {
     node.updatedAt = time;
   }
 }
-function createComputation(fn, init2, pure, state = STALE, options) {
+function createComputation(fn, init, pure, state = STALE, options) {
   const c = {
     fn,
     state,
@@ -211,7 +211,7 @@ function createComputation(fn, init2, pure, state = STALE, options) {
     sources: null,
     sourceSlots: null,
     cleanups: null,
-    value: init2,
+    value: init,
     owner: Owner,
     context: Owner ? Owner.context : null,
     pure
@@ -252,11 +252,11 @@ function runTop(node) {
     }
   }
 }
-function runUpdates(fn, init2) {
+function runUpdates(fn, init) {
   if (Updates)
     return fn();
   let wait = false;
-  if (!init2)
+  if (!init)
     Updates = [];
   if (Effects)
     wait = true;
@@ -976,7 +976,7 @@ const [currentFocus, setCurrentFocus] = createSignal(null);
 createEffect(() => {
   console.log(currentFocus() !== null);
   Services.obs.notifyObservers(
-    null,
+    {},
     "nora-csk",
     JSON.stringify({
       type: "disable-csk",
@@ -984,42 +984,66 @@ createEffect(() => {
     })
   );
 });
-const [cskData, setCSKData] = createSignal(zCSKData.parse({}));
+const [cskData, setCSKData] = createSignal(
+  //TODO: safely catch
+  zCSKData.parse(
+    JSON.parse(
+      Services.prefs.getStringPref("floorp.browser.nora.csk.data", "{}")
+    )
+  )
+);
 function cskDatumToString(data, key) {
   if (key in data) {
     const datum = data[key];
     return `${(datum == null ? void 0 : datum.modifiers.ctrl) ? "Ctrl + " : ""}${(datum == null ? void 0 : datum.modifiers.alt) ? "Alt + " : ""}${(datum == null ? void 0 : datum.modifiers.shift) ? "Shift + " : ""}${datum == null ? void 0 : datum.key}`;
-  } else {
-    return "";
   }
+  return "";
 }
+createEffect(() => {
+  Services.prefs.setStringPref(
+    "floorp.browser.nora.csk.data",
+    JSON.stringify(cskData())
+  );
+  Services.obs.notifyObservers(
+    {},
+    "nora-csk",
+    JSON.stringify({
+      type: "update-pref"
+    })
+  );
+});
 function initSetKey() {
   document.addEventListener("keydown", (ev) => {
-    if (ev.key === "Escape" || ev.key === "Tab") {
+    const key = ev.key;
+    const alt = ev.altKey;
+    const ctrl = ev.ctrlKey;
+    const shift = ev.shiftKey;
+    const meta = ev.metaKey;
+    if (key === "Escape" || key === "Tab") {
       return;
     }
     const focus = currentFocus();
-    if (!ev.altKey && !ev.ctrlKey && !ev.shiftKey && !ev.metaKey) {
-      if (ev.key === "Delete" || ev.key === "Backspace") {
+    if (!(alt || ctrl || shift || meta)) {
+      if (key === "Delete" || key === "Backspace") {
         if (focus) {
           ev.preventDefault();
           const temp = cskData();
-          for (const key of Object.keys(temp)) {
-            if (key === focus) {
-              delete temp[key];
+          for (const key2 of Object.keys(temp)) {
+            if (key2 === focus) {
+              delete temp[key2];
               setCSKData(temp);
               setEditingStatus(cskDatumToString(cskData(), focus));
               break;
             }
           }
-          console.log(cskData);
+          console.log(cskData());
         }
         return;
       }
     }
     if (focus) {
       ev.preventDefault();
-      if (["Control", "Alt", "Meta", "Shift"].filter((k) => ev.key.includes(k)).length === 0) {
+      if (["Control", "Alt", "Meta", "Shift"].filter((k) => key.includes(k)).length === 0) {
         if (checkIsSystemShortcut(ev)) {
           console.warn(`This Event is registered in System: ${ev}`);
           return;
@@ -1027,12 +1051,12 @@ function initSetKey() {
         setCSKData({
           ...cskData(),
           [focus]: {
-            key: ev.key,
+            key,
             modifiers: {
-              alt: ev.altKey,
-              ctrl: ev.ctrlKey,
-              meta: ev.metaKey,
-              shift: ev.shiftKey
+              alt,
+              ctrl,
+              meta,
+              shift
             }
           }
         });
@@ -1041,74 +1065,79 @@ function initSetKey() {
     }
   });
 }
-function CustomShortcutKeyPage() {
+const CustomShortcutKeyPage = () => {
   return [(() => {
-    var _el$ = createElement("div"), _el$2 = createElement("h1"), _el$4 = createElement("xul:description"), _el$6 = createElement("xul:checkbox");
+    var _el$ = createElement("div"), _el$2 = createElement("h1"), _el$3 = createElement("xul:description"), _el$4 = createElement("xul:checkbox");
     insertNode(_el$, _el$2);
+    insertNode(_el$, _el$3);
     insertNode(_el$, _el$4);
-    insertNode(_el$, _el$6);
-    insertNode(_el$2, createTextNode(`カスタムショートカットキー`));
-    insertNode(_el$4, createTextNode(`Floorp Daylight のキーボードショートカットをカスタマイズしましょう。 Floorp Daylight には、80 以上のカスタマイズ可能なキーボードショートカットが用意されています！重複したキーボードショートカットは機能しません。これらの設定を適用するには、 Floorp Daylight を再起動してください。`));
-    setProp(_el$4, "class", "indent tip-caption");
-    setProp(_el$6, "label", "Firefox のキーボードショートカットを無効にする");
+    setProp(_el$2, "data-l10n-id", "floorp-CSK-title");
+    setProp(_el$3, "class", "indent tip-caption");
+    setProp(_el$3, "data-l10n-id", "floorp-CSK-description");
+    setProp(_el$4, "data-l10n-id", "disable-fx-actions");
     return _el$;
   })(), createComponent(For, {
     each: csk_category,
-    children: (category2) => [(() => {
-      var _el$7 = createElement("div");
-      setProp(_el$7, "data-l10n-id", "floorp-custom-actions-" + category2);
-      setProp(_el$7, "style", {
-        "padding-top": "20px"
-      });
-      insert(_el$7, category2);
-      return _el$7;
-    })(), createComponent(For, {
-      get each() {
-        return Object.entries(commands);
-      },
-      children: ([key, value]) => value.type === category2 ? (() => {
-        var _el$8 = createElement("div"), _el$9 = createElement("label"), _el$10 = createElement("input");
-        insertNode(_el$8, _el$9);
-        insertNode(_el$8, _el$10);
-        setProp(_el$8, "style", {
-          display: "flex"
-        });
-        setProp(_el$9, "style", {
-          "flex-grow": "1"
-        });
-        insert(_el$9, key);
-        setProp(_el$10, "onFocus", (ev) => {
-          setCurrentFocus(key);
-        });
-        setProp(_el$10, "onBlur", (ev) => {
-          setEditingStatus(null);
-          if (currentFocus() === key) {
-            setCurrentFocus(null);
-          }
-        });
-        setProp(_el$10, "readonly", true);
-        setProp(_el$10, "placeholder", "Type a shortcut");
-        setProp(_el$10, "style", {
-          "border-radius": "5px",
-          border: "1px solid gray",
-          padding: "6px 10px"
-        });
-        effect((_p$) => {
-          var _v$ = "floorp-custom-actions-" + key.replace("floorp-", "").replace("gecko-", ""), _v$2 = currentFocus() === key && editingStatus() !== null ? editingStatus() : cskDatumToString(cskData(), key);
-          _v$ !== _p$.e && (_p$.e = setProp(_el$9, "data-l10n-id", _v$, _p$.e));
-          _v$2 !== _p$.t && (_p$.t = setProp(_el$10, "value", _v$2, _p$.t));
-          return _p$;
-        }, {
-          e: void 0,
-          t: void 0
-        });
-        return _el$8;
-      })() : void 0
-    })]
+    children: (category2) => (() => {
+      var _el$5 = createElement("xul:vbox"), _el$6 = createElement("h2");
+      insertNode(_el$5, _el$6);
+      setProp(_el$5, "class", "csks-content-box");
+      setProp(_el$6, "data-l10n-id", "floorp-custom-actions-" + category2);
+      setProp(_el$6, "class", "csks-box-title");
+      insert(_el$6, category2);
+      insert(_el$5, createComponent(For, {
+        get each() {
+          return Object.entries(commands);
+        },
+        children: ([key, value]) => value.type === category2 ? (() => {
+          var _el$7 = createElement("div"), _el$8 = createElement("label"), _el$9 = createElement("input");
+          insertNode(_el$7, _el$8);
+          insertNode(_el$7, _el$9);
+          setProp(_el$7, "class", "csks-box-item");
+          setProp(_el$7, "style", {
+            display: "flex"
+          });
+          setProp(_el$8, "style", {
+            "flex-grow": "1"
+          });
+          insert(_el$8, key);
+          setProp(_el$9, "onFocus", (ev) => {
+            setCurrentFocus(key);
+          });
+          setProp(_el$9, "onBlur", (ev) => {
+            setEditingStatus(null);
+            if (currentFocus() === key) {
+              setCurrentFocus(null);
+            }
+          });
+          setProp(_el$9, "readonly", true);
+          setProp(_el$9, "placeholder", "Type a shortcut");
+          setProp(_el$9, "style", {
+            "border-radius": "4px",
+            color: "inherit",
+            padding: "6px 10px",
+            "background-color": "transparent !important",
+            border: "1px solid var(--input-border-color) !important",
+            transition: "all .2s ease-in-out !important"
+          });
+          effect((_p$) => {
+            var _v$ = "floorp-custom-actions-" + key.replace("floorp-", "").replace("gecko-", ""), _v$2 = currentFocus() === key && editingStatus() !== null ? editingStatus() : cskDatumToString(cskData(), key);
+            _v$ !== _p$.e && (_p$.e = setProp(_el$8, "data-l10n-id", _v$, _p$.e));
+            _v$2 !== _p$.t && (_p$.t = setProp(_el$9, "value", _v$2, _p$.t));
+            return _p$;
+          }, {
+            e: void 0,
+            t: void 0
+          });
+          return _el$7;
+        })() : void 0
+      }), null);
+      return _el$5;
+    })()
   })];
-}
+};
 const [showCSK, setShowCSK] = createSignal(false);
-const onHashChange = () => {
+const onHashChange = (ev) => {
   switch (location.hash) {
     case "#csk": {
       setShowCSK(true);
@@ -1125,14 +1154,19 @@ function initHashChange() {
 }
 function csk() {
   initSetKey();
-  return createComponent(Show, {
-    get when() {
-      return showCSK();
-    },
-    get children() {
-      return createComponent(CustomShortcutKeyPage, {});
-    }
-  });
+  return (() => {
+    var _el$ = createElement("section");
+    setProp(_el$, "id", "nora-csk-entry");
+    insert(_el$, createComponent(Show, {
+      get when() {
+        return showCSK();
+      },
+      get children() {
+        return createComponent(CustomShortcutKeyPage, {});
+      }
+    }));
+    return _el$;
+  })();
 }
 function category() {
   return (() => {
@@ -1153,35 +1187,28 @@ function category() {
     return _el$;
   })();
 }
-console.log("hallo csk");
-const init = () => {
-  var _a;
-  insert(
-    document.querySelector("#categories"),
-    category(),
-    document.getElementById("category-Downloads")
-  );
-  render(csk, document.querySelector(".pane-container"));
-  initHashChange();
-  switch (location.hash) {
-    case "#csk": {
-      (_a = document.getElementById("category-csk")) == null ? void 0 : _a.click();
-      break;
+function initScripts() {
+  const init = () => {
+    var _a;
+    insert(
+      document.querySelector("#categories"),
+      category(),
+      document.getElementById("category-Downloads")
+    );
+    render(csk, document.querySelector(".pane-container"));
+    initHashChange();
+    switch (location.hash) {
+      case "#csk": {
+        (_a = document.getElementById("category-csk")) == null ? void 0 : _a.click();
+        break;
+      }
     }
-  }
-};
-const foo = () => {
-  if (document.querySelector(".pane-container")) {
-    console.log("render 1");
+  };
+  if (document.readyState !== "loading") {
     init();
   } else {
-    console.log("render 2");
-    init();
+    document.addEventListener("DOMContentLoaded", init);
   }
-};
-if (document.readyState !== "loading") {
-  foo();
-} else {
-  document.addEventListener("DOMContentLoaded", foo);
 }
+initScripts();
 //# sourceMappingURL=csk.js.map

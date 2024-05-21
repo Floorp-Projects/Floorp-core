@@ -4,7 +4,7 @@ var __publicField = (obj, key, value) => {
   __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
   return value;
 };
-import { e as zCSKCommands, c as checkIsSystemShortcut, d as commands } from "./assets/utils.js";
+import { e as zCSKCommands, a as zCSKData, c as checkIsSystemShortcut, d as commands } from "./assets/utils.js";
 const _CustomShortcutKey = class _CustomShortcutKey {
   constructor() {
     //this boolean disable shortcut of csk
@@ -27,32 +27,28 @@ const _CustomShortcutKey = class _CustomShortcutKey {
     return _CustomShortcutKey.instance;
   }
   //@ts-ignore
-  observe(_subj, topic, data) {
-    switch (topic) {
-      case "nora-csk":
-        const d = zCSKCommands.safeParse(JSON.parse(data));
-        if (d.success) {
-          switch (d.data.type) {
-            case "disable-csk": {
-              this.disable_csk = d.data.data;
-            }
-          }
+  observe(_subj, _topic, data) {
+    const d = zCSKCommands.safeParse(JSON.parse(data));
+    if (d.success) {
+      switch (d.data.type) {
+        case "disable-csk": {
+          this.disable_csk = d.data.data;
+          break;
         }
-        break;
+        case "update-pref": {
+          this.initCSKData();
+          console.log(this.cskData);
+          break;
+        }
+      }
     }
   }
   initCSKData() {
-    this.cskData = {
-      "gecko-open-new-window": {
-        modifiers: {
-          ctrl: true,
-          shift: true,
-          alt: false,
-          meta: false
-        },
-        key: "V"
-      }
-    };
+    this.cskData = zCSKData.parse(
+      JSON.parse(
+        Services.prefs.getStringPref("floorp.browser.nora.csk.data", "{}")
+      )
+    );
   }
   startHandleShortcut(_window) {
     _window.addEventListener("keydown", (ev) => {

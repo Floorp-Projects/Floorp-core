@@ -2,7 +2,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import UnoCSS from "unocss/vite";
 import { defineConfig } from "vite";
 import solidPlugin from "vite-plugin-solid";
 
@@ -37,7 +36,6 @@ export default defineConfig({
     },
   },
   plugins: [
-    UnoCSS({ mode: "per-module" }),
     solidPlugin({
       solid: {
         generate: "universal",

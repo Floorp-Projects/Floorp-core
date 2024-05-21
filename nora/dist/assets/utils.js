@@ -4294,10 +4294,15 @@ const zCSKData = z.record(
     key: z.string()
   })
 );
-const zCSKCommands = z.object({
-  type: z.enum(["disable-csk"]),
-  data: z.boolean()
-});
+const zCSKCommands = z.union([
+  z.object({
+    type: z.enum(["disable-csk"]),
+    data: z.boolean()
+  }),
+  z.object({
+    type: z.enum(["update-pref"])
+  })
+]);
 const { AppConstants } = ChromeUtils.importESModule(
   "resource://gre/modules/AppConstants.sys.mjs"
 );
