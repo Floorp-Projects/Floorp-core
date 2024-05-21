@@ -11,36 +11,29 @@ import {
   setCurrentFocus,
   setEditingStatus,
 } from "./setkey";
-import { commands, csk_category } from "@modules/custom-shortcut-key/commands";
+import { commands, csk_category } from "../../components/custom-shortcut-key/commands";
 
-export function CustomShortcutKeyPage() {
+export const CustomShortcutKeyPage = () => {
   return (
     <>
       <div>
-        <h1>カスタムショートカットキー</h1>
-        <xul:description class="indent tip-caption">
-          Floorp Daylight のキーボードショートカットをカスタマイズしましょう。
-          Floorp Daylight には、80
-          以上のカスタマイズ可能なキーボードショートカットが用意されています！重複したキーボードショートカットは機能しません。これらの設定を適用するには、
-          Floorp Daylight を再起動してください。
-        </xul:description>
-        <xul:checkbox label="Firefox のキーボードショートカットを無効にする" />
+        <h1 data-l10n-id="floorp-CSK-title"/>
+        <xul:description class="indent tip-caption" data-l10n-id="floorp-CSK-description"/>
+        <xul:checkbox data-l10n-id="disable-fx-actions" />
       </div>
       <For each={csk_category}>
         {(category) => (
-          <>
-            <div
+          <xul:vbox class="csks-content-box">
+            <h2
               data-l10n-id={"floorp-custom-actions-" + category}
-              style={{
-                "padding-top": "20px",
-              }}
+              class="csks-box-title"
             >
               {category}
-            </div>
+            </h2>
             <For each={Object.entries(commands)}>
               {([key, value]) =>
                 value.type === category ? (
-                  <div style={{ display: "flex" }}>
+                  <div class="csks-box-item" style={{ display: "flex" }}>
                     <label
                       style={{ "flex-grow": "1" }}
                       data-l10n-id={
@@ -68,16 +61,19 @@ export function CustomShortcutKeyPage() {
                       readonly={true}
                       placeholder="Type a shortcut"
                       style={{
-                        "border-radius": "5px",
-                        border: "1px solid gray",
+                        "border-radius": "4px",
+                        color: "inherit",
                         padding: "6px 10px",
+                        "background-color": "transparent !important",
+                        border: "1px solid var(--input-border-color) !important",
+                        transition: "all .2s ease-in-out !important",
                       }}
                     />
                   </div>
                 ) : undefined
               }
             </For>
-          </>
+            </xul:vbox>
         )}
       </For>
     </>
