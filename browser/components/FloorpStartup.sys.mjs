@@ -212,7 +212,7 @@ if (isMainBrowser) {
         Services.prefs.getBoolPref("floorp.openLinkInExternal.enabled", false)
       ) {
         ChromeUtils.importESModule(
-          "resource:///modules/OpenLinkInExternal.sys.mjs",
+          "resource://floorp/OpenLinkInExternal.sys.mjs",
         );
       }
     }
