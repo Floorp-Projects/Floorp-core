@@ -6,6 +6,12 @@
 import { gFloorpTabBarStyle } from "./browser-tabbar.mjs";
 import { gFloorpCommands } from "./browser-commands.mjs";
 
+try {
+  var { gBmsWindow } = await import(
+    "chrome://floorp/content/browser-bms-window.mjs"
+  );
+} catch (e) {}
+
 var { AppConstants } = ChromeUtils.importESModule(
   "resource://gre/modules/AppConstants.sys.mjs"
 );
@@ -47,7 +53,7 @@ export const gFloorpDesign = {
   },
 
   init() {
-    if (this._initialized) {
+    if (this._initialized || gBmsWindow?.isBmsWindow) {
       return;
     }
 

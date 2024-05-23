@@ -10,6 +10,9 @@ try {
   var { BrowserManagerSidebarPanelWindowUtils } = await import(
     "chrome://floorp/content/modules/bms/BrowserManagerSidebarPanelWindowUtils.mjs"
   );
+  var { gBmsWindow } = await import(
+    "chrome://floorp/content/browser-bms-window.mjs"
+  );
 } catch (e) {}
 
 var { ContextualIdentityService } = ChromeUtils.importESModule(
@@ -82,7 +85,7 @@ export const gBrowserManagerSidebar = {
   },
 
   async init() {
-    if (this._initialized) {
+    if (this._initialized || gBmsWindow?.isBmsWindow) {
       return;
     }
 

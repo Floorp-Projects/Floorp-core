@@ -5,6 +5,12 @@
 
 import { gFloorpDesign } from "./browser-design.mjs";
 
+try {
+  var { gBmsWindow } = await import(
+    "chrome://floorp/content/browser-bms-window.mjs"
+  );
+} catch (e) {}
+
 /**
  * Object of Floorp Tab Bar style code.
  *
@@ -57,7 +63,7 @@ export const gFloorpTabBarStyle = {
   },
 
   init() {
-    if (this._initialized) {
+    if (this._initialized || gBmsWindow?.isBmsWindow) {
       return;
     }
 

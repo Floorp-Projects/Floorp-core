@@ -12,6 +12,12 @@ import {
   SiteSpecificBrowserService,
 } from "./modules/ssb/SiteSpecificBrowserService.mjs";
 
+try {
+  var { gBmsWindow } = await import(
+    "chrome://floorp/content/browser-bms-window.mjs"
+  );
+} catch (e) {}
+
 const { ManifestObtainer } = ChromeUtils.importESModule(
   "resource://gre/modules/ManifestObtainer.sys.mjs"
 );
@@ -20,7 +26,7 @@ export const gSsbSupport = {
   _initialized: false,
 
   init() {
-    if (this._initialized) {
+    if (this._initialized || gBmsWindow?.isBmsWindow) {
       return;
     }
 

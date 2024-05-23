@@ -5,9 +5,18 @@
 
 import { gFloorpOnLocationChange } from "./browser-onlocation-change.mjs";
 
-export const gFloorpObservePreference = (prefName, callback) => {
-  let prefValue = Services.prefs.getBoolPref(prefName, false);
+try {
+  var { gBmsWindow } = await import(
+    "chrome://floorp/content/browser-bms-window.mjs"
+  );
+} catch (e) {}
 
+export const gFloorpObservePreference = (prefName, callback) => {
+  if (gBmsWindow?.isBmsWindow) {
+    return;
+  }
+
+  let prefValue = Services.prefs.getBoolPref(prefName, false);
   const notifyCallback = reason => {
     try {
       callback({
