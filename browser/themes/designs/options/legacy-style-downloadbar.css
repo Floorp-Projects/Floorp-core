@@ -58,7 +58,7 @@
 }
 
 #hide-downloads-button {
-    list-style-image: url('chrome://browser/skin/close.svg');
+    list-style-image: url('chrome://global/skin/icons/close.svg');
     margin-right: 0.5em;
     margin-top: auto;
     margin-bottom: auto;
