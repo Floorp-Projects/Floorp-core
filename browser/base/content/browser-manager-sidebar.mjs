@@ -978,7 +978,7 @@ export const gBrowserManagerSidebar = {
       }
     },
 
-    toggleBMSShortcut() {
+    togglePanelShortcut() {
       if (!Services.prefs.getBoolPref("floorp.browser.sidebar.enable")) {
         return;
       }
@@ -990,6 +990,14 @@ export const gBrowserManagerSidebar = {
         gBrowserManagerSidebar.controllFunctions.changeVisibilityOfWebPanel();
       }
       gBrowserManagerSidebar.controllFunctions.changeVisibilityOfWebPanel();
+    },
+
+    toggleBMSShortcut() {
+      if (Services.prefs.getBoolPref("floorp.browser.sidebar.enable")) {
+        Services.prefs.setBoolPref("floorp.browser.sidebar.enable", false);
+      } else {
+        Services.prefs.setBoolPref("floorp.browser.sidebar.enable", true);
+      }
     },
   },
 };
