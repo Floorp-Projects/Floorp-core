@@ -185,52 +185,32 @@ export const gBrowserManagerSidebar = {
     let webpanel = document.getElementById(`webpanel${modeValuePref}`);
     switch (action) {
       case 0:
-        if (webpanel.src.startsWith("chrome://browser/content/browser.xhtml")) {
-          let webPanelId = webpanel.id.replace("webpanel", "");
-          BrowserManagerSidebarPanelWindowUtils.goBackPanel(
-            window,
-            webPanelId,
-            true
-          );
-        } else {
-          webpanel.goBack();
-        }
+        BrowserManagerSidebarPanelWindowUtils.goBackPanel(
+          window,
+          webpanel.id.replace("webpanel", ""),
+          true
+        );
         break;
       case 1:
-        if (webpanel.src.startsWith("chrome://browser/content/browser.xhtml")) {
-          let webPanelId = webpanel.id.replace("webpanel", "");
-          BrowserManagerSidebarPanelWindowUtils.goForwardPanel(
-            window,
-            webPanelId,
-            true
-          );
-        } else {
-          webpanel.goForward();
-        }
+        BrowserManagerSidebarPanelWindowUtils.goForwardPanel(
+          window,
+          webpanel.id.replace("webpanel", ""),
+          true
+        );
         break;
       case 2:
-        if (webpanel.src.startsWith("chrome://browser/content/browser.xhtml")) {
-          let webPanelId = webpanel.id.replace("webpanel", "");
-          BrowserManagerSidebarPanelWindowUtils.reloadPanel(
-            window,
-            webPanelId,
-            true
-          );
-        } else {
-          webpanel.reloadWithFlags(Ci.nsIWebNavigation.LOAD_FLAGS_BYPASS_CACHE);
-        }
+        BrowserManagerSidebarPanelWindowUtils.reloadPanel(
+          window,
+          webpanel.id.replace("webpanel", ""),
+          true
+        );
         break;
       case 3:
-        if (webpanel.src.startsWith("chrome://browser/content/browser.xhtml")) {
-          let webPanelId = webpanel.id.replace("webpanel", "");
-          BrowserManagerSidebarPanelWindowUtils.goIndexPagePanel(
-            window,
-            webPanelId,
-            true
-          );
-        } else {
-          webpanel.gotoIndex();
-        }
+        BrowserManagerSidebarPanelWindowUtils.goIndexPagePanel(
+          window,
+          webpanel.id.replace("webpanel", ""),
+          true
+        );
         break;
     }
   },
@@ -541,7 +521,8 @@ export const gBrowserManagerSidebar = {
         gBrowserManagerSidebar.BROWSER_SIDEBAR_DATA.data[modeValuePref].url ??
         "";
       gBrowserManagerSidebar.controllFunctions.changeVisibleCommandButton(
-        selectedURL.startsWith("floorp//")
+        selectedURL.startsWith("floorp//") ||
+          selectedURL.startsWith("extension")
       );
       for (let elem of document.getElementsByClassName("webpanels")) {
         elem.hidden = true;
@@ -712,10 +693,7 @@ export const gBrowserManagerSidebar = {
         gBrowserManagerSidebar.BROWSER_SIDEBAR_DATA.data[webpanel_id];
       let webpanobject = document.getElementById(`webpanel${webpanel_id}`);
       let webpanelURL = webpandata.url;
-      const webpanel_usercontext = webpandata.usercontext ?? 0;
-      const webpanel_userAgent = webpandata.userAgent ?? false;
       let isExtension = webpanelURL.slice(0, 9) == "extension";
-      let isWeb = true;
       let isFloorp = false;
       gBrowserManagerSidebar.controllFunctions.setSidebarWidth(webpanel_id);
 
@@ -723,20 +701,11 @@ export const gBrowserManagerSidebar = {
         isFloorp = true;
         webpanelURL =
           gBrowserManagerSidebar.STATIC_SIDEBAR_DATA[webpanelURL].url;
-        isWeb = false;
-      }
-
-      // Add-on Capability
-      if (
-        Services.prefs.getBoolPref("floorp.browser.sidebar2.addons.enabled") &&
-        !isExtension
-      ) {
-        isWeb = false;
       }
 
       if (webpanobject == null) {
         let webpanelElem = window.MozXULElement.parseXULToFragment(`
-              <browser 
+              <browser
                 id="webpanel${webpanel_id}"
                 class="webpanels ${isFloorp ? "isFloorp" : "isWeb"} ${
           isExtension ? "isExtension" : ""
@@ -752,34 +721,22 @@ export const gBrowserManagerSidebar = {
                 autocompletepopup="PopupAutoComplete"
                 initialBrowsingContextGroupId="40"
                 ${
-                  isWeb
-                    ? `usercontextid="${
-                        typeof webpanel_usercontext == "number"
-                          ? String(webpanel_usercontext)
-                          : "0"
-                      }"
-                changeuseragent="${webpanel_userAgent ? "true" : "false"}"
-                webextension-view-type="sidebar"
-                type="content"
-                remote="true"
-                maychangeremoteness="true"
-                context=""
-                `
+                  isExtension
+                    ? `
+                      webextension-view-type="sidebar"
+                      type="content"
+                      remote="true"
+                      maychangeremoteness="true"
+                  `
                     : ""
                 }
                />
-                `);
+        `);
         if (webpanelURL.slice(0, 9) == "extension") {
           webpanelURL = webpanelURL.split(",")[3];
         }
 
-        if (
-          Services.prefs.getBoolPref(
-            "floorp.browser.sidebar2.addons.enabled"
-          ) &&
-          !isFloorp &&
-          !isExtension
-        ) {
+        if (!isFloorp && !isExtension) {
           webpanelElem.firstChild.setAttribute(
             "src",
             `chrome://browser/content/browser.xhtml?&floorpWebPanelId=${webpanel_id}`
@@ -788,18 +745,9 @@ export const gBrowserManagerSidebar = {
           webpanelElem.firstChild.setAttribute("src", webpanelURL);
         }
         document.getElementById("sidebar2-box").appendChild(webpanelElem);
-      } else {
-        if (webpanelURL.slice(0, 9) == "extension") {
-          webpanelURL = webpanelURL.split(",")[3];
-        }
-
-        if (
-          Services.prefs.getBoolPref("floorp.browser.sidebar2.addons.enabled")
-        ) {
-          /* empty */
-        } else {
-          webpanobject.setAttribute("src", webpanelURL);
-        }
+      } else if (isExtension || isFloorp) {
+        webpanelURL = isExtension ? webpanelURL.split(",")[3] : webpanelURL;
+        webpanobject.setAttribute("src", webpanelURL);
       }
       gBrowserManagerSidebar.controllFunctions.visiblePanelBrowserElem();
     },

@@ -72,12 +72,6 @@ pref("floorp.browser.sidebar2.data", '{"data":{},"index":[]}');
 pref("floorp.extensions.webextensions.sidebar-action", '{"data":{}}');
 pref("floorp.browser.sidebar2.hide.to.unload.panel.enabled", false);
 
-#ifdef FLOORP_OFFICIAL_COMPONENTS_ENABLED
-pref("floorp.browser.sidebar2.addons.enabled", true);
-#else
-pref("floorp.browser.sidebar2.addons.enabled", false, locked);
-#endif
-
 pref("floorp.browser.sidebar2.global.webpanel.width", 400);
 
 pref("floorp.tabsleep.enabled", false);
