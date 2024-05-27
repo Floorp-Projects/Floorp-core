@@ -13,6 +13,7 @@
   min-width: 150px !important;
   transition :min-width 150ms ease-out, max-width 150ms ease-out !important;
   overflow: hidden !important;
+  -moz-window-dragging: no-drag;
 }
 
 #TabsToolbar:-moz-lwtheme {
@@ -199,4 +200,9 @@
   opacity: 0;
   background-color: unset !important;
   transform: translateX(var(--tab-separator-position-x)) translateY(var(--tab-separator-position-y));
+}
+
+/* Add drag space */
+#PanelUI-button {
+  margin-right: 20px;
 }
