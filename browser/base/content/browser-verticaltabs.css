@@ -201,8 +201,3 @@
   background-color: unset !important;
   transform: translateX(var(--tab-separator-position-x)) translateY(var(--tab-separator-position-y));
 }
-
-/* Add drag space */
-#PanelUI-button {
-  margin-right: 20px;
-}
