@@ -13,7 +13,6 @@
   min-width: 150px !important;
   transition :min-width 150ms ease-out, max-width 150ms ease-out !important;
   overflow: hidden !important;
-  -moz-window-dragging: no-drag;
 }
 
 #TabsToolbar:-moz-lwtheme {
