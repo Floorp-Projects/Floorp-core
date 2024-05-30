@@ -90,7 +90,7 @@ export default defineConfig({
                 protocol: "webDriverBiDi",
                 dumpio: true,
                 product: "firefox",
-                executablePath: binPath("windows-x64"),
+                executablePath: path.join("../..", binPath("windows-x64")),
                 userDataDir: "./dist/profile/test",
                 extraPrefsFirefox: { "browser.newtabpage.enabled": true },
               });
