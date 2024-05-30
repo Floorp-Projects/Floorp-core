@@ -99,7 +99,7 @@ export default defineConfig({
                 defaultViewport: { height: 0, width: 0 },
               });
               (await browser.pages())[0].setViewport({ width: 0, height: 0 });
-              (await browser.pages())[0].goto("about:newtab");
+              //(await browser.pages())[0].goto("about:newtab");
               browser.on("disconnected", () => {
                 if (!intended_close) process.exit(1);
               });
