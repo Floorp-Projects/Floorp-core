@@ -13,6 +13,8 @@
   "license": "MPL-2.0",
   "type": "module",
   "devDependencies": {
+    "execa": "^9.1.0",
+    "puppeteer-core": "^22.10.0",
     "solid-styled-jsx": "^0.27.1",
     "tsx": "^4.10.1",
     "vite": "^5.2.11",

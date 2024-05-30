@@ -22,16 +22,7 @@
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-mozilla": "^3.3.2",
-    "prettier": "^3.1.1",
-    "solid-styled-jsx": "^0.27.1",
-    "tsx": "^4.7.0",
-    "typescript": "^5.3.3",
-    "unocss": "^0.60.2",
-    "vite": "^5.2.11"
+    "prettier": "^3.1.1"
   },
-  "private": true,
-  "dependencies": {
-    "solid-js": "^1.8.17",
-    "zod": "^3.23.8"
-  }
+  "private": true
 }
