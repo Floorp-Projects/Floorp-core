@@ -3,5 +3,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { CustomShortcutKey } from "../components/custom-shortcut-key";
+import { initStatusbar } from "./statusbar";
+import { initBrowserContextMenu } from "./context-menu";
 
 CustomShortcutKey.getInstance();
+
+window.SessionStore.promiseInitialized.then(() => {
+    initBrowserContextMenu();
+    initStatusbar();
+});

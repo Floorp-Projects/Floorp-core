@@ -23,9 +23,6 @@ if (FloorpAppConstants.FLOORP_OFFICIAL_COMPONENTS_ENABLED) {
     import("chrome://floorp/content/browser-bms-window.mjs").then(({ gBmsWindow }) => {
         window.gBmsWindow = gBmsWindow
     });
-    import("chrome://floorp/content/browser-statusbar.mjs").then(({ gFloorpStatusBar }) => {
-        window.gFloorpStatusBar = gFloorpStatusBar
-    });
 }
 
 // This function is called when the floorp browser window is loaded. needs Delay.
