@@ -263,8 +263,8 @@ export const gFloorpDesign = {
   },
 
   toggleNavigationPanel(){
-    const searchbar = document.getElementById("nav-bar");
-    searchbar.style.display = searchbar.style.display ? "" : "none";
+    const navigationBar = document.getElementById("nav-bar");
+    navigationBar.style.display = navigationBar.style.display ? "" : "none";
   },
 
   hideUserInterface() {
