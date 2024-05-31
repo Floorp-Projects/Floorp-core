@@ -1,7 +1,3 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 import type { JSX as SolidJSX } from "solid-js";
 
 declare module "solid-js" {
@@ -37,7 +33,9 @@ declare module "solid-js" {
     interface XULMenuitemElement extends XULElementBase {
       label?: string;
       accesskey?: string;
-      oncommand?: string;
+      type?: "checkbox";
+      checked?: boolean;
+      onCommand?: () => void;
     }
 
     interface XULRichListItem extends XULElementBase {
@@ -56,7 +54,19 @@ declare module "solid-js" {
       "xul:panel": XULElementBase;
       "xul:menupopup": XULElementBase;
       "xul:vbox": XULElementBase;
+      "xul:hbox": XULElementBase;
       "xul:box": XULElementBase;
+      "xul:toolbar": {
+        id?: string;
+        toolbarname?: string;
+        customizable?: string;
+        mode?: string;
+        context?: string;
+        accesskey?: string;
+        style?: string;
+        class?: string;
+        children: Element;
+      };
       "xul:toolbarbutton": XULElementBase;
       "xul:spacer": XULElementBase;
       "xul:splitter": XULElementBase;

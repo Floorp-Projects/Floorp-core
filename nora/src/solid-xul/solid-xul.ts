@@ -1,7 +1,3 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 import type { JSX } from "solid-js";
 import { createRenderer } from "solid-js/universal";
 import { z } from "zod";
@@ -87,7 +83,7 @@ export const {
     }
   },
   insertNode: (parent: Node, node: JSX.Element, anchor?: Node): void => {
-    console.log(node);
+    //console.log(node);
     if (node instanceof Node) {
       parent.insertBefore(node, anchor ?? null);
     } else {
