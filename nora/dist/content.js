@@ -96,7 +96,6 @@ const gFloorpStatusBar = {
     window.CustomizableUI.registerToolbarNode(document.getElementById("statusBar"));
     (_a = document.body) == null ? void 0 : _a.appendChild(document.getElementById("statusBar"));
     this.observeStatusbar();
-    setShowStatusbar(() => Services.prefs.getBoolPref("browser.display.statusbar", false));
   },
   observeStatusbar() {
     Services.prefs.addObserver("browser.display.statusbar", () => setShowStatusbar(() => Services.prefs.getBoolPref("browser.display.statusbar", false)));
@@ -114,7 +113,7 @@ function ContextMenu$1() {
     return _el$;
   })();
 }
-const statusbarStyle = '#statusBar {\r\n  visibility: visible !important;\r\n\r\n  :root[inFullscreen]:not([macOSNativeFullscreen])\r\n    &:not([fullscreentoolbar="true"]) {\r\n    visibility: collapse !important;\r\n  }\r\n\r\n  :root[customizing] & {\r\n    display: inherit !important;\r\n  }\r\n\r\n  &.collapsed {\r\n    display: none;\r\n  }\r\n\r\n  #statuspanel-label {\r\n    background: none !important;\r\n    border: none !important;\r\n    box-shadow: none !important;\r\n  }\r\n\r\n  #status-text {\r\n    overflow: hidden !important;\r\n  }\r\n}\r\n';
+const statusbarStyle = '#statusBar {\n  visibility: visible !important;\n\n  :root[inFullscreen]:not([macOSNativeFullscreen])\n    &:not([fullscreentoolbar="true"]) {\n    visibility: collapse !important;\n  }\n\n  :root[customizing] & {\n    display: inherit !important;\n  }\n\n  &.collapsed {\n    display: none;\n  }\n\n  #statuspanel-label {\n    background: none !important;\n    border: none !important;\n    box-shadow: none !important;\n  }\n\n  #status-text {\n    overflow: hidden !important;\n  }\n}\n';
 function StatusBar() {
   return [(() => {
     var _el$ = createElement("xul:toolbar"), _el$2 = createElement("xul:hbox");
