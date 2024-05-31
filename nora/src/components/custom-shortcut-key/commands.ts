@@ -119,6 +119,10 @@ export const commands: Commands = {
     command: () => window.gFloorpDesign.hideUserInterface(),
     type: "visible-action",
   },
+  "floorp-toggle-navigation-panel": {
+    command: () => window.gFloorpDesign.toggleNavigationPanel(),
+    type: "visible-action",
+  },
   "gecko-back": { command: () => window.BrowserBack(), type: "history-action" },
   "gecko-forward": {
     command: () => window.BrowserForward(),

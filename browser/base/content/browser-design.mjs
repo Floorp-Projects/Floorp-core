@@ -29,6 +29,7 @@ var { AppConstants } = ChromeUtils.importESModule(
  * @property {Function} setLeptonUI - Sets the browser design to Lepton UI.
  * @property {Function} setProtonFixUI - Sets the browser design to Proton Fix UI.
  * @property {Function} hideUserInterface - Toggles the visibility of the browser toolbar.
+ * @property {Function} toggleNavigationPanel - Toggles the visibility of the navigation panel
  */
 export const gFloorpDesign = {
   _initialized: false,
@@ -261,10 +262,26 @@ export const gFloorpDesign = {
     gFloorpDesign.setBrowserDesign();
   },
 
+  toggleNavigationPanel(){
+    const searchbar = document.getElementById("nav-bar");
+    searchbar.style.display = searchbar.style.display ? "" : "none";
+  },
+
   hideUserInterface() {
-    let navigation_toolbox = document.getElementById("navigator-toolbox").children
-    for (const element of navigation_toolbox) {
+    let shownElementAmount = 0;
+
+    const navigationToolboxElements = document.getElementById("navigator-toolbox").children;
+    const navigationBar = navigationToolboxElements[1];
+
+    for (const element of navigationToolboxElements) {
       element.style.display = element.style.display ? "" : "none";
+      if (element.style.display === "") {
+        shownElementAmount++;
+      }
+    }
+
+    if (shownElementAmount > 1 && navigationBar.style.display !== "") {
+      navigationBar.style.display = "";
     }
   }
 };
