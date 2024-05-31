@@ -262,12 +262,11 @@ export const gFloorpDesign = {
   },
 
   hideUserInterface() {
-    let elements = document.getElementsByClassName("browser-toolbar");
-
-    for (let i = 0; i < elements.length; i++) {
-      elements[i].style.display = elements[i].style.display ? "" : "none";
+    let navigation_toolbox = document.getElementById("navigator-toolbox").children
+    for (const element of navigation_toolbox) {
+      element.style.display = element.style.display ? "" : "none";
     }
-  },
+  }
 };
 
 gFloorpDesign.init();
