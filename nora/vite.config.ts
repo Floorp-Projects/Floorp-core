@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { defineConfig } from "vite";
+import tsconfigPaths from "vite-tsconfig-paths";
 import solidPlugin from "vite-plugin-solid";
 import { $ } from "execa";
 import { promises as fs } from "node:fs";
@@ -48,6 +49,7 @@ export default defineConfig({
     },
   },
   plugins: [
+    tsconfigPaths(),
     solidPlugin({
       solid: {
         generate: "universal",
@@ -90,7 +92,7 @@ export default defineConfig({
               await fs.mkdir("./dist/profile/test", { recursive: true });
               browser = await puppeteer.launch({
                 headless: false,
-                cdp: "webDriverBiDi",
+                protocol: "cdp",
                 dumpio: true,
                 product: "firefox",
                 executablePath: path.join("../..", binPath("windows-x64")),
