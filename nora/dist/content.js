@@ -78,12 +78,28 @@ let CustomShortcutKey = _CustomShortcutKey;
 const [showStatusbar, setShowStatusbar] = createSignal(Services.prefs.getBoolPref("browser.display.statusbar", false));
 createEffect(() => {
   var _a, _b;
-  Services.prefs.setBoolPref("browser.display.statusbar", showStatusbar());
   const statuspanel_label = document.getElementById("statuspanel-label");
+  const statuspanel = document.getElementById("statuspanel");
+  const statusText = document.getElementById("status-text");
+  Services.prefs.setBoolPref("browser.display.statusbar", showStatusbar());
   if (showStatusbar()) {
     (_a = document.getElementById("status-text")) == null ? void 0 : _a.appendChild(statuspanel_label);
   } else {
     (_b = document.getElementById("statuspanel")) == null ? void 0 : _b.appendChild(statuspanel_label);
+  }
+  const observer = new MutationObserver(() => {
+    if (statuspanel.getAttribute("inactive") == "true" && statusText) {
+      statusText.setAttribute("hidden", "true");
+    } else {
+      statusText == null ? void 0 : statusText.removeAttribute("hidden");
+    }
+  });
+  observer == null ? void 0 : observer.disconnect();
+  statusText == null ? void 0 : statusText.removeAttribute("hidden");
+  if (showStatusbar()) {
+    observer.observe(statuspanel, {
+      attributes: true
+    });
   }
 });
 const _gFloorpStatusBarServices = class _gFloorpStatusBarServices {
@@ -122,7 +138,7 @@ function ContextMenu$1() {
     return _el$;
   })();
 }
-const statusbarStyle = '#statusBar {\n  visibility: visible !important;\n}\n\n:root[inFullscreen]:not([macOSNativeFullscreen]) #statusBar:not([fullscreentoolbar="true"]) {\n  visibility: collapse !important;\n}\n\n:root[customizing] #statusBar {\n  display: inherit !important;\n}\n\n#statusBar.collapsed {\n  display: none;\n}\n\n#statusBar #statuspanel-label {\n  box-shadow: none !important;\n  background: none !important;\n  border: none !important;\n}\n\n#statusBar #status-text {\n  overflow: hidden !important;\n}\n';
+const statusbarStyle = '#statusBar {\n  border-top: 1px solid var(--chrome-content-separator-color);\n  visibility: visible !important;\n}\n\n:root[inFullscreen]:not([macOSNativeFullscreen]) #statusBar:not([fullscreentoolbar="true"]) {\n  visibility: collapse !important;\n}\n\n:root[customizing] #statusBar {\n  display: inherit !important;\n}\n\n#statusBar.collapsed {\n  display: none;\n}\n\n#statusBar #statuspanel-label {\n  box-shadow: none !important;\n  background: none !important;\n  border: none !important;\n}\n\n#statusBar #status-text {\n  overflow: hidden !important;\n}\n';
 function StatusBar() {
   return [(() => {
     var _el$ = createElement("xul:toolbar"), _el$2 = createElement("xul:hbox");
@@ -130,7 +146,6 @@ function StatusBar() {
     setProp(_el$, "id", "statusBar");
     setProp(_el$, "toolbarname", "Status bar");
     setProp(_el$, "customizable", "true");
-    setProp(_el$, "style", "border-top: 1px solid var(--chrome-content-separator-color)");
     setProp(_el$, "mode", "icons");
     setProp(_el$, "context", "toolbar-context-menu");
     setProp(_el$, "accesskey", "A");

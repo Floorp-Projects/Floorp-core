@@ -11,23 +11,44 @@ export const [showStatusbar, setShowStatusbar] = createSignal(
 );
 
 createEffect(() => {
+  const statuspanel_label = document.getElementById(
+    "statuspanel-label",
+  ) as XULElement;
+  const statuspanel = document.getElementById("statuspanel") as XULElement;
+  const statusText = document.getElementById("status-text") as XULElement;
+
   Services.prefs.setBoolPref("browser.display.statusbar", showStatusbar());
-  const statuspanel_label = document.getElementById("statuspanel-label");
+
   if (showStatusbar()) {
     document.getElementById("status-text")?.appendChild(statuspanel_label!);
   } else {
     document.getElementById("statuspanel")?.appendChild(statuspanel_label!);
   }
+
+  const observer = new MutationObserver(() => {
+    if (statuspanel.getAttribute("inactive") === "true" && statusText) {
+      statusText.setAttribute("hidden", "true");
+    } else {
+      statusText?.removeAttribute("hidden");
+    }
+  });
+
+  observer?.disconnect();
+
+  if (showStatusbar()) {
+    observer.observe(statuspanel, { attributes: true });
+  }
 });
+
 class gFloorpStatusBarServices {
   private static instance: gFloorpStatusBarServices;
 
   public static getInstance() {
-    if(!gFloorpStatusBarServices.instance) {
-      gFloorpStatusBarServices.instance = new gFloorpStatusBarServices;
+    if (!gFloorpStatusBarServices.instance) {
+      gFloorpStatusBarServices.instance = new gFloorpStatusBarServices();
     }
     return gFloorpStatusBarServices.instance;
-  };
+  }
 
   public init() {
     window.CustomizableUI.registerArea("statusBar", {
@@ -41,7 +62,7 @@ class gFloorpStatusBarServices {
     //move elem to bottom of window
     document.body?.appendChild(document.getElementById("statusBar")!);
     this.observeStatusbar();
-  };
+  }
 
   private observeStatusbar() {
     Services.prefs.addObserver("browser.display.statusbar", () =>
@@ -49,7 +70,7 @@ class gFloorpStatusBarServices {
         Services.prefs.getBoolPref("browser.display.statusbar", false),
       ),
     );
-  };
-};
+  }
+}
 
 export const gFloorpStatusBar = gFloorpStatusBarServices.getInstance();
