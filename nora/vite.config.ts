@@ -116,4 +116,7 @@ export default defineConfig({
       "@private": r("../Floorp-private-components/nora"),
     },
   },
+  css :{
+    transformer: 'lightningcss',
+  },
 });
