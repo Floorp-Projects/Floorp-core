@@ -76,17 +76,17 @@ __publicField(_CustomShortcutKey, "instance");
 __publicField(_CustomShortcutKey, "windows", []);
 let CustomShortcutKey = _CustomShortcutKey;
 const [showStatusbar, setShowStatusbar] = createSignal(Services.prefs.getBoolPref("browser.display.statusbar", false));
-const _gFloorpStatusBarServices = class _gFloorpStatusBarServices {
+const _gFloorpStatusBar = class _gFloorpStatusBar {
   static getInstance() {
-    if (!_gFloorpStatusBarServices.instance) {
-      _gFloorpStatusBarServices.instance = new _gFloorpStatusBarServices();
+    if (!_gFloorpStatusBar.instance) {
+      _gFloorpStatusBar.instance = new _gFloorpStatusBar();
     }
-    return _gFloorpStatusBarServices.instance;
+    return _gFloorpStatusBar.instance;
   }
   get statusbarEnabled() {
     return Services.prefs.getBoolPref("browser.display.statusbar", false);
   }
-  init() {
+  constructor() {
     var _a;
     window.CustomizableUI.registerArea("statusBar", {
       type: window.CustomizableUI.TYPE_TOOLBAR,
@@ -122,9 +122,8 @@ const _gFloorpStatusBarServices = class _gFloorpStatusBarServices {
     Services.prefs.addObserver("browser.display.statusbar", () => setShowStatusbar(() => this.statusbarEnabled));
   }
 };
-__publicField(_gFloorpStatusBarServices, "instance");
-let gFloorpStatusBarServices = _gFloorpStatusBarServices;
-const gFloorpStatusBar = gFloorpStatusBarServices.getInstance();
+__publicField(_gFloorpStatusBar, "instance");
+let gFloorpStatusBar = _gFloorpStatusBar;
 function ContextMenu$1() {
   return (() => {
     var _el$ = createElement("xul:menuitem");
@@ -164,8 +163,7 @@ function StatusBar() {
 function initStatusbar() {
   render(() => createComponent(StatusBar, {}), document.getElementById("navigator-toolbox"));
   insert(document.getElementById("toolbar-context-menu"), () => createComponent(ContextMenu$1, {}), document.getElementById("viewToolbarsMenuSeparator"));
-  window.gFloorpStatusBar = gFloorpStatusBar;
-  gFloorpStatusBar.init();
+  gFloorpStatusBar.getInstance();
 }
 function ContextMenu(id, l10n, runFunction) {
   return (() => {
