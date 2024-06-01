@@ -76,37 +76,15 @@ __publicField(_CustomShortcutKey, "instance");
 __publicField(_CustomShortcutKey, "windows", []);
 let CustomShortcutKey = _CustomShortcutKey;
 const [showStatusbar, setShowStatusbar] = createSignal(Services.prefs.getBoolPref("browser.display.statusbar", false));
-createEffect(() => {
-  var _a, _b;
-  const statuspanel_label = document.getElementById("statuspanel-label");
-  const statuspanel = document.getElementById("statuspanel");
-  const statusText = document.getElementById("status-text");
-  Services.prefs.setBoolPref("browser.display.statusbar", showStatusbar());
-  if (showStatusbar()) {
-    (_a = document.getElementById("status-text")) == null ? void 0 : _a.appendChild(statuspanel_label);
-  } else {
-    (_b = document.getElementById("statuspanel")) == null ? void 0 : _b.appendChild(statuspanel_label);
-  }
-  const observer = new MutationObserver(() => {
-    if (statuspanel.getAttribute("inactive") === "true" && statusText) {
-      statusText.setAttribute("hidden", "true");
-    } else {
-      statusText == null ? void 0 : statusText.removeAttribute("hidden");
-    }
-  });
-  observer == null ? void 0 : observer.disconnect();
-  if (showStatusbar()) {
-    observer.observe(statuspanel, {
-      attributes: true
-    });
-  }
-});
 const _gFloorpStatusBarServices = class _gFloorpStatusBarServices {
   static getInstance() {
     if (!_gFloorpStatusBarServices.instance) {
       _gFloorpStatusBarServices.instance = new _gFloorpStatusBarServices();
     }
     return _gFloorpStatusBarServices.instance;
+  }
+  get statusbarEnabled() {
+    return Services.prefs.getBoolPref("browser.display.statusbar", false);
   }
   init() {
     var _a;
@@ -115,11 +93,33 @@ const _gFloorpStatusBarServices = class _gFloorpStatusBarServices {
       defaultPlacements: ["screenshot-button", "fullscreen-button"]
     });
     window.CustomizableUI.registerToolbarNode(document.getElementById("statusBar"));
+    createEffect(() => {
+      const statuspanel_label = document.getElementById("statuspanel-label");
+      const statuspanel = document.getElementById("statuspanel");
+      const statusText = document.getElementById("status-text");
+      const observer = new MutationObserver(() => {
+        if (statuspanel.getAttribute("inactive") === "true" && statusText) {
+          statusText.setAttribute("hidden", "true");
+        } else {
+          statusText == null ? void 0 : statusText.removeAttribute("hidden");
+        }
+      });
+      Services.prefs.setBoolPref("browser.display.statusbar", showStatusbar());
+      if (showStatusbar()) {
+        statusText == null ? void 0 : statusText.appendChild(statuspanel_label);
+        observer.observe(statuspanel, {
+          attributes: true
+        });
+      } else {
+        statuspanel == null ? void 0 : statuspanel.appendChild(statuspanel_label);
+        observer == null ? void 0 : observer.disconnect();
+      }
+    });
     (_a = document.body) == null ? void 0 : _a.appendChild(document.getElementById("statusBar"));
     this.observeStatusbar();
   }
   observeStatusbar() {
-    Services.prefs.addObserver("browser.display.statusbar", () => setShowStatusbar(() => Services.prefs.getBoolPref("browser.display.statusbar", false)));
+    Services.prefs.addObserver("browser.display.statusbar", () => setShowStatusbar(() => this.statusbarEnabled));
   }
 };
 __publicField(_gFloorpStatusBarServices, "instance");

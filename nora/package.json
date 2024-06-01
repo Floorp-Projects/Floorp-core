@@ -13,6 +13,7 @@
   "license": "MPL-2.0",
   "type": "module",
   "devDependencies": {
+    "@biomejs/biome": "1.7.3",
     "execa": "^9.1.0",
     "puppeteer-core": "^22.10.0",
     "solid-styled-jsx": "^0.27.1",

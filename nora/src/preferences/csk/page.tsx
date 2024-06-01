@@ -11,14 +11,20 @@ import {
   setCurrentFocus,
   setEditingStatus,
 } from "./setkey";
-import { commands, csk_category } from "../../components/custom-shortcut-key/commands";
+import {
+  commands,
+  csk_category,
+} from "../../components/custom-shortcut-key/commands";
 
 export const CustomShortcutKeyPage = () => {
   return (
     <>
       <div>
-        <h1 data-l10n-id="floorp-CSK-title"/>
-        <xul:description class="indent tip-caption" data-l10n-id="floorp-CSK-description"/>
+        <h1 data-l10n-id="floorp-CSK-title" />
+        <xul:description
+          class="indent tip-caption"
+          data-l10n-id="floorp-CSK-description"
+        />
         <xul:checkbox data-l10n-id="disable-fx-actions" />
       </div>
       <For each={csk_category}>
@@ -65,7 +71,8 @@ export const CustomShortcutKeyPage = () => {
                         color: "inherit",
                         padding: "6px 10px",
                         "background-color": "transparent !important",
-                        border: "1px solid var(--input-border-color) !important",
+                        border:
+                          "1px solid var(--input-border-color) !important",
                         transition: "all .2s ease-in-out !important",
                       }}
                     />
@@ -73,9 +80,9 @@ export const CustomShortcutKeyPage = () => {
                 ) : undefined
               }
             </For>
-            </xul:vbox>
+          </xul:vbox>
         )}
       </For>
     </>
   );
-}
+};

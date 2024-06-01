@@ -9,6 +9,6 @@ import { initBrowserContextMenu } from "./context-menu";
 CustomShortcutKey.getInstance();
 
 window.SessionStore.promiseInitialized.then(() => {
-    initBrowserContextMenu();
-    initStatusbar();
+  initBrowserContextMenu();
+  initStatusbar();
 });

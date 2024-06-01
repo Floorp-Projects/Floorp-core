@@ -9,7 +9,7 @@ import {
   zCSKData,
 } from "../../components/custom-shortcut-key/defines";
 import type { commands } from "../../components/custom-shortcut-key/commands";
-import { checkIsSystemShortcut } from "../../components/custom-shortcut-key/utils"
+import { checkIsSystemShortcut } from "../../components/custom-shortcut-key/utils";
 import { create } from "sortablejs";
 
 export const [editingStatus, setEditingStatus] = createSignal<string | null>(
