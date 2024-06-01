@@ -19,9 +19,17 @@ createEffect(() => {
     document.getElementById("statuspanel")?.appendChild(statuspanel_label!);
   }
 });
+class gFloorpStatusBarServices {
+  private static instance: gFloorpStatusBarServices;
 
-export const gFloorpStatusBar = {
-  init() {
+  public static getInstance() {
+    if(!gFloorpStatusBarServices.instance) {
+      gFloorpStatusBarServices.instance = new gFloorpStatusBarServices;
+    }
+    return gFloorpStatusBarServices.instance;
+  };
+
+  public init() {
     window.CustomizableUI.registerArea("statusBar", {
       type: window.CustomizableUI.TYPE_TOOLBAR,
       defaultPlacements: ["screenshot-button", "fullscreen-button"],
@@ -33,13 +41,15 @@ export const gFloorpStatusBar = {
     //move elem to bottom of window
     document.body?.appendChild(document.getElementById("statusBar")!);
     this.observeStatusbar();
-  },
+  };
 
-  observeStatusbar() {
+  private observeStatusbar() {
     Services.prefs.addObserver("browser.display.statusbar", () =>
       setShowStatusbar(() =>
         Services.prefs.getBoolPref("browser.display.statusbar", false),
       ),
     );
-  },
+  };
 };
+
+export const gFloorpStatusBar = gFloorpStatusBarServices.getInstance();

@@ -86,7 +86,13 @@ createEffect(() => {
     (_b = document.getElementById("statuspanel")) == null ? void 0 : _b.appendChild(statuspanel_label);
   }
 });
-const gFloorpStatusBar = {
+const _gFloorpStatusBarServices = class _gFloorpStatusBarServices {
+  static getInstance() {
+    if (!_gFloorpStatusBarServices.instance) {
+      _gFloorpStatusBarServices.instance = new _gFloorpStatusBarServices();
+    }
+    return _gFloorpStatusBarServices.instance;
+  }
   init() {
     var _a;
     window.CustomizableUI.registerArea("statusBar", {
@@ -96,11 +102,14 @@ const gFloorpStatusBar = {
     window.CustomizableUI.registerToolbarNode(document.getElementById("statusBar"));
     (_a = document.body) == null ? void 0 : _a.appendChild(document.getElementById("statusBar"));
     this.observeStatusbar();
-  },
+  }
   observeStatusbar() {
     Services.prefs.addObserver("browser.display.statusbar", () => setShowStatusbar(() => Services.prefs.getBoolPref("browser.display.statusbar", false)));
   }
 };
+__publicField(_gFloorpStatusBarServices, "instance");
+let gFloorpStatusBarServices = _gFloorpStatusBarServices;
+const gFloorpStatusBar = gFloorpStatusBarServices.getInstance();
 function ContextMenu$1() {
   return (() => {
     var _el$ = createElement("xul:menuitem");
@@ -113,7 +122,7 @@ function ContextMenu$1() {
     return _el$;
   })();
 }
-const statusbarStyle = '#statusBar {\n  visibility: visible !important;\n\n  :root[inFullscreen]:not([macOSNativeFullscreen])\n    &:not([fullscreentoolbar="true"]) {\n    visibility: collapse !important;\n  }\n\n  :root[customizing] & {\n    display: inherit !important;\n  }\n\n  &.collapsed {\n    display: none;\n  }\n\n  #statuspanel-label {\n    background: none !important;\n    border: none !important;\n    box-shadow: none !important;\n  }\n\n  #status-text {\n    overflow: hidden !important;\n  }\n}\n';
+const statusbarStyle = '#statusBar {\n  visibility: visible !important;\n}\n\n:root[inFullscreen]:not([macOSNativeFullscreen]) #statusBar:not([fullscreentoolbar="true"]) {\n  visibility: collapse !important;\n}\n\n:root[customizing] #statusBar {\n  display: inherit !important;\n}\n\n#statusBar.collapsed {\n  display: none;\n}\n\n#statusBar #statuspanel-label {\n  box-shadow: none !important;\n  background: none !important;\n  border: none !important;\n}\n\n#statusBar #status-text {\n  overflow: hidden !important;\n}\n';
 function StatusBar() {
   return [(() => {
     var _el$ = createElement("xul:toolbar"), _el$2 = createElement("xul:hbox");
