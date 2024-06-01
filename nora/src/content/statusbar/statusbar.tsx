@@ -13,7 +13,6 @@ export function StatusBar() {
         id="statusBar"
         toolbarname="Status bar"
         customizable="true"
-        style="border-top: 1px solid var(--chrome-content-separator-color)"
         class={`browser-toolbar customization-target ${
           showStatusbar() ? "" : "collapsed"
         }`}
