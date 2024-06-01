@@ -88,14 +88,13 @@ createEffect(() => {
     (_b = document.getElementById("statuspanel")) == null ? void 0 : _b.appendChild(statuspanel_label);
   }
   const observer = new MutationObserver(() => {
-    if (statuspanel.getAttribute("inactive") == "true" && statusText) {
+    if (statuspanel.getAttribute("inactive") === "true" && statusText) {
       statusText.setAttribute("hidden", "true");
     } else {
       statusText == null ? void 0 : statusText.removeAttribute("hidden");
     }
   });
   observer == null ? void 0 : observer.disconnect();
-  statusText == null ? void 0 : statusText.removeAttribute("hidden");
   if (showStatusbar()) {
     observer.observe(statuspanel, {
       attributes: true
