@@ -68,9 +68,6 @@ document.addEventListener("DOMContentLoaded", () => {
         import("chrome://floorp/content/browser-splitView.mjs").then(({ gSplitView }) => {
             window.gSplitView = gSplitView
         });
-        import("chrome://floorp/content/browser-private-container.mjs").then(({ gFloorpPrivateContainer }) => {
-            window.gFloorpPrivateContainer = gFloorpPrivateContainer
-        });
     }
 
     // If script need more delay, use the following code.

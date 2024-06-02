@@ -5,10 +5,12 @@
 import { CustomShortcutKey } from "../components/custom-shortcut-key";
 import { initStatusbar } from "./statusbar";
 import { initBrowserContextMenu } from "./context-menu";
+import { initPrivateContainer } from "./browser-private-container";
 
 CustomShortcutKey.getInstance();
 
 window.SessionStore.promiseInitialized.then(() => {
   initBrowserContextMenu();
+  initPrivateContainer();
   initStatusbar();
 });
