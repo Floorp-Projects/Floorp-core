@@ -93,9 +93,6 @@ document.addEventListener("DOMContentLoaded", () => {
         import("chrome://floorp/content/browser-flex-order.mjs").then(({ gFloorpFlexOrder }) => {
             window.gFloorpFlexOrder = gFloorpFlexOrder
         })
-        import("chrome://floorp/content/browser-share-mode.mjs").then(({ gFloorpShareMode }) => {
-            window.gFloorpShareMode = gFloorpShareMode
-        });
 
         if (FloorpAppConstants.FLOORP_OFFICIAL_COMPONENTS_ENABLED) {
             import("chrome://floorp/content/browser-UI-customizing-menu.mjs").then(({ gFloorpCustomizeMode }) => {

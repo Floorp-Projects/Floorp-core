@@ -4,7 +4,7 @@ var __publicField = (obj, key, value) => {
   __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
   return value;
 };
-import { k as zCSKCommands, z as zCSKData, b as checkIsSystemShortcut, h as commands, c as createSignal, a as createEffect, d as createElement, s as setProp, j as effect, i as insertNode, g as insert, r as render, e as createComponent } from "./assets/utils.js";
+import { k as zCSKCommands, z as zCSKData, b as checkIsSystemShortcut, h as commands, c as createSignal, a as createEffect, d as createElement, s as setProp, j as effect, i as insertNode, g as insert, r as render, e as createComponent, S as Show } from "./assets/utils.js";
 const _CustomShortcutKey = class _CustomShortcutKey {
   constructor() {
     //this boolean disable shortcut of csk
@@ -444,10 +444,38 @@ function initPrivateContainer() {
   insert(document.querySelector("#tabContextMenu"), () => createComponent(ContextMenu, {}), document.querySelector("#context_selectAllTabs"));
   window.gFloorpPrivateContainer = gFloorpPrivateContainer.getInstance();
 }
+const shareModeStyle = '#PersonalToolbar, #alltabs-button, #sidebar-box, #sidebar-select-box, #sidebar-splitter2, #sidebar-select-box, #downloads-button, #unified-extensions-button, #appMenu-fxa-status2, #PanelUI-fxa, #workspace-button > .toolbarbutton-text, .unified-extensions-item, .tab-content:not([selected="true"]), .tab-background:not([selected="true"]) {\n  display: none !important;\n}\n\n.urlbar-addon-page-action {\n  display: none;\n}\n\n.urlbar-addon-page-action[actionid="floorp-system_floorp_ablaze_one"] {\n  display: block;\n}\n\n.urlbar-addon-page-action[actionid="_036a55b4-5e72-4d05-a06c-cba2dfcc134a_"] {\n  display: block;\n}\n\n#fxa-toolbar-menu-button {\n  border: 2px solid green;\n  border-radius: 15px;\n  max-height: 25px;\n  color: #90ee90 !important;\n  fill: currentColor !important;\n  margin: auto !important;\n  padding: 0 0 0 10px !important;\n}\n\n#fxa-toolbar-menu-button:before {\n  content: "Share Mode";\n  margin: auto;\n  font-size: 12px;\n  font-weight: bold;\n  display: -moz-box;\n}\n\n#fxa-toolbar-menu-button:-webkit-any([open], [checked]) {\n  background: none !important;\n  background-color: unset !important;\n}\n\n#fxa-toolbar-menu-button:-moz-any([open], [checked]) {\n  background: none !important;\n  background-color: unset !important;\n}\n\n#fxa-toolbar-menu-button:is([open], [checked]) {\n  background: none !important;\n  background-color: unset !important;\n}\n\n#fxa-toolbar-menu-button:hover > .toolbarbutton-badge-stack {\n  background: none !important;\n  background-color: unset !important;\n}\n\n#fxa-toolbar-menu-button:not([disabled="true"]):-webkit-any([open], [checked], :hover:active) > .toolbarbutton-badge-stack {\n  background: none !important;\n  background-color: unset !important;\n}\n\n#fxa-toolbar-menu-button:not([disabled="true"]):-moz-any([open], [checked], :hover:active) > .toolbarbutton-badge-stack {\n  background: none !important;\n  background-color: unset !important;\n}\n\n#fxa-toolbar-menu-button:not([disabled="true"]):is([open], [checked], :hover:active) > .toolbarbutton-badge-stack {\n  background: none !important;\n  background-color: unset !important;\n}\n\n#fxa-avatar-image {\n  scale: 1.2;\n  list-style-image: url("chrome://branding/content/about-logo-private.png") !important;\n}\n';
+const [shareModeEnabled, setShareModeEnabled] = createSignal(false);
+function ShareModeElement() {
+  return [(() => {
+    var _el$ = createElement("xul:menuitem");
+    setProp(_el$, "data-l10n-id", "sharemode-menuitem");
+    setProp(_el$, "label", "Toggle Share Mode");
+    setProp(_el$, "type", "checkbox");
+    setProp(_el$, "id", "toggle_sharemode");
+    setProp(_el$, "checked", false);
+    setProp(_el$, "onCommand", () => setShareModeEnabled((prev) => !prev));
+    setProp(_el$, "accesskey", "S");
+    return _el$;
+  })(), createComponent(Show, {
+    get when() {
+      return shareModeEnabled();
+    },
+    get children() {
+      var _el$2 = createElement("style");
+      insert(_el$2, shareModeStyle);
+      return _el$2;
+    }
+  })];
+}
+function initShareMode() {
+  insert(document.querySelector("#menu_ToolsPopup"), () => createComponent(ShareModeElement, {}), document.querySelector("#menu_openFirefoxView"));
+}
 CustomShortcutKey.getInstance();
 window.SessionStore.promiseInitialized.then(() => {
   initBrowserContextMenu();
   initPrivateContainer();
+  initShareMode();
   initStatusbar();
 });
 //# sourceMappingURL=content.js.map

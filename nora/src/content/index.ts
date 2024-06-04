@@ -6,11 +6,13 @@ import { CustomShortcutKey } from "../components/custom-shortcut-key";
 import { initStatusbar } from "./statusbar";
 import { initBrowserContextMenu } from "./context-menu";
 import { initPrivateContainer } from "./browser-private-container";
+import { initShareMode } from "./browser-share-mode";
 
 CustomShortcutKey.getInstance();
 
 window.SessionStore.promiseInitialized.then(() => {
   initBrowserContextMenu();
   initPrivateContainer();
+  initShareMode();
   initStatusbar();
 });
