@@ -73,6 +73,11 @@ export function initSetKey() {
     const shift = ev.shiftKey;
     const meta = ev.metaKey;
 
+    // If shift is pressed without any other modifier, it's a system shortcut
+    if (shift && !alt && !ctrl && !meta) {
+      return;
+    }
+
     if (key === "Escape" || key === "Tab") {
       return;
     }

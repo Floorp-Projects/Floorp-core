@@ -49,6 +49,9 @@ function initSetKey() {
     const ctrl = ev.ctrlKey;
     const shift = ev.shiftKey;
     const meta = ev.metaKey;
+    if (shift && !alt && !ctrl && !meta) {
+      return;
+    }
     if (key === "Escape" || key === "Tab") {
       return;
     }
