@@ -5,8 +5,11 @@
 import { CustomShortcutKey } from "../components/custom-shortcut-key";
 import { initStatusbar } from "./statusbar";
 import { initBrowserContextMenu } from "./context-menu";
-import { initPrivateContainer } from "./browser-private-container";
-import { initShareMode } from "./browser-share-mode";
+import { initPrivateContainer } from "./private-container";
+import { initShareMode } from "./share-mode";
+import { initReverseSidebarPosition } from "./reverse-sidebar-position";
+import { initUndoClosedTab } from "./undo-closed-tab";
+import { initProfileManager } from "./profile-manager";
 
 CustomShortcutKey.getInstance();
 
@@ -15,4 +18,7 @@ window.SessionStore.promiseInitialized.then(() => {
   initPrivateContainer();
   initShareMode();
   initStatusbar();
+  initReverseSidebarPosition();
+  initUndoClosedTab();
+  initProfileManager();
 });

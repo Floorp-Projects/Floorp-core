@@ -6,7 +6,6 @@ floorp.jar:
 % content floorp %content/ contentaccessible=yes
 
 # ES modules
-  content/browser-browserActions.mjs          (content/browser-browserActions.mjs)
   content/browser-chromeCSS.mjs               (content/browser-chromeCSS.mjs)
   content/browser-commands.mjs                (content/browser-commands.mjs)
   content/browser-context-menu.mjs            (content/browser-context-menu.mjs)

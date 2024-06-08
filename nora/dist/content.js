@@ -471,11 +471,180 @@ function ShareModeElement() {
 function initShareMode() {
   insert(document.querySelector("#menu_ToolsPopup"), () => createComponent(ShareModeElement, {}), document.querySelector("#menu_openFirefoxView"));
 }
+const {
+  CustomizableUI: CustomizableUI$3
+} = ChromeUtils.importESModule("resource:///modules/CustomizableUI.sys.mjs");
+const gFloorpBrowserAction = {
+  createToolbarClickActionButton(widgetId, l10nId, onCommandFunc, styleElement = null, area = CustomizableUI$3.AREA_NAVBAR, position = null, onCreatedFunc = null) {
+    var _a;
+    insert(document.head, () => styleElement, (_a = document.head) == null ? void 0 : _a.lastChild);
+    const widget = CustomizableUI$3.getWidget(widgetId);
+    if (widget && widget.type !== "custom") {
+      return;
+    }
+    (async () => {
+      var _a2, _b;
+      CustomizableUI$3.createWidget({
+        id: widgetId,
+        type: "button",
+        tooltiptext: await ((_a2 = document.l10n) == null ? void 0 : _a2.formatValue(l10nId)),
+        label: await ((_b = document.l10n) == null ? void 0 : _b.formatValue(l10nId)),
+        removable: true,
+        onCommand: () => {
+          onCommandFunc == null ? void 0 : onCommandFunc();
+        },
+        onCreated: (aNode) => {
+          onCreatedFunc == null ? void 0 : onCreatedFunc(aNode);
+        }
+      });
+      if (ChromeUtils.importESModule("resource://floorp/FloorpStartup.sys.mjs").isFirstRun) {
+        CustomizableUI$3.addWidgetToArea(widgetId, area, position);
+      }
+    })();
+  },
+  createMenuToolbarButton(widgetId, l10nId, popupElem, onCommandFunc, area = CustomizableUI$3.AREA_NAVBAR, styleElement = null, position = null, onCreatedFunc = null) {
+    var _a;
+    insert(document.head, () => styleElement, (_a = document.head) == null ? void 0 : _a.lastChild);
+    const widget = CustomizableUI$3.getWidget(widgetId);
+    if (widget && widget.type !== "custom") {
+      return;
+    }
+    (async () => {
+      var _a2, _b;
+      CustomizableUI$3.createWidget({
+        id: widgetId,
+        type: "button",
+        tooltiptext: await ((_a2 = document.l10n) == null ? void 0 : _a2.formatValue(l10nId)),
+        label: await ((_b = document.l10n) == null ? void 0 : _b.formatValue(l10nId)),
+        removable: true,
+        onCommand: () => {
+          onCommandFunc == null ? void 0 : onCommandFunc();
+        },
+        onCreated: (aNode) => {
+          aNode.setAttribute("type", "menu");
+          insert(aNode, () => popupElem, aNode.lastChild);
+          onCreatedFunc == null ? void 0 : onCreatedFunc(aNode);
+        }
+      });
+      if (ChromeUtils.importESModule("resource://floorp/FloorpStartup.sys.mjs").isFirstRun) {
+        CustomizableUI$3.addWidgetToArea(widgetId, area, position);
+      }
+    })();
+  }
+};
+const iconStyle$1 = '#sidebar-reverse-position-toolbar {\n  list-style-image: url("chrome://browser/skin/preferences/category-sync.svg");\n}\n';
+const {
+  CustomizableUI: CustomizableUI$2
+} = ChromeUtils.importESModule("resource:///modules/CustomizableUI.sys.mjs");
+const _gReverseSidebarPosition = class _gReverseSidebarPosition {
+  constructor() {
+    __publicField(this, "StyleElement", () => {
+      return (() => {
+        var _el$ = createElement("style");
+        insert(_el$, iconStyle$1);
+        return _el$;
+      })();
+    });
+    gFloorpBrowserAction.createToolbarClickActionButton("sidebar-reverse-position-toolbar", "sidebar-reverse-position-toolbar", () => {
+      window.SidebarUI.reversePosition();
+    }, this.StyleElement(), CustomizableUI$2.AREA_NAVBAR, 1, () => {
+      CustomizableUI$2.addWidgetToArea("sidebar-button", CustomizableUI$2.AREA_NAVBAR, 0);
+    });
+  }
+  static getInstance() {
+    if (!_gReverseSidebarPosition.instance) {
+      _gReverseSidebarPosition.instance = new _gReverseSidebarPosition();
+    }
+    return _gReverseSidebarPosition.instance;
+  }
+};
+__publicField(_gReverseSidebarPosition, "instance");
+let gReverseSidebarPosition = _gReverseSidebarPosition;
+function initReverseSidebarPosition() {
+  gReverseSidebarPosition.getInstance();
+}
+const iconStyle = '#undo-closed-tab {\n  list-style-image: url("chrome://global/skin/icons/undo.svg");\n}\n';
+const {
+  CustomizableUI: CustomizableUI$1
+} = ChromeUtils.importESModule("resource:///modules/CustomizableUI.sys.mjs");
+const _gFloorpUndoClosedTab = class _gFloorpUndoClosedTab {
+  constructor() {
+    __publicField(this, "StyleElement", () => {
+      return (() => {
+        var _el$ = createElement("style");
+        insert(_el$, iconStyle);
+        return _el$;
+      })();
+    });
+    gFloorpBrowserAction.createToolbarClickActionButton("undo-closed-tab", "undo-closed-tab", () => {
+      window.undoCloseTab();
+    }, this.StyleElement(), CustomizableUI$1.AREA_NAVBAR, 2);
+  }
+  static getInstance() {
+    if (!_gFloorpUndoClosedTab.instance) {
+      _gFloorpUndoClosedTab.instance = new _gFloorpUndoClosedTab();
+    }
+    return _gFloorpUndoClosedTab.instance;
+  }
+};
+__publicField(_gFloorpUndoClosedTab, "instance");
+let gFloorpUndoClosedTab = _gFloorpUndoClosedTab;
+function initUndoClosedTab() {
+  gFloorpUndoClosedTab.getInstance();
+}
+function MenuPopup() {
+  return (() => {
+    var _el$ = createElement("xul:menupopup"), _el$2 = createElement("xul:browser");
+    insertNode(_el$, _el$2);
+    setProp(_el$, "id", "profile-manager-popup");
+    setProp(_el$2, "id", "profile-switcher-browser");
+    setProp(_el$2, "src", "chrome://floorp/content/profile-manager/profile-switcher.xhtml");
+    setProp(_el$2, "flex", "1");
+    setProp(_el$2, "type", "content");
+    setProp(_el$2, "disablehistory", "true");
+    setProp(_el$2, "disableglobalhistory", "true");
+    setProp(_el$2, "context", "profile-popup-contextmenu");
+    return _el$;
+  })();
+}
+const profileManagerStyle = '#profile-switcher-browser {\n  min-width: 25em !important;\n  min-height: 41em !important;\n}\n\n#profile-manager {\n  list-style-image: url("chrome://browser/skin/fxa/avatar-color.svg");\n}\n';
+const {
+  CustomizableUI
+} = ChromeUtils.importESModule("resource:///modules/CustomizableUI.sys.mjs");
+const _gFloorpProfileManager = class _gFloorpProfileManager {
+  constructor() {
+    __publicField(this, "StyleElement", () => {
+      return (() => {
+        var _el$ = createElement("style");
+        insert(_el$, profileManagerStyle);
+        return _el$;
+      })();
+    });
+    gFloorpBrowserAction.createMenuToolbarButton("profile-manager", "floorp-profile-manager", createComponent(MenuPopup, {}), async () => {
+      const popup = document.getElementById("profile-manager-popup");
+      popup == null ? void 0 : popup.openPopup(document.getElementById("profile-manager-popup"), "after_start", 0, 0, false, false);
+    }, CustomizableUI.AREA_NAVBAR, this.StyleElement(), 15);
+  }
+  static getInstance() {
+    if (!_gFloorpProfileManager.instance) {
+      _gFloorpProfileManager.instance = new _gFloorpProfileManager();
+    }
+    return _gFloorpProfileManager.instance;
+  }
+};
+__publicField(_gFloorpProfileManager, "instance");
+let gFloorpProfileManager = _gFloorpProfileManager;
+function initProfileManager() {
+  gFloorpProfileManager.getInstance();
+}
 CustomShortcutKey.getInstance();
 window.SessionStore.promiseInitialized.then(() => {
   initBrowserContextMenu();
   initPrivateContainer();
   initShareMode();
   initStatusbar();
+  initReverseSidebarPosition();
+  initUndoClosedTab();
+  initProfileManager();
 });
 //# sourceMappingURL=content.js.map

@@ -45,9 +45,6 @@ document.addEventListener("DOMContentLoaded", () => {
     import("chrome://floorp/content/browser-UI-custom.mjs").then(({ gFloorpObservePreference }) => {
         window.gFloorpObservePreference = gFloorpObservePreference
     });
-    import("chrome://floorp/content/browser-browserActions.mjs").then(({ gFloorpBrowserActions }) => {
-        window.gFloorpBrowserActions = gFloorpBrowserActions
-    });
     import("chrome://floorp/content/browser-chromeCSS.mjs");
 
     if (FloorpAppConstants.FLOORP_OFFICIAL_COMPONENTS_ENABLED) {
