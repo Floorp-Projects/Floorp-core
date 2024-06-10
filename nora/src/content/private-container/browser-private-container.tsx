@@ -44,6 +44,11 @@ export class gFloorpPrivateContainer {
         gFloorpPrivateContainer.handleTabModifications,
       );
 
+      document.addEventListener(
+        "floorpOnLocationChangeEvent",
+        gFloorpPrivateContainer.handleTabModifications,
+      );
+
       // add URL link a context menu to open in private container.
       gFloorpContextMenu.addContextBox(
         "open_in_private_container",

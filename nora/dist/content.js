@@ -306,6 +306,7 @@ const _gFloorpPrivateContainer = class _gFloorpPrivateContainer {
     window.SessionStore.promiseInitialized.then(() => {
       window.gBrowser.tabContainer.addEventListener("TabClose", _gFloorpPrivateContainer.removeDataIfPrivateContainerTabNotExist);
       window.gBrowser.tabContainer.addEventListener("TabOpen", _gFloorpPrivateContainer.handleTabModifications);
+      document.addEventListener("floorpOnLocationChangeEvent", _gFloorpPrivateContainer.handleTabModifications);
       gFloorpContextMenu.addContextBox("open_in_private_container", "open-in_private-container", "context-openlink", () => _gFloorpPrivateContainer.openWithPrivateContainer(window.gContextMenu.linkURL), "context-openlink", () => {
         this.privateContainerMenuItem.hidden = this.openLinkMenuItem.hidden;
       });
