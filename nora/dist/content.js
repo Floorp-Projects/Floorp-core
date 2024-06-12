@@ -325,6 +325,9 @@ const _gFloorpPrivateContainer = class _gFloorpPrivateContainer {
     }
     return _gFloorpPrivateContainer.instance;
   }
+  getPrivateContainerUserContextId() {
+    return PrivateContainer.getPrivateContainerUserContextId();
+  }
   static checkPrivateContainerTabExist() {
     const privateContainer = PrivateContainer.getPrivateContainer();
     if (!privateContainer || !privateContainer.userContextId) {
@@ -444,6 +447,7 @@ function ContextMenu() {
 function initPrivateContainer() {
   insert(document.querySelector("#tabContextMenu"), () => createComponent(ContextMenu, {}), document.querySelector("#context_selectAllTabs"));
   window.gFloorpPrivateContainer = gFloorpPrivateContainer.getInstance();
+  console.log(window.gFloorpPrivateContainer);
 }
 const shareModeStyle = '#PersonalToolbar, #alltabs-button, #sidebar-box, #sidebar-select-box, #sidebar-splitter2, #sidebar-select-box, #downloads-button, #unified-extensions-button, #appMenu-fxa-status2, #PanelUI-fxa, #workspace-button > .toolbarbutton-text, .unified-extensions-item, .tab-content:not([selected="true"]), .tab-background:not([selected="true"]) {\n  display: none !important;\n}\n\n.urlbar-addon-page-action {\n  display: none;\n}\n\n.urlbar-addon-page-action[actionid="floorp-system_floorp_ablaze_one"] {\n  display: block;\n}\n\n.urlbar-addon-page-action[actionid="_036a55b4-5e72-4d05-a06c-cba2dfcc134a_"] {\n  display: block;\n}\n\n#fxa-toolbar-menu-button {\n  border: 2px solid green;\n  border-radius: 15px;\n  max-height: 25px;\n  color: #90ee90 !important;\n  fill: currentColor !important;\n  margin: auto !important;\n  padding: 0 0 0 10px !important;\n}\n\n#fxa-toolbar-menu-button:before {\n  content: "Share Mode";\n  margin: auto;\n  font-size: 12px;\n  font-weight: bold;\n  display: -moz-box;\n}\n\n#fxa-toolbar-menu-button:-webkit-any([open], [checked]) {\n  background: none !important;\n  background-color: unset !important;\n}\n\n#fxa-toolbar-menu-button:-moz-any([open], [checked]) {\n  background: none !important;\n  background-color: unset !important;\n}\n\n#fxa-toolbar-menu-button:is([open], [checked]) {\n  background: none !important;\n  background-color: unset !important;\n}\n\n#fxa-toolbar-menu-button:hover > .toolbarbutton-badge-stack {\n  background: none !important;\n  background-color: unset !important;\n}\n\n#fxa-toolbar-menu-button:not([disabled="true"]):-webkit-any([open], [checked], :hover:active) > .toolbarbutton-badge-stack {\n  background: none !important;\n  background-color: unset !important;\n}\n\n#fxa-toolbar-menu-button:not([disabled="true"]):-moz-any([open], [checked], :hover:active) > .toolbarbutton-badge-stack {\n  background: none !important;\n  background-color: unset !important;\n}\n\n#fxa-toolbar-menu-button:not([disabled="true"]):is([open], [checked], :hover:active) > .toolbarbutton-badge-stack {\n  background: none !important;\n  background-color: unset !important;\n}\n\n#fxa-avatar-image {\n  scale: 1.2;\n  list-style-image: url("chrome://branding/content/about-logo-private.png") !important;\n}\n';
 const [shareModeEnabled, setShareModeEnabled] = createSignal(false);

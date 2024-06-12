@@ -3,9 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-/* This file is used to override existing Firefox functions and various variables. */
-import { PrivateContainer } from "./modules/private-container/PrivateContainer.mjs";
-
 // Override Forward & Backward button's customizable element.
 //From "browser.js" line 750
 window.SetClickAndHoldHandlers = function () {
@@ -62,7 +59,7 @@ window.SessionStore.promiseInitialized.then(() => {
 
     if (
       userContextId ===
-      PrivateContainer.Functions.getPrivateContainerUserContextId()
+      window.gFloorpPrivateContainer.getPrivateContainerUserContextId()
     ) {
       b.setAttribute("disablehistory", "true");
       b.setAttribute("disableglobalhistory", "true");

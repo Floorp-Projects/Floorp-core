@@ -68,6 +68,10 @@ export class gFloorpPrivateContainer {
     this.initialized = true;
   }
 
+  public getPrivateContainerUserContextId() {
+    return PrivateContainer.getPrivateContainerUserContextId();
+  }
+
   public static checkPrivateContainerTabExist() {
     const privateContainer = PrivateContainer.getPrivateContainer();
     if (!privateContainer || !privateContainer.userContextId) {

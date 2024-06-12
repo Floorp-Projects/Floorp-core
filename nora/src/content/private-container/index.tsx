@@ -15,4 +15,5 @@ export function initPrivateContainer() {
   );
   // Inject menu item to open link in private container.
   window.gFloorpPrivateContainer = gFloorpPrivateContainer.getInstance();
+  console.log(window.gFloorpPrivateContainer)
 }
