@@ -173,9 +173,6 @@ export var gFloorpVerticalTabBar = {
       )}px`;
     }
 
-    // Observer
-    this.toggleCustomizeModeVerticaltabStyle();
-
     // Context menu localization
     this.tabContextCloseTabsToTheStart?.setAttribute(
       "data-lazy-l10n-id",
@@ -256,58 +253,6 @@ export var gFloorpVerticalTabBar = {
         );
       }
     }
-  },
-
-  toggleCustomizeModeVerticaltabStyle() {
-    let customizationContainer = document.getElementById("nav-bar");
-    let arrowscrollbox = document.getElementById("tabbrowser-arrowscrollbox");
-    let observer = new MutationObserver(function (mutations) {
-      mutations.forEach(function (mutation) {
-        if (mutation.target.getAttribute("customizing") == "true") {
-          Services.prefs.setBoolPref(
-            "floorp.browser.tabs.verticaltab.temporary.disabled",
-            true
-          );
-          Services.prefs.setIntPref("floorp.tabbar.style", 0);
-          Services.prefs.setIntPref(
-            gFloorpTabBarStyle.tabbarDisplayStylePref,
-            0
-          );
-          arrowscrollbox.hidden = true;
-        } else {
-          Services.prefs.setBoolPref(
-            "floorp.browser.tabs.verticaltab.temporary.disabled",
-            false
-          );
-          Services.prefs.setIntPref("floorp.tabbar.style", 2);
-          Services.prefs.setIntPref(
-            gFloorpTabBarStyle.tabbarDisplayStylePref,
-            2
-          );
-          arrowscrollbox.hidden = false;
-        }
-      });
-    });
-    let config = { attributes: true };
-    observer.observe(customizationContainer, config);
-
-    Services.prefs.addObserver("floorp.tabbar.style", function () {
-      if (
-        Services.prefs.getIntPref("floorp.tabbar.style") != 2 &&
-        !Services.prefs.getBoolPref(
-          "floorp.browser.tabs.verticaltab.temporary.disabled"
-        )
-      ) {
-        observer.disconnect();
-      } else if (
-        Services.prefs.getIntPref("floorp.tabbar.style") == 2 &&
-        Services.prefs.getBoolPref(
-          "floorp.browser.tabs.verticaltab.temporary.disabled"
-        )
-      ) {
-        observer.observe(customizationContainer, config);
-      }
-    });
   },
 
   mouseMiddleClickEventListener(event) {
