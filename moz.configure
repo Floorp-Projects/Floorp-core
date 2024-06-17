@@ -9,7 +9,7 @@
 option(
     "--enable-private-components",
     default=False,
-    help="Enable Floorp all official private components. This is only for Floorp official repository."
+    help="Nothing to do. Do not use this option",
 )
 
 set_config("FLOORP_OFFICIAL_COMPONENTS_ENABLED", True, when="--enable-private-components")
