@@ -4,10 +4,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-# Floorp Private Components is a feature that is used for Floorp AI integration.
 # It is disabled by default. To enable it, use the --enable-private-components
-# All Floorp forks have to disable this feature by default.
-# It only should be enabled in the official Floorp repository.
+# This option nerver used. Due to Re-Open-sourced from "Source Available"
 option(
     "--enable-private-components",
     default=False,
