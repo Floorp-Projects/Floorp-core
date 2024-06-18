@@ -44,7 +44,7 @@ export const LinuxSupport = {
       iconFile = null;
     }
 
-    let command = "/usr/bin/floorp";
+    let command = Services.dirsvc.get("XREExeF",Ci.nsIFile).path;
     if (FileUtils.File("/.flatpak-info").exists()) {
       command = "flatpak run one.ablaze.floorp";
     }
