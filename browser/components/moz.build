@@ -8,12 +8,14 @@ JAR_MANIFESTS += ["jar.mn"]
 
 DIRS += [
     "about",
+    "floorp-search",
     "search",
     "preferences",
     "profile-manager",
     "ssb",
     "notes",
     "welcome",
+    "workspaces",
     "tabsleep",
 ]
 
