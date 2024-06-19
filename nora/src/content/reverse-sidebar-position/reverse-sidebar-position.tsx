@@ -33,12 +33,18 @@ export class gReverseSidebarPosition {
       CustomizableUI.AREA_NAVBAR,
       1,
       () => {
-        // Sidebar button should right side of navbar
-        CustomizableUI.addWidgetToArea(
-          "sidebar-button",
-          CustomizableUI.AREA_NAVBAR,
-          0,
-        );
+        const onFirstLaunch = ChromeUtils.importESModule(
+          "resource://floorp/FloorpStartup.sys.mjs"
+        ).isFirstRun
+
+        if (onFirstLaunch) {
+          // Sidebar button should right side of navbar
+          CustomizableUI.addWidgetToArea(
+            "sidebar-button",
+            CustomizableUI.AREA_NAVBAR,
+            0,
+         );
+        }
       },
     );
   }
