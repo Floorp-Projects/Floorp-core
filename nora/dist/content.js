@@ -553,7 +553,10 @@ const _gReverseSidebarPosition = class _gReverseSidebarPosition {
     gFloorpBrowserAction.createToolbarClickActionButton("sidebar-reverse-position-toolbar", "sidebar-reverse-position-toolbar", () => {
       window.SidebarUI.reversePosition();
     }, this.StyleElement(), CustomizableUI$2.AREA_NAVBAR, 2, () => {
-      CustomizableUI$2.addWidgetToArea("sidebar-button", CustomizableUI$2.AREA_NAVBAR, 3);
+      const onFirstLaunch = ChromeUtils.importESModule("resource://floorp/FloorpStartup.sys.mjs").isFirstRun;
+      if (onFirstLaunch) {
+        CustomizableUI$2.addWidgetToArea("sidebar-button", CustomizableUI$2.AREA_NAVBAR, 3);
+      }
     });
   }
   static getInstance() {

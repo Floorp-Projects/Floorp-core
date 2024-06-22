@@ -42,7 +42,7 @@ export class gReverseSidebarPosition {
           CustomizableUI.addWidgetToArea(
             "sidebar-button",
             CustomizableUI.AREA_NAVBAR,
-            0,
+            3,
          );
         }
       },
