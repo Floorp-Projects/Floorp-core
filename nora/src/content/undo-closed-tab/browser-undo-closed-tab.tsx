@@ -31,7 +31,7 @@ export class gFloorpUndoClosedTab {
       },
       this.StyleElement(),
       CustomizableUI.AREA_NAVBAR,
-      0,
+      2,
     );
   }
 }
