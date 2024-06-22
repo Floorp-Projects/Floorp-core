@@ -552,8 +552,8 @@ const _gReverseSidebarPosition = class _gReverseSidebarPosition {
     });
     gFloorpBrowserAction.createToolbarClickActionButton("sidebar-reverse-position-toolbar", "sidebar-reverse-position-toolbar", () => {
       window.SidebarUI.reversePosition();
-    }, this.StyleElement(), CustomizableUI$2.AREA_NAVBAR, 1, () => {
-      CustomizableUI$2.addWidgetToArea("sidebar-button", CustomizableUI$2.AREA_NAVBAR, 0);
+    }, this.StyleElement(), CustomizableUI$2.AREA_NAVBAR, 2, () => {
+      CustomizableUI$2.addWidgetToArea("sidebar-button", CustomizableUI$2.AREA_NAVBAR, 3);
     });
   }
   static getInstance() {
@@ -583,7 +583,7 @@ const _gFloorpUndoClosedTab = class _gFloorpUndoClosedTab {
     });
     gFloorpBrowserAction.createToolbarClickActionButton("undo-closed-tab", "undo-closed-tab", () => {
       window.undoCloseTab();
-    }, this.StyleElement(), CustomizableUI$1.AREA_NAVBAR, 2);
+    }, this.StyleElement(), CustomizableUI$1.AREA_NAVBAR, 0);
   }
   static getInstance() {
     if (!_gFloorpUndoClosedTab.instance) {

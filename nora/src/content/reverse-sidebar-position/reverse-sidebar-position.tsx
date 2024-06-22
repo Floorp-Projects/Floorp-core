@@ -31,13 +31,13 @@ export class gReverseSidebarPosition {
       },
       this.StyleElement(),
       CustomizableUI.AREA_NAVBAR,
-      1,
+      2,
       () => {
         // Sidebar button should right side of navbar
         CustomizableUI.addWidgetToArea(
           "sidebar-button",
           CustomizableUI.AREA_NAVBAR,
-          0,
+          3,
         );
       },
     );
