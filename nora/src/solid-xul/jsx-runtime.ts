@@ -52,7 +52,11 @@ declare module "solid-js" {
       "xul:popupset": XULElementBase;
       "xul:tooltip": XULElementBase;
       "xul:panel": XULElementBase;
-      "xul:menupopup": XULElementBase;
+      "xul:menupopup": {
+        id?: string;
+        onpopupshowing?: () => void;
+        children?: Element;
+      };
       "xul:vbox": XULElementBase;
       "xul:hbox": XULElementBase;
       "xul:box": XULElementBase;
@@ -69,9 +73,18 @@ declare module "solid-js" {
       };
       "xul:toolbarbutton": XULElementBase;
       "xul:spacer": XULElementBase;
-      "xul:splitter": XULElementBase;
+      "xul:splitter": {
+        id?: string;
+        class?: string;
+        style?: string;
+      };
       "xul:menuseparator": XULElementBase;
-      "xul:menu": XULElementBase;
+      "xul:menu": {
+        id?: string;
+        "data-l10n-id"?: string;
+        accesskey?: string;
+        children?: Element;
+      };
       "xul:keyset": {
         id?: string;
         children: Element;
