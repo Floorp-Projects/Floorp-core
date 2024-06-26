@@ -4888,7 +4888,7 @@ const {
     return node.nextSibling;
   }
 });
-const splitViewStyle = '#tabbrowser-tabpanels > * {\n  display: none;\n}\n\n.deck-selected {\n  order: 2;\n  flex: auto !important;\n  display: flex !important;\n}\n\n.deck-selected[splitview="right"] {\n  flex: auto !important;\n  order: 4 !important;\n}\n\n.deck-selected[splitview="left"] {\n  flex: auto !important;\n  order: 0 !important;\n}\n\n#splitview-splitter {\n  border: none;\n  flex: 0 !important;\n}\n\n#tabbrowser-tabpanels {\n  display: flex !important;\n}\n\n.tabbrowser-tab[splitView="true"] {\n  flex-direction: row;\n  display: flex;\n}\n\n.tabbrowser-tab[splitView="true"]:before {\n  content: "";\n  position: inherit;\n  height: inherit;\n  background: red;\n  width: 2px;\n}\n';
+const splitViewStyle = '.deck-selected {\n  order: 2;\n  flex: auto !important;\n  display: flex !important;\n}\n\n.deck-selected[splitview="right"] {\n  order: 4 !important;\n}\n\n.deck-selected[splitview="left"] {\n  order: 0 !important;\n}\n\n#splitview-splitter {\n  border: none;\n  flex: 0 !important;\n}\n\n#tabbrowser-tabpanels {\n  display: flex !important;\n}\n\n#tabbrowser-tabpanels > * {\n  display: none;\n}\n\n.tabbrowser-tab[splitView="true"] {\n  flex-direction: row;\n  display: flex;\n}\n\n.tabbrowser-tab[splitView="true"]:before {\n  content: "";\n  position: inherit;\n  height: inherit;\n  background: red;\n  width: 2px;\n}\n';
 function SplitViewSplitter() {
   return (() => {
     var _el$ = createElement("xul:splitter");

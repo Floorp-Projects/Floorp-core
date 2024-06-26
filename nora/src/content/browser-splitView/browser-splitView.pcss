@@ -1,22 +1,17 @@
 
-#tabbrowser-tabpanels > * {
-  display: none;
-}
 
 .deck-selected {
   display: flex !important;
   flex: auto !important;
   order: 2;
-}
 
-.deck-selected[splitview="right"] {
-  flex: auto !important;
-  order: 4 !important;
-}
+  &[splitview="right"] {
+    order: 4 !important;
+  }
 
-.deck-selected[splitview="left"] {
-  flex: auto !important;
-  order: 0 !important;
+  &[splitview="left"] {
+    order: 0 !important;
+  }
 }
 
 #splitview-splitter {
@@ -26,17 +21,21 @@
 
 #tabbrowser-tabpanels {
   display: flex !important;
+
+  > * {
+    display: none;
+  }
 }
 
 .tabbrowser-tab[splitView="true"] {
   display: flex;
   flex-direction: row;
-}
 
-.tabbrowser-tab[splitView="true"]::before {
-  content: "";
-  position: inherit;
-  background: red;
-  width: 2px;
-  height: inherit;
+  &:before {
+    content: "";
+    position: inherit;
+    background: red;
+    width: 2px;
+    height: inherit;
+  }
 }
