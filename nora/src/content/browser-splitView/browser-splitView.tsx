@@ -68,7 +68,7 @@ export class gSplitView {
     this.setLocationChangeEvent();
 
     //Save splitView resized size to pref
-    let currentSplitViewTab: any = document.querySelector(`.tabbrowser-tab[splitView="true"]`);
+    let currentSplitViewTab: XULElement | null = document.querySelector(`.tabbrowser-tab[splitView="true"]`);
     let currentSplitViewPanel = this.getLinkedPanel(currentSplitViewTab?.linkedPanel);
     const appcontent = document.getElementById("appcontent") as XULElement
     const panelWidth: number = appcontent?.clientWidth / 2 - 3;
@@ -97,7 +97,7 @@ export class gSplitView {
   public static removeSplitView() {
     Services.prefs.setBoolPref("floorp.browser.splitView.working", false);
 
-    let tab: any = document.querySelector(`.tabbrowser-tab[splitView="true"]`);
+    let tab: XULElement | null = document.querySelector(`.tabbrowser-tab[splitView="true"]`);
     if (!tab) {
       return;
     }
@@ -166,7 +166,7 @@ export class gSplitView {
 
   private static locationChange() {
     gSplitView.splitterHide();
-    let currentSplitViewTab: any = document.querySelector(`.tabbrowser-tab[splitView="true"]`);
+    let currentSplitViewTab: XULElement | null = document.querySelector(`.tabbrowser-tab[splitView="true"]`);
     let currentSplitViewPanel = gSplitView.getLinkedPanel(currentSplitViewTab?.linkedPanel);
     if (currentSplitViewPanel !== window.gBrowser.getPanel()) {
       window.gBrowser.getPanel().style.width = Services.prefs.getIntPref("floorp.browser.splitView.width") + "px";
@@ -180,7 +180,7 @@ export class gSplitView {
       return;
     }
 
-    let currentSplitViewTab: any = document.querySelector(`.tabbrowser-tab[splitView="true"]`);
+    let currentSplitViewTab: XULElement | null = document.querySelector(`.tabbrowser-tab[splitView="true"]`);
     let currentSplitViewPanel = this.getLinkedPanel(currentSplitViewTab?.linkedPanel);
     let currentSplitViewBrowser = currentSplitViewTab?.linkedBrowser;
 
