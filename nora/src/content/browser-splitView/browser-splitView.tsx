@@ -2,32 +2,23 @@ import { insert } from "@solid-xul/solid-xul";
 import splitViewStyle from "./browser-splitView.pcss?inline";
 import { HideSplitViewSplitter, SplitViewSplitter } from "./split-view-splitter";
 
-export class gSplitView {
-  private static instance: gSplitView;
-
-  public static getInstance() {
-    if (!gSplitView.instance) {
-      gSplitView.instance = new gSplitView();
-    }
-    return gSplitView.instance;
-  }
-
-  private static StyleElement = () => {
+export namespace gSplitView {
+  let StyleElement = () => {
     return <style id="splitViewCSS">{ splitViewStyle }</style>
   }
 
-  public static setSplitView(tab: {
+  export function setSplitView(tab: {
     linkedBrowser: { docShellIsActive: boolean };
     linkedPanel: string;
     hasAttribute: (arg0: string) => boolean;
     setAttribute: (arg0: string, arg1: string) => void;
   }, side: string) {
     try {
-      this.removeSplitView();
+      removeSplitView();
     } catch (e) {}
     Services.prefs.setBoolPref("floorp.browser.splitView.working", true);
 
-    let panel = this.getLinkedPanel(tab.linkedPanel);
+    let panel = getLinkedPanel(tab.linkedPanel);
     let browser = tab.linkedBrowser;
     let browserDocShellIsActiveState = browser.docShellIsActive;
 
@@ -35,19 +26,19 @@ export class gSplitView {
     let tabs = window.gBrowser.tabs;
     for (const tab of tabs) {
       if (tab.hasAttribute("splitView")) {
-        this.removeSplitView();
+        removeSplitView();
         break;
       }
     }
 
-    insert(document.head, () => this.StyleElement, document.head?.lastChild);
+    insert(document.head, () => StyleElement, document.head?.lastChild);
 
     tab.setAttribute("splitView", "true");
     panel.setAttribute("splitview", side);
     panel.setAttribute("splitviewtab", "true");
     panel.classList.add("deck-selected");
 
-    this.splitterHide();
+    splitterHide();
 
     insert(
       document.getElementById("tabbrowser-tabpanels"),
@@ -65,11 +56,11 @@ export class gSplitView {
       browser.docShellIsActive = true;
     }
 
-    this.setLocationChangeEvent();
+    setLocationChangeEvent();
 
     //Save splitView resized size to pref
     let currentSplitViewTab: XULElement | null = document.querySelector(`.tabbrowser-tab[splitView="true"]`);
-    let currentSplitViewPanel = this.getLinkedPanel(currentSplitViewTab?.linkedPanel);
+    let currentSplitViewPanel = getLinkedPanel(currentSplitViewTab?.linkedPanel);
     const appcontent = document.getElementById("appcontent") as XULElement
     const panelWidth: number = appcontent?.clientWidth / 2 - 3;
 
@@ -94,14 +85,14 @@ export class gSplitView {
     )
   }
 
-  public static removeSplitView() {
+  export function removeSplitView() {
     Services.prefs.setBoolPref("floorp.browser.splitView.working", false);
 
     let tab: XULElement | null = document.querySelector(`.tabbrowser-tab[splitView="true"]`);
     if (!tab) {
       return;
     }
-    let panel = this.getLinkedPanel(tab.linkedPanel);
+    let panel = getLinkedPanel(tab.linkedPanel);
 
     //remove style
     let CSSElem = document.getElementById("splitViewCSS");
@@ -125,15 +116,15 @@ export class gSplitView {
       tabPanel.removeAttribute("style");
     }
 
-    this.removeLocationChangeEvent();
+    removeLocationChangeEvent();
     window.splitViewResizeObserver.disconnect();
   }
 
-  private static getLinkedPanel(id: string) {
+  function getLinkedPanel(id: string) {
     return document.getElementById(id) as XULElement;
   }
 
-  private static splitterHide() {
+  function splitterHide() {
     if (
       window.gBrowser.selectedTab ===
       document.querySelector(".tabbrowser-tab[splitView='true']")) {
@@ -150,38 +141,38 @@ export class gSplitView {
     }
   }
 
-  private static setLocationChangeEvent() {
+  function setLocationChangeEvent() {
     document.addEventListener(
       "floorpOnLocationChangeEvent",
-      this.locationChange
+      locationChange
     )
   }
 
-  private static removeLocationChangeEvent() {
+  function removeLocationChangeEvent() {
     document.removeEventListener(
       "floorpOnLocationChangeEvent",
-      this.locationChange
+      locationChange
     )
   }
 
-  private static locationChange() {
-    gSplitView.splitterHide();
+  function locationChange() {
+    splitterHide();
     let currentSplitViewTab: XULElement | null = document.querySelector(`.tabbrowser-tab[splitView="true"]`);
-    let currentSplitViewPanel = gSplitView.getLinkedPanel(currentSplitViewTab?.linkedPanel);
+    let currentSplitViewPanel = getLinkedPanel(currentSplitViewTab?.linkedPanel);
     if (currentSplitViewPanel !== window.gBrowser.getPanel()) {
       window.gBrowser.getPanel().style.width = Services.prefs.getIntPref("floorp.browser.splitView.width") + "px";
     }
 
-    gSplitView.handleTabEvent();
+    handleTabEvent();
   }
 
-  private static handleTabEvent() {
+  function handleTabEvent() {
     if (!Services.prefs.getBoolPref("floorp.browser.splitView.working")) {
       return;
     }
 
     let currentSplitViewTab: XULElement | null = document.querySelector(`.tabbrowser-tab[splitView="true"]`);
-    let currentSplitViewPanel = this.getLinkedPanel(currentSplitViewTab?.linkedPanel);
+    let currentSplitViewPanel = getLinkedPanel(currentSplitViewTab?.linkedPanel);
     let currentSplitViewBrowser = currentSplitViewTab?.linkedBrowser;
 
     if (!currentSplitViewBrowser) {
@@ -208,7 +199,7 @@ export class gSplitView {
     (function modifyDeckSelectedClass() {
       let tabs = window.gBrowser.tabs;
       for (const tab of tabs) {
-        let panel = gSplitView.getLinkedPanel(tab.linkedPanel);
+        let panel = getLinkedPanel(tab.linkedPanel);
         if (tab.hasAttribute("splitView") || tab == window.gBrowser.selectedTab) {
           panel?.classList.add("deck-selected");
         } else {
