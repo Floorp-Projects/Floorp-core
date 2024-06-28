@@ -7,12 +7,14 @@ export namespace gSplitView {
     return <style id="splitViewCSS">{ splitViewStyle }</style>
   }
 
-  export function setSplitView(tab: {
+  type tab = {
     linkedBrowser: { docShellIsActive: boolean };
     linkedPanel: string;
     hasAttribute: (arg0: string) => boolean;
     setAttribute: (arg0: string, arg1: string) => void;
-  }, side: string) {
+  }
+
+  export function setSplitView(tab: tab, side: string) {
     try {
       removeSplitView();
     } catch (e) {}
