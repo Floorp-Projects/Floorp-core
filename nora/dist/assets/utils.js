@@ -4935,7 +4935,7 @@ var gSplitView;
     panel.setAttribute("splitview", side);
     panel.setAttribute("splitviewtab", "true");
     panel.classList.add("deck-selected");
-    splitterHide();
+    hideSplitter();
     insert(document.getElementById("tabbrowser-tabpanels"), () => createComponent(SplitViewSplitter, {}), (_b = document.getElementById("tabbrowser-tabpanels")) == null ? void 0 : _b.lastChild);
     if (side === "left") {
       (_c = document.getElementById("splitview-splitter")) == null ? void 0 : _c.setAttribute("style", "order: 1");
@@ -4997,7 +4997,7 @@ var gSplitView;
   function getLinkedPanel(id) {
     return document.getElementById(id);
   }
-  function splitterHide() {
+  function hideSplitter() {
     var _a;
     if (window.gBrowser.selectedTab === document.querySelector(".tabbrowser-tab[splitView='true']")) {
       insert(document.head, () => createComponent(HideSplitViewSplitter, {}), (_a = document.head) == null ? void 0 : _a.lastChild);
@@ -5009,13 +5009,13 @@ var gSplitView;
     }
   }
   function setLocationChangeEvent() {
-    document.addEventListener("floorpOnLocationChangeEvent", locationChange);
+    document.addEventListener("floorpOnLocationChangeEvent", onLocationChange);
   }
   function removeLocationChangeEvent() {
-    document.removeEventListener("floorpOnLocationChangeEvent", locationChange);
+    document.removeEventListener("floorpOnLocationChangeEvent", onLocationChange);
   }
-  function locationChange() {
-    splitterHide();
+  function onLocationChange() {
+    hideSplitter();
     let currentSplitViewTab = document.querySelector(`.tabbrowser-tab[splitView="true"]`);
     let currentSplitViewPanel = getLinkedPanel(currentSplitViewTab == null ? void 0 : currentSplitViewTab.linkedPanel);
     if (currentSplitViewPanel !== window.gBrowser.getPanel()) {

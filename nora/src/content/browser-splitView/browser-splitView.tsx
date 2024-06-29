@@ -7,14 +7,14 @@ export namespace gSplitView {
     return <style id="splitViewCSS">{ splitViewStyle }</style>
   }
 
-  type tab = {
+  type BrowserTab = {
     linkedBrowser: { docShellIsActive: boolean };
     linkedPanel: string;
     hasAttribute: (arg0: string) => boolean;
     setAttribute: (arg0: string, arg1: string) => void;
   }
 
-  export function setSplitView(tab: tab, side: string) {
+  export function setSplitView(tab: BrowserTab, side: string) {
     try {
       removeSplitView();
     } catch (e) {}
@@ -40,7 +40,7 @@ export namespace gSplitView {
     panel.setAttribute("splitviewtab", "true");
     panel.classList.add("deck-selected");
 
-    splitterHide();
+    hideSplitter();
 
     insert(
       document.getElementById("tabbrowser-tabpanels"),
@@ -126,7 +126,7 @@ export namespace gSplitView {
     return document.getElementById(id) as XULElement;
   }
 
-  function splitterHide() {
+  function hideSplitter() {
     if (
       window.gBrowser.selectedTab ===
       document.querySelector(".tabbrowser-tab[splitView='true']")) {
@@ -146,19 +146,20 @@ export namespace gSplitView {
   function setLocationChangeEvent() {
     document.addEventListener(
       "floorpOnLocationChangeEvent",
-      locationChange
+      onLocationChange
     )
   }
 
   function removeLocationChangeEvent() {
     document.removeEventListener(
       "floorpOnLocationChangeEvent",
-      locationChange
+      onLocationChange
     )
   }
 
-  function locationChange() {
-    splitterHide();
+  function onLocationChange() {
+    hideSplitter();
+
     let currentSplitViewTab: XULElement | null = document.querySelector(`.tabbrowser-tab[splitView="true"]`);
     let currentSplitViewPanel = getLinkedPanel(currentSplitViewTab?.linkedPanel);
     if (currentSplitViewPanel !== window.gBrowser.getPanel()) {
