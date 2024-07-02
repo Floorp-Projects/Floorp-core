@@ -21,7 +21,6 @@ floorp.jar:
   content/browser-overrides.mjs                (content/browser-overrides.mjs)
   content/browser-pinned-tabs-title.mjs        (content/browser-pinned-tabs-title.mjs)
   content/browser-preferences.mjs              (content/browser-preferences.mjs)
-  content/browser-splitView.mjs                (content/browser-splitView.mjs)
   content/browser-ssb-support.mjs              (content/browser-ssb-support.mjs)
   content/browser-ssb-window.mjs               (content/browser-ssb-window.mjs)
   content/browser-tabbar.mjs                   (content/browser-tabbar.mjs)
@@ -50,7 +49,6 @@ floorp.jar:
 # Style Sheets
   content/browser-bms-window.css                       (content/browser-bms-window.css)
   content/browser-floorp.css                  (content/browser-floorp.css)
-  content/browser-splitView.css                        (content/browser-splitView.css)
   content/browser-ssb-window.css              (content/browser-ssb-window.css)
   content/browser-verticaltabs.css            (content/browser-verticaltabs.css)
 

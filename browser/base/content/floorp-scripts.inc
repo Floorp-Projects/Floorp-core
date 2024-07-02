@@ -77,11 +77,6 @@ document.addEventListener(
         window.gFloorpFaviconColor = gFloorpFaviconColor;
       }
     );
-    import("chrome://floorp/content/browser-splitView.mjs").then(
-      ({ gSplitView }) => {
-        window.gSplitView = gSplitView;
-      }
-    );
 
     // If script need more delay, use the following code.
     window.SessionStore.promiseInitialized.then(() => {
