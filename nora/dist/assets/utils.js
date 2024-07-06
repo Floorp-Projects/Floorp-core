@@ -4882,6 +4882,183 @@ const {
     return node.nextSibling;
   }
 });
+const splitViewStyle = '.deck-selected {\n  order: 2;\n  flex: auto !important;\n  display: flex !important;\n}\n\n.deck-selected[splitview="right"] {\n  order: 4 !important;\n}\n\n.deck-selected[splitview="left"] {\n  order: 0 !important;\n}\n\n#splitview-splitter {\n  border: none;\n  flex: 0 !important;\n}\n\n#tabbrowser-tabpanels {\n  display: flex !important;\n}\n\n#tabbrowser-tabpanels > * {\n  display: none;\n}\n\n.tabbrowser-tab[splitView="true"] {\n  flex-direction: row;\n  display: flex;\n}\n\n.tabbrowser-tab[splitView="true"]:before {\n  content: "";\n  position: inherit;\n  background: red;\n  border-radius: 2px;\n  align-self: center;\n  width: 2px;\n  height: 20px;\n}\n';
+function SplitViewSplitter() {
+  return (() => {
+    var _el$ = createElement("xul:splitter");
+    setProp(_el$, "id", "splitview-splitter");
+    setProp(_el$, "class", "deck-selected");
+    return _el$;
+  })();
+}
+function HideSplitViewSplitter() {
+  return (() => {
+    var _el$2 = createElement("style");
+    insertNode(_el$2, createTextNode(`
+      #splitview-splitter {
+        display: none !important;
+      }
+    `));
+    setProp(_el$2, "id", "splitterHideCSS");
+    return _el$2;
+  })();
+}
+var gSplitView;
+((gSplitView2) => {
+  let StyleElement = () => {
+    return (() => {
+      var _el$ = createElement("style");
+      setProp(_el$, "id", "splitViewCSS");
+      insert(_el$, splitViewStyle);
+      return _el$;
+    })();
+  };
+  function setSplitView(tab, side) {
+    var _a, _b, _c, _d;
+    try {
+      removeSplitView();
+    } catch (e) {
+    }
+    Services.prefs.setBoolPref("floorp.browser.splitView.working", true);
+    let panel = getLinkedPanel(tab.linkedPanel);
+    let browser = tab.linkedBrowser;
+    let browserDocShellIsActiveState = browser.docShellIsActive;
+    let tabs = window.gBrowser.tabs;
+    for (const tab2 of tabs) {
+      if (tab2.hasAttribute("splitView")) {
+        removeSplitView();
+        break;
+      }
+    }
+    insert(document.head, () => StyleElement, (_a = document.head) == null ? void 0 : _a.lastChild);
+    tab.setAttribute("splitView", "true");
+    panel.setAttribute("splitview", side);
+    panel.setAttribute("splitviewtab", "true");
+    panel.classList.add("deck-selected");
+    hideSplitter();
+    insert(document.getElementById("tabbrowser-tabpanels"), () => createComponent(SplitViewSplitter, {}), (_b = document.getElementById("tabbrowser-tabpanels")) == null ? void 0 : _b.lastChild);
+    if (side === "left") {
+      (_c = document.getElementById("splitview-splitter")) == null ? void 0 : _c.setAttribute("style", "order: 1");
+    } else {
+      (_d = document.getElementById("splitview-splitter")) == null ? void 0 : _d.setAttribute("style", "order: 3");
+    }
+    if (!browserDocShellIsActiveState) {
+      browser.docShellIsActive = true;
+    }
+    setLocationChangeEvent();
+    let currentSplitViewTab = document.querySelector(`.tabbrowser-tab[splitView="true"]`);
+    let currentSplitViewPanel = getLinkedPanel(currentSplitViewTab == null ? void 0 : currentSplitViewTab.linkedPanel);
+    const appcontent = document.getElementById("appcontent");
+    const panelWidth = (appcontent == null ? void 0 : appcontent.clientWidth) / 2 - 3;
+    currentSplitViewPanel.setAttribute("style", `width: ${panelWidth}px`);
+    if (currentSplitViewTab !== window.gBrowser.selectedTab) {
+      window.gBrowser.getPanel().style.width = panelWidth + "px";
+    }
+    Services.prefs.setIntPref("floorp.browser.splitView.width", panelWidth);
+    window.splitViewResizeObserver = new ResizeObserver(() => {
+      let currentTab = window.gBrowser.selectedTab;
+      if (Services.prefs.getBoolPref("floorp.browser.splitView.working") === true && currentSplitViewTab !== currentTab) {
+        let width = window.gBrowser.getPanel().clientWidth;
+        Services.prefs.setIntPref("floorp.browser.splitView.width", width);
+      }
+    });
+    window.splitViewResizeObserver.observe(document.querySelector("#tabbrowser-tabpanels [splitviewtab = true]"));
+  }
+  gSplitView2.setSplitView = setSplitView;
+  function removeSplitView() {
+    var _a;
+    Services.prefs.setBoolPref("floorp.browser.splitView.working", false);
+    let tab = document.querySelector(`.tabbrowser-tab[splitView="true"]`);
+    if (!tab) {
+      return;
+    }
+    let panel = getLinkedPanel(tab.linkedPanel);
+    let CSSElem = document.getElementById("splitViewCSS");
+    CSSElem == null ? void 0 : CSSElem.remove();
+    (_a = document.getElementById("splitview-splitter")) == null ? void 0 : _a.remove();
+    tab.removeAttribute("splitView");
+    panel.removeAttribute("splitview");
+    panel.removeAttribute("splitviewtab");
+    if (tab !== window.gBrowser.selectedTab) {
+      panel.classList.remove("deck-selected");
+    }
+    if (window.browser.docShellIsActive) {
+      window.browser.docShellIsActive = false;
+    }
+    let tabPanels = document.querySelectorAll("#tabbrowser-tabpanels > *");
+    for (const tabPanel of tabPanels) {
+      tabPanel.removeAttribute("width");
+      tabPanel.removeAttribute("style");
+    }
+    removeLocationChangeEvent();
+    window.splitViewResizeObserver.disconnect();
+  }
+  gSplitView2.removeSplitView = removeSplitView;
+  function getLinkedPanel(id) {
+    return document.getElementById(id);
+  }
+  function hideSplitter() {
+    var _a;
+    if (window.gBrowser.selectedTab === document.querySelector(".tabbrowser-tab[splitView='true']")) {
+      insert(document.head, () => createComponent(HideSplitViewSplitter, {}), (_a = document.head) == null ? void 0 : _a.lastChild);
+    } else {
+      let splitterHideCSS = document.getElementById("splitterHideCSS");
+      if (splitterHideCSS) {
+        splitterHideCSS.remove();
+      }
+    }
+  }
+  function setLocationChangeEvent() {
+    document.addEventListener("floorpOnLocationChangeEvent", onLocationChange);
+  }
+  function removeLocationChangeEvent() {
+    document.removeEventListener("floorpOnLocationChangeEvent", onLocationChange);
+  }
+  function onLocationChange() {
+    hideSplitter();
+    let currentSplitViewTab = document.querySelector(`.tabbrowser-tab[splitView="true"]`);
+    let currentSplitViewPanel = getLinkedPanel(currentSplitViewTab == null ? void 0 : currentSplitViewTab.linkedPanel);
+    if (currentSplitViewPanel !== window.gBrowser.getPanel()) {
+      window.gBrowser.getPanel().style.width = Services.prefs.getIntPref("floorp.browser.splitView.width") + "px";
+    }
+    handleTabEvent();
+  }
+  function handleTabEvent() {
+    if (!Services.prefs.getBoolPref("floorp.browser.splitView.working")) {
+      return;
+    }
+    let currentSplitViewTab = document.querySelector(`.tabbrowser-tab[splitView="true"]`);
+    let currentSplitViewPanel = getLinkedPanel(currentSplitViewTab == null ? void 0 : currentSplitViewTab.linkedPanel);
+    let currentSplitViewBrowser = currentSplitViewTab == null ? void 0 : currentSplitViewTab.linkedBrowser;
+    if (!currentSplitViewBrowser) {
+      return;
+    }
+    currentSplitViewBrowser.renderLayer = true;
+    currentSplitViewPanel == null ? void 0 : currentSplitViewPanel.classList.add("deck-selected");
+    if (!currentSplitViewBrowser.docShellIsActive) {
+      currentSplitViewBrowser.docShellIsActive = true;
+    }
+    function applySplitView() {
+      currentSplitViewBrowser.renderLayers = true;
+      currentSplitViewPanel == null ? void 0 : currentSplitViewPanel.classList.add("deck-selected");
+      if (!window.browser.docShellIsActive) {
+        window.browser.docShellIsActive = true;
+      }
+    }
+    (function modifyDeckSelectedClass() {
+      let tabs = window.gBrowser.tabs;
+      for (const tab of tabs) {
+        let panel = getLinkedPanel(tab.linkedPanel);
+        if (tab.hasAttribute("splitView") || tab == window.gBrowser.selectedTab) {
+          panel == null ? void 0 : panel.classList.add("deck-selected");
+        } else {
+          panel == null ? void 0 : panel.classList.remove("deck-selected");
+        }
+      }
+    })();
+    window.setTimeout(applySplitView, 1e3);
+  }
+})(gSplitView || (gSplitView = {}));
 const csk_category = [
   "tab-action",
   "history-action",
@@ -5211,15 +5388,15 @@ const commands = {
     type: "bms-action"
   },
   "floorp-open-split-view-on-left": {
-    command: () => window.gSplitView.Functions.setSplitView(gBrowser.selectedTab, "left"),
+    command: () => gSplitView.setSplitView(gBrowser.selectedTab, "left"),
     type: "split-view-action"
   },
   "floorp-open-split-view-on-right": {
-    command: () => window.gSplitView.Functions.setSplitView(gBrowser.selectedTab, "right"),
+    command: () => gSplitView.setSplitView(gBrowser.selectedTab, "right"),
     type: "split-view-action"
   },
   "floorp-close-split-view": {
-    command: () => window.gSplitView.Functions.removeSplitView(),
+    command: () => gSplitView.removeSplitView(),
     type: "split-view-action"
   },
   "floorp-custom-action-1": {
@@ -5429,6 +5606,7 @@ export {
   insertNode as i,
   effect as j,
   zCSKCommands as k,
+  gSplitView as l,
   render as r,
   setProp as s,
   zCSKData as z

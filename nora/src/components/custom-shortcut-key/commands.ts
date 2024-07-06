@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { z } from "zod";
+import { gSplitView } from "../../content/browser-splitView/browser-splitView";
 
 export const csk_category = [
   "tab-action",
@@ -348,16 +349,16 @@ export const commands: Commands = {
   },
   "floorp-open-split-view-on-left": {
     command: () =>
-      window.gSplitView.Functions.setSplitView(gBrowser.selectedTab, "left"),
+      gSplitView.setSplitView(gBrowser.selectedTab, "left"),
     type: "split-view-action",
   },
   "floorp-open-split-view-on-right": {
     command: () =>
-      window.gSplitView.Functions.setSplitView(gBrowser.selectedTab, "right"),
+      gSplitView.setSplitView(gBrowser.selectedTab, "right"),
     type: "split-view-action",
   },
   "floorp-close-split-view": {
-    command: () => window.gSplitView.Functions.removeSplitView(),
+    command: () => gSplitView.removeSplitView(),
     type: "split-view-action",
   },
   "floorp-custom-action-1": {

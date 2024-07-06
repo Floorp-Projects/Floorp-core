@@ -4,7 +4,7 @@ var __publicField = (obj, key, value) => {
   __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
   return value;
 };
-import { k as zCSKCommands, z as zCSKData, b as checkIsSystemShortcut, h as commands, c as createSignal, a as createEffect, d as createElement, s as setProp, j as effect, i as insertNode, g as insert, r as render, e as createComponent, S as Show } from "./assets/utils.js";
+import { k as zCSKCommands, z as zCSKData, b as checkIsSystemShortcut, h as commands, c as createSignal, a as createEffect, d as createElement, s as setProp, j as effect, i as insertNode, g as insert, r as render, e as createComponent, S as Show, l as gSplitView } from "./assets/utils.js";
 const _CustomShortcutKey = class _CustomShortcutKey {
   constructor() {
     //this boolean disable shortcut of csk
@@ -124,7 +124,7 @@ const _gFloorpStatusBar = class _gFloorpStatusBar {
 };
 __publicField(_gFloorpStatusBar, "instance");
 let gFloorpStatusBar = _gFloorpStatusBar;
-function ContextMenu$2() {
+function ContextMenu$3() {
   return (() => {
     var _el$ = createElement("xul:menuitem");
     setProp(_el$, "data-l10n-id", "status-bar");
@@ -162,10 +162,10 @@ function StatusBar() {
 }
 function initStatusbar() {
   render(() => createComponent(StatusBar, {}), document.getElementById("navigator-toolbox"));
-  insert(document.getElementById("toolbar-context-menu"), () => createComponent(ContextMenu$2, {}), document.getElementById("viewToolbarsMenuSeparator"));
+  insert(document.getElementById("toolbar-context-menu"), () => createComponent(ContextMenu$3, {}), document.getElementById("viewToolbarsMenuSeparator"));
   gFloorpStatusBar.getInstance();
 }
-function ContextMenu$1(id, l10n, runFunction) {
+function ContextMenu$2(id, l10n, runFunction) {
   return (() => {
     var _el$ = createElement("xul:menuitem");
     setProp(_el$, "data-l10n-id", l10n);
@@ -206,7 +206,7 @@ class gFloorpContextMenuServices {
     this.initialized = true;
   }
   addContextBox(id, l10n, insertElementId, runFunction, checkID, checkedFunction) {
-    const contextMenu = ContextMenu$1(id, l10n, runFunction);
+    const contextMenu = ContextMenu$2(id, l10n, runFunction);
     const targetNode = document.getElementById(checkID);
     const insertElement = document.getElementById(insertElementId);
     insert(this.contentAreaContextMenu, () => contextMenu, insertElement);
@@ -432,7 +432,7 @@ const _gFloorpPrivateContainer = class _gFloorpPrivateContainer {
 };
 __publicField(_gFloorpPrivateContainer, "instance");
 let gFloorpPrivateContainer = _gFloorpPrivateContainer;
-function ContextMenu() {
+function ContextMenu$1() {
   return (() => {
     var _el$ = createElement("xul:menuitem");
     setProp(_el$, "id", "context_toggleToPrivateContainer");
@@ -445,7 +445,7 @@ function ContextMenu() {
   })();
 }
 function initPrivateContainer() {
-  insert(document.querySelector("#tabContextMenu"), () => createComponent(ContextMenu, {}), document.querySelector("#context_selectAllTabs"));
+  insert(document.querySelector("#tabContextMenu"), () => createComponent(ContextMenu$1, {}), document.querySelector("#context_selectAllTabs"));
   window.gFloorpPrivateContainer = gFloorpPrivateContainer.getInstance();
   console.log(window.gFloorpPrivateContainer);
 }
@@ -553,7 +553,10 @@ const _gReverseSidebarPosition = class _gReverseSidebarPosition {
     gFloorpBrowserAction.createToolbarClickActionButton("sidebar-reverse-position-toolbar", "sidebar-reverse-position-toolbar", () => {
       window.SidebarUI.reversePosition();
     }, this.StyleElement(), CustomizableUI$2.AREA_NAVBAR, 1, () => {
-      CustomizableUI$2.addWidgetToArea("sidebar-button", CustomizableUI$2.AREA_NAVBAR, 0);
+      const onFirstLaunch = ChromeUtils.importESModule("resource://floorp/FloorpStartup.sys.mjs").isFirstRun;
+      if (onFirstLaunch) {
+        CustomizableUI$2.addWidgetToArea("sidebar-button", CustomizableUI$2.AREA_NAVBAR, 0);
+      }
     });
   }
   static getInstance() {
@@ -642,6 +645,35 @@ let gFloorpProfileManager = _gFloorpProfileManager;
 function initProfileManager() {
   gFloorpProfileManager.getInstance();
 }
+function ContextMenu() {
+  return [(() => {
+    var _el$ = createElement("xul:menu"), _el$2 = createElement("xul:menupopup"), _el$3 = createElement("xul:menuitem"), _el$4 = createElement("xul:menuitem");
+    insertNode(_el$, _el$2);
+    setProp(_el$, "id", "context_splitView");
+    setProp(_el$, "data-l10n-id", "floorp-split-view-menu");
+    setProp(_el$, "accesskey", "D");
+    insertNode(_el$2, _el$3);
+    insertNode(_el$2, _el$4);
+    setProp(_el$2, "id", "splitViewTabContextMenu");
+    setProp(_el$3, "id", "splitViewTabContextMenuLeft");
+    setProp(_el$3, "data-l10n-id", "splitview-show-on-left");
+    setProp(_el$3, "onCommand", () => gSplitView.setSplitView(window.TabContextMenu.contextTab, "left"));
+    setProp(_el$4, "id", "splitViewTabContextMenuRight");
+    setProp(_el$4, "data-l10n-id", "splitview-show-on-right");
+    setProp(_el$4, "onCommand", () => gSplitView.setSplitView(window.TabContextMenu.contextTab, "right"));
+    return _el$;
+  })(), (() => {
+    var _el$5 = createElement("xul:menuitem");
+    setProp(_el$5, "id", "splitViewTabContextMenuClose");
+    setProp(_el$5, "data-l10n-id", "splitview-close-split-tab");
+    setProp(_el$5, "onCommand", () => gSplitView.removeSplitView());
+    return _el$5;
+  })()];
+}
+function initSplitView() {
+  insert(document.querySelector("#tabContextMenu"), () => createComponent(ContextMenu, {}), document.querySelector("#context_selectAllTabs"));
+  Services.prefs.setBoolPref("floorp.browser.splitView.working", false);
+}
 CustomShortcutKey.getInstance();
 window.SessionStore.promiseInitialized.then(() => {
   initBrowserContextMenu();
@@ -651,5 +683,6 @@ window.SessionStore.promiseInitialized.then(() => {
   initReverseSidebarPosition();
   initUndoClosedTab();
   initProfileManager();
+  initSplitView();
 });
 //# sourceMappingURL=content.js.map
