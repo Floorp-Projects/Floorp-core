@@ -83,6 +83,10 @@ gFloorpObservePreference("floorp.bookmarks.bar.focus.mode", function (event) {
   } else {
     document.getElementById("floorp-bookmarkbarfocus")?.remove();
   }
+  window.setTimeout(() => {
+    let bmBarHeight = `-${document.getElementById("PersonalToolbar").clientHeight}px`;
+    document.documentElement.style.setProperty('--bookmark-bar-height', bmBarHeight)
+  }, 1000);
 });
 
 gFloorpObservePreference("floorp.bookmarks.fakestatus.mode", function (event) {
