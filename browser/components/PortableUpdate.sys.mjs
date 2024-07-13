@@ -9,9 +9,6 @@ import { ExtensionParent } from "resource://gre/modules/ExtensionParent.sys.mjs"
 import { AppConstants } from "resource://gre/modules/AppConstants.sys.mjs";
 import { FileUtils } from "resource://gre/modules/FileUtils.sys.mjs";
 
-// Migration from JSM to ES Module in the future.
-const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
-
 const L10N = new Localization(["browser/floorp.ftl", "branding/brand.ftl"]);
 const ZipReader = Components.Constructor(
   "@mozilla.org/libjar/zip-reader;1",

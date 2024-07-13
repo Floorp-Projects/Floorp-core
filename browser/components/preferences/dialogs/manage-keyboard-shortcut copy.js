@@ -5,8 +5,6 @@
 
 /* import-globals-from /toolkit/content/preferencesBindings.js */
 
-const { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
-
 const { CustomKeyboardShortcutUtils } = ChromeUtils.importESModule(
   "chrome://floorp/content/modules/csk/CustomKeyboardShortcutUtils.mjs",
 );
