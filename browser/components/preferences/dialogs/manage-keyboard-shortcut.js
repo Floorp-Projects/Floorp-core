@@ -9,7 +9,7 @@ const CustomKeyboardShortcutUtils = ChromeUtils.importESModule(
 	"chrome://floorp/content/modules/csk/CustomKeyboardShortcutUtils.mjs",
 );
 
-XPCOMUtils.defineLazyGetter(this, "L10n", () => {
+ChromeUtils.defineLazyGetter(this, "L10n", () => {
 	return new Localization(["branding/brand.ftl", "browser/floorp"]);
 });
 

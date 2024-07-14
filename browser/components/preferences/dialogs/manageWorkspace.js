@@ -12,7 +12,7 @@ const { ContextualIdentityService } = ChromeUtils.importESModule(
 );
 
 // eslint-disable-next-line no-undef
-XPCOMUtils.defineLazyGetter(this, "L10n", () => {
+ChromeUtils.defineLazyGetter(this, "L10n", () => {
 	return new Localization(["branding/brand.ftl", "browser/floorp"]);
 });
 
