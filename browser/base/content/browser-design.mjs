@@ -11,11 +11,6 @@ try {
     "chrome://floorp/content/browser-bms-window.mjs"
   );
 } catch (e) {}
-
-var { AppConstants } = ChromeUtils.importESModule(
-  "resource://gre/modules/AppConstants.sys.mjs"
-);
-
 /**
  * Object of Floorp design preferences.
  *
@@ -40,16 +35,10 @@ export const gFloorpDesign = {
   get themeCSSs() {
     return {
       LeptonUI: `@import url(chrome://floorp/skin/designs/lepton/leptonChrome.css?${this.updateDateAndTime}); @import url(chrome://floorp/skin/designs/lepton/leptonContent.css?${this.updateDateAndTime});`,
-      fluentUI: `@import url(chrome://floorp/skin/designs/fluentUI/fluentUI.css);`,
-      gnomeUI: `@import url(chrome://floorp/skin/designs/gnomeUI/gnomeUI.css);`,
-      FluerialUI: `@import url(chrome://floorp/skin/designs/fluerialUI/fluerialUI.css?${this.updateDateAndTime});`,
-      FluerialUIMultitab: `@import url(chrome://floorp/skin/designs/fluerialUI/fluerialUI.css?${this.updateDateAndTime}); @import url(chrome://floorp/skin/designs/fluerialUI/fluerial-multitab.css);`,
+      FluerialUI: `@import url(chrome://floorp/skin/designs/fluerial/fluerial.css?${this.updateDateAndTime});`,
 
       // Vertical Tabs CSS Injection
       LeptonVerticalTabs: `@import url(chrome://floorp/skin/designs/lepton/leptonVerticalTabs.css);`,
-      fluentVerticalTabs: `@import url(chrome://floorp/skin/designs/fluentUI/fluentVerticalTabs.css);`,
-      gnomeVerticalTabs: `@import url(chrome://floorp/skin/designs/gnomeUI/gnomeVerticalTabs.css);`,
-      FluerialVerticalTabs: `@import url(chrome://floorp/skin/designs/fluerialUI/fluerialUI-verticalTabs.css?${this.updateDateAndTime});`,
     };
   },
 
@@ -98,8 +87,6 @@ export const gFloorpDesign = {
     );
     const tag = document.createElement("style");
     tag.setAttribute("id", "browserdesign");
-    const enableMultitab =
-      Services.prefs.getIntPref("floorp.tabbar.style") == 1;
     const enableVerticalTabs =
       Services.prefs.getIntPref("floorp.browser.tabbar.settings") == 2;
 
@@ -112,32 +99,8 @@ export const gFloorpDesign = {
             gFloorpDesign.themeCSSs.LeptonVerticalTabs
           : gFloorpDesign.themeCSSs.LeptonUI;
         break;
-      case 5:
-        if (AppConstants.platform !== "linux") {
-          tag.innerText = enableVerticalTabs
-            ? gFloorpDesign.themeCSSs.fluentUI +
-              gFloorpDesign.themeCSSs.fluentVerticalTabs
-            : gFloorpDesign.themeCSSs.fluentUI;
-        }
-        break;
-      case 6:
-        if (AppConstants.platform == "linux") {
-          tag.innerText = enableVerticalTabs
-            ? gFloorpDesign.themeCSSs.gnomeUI +
-              gFloorpDesign.themeCSSs.gnomeVerticalTabs
-            : gFloorpDesign.themeCSSs.gnomeUI;
-        }
-        break;
       case 8:
-        if (enableMultitab) {
-          tag.innerText = gFloorpDesign.themeCSSs.FluerialUIMultitab;
-        } else if (enableVerticalTabs) {
-          tag.innerText =
-            gFloorpDesign.themeCSSs.FluerialUI +
-            gFloorpDesign.themeCSSs.FluerialVerticalTabs;
-        } else {
-          tag.innerText = gFloorpDesign.themeCSSs.FluerialUI;
-        }
+        tag.innerText = gFloorpDesign.themeCSSs.FluerialUI;
         break;
     }
 
