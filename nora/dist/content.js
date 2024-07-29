@@ -21,7 +21,6 @@ const _CustomShortcutKey = class _CustomShortcutKey {
     if (!_CustomShortcutKey.windows.includes(window)) {
       _CustomShortcutKey.instance.startHandleShortcut(window);
       _CustomShortcutKey.windows.push(window);
-      console.log("add window");
     }
     Services.obs.addObserver(_CustomShortcutKey.instance, "nora-csk");
     return _CustomShortcutKey.instance;
@@ -37,7 +36,6 @@ const _CustomShortcutKey = class _CustomShortcutKey {
         }
         case "update-pref": {
           this.initCSKData();
-          console.log(this.cskData);
           break;
         }
       }
@@ -53,7 +51,6 @@ const _CustomShortcutKey = class _CustomShortcutKey {
   startHandleShortcut(_window) {
     _window.addEventListener("keydown", (ev) => {
       if (this.disable_csk) {
-        console.log("disable-csk");
         return;
       }
       if (["Control", "Alt", "Meta", "Shift"].filter((k) => ev.key.includes(k)).length === 0) {

@@ -4,7 +4,6 @@ const [editingStatus, setEditingStatus] = createSignal(
 );
 const [currentFocus, setCurrentFocus] = createSignal(null);
 createEffect(() => {
-  console.log(currentFocus() !== null);
   Services.obs.notifyObservers(
     {},
     "nora-csk",
@@ -64,12 +63,11 @@ function initSetKey() {
           for (const key2 of Object.keys(temp)) {
             if (key2 === focus) {
               delete temp[key2];
-              setCSKData(temp);
+              setCSKData(zCSKData.parse(temp));
               setEditingStatus(cskDatumToString(cskData(), focus));
               break;
             }
           }
-          console.log(cskData());
         }
         return;
       }
@@ -79,6 +77,10 @@ function initSetKey() {
       if (["Control", "Alt", "Meta", "Shift"].filter((k) => key.includes(k)).length === 0) {
         if (checkIsSystemShortcut(ev)) {
           console.warn(`This Event is registered in System: ${ev}`);
+          return;
+        }
+        if (shift && !(alt || ctrl || meta) && key) {
+          console.warn("Shift + [key] is not permitted");
           return;
         }
         setCSKData({
