@@ -1,290 +1,595 @@
-/* -*- indent-tabs-mode: nil; js-indent-level: 2 -*- */
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-export const gSplitView = {
-  Functions: {
-    init() {
-      gSplitView.Functions.tabContextMenu.addContextMenuToTabContext();
-      Services.prefs.setBoolPref("floorp.browser.splitView.working", false);
-    },
-    setSplitView(tab, side) {
-      try {
-        this.removeSplitView();
-      } catch (e) {}
-      Services.prefs.setBoolPref("floorp.browser.splitView.working", true);
+/**
+ * @class gSplitViewClass
+ * @description The gSplitViewClass class is responsible for handling the split view functionality.
+ * @license MPL2.0 : This code inspired by the split view feature in the Zen Browser Thanks to the Zen Browser team!
+ * @see https://github.com/zen-browser/desktop/raw/main/src/browser/base/content/ZenViewSplitter.mjs
+ * TODO: Send Pull Request to Zen Browser Team.
+ */
+export class gSplitViewClass {
+  constructor() {
+    this._data = [];
+    this.currentView = -1;
+    this._tabBrowserPanel = null;
+    this.__modifierElement = null;
+    this.__hasSetMenuListener = false;
 
-      let panel = gSplitView.Functions.getlinkedPanel(tab.linkedPanel);
-      let browser = tab.linkedBrowser;
-      let browserDocShellIsActiveState = browser.docShellIsActive;
+    Services.prefs.setBoolPref("floorp.browser.splitView.working", false);
+    window.addEventListener("TabClose", this.handleTabClose.bind(this));
+    this.initializeContextMenu();
+  }
 
-      // Check if the a tab is already in split view
-      let tabs = window.gBrowser.tabs;
-      for (let i = 0; i < tabs.length; i++) {
-        if (tabs[i].hasAttribute("splitView")) {
-          gSplitView.Functions.removeSplitView(tabs[i]);
-        }
-      }
+  /**
+   * @param {Event} event
+   * Constructs a new instance of the gSplitViewClass.
+   * @class
+   */
+  handleTabClose(event) {
+    const tab = event.target;
+    const groupIndex = this._data.findIndex(group => group.tabs.includes(tab));
+    if (groupIndex < 0) {
+      return;
+    }
+    this.removeTabFromGroup(tab, groupIndex, event.forUnsplit);
+  }
 
-      let CSSElem = document.getElementById("splitViewCSS");
-      if (!CSSElem) {
-        // Add splitview css to head tag
-        const splitViewTag = document.createElement("link");
-        splitViewTag.setAttribute("id", "splitViewCSS");
-        splitViewTag.rel = "stylesheet";
-        splitViewTag.href = "chrome://floorp/content/browser-splitView.css";
-        document.head.append(splitViewTag);
-      }
+  /**
+   * Removes a tab from a group.
+   *
+   * @param {Tab} tab - The tab to remove.
+   * @param {number} groupIndex - The index of the group.
+   * @param {boolean} forUnsplit - Indicates if the tab is being removed for unsplitting.
+   */
+  removeTabFromGroup(tab, groupIndex, forUnsplit) {
+    const group = this._data[groupIndex];
+    const tabIndex = group.tabs.indexOf(tab);
+    group.tabs.splice(tabIndex, 1);
 
-      tab.setAttribute("splitView", true);
-      panel.setAttribute("splitview", side);
-      panel.setAttribute("splitviewtab", true);
-      panel.classList.add("deck-selected");
+    this.resetTabState(tab, forUnsplit);
 
-      gSplitView.Functions.splitterHide();
+    if (group.tabs.length < 2) {
+      this.removeGroup(groupIndex);
+    } else {
+      this.updateSplitView(group.tabs[group.tabs.length - 1]);
+    }
+  }
 
-      this.splitter = document.createXULElement("splitter");
-      this.splitter.setAttribute("id", "splitview-splitter");
-      this.splitter.className = "deck-selected";
+  /**
+   * Resets the state of a tab.
+   *
+   * @param {Tab} tab - The tab to reset.
+   * @param {boolean} forUnsplit - Indicates if the tab is being reset for unsplitting.
+   */
+  resetTabState(tab, forUnsplit) {
+    tab.splitView = false;
+    tab.linkedBrowser.spliting = false;
+    const container = tab.linkedBrowser.closest(".browserSidebarContainer");
+    container.removeAttribute("split");
+    container.removeAttribute("style");
+
+    if (!forUnsplit) {
+      tab.linkedBrowser.docShellIsActive = false;
+      container.style.display = "none";
+    } else {
+      container.style.gridArea = "1 / 1";
+    }
+  }
+
+  /**
+   * Removes a group.
+   *
+   * @param {number} groupIndex - The index of the group to remove.
+   */
+  removeGroup(groupIndex) {
+    if (this.currentView === groupIndex) {
+      this.resetSplitView();
+    }
+    this._data.splice(groupIndex, 1);
+  }
+
+  /**
+   * Resets the split view.
+   */
+  resetSplitView() {
+    for (const tab of this._data[this.currentView].tabs) {
+      this.resetTabState(tab, true);
+    }
+
+    this.currentView = -1;
+    this.tabBrowserPanel.removeAttribute("split-view");
+    this.tabBrowserPanel.style.gridTemplateAreas = "";
+    this.tabBrowserPanel.style.gridGap = "0px";
+    Services.prefs.setBoolPref("floorp.browser.splitView.working", false);
+  }
+
+  /**
+   * context menu item display update
+   */
+  insetUpdateContextMenuItems() {
+    const contentAreaContextMenu = document.getElementById("tabContextMenu");
+    const tabCountInfo = JSON.stringify({
+      tabCount:
+        (window.gContextMenu?.contextTab.multiselected &&
+          window.gBrowser.multiSelectedTabsCount) ||
+        1,
+    });
+
+    contentAreaContextMenu.addEventListener("popupshowing", () => {
       document
-        .querySelector("#tabbrowser-tabpanels")
-        .appendChild(this.splitter);
+        .getElementById("context_splittabs")
+        .setAttribute("data-l10n-args", tabCountInfo);
+      document.getElementById("context_splittabs").disabled =
+        !this.contextCanSplitTabs();
+    });
+  }
 
-      if (side === "left") {
-        document.getElementById("splitview-splitter").style.order = 1;
-      } else {
-        document.getElementById("splitview-splitter").style.order = 3;
+  /**
+   * Inserts the split link into the context menu.
+   */
+  insertSplitLinkIntoContextMenu() {
+    const element = window.MozXULElement.parseXULToFragment(`
+      <menuitem id="context-split-with-newtab" data-l10n-id="floorp-split-view-open-menu"
+                oncommand="gSplitViewClass.splitLinkInNewTab();" hidden="true"/>
+      <menuseparator id="context-stripOnShareLink"/>
+    `);
+    document.getElementById("context-stripOnShareLink").after(element);
+  }
+
+  /**
+   * Inserts the split view tab context menu item.
+   */
+  insertSplitViewTabContextMenu() {
+    const element = window.MozXULElement.parseXULToFragment(`
+      <menuseparator/>
+      <menuitem id="context_splittabs" data-l10n-id="floorp-split-view-open-menu"
+                data-l10n-args='{"tabCount": 1}' oncommand="gSplitView.contextSplitTabs();"/>
+      <menuitem id="context_splittabs" data-l10n-id="floorp-split-view-close-menu" oncommand="gSplitView.unsplitCurrentView();"/>
+      <menuseparator/>
+    `);
+    document.getElementById("context_closeDuplicateTabs").after(element);
+  }
+
+  /**
+   * Initializes the context menu.
+   */
+  initializeContextMenu() {
+    this.insertSplitLinkIntoContextMenu();
+    this.insertSplitViewTabContextMenu();
+    this.insetUpdateContextMenuItems();
+  }
+
+  /**
+   * Insert Page Action button
+   */
+  insertPageActionButton() {
+    const element = window.MozXULElement.parseXULToFragment(`
+      <hbox id="split-views-box"
+            hidden="true"
+            role="button"
+            class="urlbar-page-action"
+            onclick="gSplitView.openSplitViewPanel(event);">
+            <image id="split-views-button"
+                   class="urlbar-icon"/>
+      </hbox>
+    `);
+    document.getElementById("page-action-buttons").appendChild(element);
+  }
+
+  /**
+   * Gets the tab browser panel.
+   *
+   * @returns {Element} The tab browser panel.
+   */
+  get tabBrowserPanel() {
+    if (!this._tabBrowserPanel) {
+      this._tabBrowserPanel = document.getElementById("tabbrowser-tabpanels");
+    }
+    return this._tabBrowserPanel;
+  }
+
+  /**
+   * Splits a link in a new tab.
+   */
+  splitLinkInNewTab() {
+    const url =
+      window.gContextMenu.linkURL ||
+      window.gContextMenu.target.ownerDocument.location.href;
+    const currentTab = window.gBrowser.selectedTab;
+    const newTab = this.openAndSwitchToTab(url);
+    this.splitTabs([currentTab, newTab]);
+  }
+
+  /**
+   * Splits the selected tabs.
+   */
+  contextSplitTabs() {
+    const tabs = window.gBrowser.selectedTabs;
+    this.splitTabs(tabs);
+  }
+
+  /**
+   * Checks if the selected tabs can be split.
+   *
+   * @returns {boolean} True if the tabs can be split, false otherwise.
+   */
+  contextCanSplitTabs() {
+    if (window.gBrowser.selectedTabs.length < 2) {
+      return false;
+    }
+    for (const tab of window.gBrowser.selectedTabs) {
+      if (tab.splitView) {
+        return false;
       }
+    }
+    return true;
+  }
 
-      if (!browserDocShellIsActiveState) {
-        browser.docShellIsActive = true;
-      }
+  /**
+   * Handles the location change event.
+   *
+   * @param {Browser} browser - The browser instance.
+   */
+  onLocationChange(browser) {
+    const tab = window.gBrowser.getTabForBrowser(browser);
+    this.updateSplitViewButton(!tab?.splitView);
+    if (tab) {
+      this.updateSplitView(tab);
+    }
+  }
 
-      gSplitView.Functions.setLocationChangeEvent();
+  /**
+   * Splits the given tabs.
+   *
+   * @param {Tab[]} tabs - The tabs to split.
+   */
+  splitTabs(tabs) {
+    if (tabs.length < 2) {
+      return;
+    }
 
-      // Save splitView resized size to pref
-      let currentSplitViewTab = document.querySelector(
-        `.tabbrowser-tab[splitView="true"]`
+    const existingSplitTab = tabs.find(tab => tab.splitView);
+    if (existingSplitTab) {
+      const groupIndex = this._data.findIndex(group =>
+        group.tabs.includes(existingSplitTab)
       );
-      let currentSplitViewPanel = gSplitView.Functions.getlinkedPanel(
-        currentSplitViewTab?.linkedPanel
-      );
-      const panelWidth =
-        document.getElementById("appcontent").clientWidth / 2 - 3;
-      currentSplitViewPanel.style.width = `${panelWidth}px`;
-      if (currentSplitViewTab !== window.gBrowser.selectedTab) {
-        window.gBrowser.getPanel().style.width = panelWidth + "px";
-      }
-      Services.prefs.setIntPref("floorp.browser.splitView.width", panelWidth);
-
-      // Observer
-      window.splitViewResizeObserver = new ResizeObserver(() => {
-        let currentTab = window.gBrowser.selectedTab;
-        if (
-          Services.prefs.getBoolPref("floorp.browser.splitView.working") ===
-            true &&
-          currentSplitViewTab !== currentTab
-        ) {
-          let width = window.gBrowser.getPanel().clientWidth;
-          Services.prefs.setIntPref("floorp.browser.splitView.width", width);
-        }
-      });
-
-      window.splitViewResizeObserver.observe(
-        document.querySelector("#tabbrowser-tabpanels [splitviewtab = true]")
-      );
-    },
-
-    removeSplitView() {
-      Services.prefs.setBoolPref("floorp.browser.splitView.working", false);
-
-      let tab = document.querySelector(`.tabbrowser-tab[splitView="true"]`);
-      if (!tab) {
+      if (groupIndex >= 0) {
+        this.updateSplitView(existingSplitTab);
         return;
       }
+    }
 
-      // remove style
-      let panel = gSplitView.Functions.getlinkedPanel(tab.linkedPanel);
-      let CSSElem = document.getElementById("splitViewCSS");
-      CSSElem?.remove();
+    this._data.push({
+      tabs,
+      gridType: "grid",
+    });
+    window.gBrowser.selectedTab = tabs[0];
+    this.updateSplitView(tabs[0]);
+  }
 
-      document.querySelector("#splitview-splitter")?.remove();
-      tab.removeAttribute("splitView");
-      panel.removeAttribute("splitview");
-      panel.removeAttribute("splitviewtab");
-      if (tab !== window.gBrowser.selectedTab) {
-        panel.classList.remove("deck-selected");
+  /**
+   * Updates the split view.
+   *
+   * @param {Tab} tab - The tab to update the split view for.
+   */
+  updateSplitView(tab) {
+    const splitData = this._data.find(group => group.tabs.includes(tab));
+    if (
+      !splitData ||
+      (this.currentView >= 0 &&
+        !this._data[this.currentView].tabs.includes(tab))
+    ) {
+      this.updateSplitViewButton(true);
+      if (this.currentView >= 0) {
+        this.deactivateSplitView();
       }
-
-      if (window.browser.docShellIsActive) {
-        window.browser.docShellIsActive = false;
+      if (!splitData) {
+        return;
       }
+    }
 
-      let tabPanels = document.querySelectorAll("#tabbrowser-tabpanels > *");
-      tabPanels.forEach(tabPanel => {
-        tabPanel.removeAttribute("width");
-        tabPanel.removeAttribute("style");
-      });
+    this.activateSplitView(splitData, tab);
+  }
 
-      gSplitView.Functions.removeLocationChangeEvent();
-      window.splitViewResizeObserver.disconnect();
-    },
+  /**
+   * Deactivates the split view.
+   */
+  deactivateSplitView() {
+    for (const tab of this._data[this.currentView].tabs) {
+      const container = tab.linkedBrowser.closest(".browserSidebarContainer");
+      this.resetContainerStyle(container);
+      container.removeEventListener("click", this.handleTabClick);
+    }
+    this.tabBrowserPanel.removeAttribute("split-view");
+    this.tabBrowserPanel.style.gridTemplateAreas = "";
+    Services.prefs.setBoolPref("floorp.browser.splitView.working", false);
+    this.setTabsDocShellState(this._data[this.currentView].tabs, false);
+    this.currentView = -1;
+  }
 
-    getlinkedPanel(id) {
-      let panel = document.getElementById(id);
-      return panel;
-    },
+  /**
+   * Activates the split view.
+   *
+   * @param {object} splitData - The split data.
+   * @param {Tab} activeTab - The active tab.
+   */
+  activateSplitView(splitData, activeTab) {
+    this.tabBrowserPanel.setAttribute("split-view", "true");
+    Services.prefs.setBoolPref("floorp.browser.splitView.working", true);
+    this.currentView = this._data.indexOf(splitData);
 
-    setLocationChangeEvent() {
-      document.addEventListener(
-        "floorpOnLocationChangeEvent",
-        gSplitView.Functions.locationChange
+    const gridType = splitData.gridType || "grid";
+    this.applyGridLayout(splitData.tabs, gridType, activeTab);
+
+    this.setTabsDocShellState(splitData.tabs, true);
+    this.updateSplitViewButton(false);
+  }
+
+  /**
+   * Applies the grid layout to the tabs.
+   *
+   * @param {Tab[]} tabs - The tabs to apply the grid layout to.
+   * @param {string} gridType - The type of grid layout.
+   * @param {Tab} activeTab - The active tab.
+   */
+  applyGridLayout(tabs, gridType, activeTab) {
+    const gridAreas = this.calculateGridAreas(tabs, gridType);
+    this.tabBrowserPanel.style.gridTemplateAreas = gridAreas;
+
+    tabs.forEach((tab, index) => {
+      tab.splitView = true;
+      const container = tab.linkedBrowser.closest(".browserSidebarContainer");
+      this.styleContainer(container, tab === activeTab, index, gridType);
+    });
+  }
+
+  /**
+   * Calculates the grid areas for the tabs.
+   *
+   * @param {Tab[]} tabs - The tabs.
+   * @param {string} gridType - The type of grid layout.
+   * @returns {string} The calculated grid areas.
+   */
+  calculateGridAreas(tabs, gridType) {
+    if (gridType === "grid") {
+      return this.calculateGridAreasForGrid(tabs);
+    }
+    if (gridType === "vsep") {
+      return `'${tabs.map((_, j) => `tab${j + 1}`).join(" ")}'`;
+    }
+    if (gridType === "hsep") {
+      return tabs.map((_, j) => `'tab${j + 1}'`).join(" ");
+    }
+    return "";
+  }
+
+  /**
+   * Calculates the grid areas for the tabs in a grid layout.
+   *
+   * @param {Tab[]} tabs - The tabs.
+   * @returns {string} The calculated grid areas.
+   */
+  calculateGridAreasForGrid(tabs) {
+    const rows = ["", ""];
+    tabs.forEach((_, i) => {
+      if (i % 2 === 0) {
+        rows[0] += ` tab${i + 1}`;
+      } else {
+        rows[1] += ` tab${i + 1}`;
+      }
+    });
+
+    if (tabs.length === 2) {
+      return "'tab1 tab2'";
+    }
+
+    if (tabs.length % 2 !== 0) {
+      rows[1] += ` tab${tabs.length}`;
+    }
+
+    return `'${rows[0].trim()}' '${rows[1].trim()}'`;
+  }
+
+  /**
+   * Styles the container for a tab.
+   *
+   * @param {Element} container - The container element.
+   * @param {boolean} isActive - Indicates if the tab is active.
+   * @param {number} index - The index of the tab.
+   * @param {string} gridType - The type of grid layout.
+   */
+  styleContainer(container, isActive, index, gridType) {
+    container.removeAttribute("split-active");
+    if (isActive) {
+      container.setAttribute("split-active", "true");
+    }
+    container.setAttribute("split-anim", "true");
+    container.addEventListener("click", this.handleTabClick);
+
+    if (gridType === "grid") {
+      container.style.gridArea = `tab${index + 1}`;
+    }
+  }
+
+  /**
+   * Handles the tab click event.
+   *
+   * @param {Event} event - The click event.
+   */
+  handleTabClick = event => {
+    const container = event.currentTarget;
+    const tab = window.gBrowser.tabs.find(
+      t => t.linkedBrowser.closest(".browserSidebarContainer") === container
+    );
+    if (tab) {
+      window.gBrowser.selectedTab = tab;
+    }
+  };
+
+  /**
+   * Sets the docshell state for the tabs.
+   *
+   * @param {Tab[]} tabs - The tabs.
+   * @param {boolean} active - Indicates if the tabs are active.
+   */
+  setTabsDocShellState(tabs, active) {
+    for (const tab of tabs) {
+      tab.linkedBrowser.spliting = active;
+      tab.linkedBrowser.docShellIsActive = active;
+      const browser = tab.linkedBrowser.closest(".browserSidebarContainer");
+      if (active) {
+        browser.setAttribute("split", "true");
+        const currentStyle = browser.getAttribute("style");
+        browser.setAttribute(
+          "style",
+          `${currentStyle}
+          -moz-subtree-hidden-only-visually: 0;
+          visibility: visible !important;`
+        );
+      } else {
+        browser.removeAttribute("split");
+        browser.removeAttribute("style");
+      }
+    }
+  }
+
+  /**
+   * Resets the container style.
+   *
+   * @param {Element} container - The container element.
+   */
+  resetContainerStyle(container) {
+    container.removeAttribute("split-active");
+    container.classList.remove("deck-selected");
+    container.style.gridArea = "";
+  }
+
+  /**
+   * Updates the split view button visibility.
+   *
+   * @param {boolean} hidden - Indicates if the button should be hidden.
+   */
+  updateSplitViewButton(hidden) {
+    const button = document.getElementById("split-views-box");
+    if (hidden) {
+      button?.setAttribute("hidden", "true");
+    } else {
+      button?.removeAttribute("hidden");
+    }
+  }
+
+  /**
+   * Gets the modifier element.
+   *
+   * @returns {Element} The modifier element.
+   */
+  get modifierElement() {
+    if (!this.__modifierElement) {
+      const wrapper = document.getElementById("template-split-view-modifier");
+      const panel = wrapper.content.firstElementChild;
+      wrapper.replaceWith(wrapper.content);
+      this.__modifierElement = panel;
+    }
+    return this.__modifierElement;
+  }
+
+  /**
+   * Opens the split view panel.
+   *
+   * @param {Event} event - The event that triggered the panel opening.
+   */
+  async openSplitViewPanel(event) {
+    const panel = this.modifierElement;
+    const target = event.target.parentNode;
+    this.updatePanelUI(panel);
+
+    if (!this.__hasSetMenuListener) {
+      this.setupPanelListeners(panel);
+      this.__hasSetMenuListener = true;
+    }
+
+    window.PanelMultiView.openPopup(panel, target, {
+      position: "bottomright topright",
+      triggerEvent: event,
+    }).catch(console.error);
+  }
+
+  /**
+   * Updates the UI of the panel.
+   *
+   * @param {Element} panel - The panel element.
+   */
+  updatePanelUI(panel) {
+    for (const gridType of ["hsep", "vsep", "grid", "unsplit"]) {
+      const selector = panel.querySelector(
+        `.split-view-modifier-preview.${gridType}`
       );
-    },
-
-    removeLocationChangeEvent() {
-      document.removeEventListener(
-        "floorpOnLocationChangeEvent",
-        gSplitView.Functions.locationChange
-      );
-    },
-
-    splitterHide() {
+      selector.classList.remove("active");
       if (
-        window.gBrowser.selectedTab ===
-        document.querySelector(".tabbrowser-tab[splitView='true']")
+        this.currentView >= 0 &&
+        this._data[this.currentView].gridType === gridType
       ) {
-        let splitterHideCSS = document.getElementById("splitterHideCSS");
-        if (!splitterHideCSS) {
-          let elem = document.createElement("style");
-          elem.setAttribute("id", "splitterHideCSS");
-          elem.textContent = `
-          #splitview-splitter {
-            display: none !important;
-          }
-          `;
-          document.head.appendChild(elem);
-        }
-      } else {
-        let splitterHideCSS = document.getElementById("splitterHideCSS");
-        if (splitterHideCSS) {
-          splitterHideCSS.remove();
-        }
+        selector.classList.add("active");
       }
-    },
+    }
+  }
 
-    locationChange() {
-      gSplitView.Functions.splitterHide();
-
-      let currentSplitViewTab = document.querySelector(
-        `.tabbrowser-tab[splitView="true"]`
+  /**
+   * @description sets up the listeners for the panel.
+   * @param {Element} panel - The panel element
+   */
+  setupPanelListeners(panel) {
+    for (const gridType of ["hsep", "vsep", "grid", "unsplit"]) {
+      const selector = panel.querySelector(
+        `.split-view-modifier-preview.${gridType}`
       );
-      let currentSplitViewPanel = gSplitView.Functions.getlinkedPanel(
-        currentSplitViewTab?.linkedPanel
+      selector.addEventListener("click", () =>
+        this.handlePanelSelection(gridType, panel)
       );
-      if (currentSplitViewPanel !== window.gBrowser.getPanel()) {
-        window.gBrowser.getPanel().style.width =
-          Services.prefs.getIntPref("floorp.browser.splitView.width") + "px";
-      }
+    }
+  }
 
-      gSplitView.Functions.handleTabEvent();
-    },
+  /**
+   * @description handles the panel selection.
+   * @param {string} gridType - The grid type
+   * @param {Element} panel - The panel element
+   */
+  handlePanelSelection(gridType, panel) {
+    if (gridType === "unsplit") {
+      this.unsplitCurrentView();
+    } else {
+      this._data[this.currentView].gridType = gridType;
+      this.updateSplitView(window.gBrowser.selectedTab);
+    }
+    panel.hidePopup();
+  }
 
-    handleTabEvent() {
-      if (!Services.prefs.getBoolPref("floorp.browser.splitView.working")) {
-        return;
-      }
+  /**
+   * @description unsplit the current view.]
+   */
+  unsplitCurrentView() {
+    const currentTab = window.gBrowser.selectedTab;
+    const tabs = this._data[this.currentView].tabs;
+    for (const tab of tabs) {
+      this.handleTabClose({ target: tab, forUnsplit: true });
+    }
+    window.gBrowser.selectedTab = currentTab;
+    this.updateSplitViewButton(true);
+  }
 
-      let currentSplitViewTab = document.querySelector(
-        `.tabbrowser-tab[splitView="true"]`
-      );
-      let currentSplitViewPanel = gSplitView.Functions.getlinkedPanel(
-        currentSplitViewTab?.linkedPanel
-      );
-      let currentSplitViewBrowser = currentSplitViewTab?.linkedBrowser;
-
-      if (!currentSplitViewBrowser) {
-        return;
-      }
-
-      // set renderLayers to true & Set class to deck-selected
-      currentSplitViewBrowser.renderLayers = true;
-      currentSplitViewPanel?.classList.add("deck-selected");
-
-      if (!currentSplitViewBrowser.docShellIsActive) {
-        currentSplitViewBrowser.docShellIsActive = true;
-      }
-
-      function applySplitView() {
-        currentSplitViewBrowser.renderLayers = true;
-        currentSplitViewPanel?.classList.add("deck-selected");
-
-        if (!window.browser.docShellIsActive) {
-          window.browser.docShellIsActive = true;
-        }
-      }
-
-      (function modifyDeckSelectedClass() {
-        let tabs = window.gBrowser.tabs;
-        for (let i = 0; i < tabs.length; i++) {
-          let panel = gSplitView.Functions.getlinkedPanel(tabs[i].linkedPanel);
-          if (
-            tabs[i].hasAttribute("splitView") ||
-            tabs[i] == window.gBrowser.selectedTab
-          ) {
-            panel?.classList.add("deck-selected");
-          } else {
-            panel?.classList.remove("deck-selected");
-          }
-        }
-      })();
-
-      window.setTimeout(applySplitView, 1000);
-    },
-
-    tabContextMenu: {
-      addContextMenuToTabContext() {
-        let beforeElem = document.getElementById("context_selectAllTabs");
-        let menuitemElem = window.MozXULElement.parseXULToFragment(`
-               <menu id="context_splitView" data-l10n-id="floorp-split-view-menu" accesskey="D">
-                   <menupopup id="splitViewTabContextMenu"
-                              onpopupshowing="gSplitView.Functions.tabContextMenu.onPopupShowing(event);"/>
-               </menu>
-               <menuitem id="splitViewTabContextMenuClose" data-l10n-id="splitview-close-split-tab"  oncommand="gSplitView.Functions.removeSplitView();"/>
-               `);
-        beforeElem.before(menuitemElem);
-      },
-
-      onPopupShowing(event) {
-        //delete already exsist items
-        let menuElem = document.getElementById("splitViewTabContextMenu");
-        while (menuElem.firstChild) {
-          menuElem.firstChild.remove();
-        }
-
-        //Rebuild context menu
-        if (event.target === window.gBrowser.selectedTab) {
-          let menuItem = window.MozXULElement.parseXULToFragment(`
-                   <menuitem data-l10n-id="workspace-context-menu-selected-tab" disabled="true"/>
-                  `);
-          let parentElem = document.getElementById("workspaceTabContextMenu");
-          parentElem.appendChild(menuItem);
-          return;
-        }
-
-        let menuItem = window.MozXULElement.parseXULToFragment(`
-                  <menuitem id="splitViewTabContextMenuLeft" data-l10n-id="splitview-show-on-left"  oncommand="gSplitView.Functions.setSplitView(TabContextMenu.contextTab, 'left');"/>
-                  <menuitem id="splitViewTabContextMenuRight" data-l10n-id="splitview-show-on-right" oncommand="gSplitView.Functions.setSplitView(TabContextMenu.contextTab, 'right');"/>
-                `);
-
-        let parentElem = document.getElementById("splitViewTabContextMenu");
-        parentElem.appendChild(menuItem);
-      },
-
-      setSplitView(event, side) {
-        let tab = event.target;
-        gSplitView.Functions.setSplitView(tab, side);
-      },
-    },
-  },
-};
-
-gSplitView.Functions.init();
+  /**
+   * @description opens a new tab and switches to it.
+   * @param {string} url - The url to open
+   * @param {object} options - The options for the tab
+   * @returns {tab} The tab that was opened
+   */
+  openAndSwitchToTab(url, options) {
+    const parentWindow = window.ownerGlobal.parent;
+    const targetWindow = parentWindow || window;
+    const tab = targetWindow.gBrowser.addTrustedTab(url, options);
+    targetWindow.gBrowser.selectedTab = tab;
+    return tab;
+  }
+}

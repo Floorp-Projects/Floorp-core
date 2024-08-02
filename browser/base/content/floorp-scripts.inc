@@ -29,6 +29,12 @@ import("chrome://floorp/content/browser-bms-window.mjs").then(
 document.addEventListener(
   "DOMContentLoaded",
   () => {
+    import("chrome://floorp/content/browser-splitView.mjs").then(
+      ({ gSplitViewClass }) => {
+        window.gSplitView = new gSplitViewClass();
+      }
+    );
+
     import("chrome://floorp/content/browser-context-menu.mjs").then(
       ({ gFloorpContextMenu }) => {
         window.gFloorpContextMenu = gFloorpContextMenu;
@@ -75,11 +81,6 @@ document.addEventListener(
     import("chrome://floorp/content/browser-favicon-color.mjs").then(
       ({ gFloorpFaviconColor }) => {
         window.gFloorpFaviconColor = gFloorpFaviconColor;
-      }
-    );
-    import("chrome://floorp/content/browser-splitView.mjs").then(
-      ({ gSplitView }) => {
-        window.gSplitView = gSplitView;
       }
     );
 

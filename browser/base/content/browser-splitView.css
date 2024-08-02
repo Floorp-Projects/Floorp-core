@@ -1,42 +1,29 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#tabbrowser-tabpanels > * {
-    display: none;
+#tabbrowser-tabpanels[split-view="true"] {
+  display: flex;
+  flex-direction: row;
 }
 
-.deck-selected {
-    display: flex !important;
-    flex: auto !important;
-    order: 2;
+#tabbrowser-tabpanels[split-view="true"] > *:not([split="true"]) {
+  flex: 0;
+  margin: 0 !important;
 }
 
-.deck-selected[splitview="right"] {
-    flex: auto !important;
-    order: 4 !important;
+#tabbrowser-tabpanels[split-view="true"] > [split="true"] {
+  flex: 1;
+  margin-right: 5px !important;
 }
 
-.deck-selected[splitview="left"] {
-    flex: auto !important;
-    order: 0 !important;
+#tabbrowser-tabpanels:has(> [split="true"]) {
+  display: grid;
+  grid-gap: 0 5px !important;
 }
 
-#splitview-splitter {
-    flex: 0 !important;
-    border: none;
-}
-
-#tabbrowser-tabpanels {
-    display: flex !important;
-}
-
-.tabbrowser-tab[splitView="true"] {
-    display: flex;
-    flex-direction: row;
-}
-
-.tabbrowser-tab[splitView="true"]::before {
-    content: "";
-    position: inherit;
-    background: red;
-    width: 2px;
-    height: inherit;
+deck > .deck-selected,
+tabpanels > [split="true"] {
+  -moz-subtree-hidden-only-visually: 0 !important;
+  visibility: visible !important;
 }
