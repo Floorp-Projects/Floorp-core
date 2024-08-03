@@ -3,13 +3,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 /**
- * @class gSplitViewClass
- * @description The gSplitViewClass class is responsible for handling the split view functionality.
+ * @class SplitView
+ * @description The SplitView class is responsible for handling the split view functionality.
  * @license MPL2.0 : This code inspired by the split view feature in the Zen Browser Thanks to the Zen Browser team!
  * @see https://github.com/zen-browser/desktop/raw/main/src/browser/base/content/ZenViewSplitter.mjs
  * TODO: Send Pull Request to Zen Browser Team.
  */
-export class gSplitViewClass {
+export class SplitView {
   constructor() {
     this._data = [];
     this.currentView = -1;
@@ -20,12 +20,13 @@ export class gSplitViewClass {
     Services.prefs.setBoolPref("floorp.browser.splitView.working", false);
     window.addEventListener("TabClose", this.handleTabClose.bind(this));
     this.initializeContextMenu();
+    this.insertPageActionButton();
+    this.insertPopupPanel();
   }
 
   /**
-   * @param {Event} event
-   * Constructs a new instance of the gSplitViewClass.
-   * @class
+   * @param {Event} event - The event that triggered the tab close.
+   * @description Handles the tab close event.7
    */
   handleTabClose(event) {
     const tab = event.target;
@@ -132,7 +133,7 @@ export class gSplitViewClass {
   insertSplitLinkIntoContextMenu() {
     const element = window.MozXULElement.parseXULToFragment(`
       <menuitem id="context-split-with-newtab" data-l10n-id="floorp-split-view-open-menu"
-                oncommand="gSplitViewClass.splitLinkInNewTab();" hidden="true"/>
+                oncommand="gSplitView.splitLinkInNewTab();" hidden="true"/>
       <menuseparator id="context-stripOnShareLink"/>
     `);
     document.getElementById("context-stripOnShareLink").after(element);
@@ -176,6 +177,62 @@ export class gSplitViewClass {
       </hbox>
     `);
     document.getElementById("page-action-buttons").appendChild(element);
+  }
+
+  /**
+   * Insert popup panel to popupsets
+   */
+  insertPopupPanel() {
+    const element = window.MozXULElement.parseXULToFragment(`
+      <html:template id="template-split-view-modifier">
+        <panel id="splitViewModifier"
+               class="panel-no-padding"
+               orient="vertical"
+               role="alertdialog"
+               type="arrow"
+               aria-labelledby="split-view-modifier-header"
+               tabspecific="true">
+          <panelmultiview id="splitViewModifierMultiview"
+                          mainViewId="splitViewModifierViewDefault">
+            <panelview id="splitViewModifierViewDefault"
+                       class="PanelUI-subView"
+                       role="document"
+                       mainview-with-header="true"
+                       has-custom-header="true">
+              <vbox>
+                <box class="split-view-modifier-preview grid">
+                  <box class="splitViewSelectItems"/>
+                  <box class="splitViewSelectItems"/>
+                  <box class="splitViewSelectItems"/>
+                </box>
+                <p data-l10n-id="floorp-split-view-grid"></p>
+              </vbox>
+              <vbox>
+                <box class="split-view-modifier-preview hsep">
+                  <box class="splitViewSelectItems"/>
+                  <box class="splitViewSelectItems"/>
+                </box>
+                <p data-l10n-id="floorp-split-view-horizontal"></p>
+              </vbox>
+              <vbox>
+                <box class="split-view-modifier-preview vsep">
+                  <box class="splitViewSelectItems"/>
+                  <box class="splitViewSelectItems"/>
+                </box>
+                <p data-l10n-id="floorp-split-view-vertical"></p>
+              </vbox>
+              <vbox>
+                <box class="split-view-modifier-preview unsplit">
+                  <box class="splitViewSelectItems"/>
+                </box>
+                <p data-l10n-id="floorp-split-view-unsplit"></p>
+              </vbox>
+            </panelview>
+          </panelmultiview>
+        </panel>
+      </html:template>
+    `);
+    document.getElementById("mainPopupSet").appendChild(element);
   }
 
   /**

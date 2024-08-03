@@ -30,8 +30,8 @@ document.addEventListener(
   "DOMContentLoaded",
   () => {
     import("chrome://floorp/content/browser-splitView.mjs").then(
-      ({ gSplitViewClass }) => {
-        window.gSplitView = new gSplitViewClass();
+      ({ SplitView }) => {
+        window.gSplitView = new SplitView();
       }
     );
 

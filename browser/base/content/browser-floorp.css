@@ -626,3 +626,90 @@ toolbarpaletteitem #workspaces-toolbar-button > label {
 #workspacesPopupSeparator {
   margin: 10px 0px !important;
 }
+
+/**
+ * SplitView Styles
+ * @license MPL2.0 : This code inspired by the split view feature in the Zen Browser Thanks to the Zen Browser team!
+ * @see https://github.com/zen-browser/desktop/raw/main/src/browser/base/content/ZenViewSplitter.mjs
+ */
+#split-views-button {
+  list-style-image: url("chrome://floorp/skin/designs/lepton/calendar-agenda.svg");
+}
+
+#splitViewModifierViewDefault {
+  min-width: 180px;
+  min-height: 180px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px;
+  padding: 15px;
+}
+
+#splitViewModifierViewDefault > vbox {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+#splitViewModifierViewDefault .split-view-modifier-preview {
+  border-radius: 5px;
+  width: 100px;
+  height: 70px;
+  overflow: hidden;
+  padding: 5px;
+  user-select: none;
+  font-weight: 500;
+}
+
+#splitViewModifierViewDefault p {
+  margin-top: 5px;
+  margin-bottom: 0;
+}
+
+#splitViewModifierViewDefault .split-view-modifier-preview box {
+  border-radius: 3px;
+  width: 100%;
+  height: 100%;
+}
+
+#splitViewModifierViewDefault .split-view-modifier-preview.hsep {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#splitViewModifierViewDefault .split-view-modifier-preview.hsep box:last-child {
+  margin-top: 5px;
+}
+
+#splitViewModifierViewDefault .split-view-modifier-preview.vsep box:last-child {
+  margin-left: 5px;
+}
+
+#splitViewModifierViewDefault .split-view-modifier-preview.grid {
+  display: grid;
+  grid-template-areas: "a b" "c b";
+  gap: 5px;
+}
+
+#splitViewModifierViewDefault .split-view-modifier-preview.grid box:nth-child(1) {
+  grid-area: a;
+}
+
+#splitViewModifierViewDefault .split-view-modifier-preview.grid box:nth-child(2) {
+  grid-area: b;
+}
+
+#splitViewModifierViewDefault .split-view-modifier-preview.grid box:nth-child(3) {
+  grid-area: c;
+}
+
+.split-view-modifier-preview {
+  border: solid 1px var(--toolbar-color);
+}
+
+.splitViewSelectItems {
+  border: solid 1px var(--toolbar-color);
+}
