@@ -674,20 +674,6 @@ toolbarpaletteitem #workspaces-toolbar-button > label {
   height: 100%;
 }
 
-#splitViewModifierViewDefault .split-view-modifier-preview.hsep {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-#splitViewModifierViewDefault .split-view-modifier-preview.hsep box:last-child {
-  margin-top: 5px;
-}
-
-#splitViewModifierViewDefault .split-view-modifier-preview.vsep box:last-child {
-  margin-left: 5px;
-}
-
 #splitViewModifierViewDefault .split-view-modifier-preview.grid {
   display: grid;
   grid-template-areas: "a b" "c b";

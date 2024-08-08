@@ -6,8 +6,6 @@
  * @class SplitView
  * @description The SplitView class is responsible for handling the split view functionality.
  * @license MPL2.0 : This code inspired by the split view feature in the Zen Browser Thanks to the Zen Browser team!
- * @see https://github.com/zen-browser/desktop/raw/main/src/browser/base/content/ZenViewSplitter.mjs
- * TODO: Send Pull Request to Zen Browser Team.
  */
 export class SplitView {
   constructor() {
@@ -18,10 +16,8 @@ export class SplitView {
     this.__hasSetMenuListener = false;
 
     Services.prefs.setBoolPref("floorp.browser.splitView.working", false);
-    window.addEventListener("TabClose", this.handleTabClose.bind(this));
+    window.addEventListener("TabClose", (event) => this.handleTabClose(event));
     this.initializeContextMenu();
-    this.insertPageActionButton();
-    this.insertPopupPanel();
   }
 
   /**
@@ -107,46 +103,12 @@ export class SplitView {
   }
 
   /**
-   * context menu item display update
-   */
-  insetUpdateContextMenuItems() {
-    const contentAreaContextMenu = document.getElementById("tabContextMenu");
-    const tabCountInfo = JSON.stringify({
-      tabCount:
-        (window.gContextMenu?.contextTab.multiselected &&
-          window.gBrowser.multiSelectedTabsCount) ||
-        1,
-    });
-
-    contentAreaContextMenu.addEventListener("popupshowing", () => {
-      document
-        .getElementById("context_splittabs")
-        .setAttribute("data-l10n-args", tabCountInfo);
-      document.getElementById("context_splittabs").disabled =
-        !this.contextCanSplitTabs();
-    });
-  }
-
-  /**
-   * Inserts the split link into the context menu.
-   */
-  insertSplitLinkIntoContextMenu() {
-    const element = window.MozXULElement.parseXULToFragment(`
-      <menuitem id="context-split-with-newtab" data-l10n-id="floorp-split-view-open-menu"
-                oncommand="gSplitView.splitLinkInNewTab();" hidden="true"/>
-      <menuseparator id="context-stripOnShareLink"/>
-    `);
-    document.getElementById("context-stripOnShareLink").after(element);
-  }
-
-  /**
    * Inserts the split view tab context menu item.
    */
   insertSplitViewTabContextMenu() {
     const element = window.MozXULElement.parseXULToFragment(`
       <menuseparator/>
-      <menuitem id="context_splittabs" data-l10n-id="floorp-split-view-open-menu"
-                data-l10n-args='{"tabCount": 1}' oncommand="gSplitView.contextSplitTabs();"/>
+      <menuitem id="context_splittabs" data-l10n-id="floorp-split-view-open-menu" oncommand="gSplitView.contextSplitTabs();"/>
       <menuitem id="context_splittabs" data-l10n-id="floorp-split-view-close-menu" oncommand="gSplitView.unsplitCurrentView();"/>
       <menuseparator/>
     `);
@@ -157,82 +119,7 @@ export class SplitView {
    * Initializes the context menu.
    */
   initializeContextMenu() {
-    this.insertSplitLinkIntoContextMenu();
     this.insertSplitViewTabContextMenu();
-    this.insetUpdateContextMenuItems();
-  }
-
-  /**
-   * Insert Page Action button
-   */
-  insertPageActionButton() {
-    const element = window.MozXULElement.parseXULToFragment(`
-      <hbox id="split-views-box"
-            hidden="true"
-            role="button"
-            class="urlbar-page-action"
-            onclick="gSplitView.openSplitViewPanel(event);">
-            <image id="split-views-button"
-                   class="urlbar-icon"/>
-      </hbox>
-    `);
-    document.getElementById("page-action-buttons").appendChild(element);
-  }
-
-  /**
-   * Insert popup panel to popupsets
-   */
-  insertPopupPanel() {
-    const element = window.MozXULElement.parseXULToFragment(`
-      <html:template id="template-split-view-modifier">
-        <panel id="splitViewModifier"
-               class="panel-no-padding"
-               orient="vertical"
-               role="alertdialog"
-               type="arrow"
-               aria-labelledby="split-view-modifier-header"
-               tabspecific="true">
-          <panelmultiview id="splitViewModifierMultiview"
-                          mainViewId="splitViewModifierViewDefault">
-            <panelview id="splitViewModifierViewDefault"
-                       class="PanelUI-subView"
-                       role="document"
-                       mainview-with-header="true"
-                       has-custom-header="true">
-              <vbox>
-                <box class="split-view-modifier-preview grid">
-                  <box class="splitViewSelectItems"/>
-                  <box class="splitViewSelectItems"/>
-                  <box class="splitViewSelectItems"/>
-                </box>
-                <p data-l10n-id="floorp-split-view-grid"></p>
-              </vbox>
-              <vbox>
-                <box class="split-view-modifier-preview hsep">
-                  <box class="splitViewSelectItems"/>
-                  <box class="splitViewSelectItems"/>
-                </box>
-                <p data-l10n-id="floorp-split-view-horizontal"></p>
-              </vbox>
-              <vbox>
-                <box class="split-view-modifier-preview vsep">
-                  <box class="splitViewSelectItems"/>
-                  <box class="splitViewSelectItems"/>
-                </box>
-                <p data-l10n-id="floorp-split-view-vertical"></p>
-              </vbox>
-              <vbox>
-                <box class="split-view-modifier-preview unsplit">
-                  <box class="splitViewSelectItems"/>
-                </box>
-                <p data-l10n-id="floorp-split-view-unsplit"></p>
-              </vbox>
-            </panelview>
-          </panelmultiview>
-        </panel>
-      </html:template>
-    `);
-    document.getElementById("mainPopupSet").appendChild(element);
   }
 
   /**
@@ -248,40 +135,14 @@ export class SplitView {
   }
 
   /**
-   * Splits a link in a new tab.
-   */
-  splitLinkInNewTab() {
-    const url =
-      window.gContextMenu.linkURL ||
-      window.gContextMenu.target.ownerDocument.location.href;
-    const currentTab = window.gBrowser.selectedTab;
-    const newTab = this.openAndSwitchToTab(url);
-    this.splitTabs([currentTab, newTab]);
-  }
-
-  /**
    * Splits the selected tabs.
    */
   contextSplitTabs() {
-    const tabs = window.gBrowser.selectedTabs;
-    this.splitTabs(tabs);
-  }
-
-  /**
-   * Checks if the selected tabs can be split.
-   *
-   * @returns {boolean} True if the tabs can be split, false otherwise.
-   */
-  contextCanSplitTabs() {
-    if (window.gBrowser.selectedTabs.length < 2) {
-      return false;
+    if (window.TabContextMenu.contextTab === window.gBrowser.selectedTab) {
+      return;
     }
-    for (const tab of window.gBrowser.selectedTabs) {
-      if (tab.splitView) {
-        return false;
-      }
-    }
-    return true;
+    const tab = [window.TabContextMenu.contextTab, window.gBrowser.selectedTab];
+    this.splitTabs(tab);
   }
 
   /**
@@ -303,10 +164,6 @@ export class SplitView {
    * @param {Tab[]} tabs - The tabs to split.
    */
   splitTabs(tabs) {
-    if (tabs.length < 2) {
-      return;
-    }
-
     const existingSplitTab = tabs.find(tab => tab.splitView);
     if (existingSplitTab) {
       const groupIndex = this._data.findIndex(group =>
@@ -406,20 +263,10 @@ export class SplitView {
    * Calculates the grid areas for the tabs.
    *
    * @param {Tab[]} tabs - The tabs.
-   * @param {string} gridType - The type of grid layout.
    * @returns {string} The calculated grid areas.
    */
-  calculateGridAreas(tabs, gridType) {
-    if (gridType === "grid") {
-      return this.calculateGridAreasForGrid(tabs);
-    }
-    if (gridType === "vsep") {
-      return `'${tabs.map((_, j) => `tab${j + 1}`).join(" ")}'`;
-    }
-    if (gridType === "hsep") {
-      return tabs.map((_, j) => `'tab${j + 1}'`).join(" ");
-    }
-    return "";
+  calculateGridAreas(tabs) {
+    return this.calculateGridAreasForGrid(tabs);
   }
 
   /**
@@ -579,7 +426,7 @@ export class SplitView {
    * @param {Element} panel - The panel element.
    */
   updatePanelUI(panel) {
-    for (const gridType of ["hsep", "vsep", "grid", "unsplit"]) {
+    for (const gridType of ["grid", "unsplit"]) {
       const selector = panel.querySelector(
         `.split-view-modifier-preview.${gridType}`
       );
@@ -598,7 +445,7 @@ export class SplitView {
    * @param {Element} panel - The panel element
    */
   setupPanelListeners(panel) {
-    for (const gridType of ["hsep", "vsep", "grid", "unsplit"]) {
+    for (const gridType of ["grid", "unsplit"]) {
       const selector = panel.querySelector(
         `.split-view-modifier-preview.${gridType}`
       );
