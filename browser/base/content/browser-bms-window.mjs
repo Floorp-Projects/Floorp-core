@@ -11,7 +11,7 @@ export var gBmsWindow = {
   },
 
   get loadURL() {
-    return this.webapnelData.url;
+    return this.webpanelData.url;
   },
 
   get webpanelId() {
@@ -19,14 +19,14 @@ export var gBmsWindow = {
   },
 
   get userContextId() {
-    return this.webapnelData.usercontext ? this.webapnelData.usercontext : 0;
+    return this.webpanelData.usercontext ? this.webpanelData.usercontext : 0;
   },
 
   get userAgent() {
-    return this.webapnelData?.userAgent ? this.webapnelData.userAgent : false;
+    return this.webpanelData?.userAgent ? this.webpanelData.userAgent : false;
   },
 
-  get webapnelData() {
+  get webpanelData() {
     let id = this.webpanelId;
     let data = BrowserManagerSidebarPanelWindowUtils.BROWSER_SIDEBAR_DATA.data;
     return data[id];
@@ -123,7 +123,7 @@ export var gBmsWindow = {
   },
 
   setZoomLevel() {
-    let zoomLevel = gBmsWindow.webapnelData.zoomLevel;
+    let zoomLevel = gBmsWindow.webpanelData.zoomLevel;
     if (zoomLevel) {
       window.ZoomManager.zoom = zoomLevel;
     }
