@@ -16,7 +16,7 @@ export class SplitView {
     this.__hasSetMenuListener = false;
 
     Services.prefs.setBoolPref("floorp.browser.splitView.working", false);
-    window.addEventListener("TabClose", (event) => this.handleTabClose(event));
+    window.addEventListener("TabClose", event => this.handleTabClose(event));
     this.initializeContextMenu();
   }
 
@@ -152,7 +152,6 @@ export class SplitView {
    */
   onLocationChange(browser) {
     const tab = window.gBrowser.getTabForBrowser(browser);
-    this.updateSplitViewButton(!tab?.splitView);
     if (tab) {
       this.updateSplitView(tab);
     }
@@ -195,7 +194,6 @@ export class SplitView {
       (this.currentView >= 0 &&
         !this._data[this.currentView].tabs.includes(tab))
     ) {
-      this.updateSplitViewButton(true);
       if (this.currentView >= 0) {
         this.deactivateSplitView();
       }
@@ -238,7 +236,6 @@ export class SplitView {
     this.applyGridLayout(splitData.tabs, gridType, activeTab);
 
     this.setTabsDocShellState(splitData.tabs, true);
-    this.updateSplitViewButton(false);
   }
 
   /**
@@ -371,20 +368,6 @@ export class SplitView {
   }
 
   /**
-   * Updates the split view button visibility.
-   *
-   * @param {boolean} hidden - Indicates if the button should be hidden.
-   */
-  updateSplitViewButton(hidden) {
-    const button = document.getElementById("split-views-box");
-    if (hidden) {
-      button?.setAttribute("hidden", "true");
-    } else {
-      button?.removeAttribute("hidden");
-    }
-  }
-
-  /**
    * Gets the modifier element.
    *
    * @returns {Element} The modifier element.
@@ -400,77 +383,6 @@ export class SplitView {
   }
 
   /**
-   * Opens the split view panel.
-   *
-   * @param {Event} event - The event that triggered the panel opening.
-   */
-  async openSplitViewPanel(event) {
-    const panel = this.modifierElement;
-    const target = event.target.parentNode;
-    this.updatePanelUI(panel);
-
-    if (!this.__hasSetMenuListener) {
-      this.setupPanelListeners(panel);
-      this.__hasSetMenuListener = true;
-    }
-
-    window.PanelMultiView.openPopup(panel, target, {
-      position: "bottomright topright",
-      triggerEvent: event,
-    }).catch(console.error);
-  }
-
-  /**
-   * Updates the UI of the panel.
-   *
-   * @param {Element} panel - The panel element.
-   */
-  updatePanelUI(panel) {
-    for (const gridType of ["grid", "unsplit"]) {
-      const selector = panel.querySelector(
-        `.split-view-modifier-preview.${gridType}`
-      );
-      selector.classList.remove("active");
-      if (
-        this.currentView >= 0 &&
-        this._data[this.currentView].gridType === gridType
-      ) {
-        selector.classList.add("active");
-      }
-    }
-  }
-
-  /**
-   * @description sets up the listeners for the panel.
-   * @param {Element} panel - The panel element
-   */
-  setupPanelListeners(panel) {
-    for (const gridType of ["grid", "unsplit"]) {
-      const selector = panel.querySelector(
-        `.split-view-modifier-preview.${gridType}`
-      );
-      selector.addEventListener("click", () =>
-        this.handlePanelSelection(gridType, panel)
-      );
-    }
-  }
-
-  /**
-   * @description handles the panel selection.
-   * @param {string} gridType - The grid type
-   * @param {Element} panel - The panel element
-   */
-  handlePanelSelection(gridType, panel) {
-    if (gridType === "unsplit") {
-      this.unsplitCurrentView();
-    } else {
-      this._data[this.currentView].gridType = gridType;
-      this.updateSplitView(window.gBrowser.selectedTab);
-    }
-    panel.hidePopup();
-  }
-
-  /**
    * @description unsplit the current view.]
    */
   unsplitCurrentView() {
@@ -480,7 +392,6 @@ export class SplitView {
       this.handleTabClose({ target: tab, forUnsplit: true });
     }
     window.gBrowser.selectedTab = currentTab;
-    this.updateSplitViewButton(true);
   }
 
   /**

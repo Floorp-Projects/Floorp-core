@@ -18,8 +18,8 @@
 }
 
 #tabbrowser-tabpanels:has(> [split="true"]) {
-  display: grid;
-  grid-gap: 0 5px !important;
+  display: flex;
+  flex-direction: row;
 }
 
 deck > .deck-selected,

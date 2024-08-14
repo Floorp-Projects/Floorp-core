@@ -636,62 +636,6 @@ toolbarpaletteitem #workspaces-toolbar-button > label {
   list-style-image: url("chrome://floorp/skin/designs/lepton/calendar-agenda.svg");
 }
 
-#splitViewModifierViewDefault {
-  min-width: 180px;
-  min-height: 180px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 10px;
-  padding: 15px;
-}
-
-#splitViewModifierViewDefault > vbox {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  cursor: pointer;
-}
-
-#splitViewModifierViewDefault .split-view-modifier-preview {
-  border-radius: 5px;
-  width: 100px;
-  height: 70px;
-  overflow: hidden;
-  padding: 5px;
-  user-select: none;
-  font-weight: 500;
-}
-
-#splitViewModifierViewDefault p {
-  margin-top: 5px;
-  margin-bottom: 0;
-}
-
-#splitViewModifierViewDefault .split-view-modifier-preview box {
-  border-radius: 3px;
-  width: 100%;
-  height: 100%;
-}
-
-#splitViewModifierViewDefault .split-view-modifier-preview.grid {
-  display: grid;
-  grid-template-areas: "a b" "c b";
-  gap: 5px;
-}
-
-#splitViewModifierViewDefault .split-view-modifier-preview.grid box:nth-child(1) {
-  grid-area: a;
-}
-
-#splitViewModifierViewDefault .split-view-modifier-preview.grid box:nth-child(2) {
-  grid-area: b;
-}
-
-#splitViewModifierViewDefault .split-view-modifier-preview.grid box:nth-child(3) {
-  grid-area: c;
-}
-
 .split-view-modifier-preview {
   border: solid 1px var(--toolbar-color);
 }
