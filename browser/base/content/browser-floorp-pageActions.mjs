@@ -63,8 +63,8 @@ export const gFloorpPageAction = {
         window
       );
 
-      let currentTab = window.gBrowser.selectedTab;
-      let currentTabURL = currentTab.linkedBrowser.currentURI.spec;
+      const currentTab = window.gBrowser.selectedTab;
+      const currentTabURL = currentTab.linkedBrowser.currentURI.spec;
 
       // eslint-disable-next-line no-undef
       const qrCode = new QRCodeStyling({
@@ -89,7 +89,7 @@ export const gFloorpPageAction = {
       });
 
       //remove old qrcode
-      let QRCodeBox = document.getElementById("qrcode-img-vbox");
+      const QRCodeBox = document.getElementById("qrcode-img-vbox");
 
       while (QRCodeBox.firstChild) {
         QRCodeBox.firstChild.remove();
@@ -140,14 +140,14 @@ export const gFloorpPageAction = {
       window.gSsbSupport.functions.installOrRunCurrentPageAsSsb(true);
 
       // Show installing gif
-      let installingGif = document.getElementById("ssb-installing-icon");
+      const installingGif = document.getElementById("ssb-installing-icon");
       installingGif?.removeAttribute("hidden");
 
       // Hide install button
-      let installButtons = document.getElementsByClassName(
+      const installButtons = document.getElementsByClassName(
         "ssb-install-buttons"
       );
-      for (let installButton of installButtons) {
+      for (const installButton of installButtons) {
         installButton?.setAttribute("hidden", true);
       }
     },
@@ -155,14 +155,14 @@ export const gFloorpPageAction = {
     closePopup() {
       document.getElementById("ssb-panel").hidePopup();
       // Show installing gif
-      let installingGif = document.getElementById("ssb-installing-icon");
+      const installingGif = document.getElementById("ssb-installing-icon");
       installingGif?.setAttribute("hidden", true);
 
       // Hide install button
-      let installButtons = document.getElementsByClassName(
+      const installButtons = document.getElementsByClassName(
         "ssb-install-buttons"
       );
-      for (let installButton of installButtons) {
+      for (const installButton of installButtons) {
         installButton?.removeAttribute("hidden");
       }
     },

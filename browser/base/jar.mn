@@ -48,9 +48,8 @@ floorp.jar:
   content/modules/workspaces/WorkspacesMigratorUtils.mjs             (content/modules/workspaces/WorkspacesMigratorUtils.mjs)
 
 # Style Sheets
-  content/browser-bms-window.css                       (content/browser-bms-window.css)
+  content/browser-bms-window.css              (content/browser-bms-window.css)
   content/browser-floorp.css                  (content/browser-floorp.css)
-  content/browser-splitView.css                        (content/browser-splitView.css)
   content/browser-ssb-window.css              (content/browser-ssb-window.css)
   content/browser-verticaltabs.css            (content/browser-verticaltabs.css)
 

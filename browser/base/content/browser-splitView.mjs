@@ -18,6 +18,7 @@ export class SplitView {
     Services.prefs.setBoolPref("floorp.browser.splitView.working", false);
     window.addEventListener("TabClose", event => this.handleTabClose(event));
     this.initializeContextMenu();
+    this.insertPageActionButtonAndPanel();
   }
 
   /**
@@ -109,12 +110,72 @@ export class SplitView {
   insertSplitViewTabContextMenu() {
     const element = window.MozXULElement.parseXULToFragment(`
       <menuseparator/>
-      <menuitem id="context_splittabs" data-l10n-id="floorp-split-view-open-menu" oncommand="gSplitView.contextSplitTabs();"/>
-      <menuitem id="context_splittabs" data-l10n-id="floorp-split-view-close-menu" oncommand="gSplitView.unsplitCurrentView();"/>
+        <menuitem id="context_splittabs" data-l10n-id="floorp-split-view-open-menu" oncommand="gSplitView.contextSplitTabs();"/>
       <menuseparator/>
     `);
     document.getElementById("context_closeDuplicateTabs").after(element);
   }
+
+  insertPageActionButtonAndPanel() {
+    const element = window.MozXULElement.parseXULToFragment(`
+      <hbox data-l10n-id="qrcode-generate-page-action" class="urlbar-page-action" role="button" popup="splitView-panel">
+        <image id="splitView-image" class="urlbar-icon"/>
+        <panel id="splitView-panel" type="arrow" position="bottomleft topleft" onpopupshowing="gSplitView.onPopupShowing()">
+          <vbox id="splitView-box">
+            <vbox class="panel-header">
+              <html:h1>
+                <html:span data-l10n-id="split-view-title"></html:span>
+              </html:h1>
+            </vbox>
+            <toolbarseparator/>
+            <vbox id="splitView-vbox">
+             <html:h3 data-l10n-id="split-view-position" class="splitView-title"/>
+             <hbox id="splitView-position-selector">
+              <vbox id="splitView-position-selector-left" class="splitView-select-box">
+                <label data-l10n-id="split-view-position-left" value="left" class="splitView-select-label"/>
+                <hbox id="splitView-position-selector-content-left" class="splitView-select-content-box">
+                  <box/>
+                  <box/>
+                </hbox>
+              </vbox>
+              <vbox id="splitView-position-selector-right" class="splitView-select-box">
+                <label data-l10n-id="split-view-position-right" value="right" class="splitView-select-label"/>
+                <hbox id="splitView-position-selector-content-right" class="splitView-select-content-box">
+                  <box/>
+                  <box/>
+                </hbox>
+              </vbox>
+             </hbox>
+             <toolbarseparator/>
+             <html:h3 data-l10n-id="split-view-flex-type" class="splitView-title"/>
+             <hbox id="splitView-flex-selector">
+              <vbox id="splitView-flex-selector-column" class="splitView-select-box">
+                <label data-l10n-id="split-view-flex-column" value="column" class="splitView-select-label"/>
+                <hbox id="splitView-flex-selector-content-column" class="splitView-select-content-box">
+                  <box/>
+                  <box/>
+                </hbox>
+              </vbox>
+              <vbox id="splitView-flex-selector-row" class="splitView-select-box">
+                <label data-l10n-id="split-view-flex-row" value="row" class="splitView-select-label"/>
+                <vbox id="splitView-flex-selector-content-row" class="splitView-select-content-box">
+                  <box/>
+                  <box/>
+                </vbox>
+              </vbox>
+             </hbox>
+             <button id="splitView-remove-button" data-l10n-id="split-view-remove-button"
+                     class="footer-button" oncommand="gSplitView.unsplitCurrentView();"/>
+            </vbox>
+          </vbox>
+        </panel>
+     </hbox>
+     `);
+
+    document.getElementById("identity-box").appendChild(element);
+  }
+
+  onPopupShowing() {}
 
   /**
    * Initializes the context menu.

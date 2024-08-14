@@ -675,3 +675,62 @@ tabpanels > [split="true"] {
   -moz-subtree-hidden-only-visually: 0 !important;
   visibility: visible !important;
 }
+
+#splitView-image {
+  list-style-image: url("chrome://floorp/skin/designs/lepton/link.svg");
+}
+
+#splitView-vbox {
+  width: 270px;
+}
+
+.splitView-title {
+  margin: 5px;
+  font-weight: bold;
+}
+
+#splitView-position-selector {
+  display: flex;
+  flex-direction: row;
+}
+
+.splitView-select-box {
+  flex: 1;
+  height: 100px;
+  border-radius: 5px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--panel-separator-color);
+  margin: 7px;
+}
+
+.splitView-select-content-box {
+  margin: 5px;
+  border-radius: 5px;
+  height: 50px;
+  flex: 1;
+}
+
+.splitView-select-label {
+  margin: auto;
+  font-size: smaller;
+}
+
+.splitView-select-content-box > box {
+  flex: 1;
+}
+
+.splitView-select-content-box > :nth-child(1) {
+  background-color: var(--button-active-bgcolor);
+  border-radius: 5px;
+}
+
+#splitView-position-selector-content-right {
+  flex-direction: row-reverse;
+}
+
+#splitView-remove-button {
+  margin-top: 10px;
+  margin-left: auto;
+}
