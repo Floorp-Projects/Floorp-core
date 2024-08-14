@@ -643,3 +643,35 @@ toolbarpaletteitem #workspaces-toolbar-button > label {
 .splitViewSelectItems {
   border: solid 1px var(--toolbar-color);
 }
+
+/* Split View */
+
+.browserSidebarContainer {
+  flex: 0
+}
+
+#tabbrowser-tabpanels[split-view="true"] {
+  display: flex;
+  flex-direction: row;
+}
+
+#tabbrowser-tabpanels[split-view="true"] > *:not([split="true"]) {
+  flex: 0;
+  margin: 0 !important;
+}
+
+#tabbrowser-tabpanels[split-view="true"] > [split="true"] {
+  flex: 1;
+  margin-right: 5px !important;
+}
+
+#tabbrowser-tabpanels:has(> [split="true"]) {
+  display: flex;
+  flex-direction: row;
+}
+
+deck > .deck-selected,
+tabpanels > [split="true"] {
+  -moz-subtree-hidden-only-visually: 0 !important;
+  visibility: visible !important;
+}

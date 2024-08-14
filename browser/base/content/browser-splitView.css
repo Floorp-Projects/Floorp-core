@@ -27,3 +27,7 @@ tabpanels > [split="true"] {
   -moz-subtree-hidden-only-visually: 0 !important;
   visibility: visible !important;
 }
+
+.browserSidebarContainer {
+  flex: 0 !important;
+}

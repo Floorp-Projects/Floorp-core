@@ -71,7 +71,8 @@ export class SplitView {
       tab.linkedBrowser.docShellIsActive = false;
       container.style.display = "none";
     } else {
-      container.style.gridArea = "1 / 1";
+      container.style.flex = "";
+      container.style.order = "";
     }
   }
 
@@ -97,8 +98,8 @@ export class SplitView {
 
     this.currentView = -1;
     this.tabBrowserPanel.removeAttribute("split-view");
-    this.tabBrowserPanel.style.gridTemplateAreas = "";
-    this.tabBrowserPanel.style.gridGap = "0px";
+    this.tabBrowserPanel.style.display = "";
+    this.tabBrowserPanel.style.flexDirection = "";
     Services.prefs.setBoolPref("floorp.browser.splitView.working", false);
   }
 
@@ -176,7 +177,7 @@ export class SplitView {
 
     this._data.push({
       tabs,
-      gridType: "grid",
+      flexType: "flex",
     });
     window.gBrowser.selectedTab = tabs[0];
     this.updateSplitView(tabs[0]);
@@ -215,7 +216,7 @@ export class SplitView {
       container.removeEventListener("click", this.handleTabClick);
     }
     this.tabBrowserPanel.removeAttribute("split-view");
-    this.tabBrowserPanel.style.gridTemplateAreas = "";
+    this.tabBrowserPanel.style.flexTemplateAreas = "";
     Services.prefs.setBoolPref("floorp.browser.splitView.working", false);
     this.setTabsDocShellState(this._data[this.currentView].tabs, false);
     this.currentView = -1;
@@ -232,65 +233,26 @@ export class SplitView {
     Services.prefs.setBoolPref("floorp.browser.splitView.working", true);
     this.currentView = this._data.indexOf(splitData);
 
-    const gridType = splitData.gridType || "grid";
-    this.applyGridLayout(splitData.tabs, gridType, activeTab);
+    const flexType = splitData.flexType || "flex";
+    this.applyFlexBoxLayout(splitData.tabs, flexType, activeTab);
 
     this.setTabsDocShellState(splitData.tabs, true);
   }
 
   /**
-   * Applies the grid layout to the tabs.
+   * Applies the flex layout to the tabs.
    *
-   * @param {Tab[]} tabs - The tabs to apply the grid layout to.
-   * @param {string} gridType - The type of grid layout.
+   * @param {Tab[]} tabs - The tabs to apply the flex layout to.
+   * @param {string} flexType - The type of flex layout.
    * @param {Tab} activeTab - The active tab.
    */
-  applyGridLayout(tabs, gridType, activeTab) {
-    const gridAreas = this.calculateGridAreas(tabs, gridType);
-    this.tabBrowserPanel.style.gridTemplateAreas = gridAreas;
-
+  applyFlexBoxLayout(tabs, flexType, activeTab) {
+    this.tabBrowserPanel.style.flexDirection = "column";
     tabs.forEach((tab, index) => {
       tab.splitView = true;
       const container = tab.linkedBrowser.closest(".browserSidebarContainer");
-      this.styleContainer(container, tab === activeTab, index, gridType);
+      this.styleContainer(container, tab === activeTab, index, flexType);
     });
-  }
-
-  /**
-   * Calculates the grid areas for the tabs.
-   *
-   * @param {Tab[]} tabs - The tabs.
-   * @returns {string} The calculated grid areas.
-   */
-  calculateGridAreas(tabs) {
-    return this.calculateGridAreasForGrid(tabs);
-  }
-
-  /**
-   * Calculates the grid areas for the tabs in a grid layout.
-   *
-   * @param {Tab[]} tabs - The tabs.
-   * @returns {string} The calculated grid areas.
-   */
-  calculateGridAreasForGrid(tabs) {
-    const rows = ["", ""];
-    tabs.forEach((_, i) => {
-      if (i % 2 === 0) {
-        rows[0] += ` tab${i + 1}`;
-      } else {
-        rows[1] += ` tab${i + 1}`;
-      }
-    });
-
-    if (tabs.length === 2) {
-      return "'tab1 tab2'";
-    }
-
-    if (tabs.length % 2 !== 0) {
-      rows[1] += ` tab${tabs.length}`;
-    }
-
-    return `'${rows[0].trim()}' '${rows[1].trim()}'`;
   }
 
   /**
@@ -299,9 +261,9 @@ export class SplitView {
    * @param {Element} container - The container element.
    * @param {boolean} isActive - Indicates if the tab is active.
    * @param {number} index - The index of the tab.
-   * @param {string} gridType - The type of grid layout.
+   * @param {string} flexType - The type of flex layout.
    */
-  styleContainer(container, isActive, index, gridType) {
+  styleContainer(container, isActive, index, flexType) {
     container.removeAttribute("split-active");
     if (isActive) {
       container.setAttribute("split-active", "true");
@@ -309,8 +271,9 @@ export class SplitView {
     container.setAttribute("split-anim", "true");
     container.addEventListener("click", this.handleTabClick);
 
-    if (gridType === "grid") {
-      container.style.gridArea = `tab${index + 1}`;
+    if (flexType === "flex") {
+      container.style.flex = "1";
+      container.style.order = index;
     }
   }
 
@@ -364,7 +327,8 @@ export class SplitView {
   resetContainerStyle(container) {
     container.removeAttribute("split-active");
     container.classList.remove("deck-selected");
-    container.style.gridArea = "";
+    container.style.flex = "";
+    container.style.order = "";
   }
 
   /**
