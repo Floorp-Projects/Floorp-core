@@ -734,3 +734,7 @@ tabpanels > [split="true"] {
   margin-top: 10px;
   margin-left: auto;
 }
+
+.splitView-select-box.selected {
+  border: var(--button-primary-hover-bgcolor) solid 1px;
+}

@@ -118,28 +118,29 @@ export class SplitView {
 
   insertPageActionButtonAndPanel() {
     const element = window.MozXULElement.parseXULToFragment(`
-      <hbox data-l10n-id="qrcode-generate-page-action" class="urlbar-page-action" role="button" popup="splitView-panel">
+      <hbox data-l10n-id="splitView-action" class="urlbar-page-action" role="button"
+            popup="splitView-panel" id="splitView-action" hidden="true">
         <image id="splitView-image" class="urlbar-icon"/>
-        <panel id="splitView-panel" type="arrow" position="bottomleft topleft" onpopupshowing="gSplitView.onPopupShowing()">
+        <panel id="splitView-panel" type="arrow" position="bottomleft topleft" onpopupshowing="gSplitView.updateSelectedItemState()">
           <vbox id="splitView-box">
             <vbox class="panel-header">
               <html:h1>
-                <html:span data-l10n-id="split-view-title"></html:span>
+                <html:span data-l10n-id="split-view-title"/>
               </html:h1>
             </vbox>
             <toolbarseparator/>
             <vbox id="splitView-vbox">
              <html:h3 data-l10n-id="split-view-position" class="splitView-title"/>
              <hbox id="splitView-position-selector">
-              <vbox id="splitView-position-selector-left" class="splitView-select-box">
-                <label data-l10n-id="split-view-position-left" value="left" class="splitView-select-label"/>
+              <vbox id="splitView-position-selector-left" class="splitView-select-box" onclick="gSplitView.handleSplitViewPanelRevseOptionClick('false')">
+                <label data-l10n-id="split-view-position-left" class="splitView-select-label"/>
                 <hbox id="splitView-position-selector-content-left" class="splitView-select-content-box">
                   <box/>
                   <box/>
                 </hbox>
               </vbox>
-              <vbox id="splitView-position-selector-right" class="splitView-select-box">
-                <label data-l10n-id="split-view-position-right" value="right" class="splitView-select-label"/>
+              <vbox id="splitView-position-selector-right" class="splitView-select-box" onclick="gSplitView.handleSplitViewPanelRevseOptionClick('true')">
+                <label data-l10n-id="split-view-position-right" class="splitView-select-label"/>
                 <hbox id="splitView-position-selector-content-right" class="splitView-select-content-box">
                   <box/>
                   <box/>
@@ -149,16 +150,16 @@ export class SplitView {
              <toolbarseparator/>
              <html:h3 data-l10n-id="split-view-flex-type" class="splitView-title"/>
              <hbox id="splitView-flex-selector">
-              <vbox id="splitView-flex-selector-column" class="splitView-select-box">
-                <label data-l10n-id="split-view-flex-column" value="column" class="splitView-select-label"/>
-                <hbox id="splitView-flex-selector-content-column" class="splitView-select-content-box">
+              <vbox id="splitView-flex-selector-row" class="splitView-select-box" onclick="gSplitView.handleSplitViewPanelTypeOptionClick('row')">
+                <label data-l10n-id="split-view-flex-row" class="splitView-select-label"/>
+                <hbox id="splitView-flex-selector-content-row" class="splitView-select-content-box">
                   <box/>
                   <box/>
                 </hbox>
               </vbox>
-              <vbox id="splitView-flex-selector-row" class="splitView-select-box">
-                <label data-l10n-id="split-view-flex-row" value="row" class="splitView-select-label"/>
-                <vbox id="splitView-flex-selector-content-row" class="splitView-select-content-box">
+              <vbox id="splitView-flex-selector-column" class="splitView-select-box" onclick="gSplitView.handleSplitViewPanelTypeOptionClick('column')">
+                <label data-l10n-id="split-view-flex-column" class="splitView-select-label"/>
+                <vbox id="splitView-flex-selector-content-column" class="splitView-select-content-box">
                   <box/>
                   <box/>
                 </vbox>
@@ -175,7 +176,77 @@ export class SplitView {
     document.getElementById("identity-box").appendChild(element);
   }
 
-  onPopupShowing() {}
+  /**
+   * @description Handles the popup showing event.
+   * @returns {void}
+   */
+  updateSelectedItemState() {
+    // Remove Selected class from all the elements
+    const elements = document.querySelectorAll(".splitView-select-box");
+    for (const element of elements) {
+      element.classList.remove("selected");
+    }
+
+    const currentData = this._data[this.currentView];
+    const reverse = currentData.reverse;
+    const method = currentData.method;
+
+    if (reverse) {
+      document
+        .getElementById("splitView-position-selector-right")
+        .classList.add("selected");
+    } else {
+      document
+        .getElementById("splitView-position-selector-left")
+        .classList.add("selected");
+    }
+
+    if (method === "column") {
+      document
+        .getElementById("splitView-flex-selector-column")
+        .classList.add("selected");
+    } else {
+      document
+        .getElementById("splitView-flex-selector-row")
+        .classList.add("selected");
+    }
+  }
+
+  /**
+   * @description Handles the panel splitter command.
+   * @param {reverse} reverse - Selects the reverse option.
+   * @returns {void}
+   */
+  handleSplitViewPanelRevseOptionClick(reverse) {
+    this.updateSplitView(window.gBrowser.selectedTab, reverse === "true", null);
+    this.updateSelectedItemState();
+  }
+
+  /**
+   * @description Handles the panel splitter command.
+   * @param {string} type - Selects the flex type option.
+   * @returns {void}
+   */
+  handleSplitViewPanelTypeOptionClick(type) {
+    this.updateSplitView(window.gBrowser.selectedTab, null, type);
+    this.updateSelectedItemState();
+  }
+
+  /**
+   * @description Enables the panel.
+   * @returns {void}
+   */
+  showSplitViewManager() {
+    document.getElementById("splitView-action").removeAttribute("hidden");
+  }
+
+  /**
+   * @description hide the panel.
+   * @returns {void}
+   */
+  hideSplitViewManager() {
+    document.getElementById("splitView-action").setAttribute("hidden", true);
+  }
 
   /**
    * Initializes the context menu.
@@ -248,9 +319,19 @@ export class SplitView {
    * Updates the split view.
    *
    * @param {Tab} tab - The tab to update the split view for.
+   * @param {boolean} reverse - Indicates if the split view should be reversed.
+   * @param {string} method - The type of split view.
    */
-  updateSplitView(tab) {
+  updateSplitView(tab, reverse = null, method = null) {
     const splitData = this._data.find(group => group.tabs.includes(tab));
+    const index = this._data.indexOf(splitData);
+    const newSplitData = {
+      ...splitData,
+      // Default configuration
+      method: method === null ? splitData?.method ?? "row" : method,
+      reverse: reverse === null ? splitData?.reverse ?? false : reverse,
+    };
+
     if (
       !splitData ||
       (this.currentView >= 0 &&
@@ -263,8 +344,10 @@ export class SplitView {
         return;
       }
     }
-
-    this.activateSplitView(splitData, tab);
+    if (index >= 0) {
+      this._data[index] = newSplitData;
+    }
+    this.activateSplitView(newSplitData, tab);
   }
 
   /**
@@ -281,6 +364,7 @@ export class SplitView {
     Services.prefs.setBoolPref("floorp.browser.splitView.working", false);
     this.setTabsDocShellState(this._data[this.currentView].tabs, false);
     this.currentView = -1;
+    this.hideSplitViewManager();
   }
 
   /**
@@ -295,9 +379,16 @@ export class SplitView {
     this.currentView = this._data.indexOf(splitData);
 
     const flexType = splitData.flexType || "flex";
-    this.applyFlexBoxLayout(splitData.tabs, flexType, activeTab);
+    this.applyFlexBoxLayout(
+      splitData.tabs,
+      flexType,
+      activeTab,
+      splitData.reverse,
+      splitData.method
+    );
 
     this.setTabsDocShellState(splitData.tabs, true);
+    this.showSplitViewManager();
   }
 
   /**
@@ -306,14 +397,39 @@ export class SplitView {
    * @param {Tab[]} tabs - The tabs to apply the flex layout to.
    * @param {string} flexType - The type of flex layout.
    * @param {Tab} activeTab - The active tab.
+   * @param {boolean} reverse - Indicates if the split view should be reversed.
+   * @param {string} method - The type of split view.
    */
-  applyFlexBoxLayout(tabs, flexType, activeTab) {
-    this.tabBrowserPanel.style.flexDirection = "column";
+  applyFlexBoxLayout(
+    tabs,
+    flexType,
+    activeTab,
+    reverse = true,
+    method = "column"
+  ) {
+    this.tabBrowserPanel.style.flexDirection = this.getFlexDirection(
+      reverse,
+      method
+    );
     tabs.forEach((tab, index) => {
       tab.splitView = true;
       const container = tab.linkedBrowser.closest(".browserSidebarContainer");
-      this.styleContainer(container, tab === activeTab, index, flexType);
+      this.styleContainer(
+        container,
+        tab === activeTab,
+        index,
+        flexType,
+        method,
+        reverse
+      );
     });
+  }
+
+  getFlexDirection(reverse, method) {
+    if (method === "column") {
+      return reverse ? "column-reverse" : "column";
+    }
+    return reverse ? "row-reverse" : "row";
   }
 
   /**
@@ -417,6 +533,7 @@ export class SplitView {
       this.handleTabClose({ target: tab, forUnsplit: true });
     }
     window.gBrowser.selectedTab = currentTab;
+    this.hideSplitViewManager();
   }
 
   /**
