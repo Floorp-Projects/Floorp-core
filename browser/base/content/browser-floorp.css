@@ -676,8 +676,15 @@ tabpanels > [split="true"] {
   visibility: visible !important;
 }
 
+#splitView-action {
+  border-radius: 100px;
+  background: var(--button-active-bgcolor);
+  margin-left: 3px;
+}
+
 #splitView-image {
   list-style-image: url("chrome://floorp/skin/designs/lepton/link.svg");
+  fill: var(--button-primary-bgcolor);
 }
 
 #splitView-vbox {
