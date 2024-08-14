@@ -253,6 +253,25 @@ export class SplitView {
    */
   initializeContextMenu() {
     this.insertSplitViewTabContextMenu();
+    this.addMainPopupShowingListener();
+  }
+
+  /**
+   * @description Adds the main popup showing listener.
+   * @returns {void}
+   */
+  addMainPopupShowingListener() {
+    const mainPopup = document.getElementById("mainPopupSet");
+    mainPopup?.addEventListener("popupshowing", () => {
+      document.getElementById("context_splittabs").disabled =
+        window.gBrowser.selectedTab === window.TabContextMenu.contextTab ||
+        this._data.some(group =>
+          group.tabs.includes(window.TabContextMenu.contextTab)
+        ) ||
+        this._data.some(group =>
+          group.tabs.includes(window.gBrowser.selectedTab)
+        );
+    });
   }
 
   /**
