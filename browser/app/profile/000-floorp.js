@@ -257,6 +257,7 @@ pref("toolkit.telemetry.shutdownPingSender.enabledFirstSession", false, locked);
 pref("toolkit.telemetry.testing.overrideProductsCheck", false, locked);
 pref("toolkit.telemetry.unified", false, locked);
 pref("toolkit.telemetry.updatePing.enabled", false, locked);
+pref("dom.private-attribution.submission.enabled", false, locked);
 
 //Firefox調査を無効化
 pref("app.shield.optoutstudies.enabled", false, locked);
