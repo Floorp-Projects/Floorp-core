@@ -1,4 +1,4 @@
-/* This Source Code Form is subject to the terms of the Mozilla Publica
+/* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -39,44 +39,40 @@ export const gFloorpPinnedTabsTitle = {
       .tabbrowser-tab[pinned="true"] {
         width: ${this.tabMinWidth}px !important;
       }
-      .tab-throbber[pinned], .tab-icon-pending[pinned], .tab-icon-image[pinned], .tab-sharing-icon-overlay[pinned], .tab-icon-overlay[pinned] {
+      .tab-throbber[pinned], .tab-icon-pending[pinned], 
+      .tab-icon-image[pinned], .tab-sharing-icon-overlay[pinned], 
+      .tab-icon-overlay[pinned] {
         margin-inline-end: 5.5px !important;
       }
     `;
   },
 
   init() {
-    if (this._initialized) {
-      return;
-    }
+    if (this._initialized) return;
 
-    Services.prefs.addObserver(
-      "floorp.tabs.showPinnedTabsTitle",
-      this.applyShowPinnedTabsTitle
-    );
-    Services.prefs.addObserver(
-      "browser.tabs.tabMinWidth",
-      this.applyShowPinnedTabsTitle
-    );
+    Services.prefs.addObserver("floorp.tabs.showPinnedTabsTitle", this.applyShowPinnedTabsTitle.bind(this));
+    Services.prefs.addObserver("browser.tabs.tabMinWidth", this.applyShowPinnedTabsTitle.bind(this));
+
     this.applyShowPinnedTabsTitle();
     this._initialized = true;
   },
 
   applyShowPinnedTabsTitle() {
-    if (gFloorpPinnedTabsTitle.showPinnedTabsTitleCssElem) {
-      gFloorpPinnedTabsTitle.showPinnedTabsTitleCssElem.remove();
-    }
+    const cssElem = this.showPinnedTabsTitleCssElem;
+    if (cssElem) cssElem.remove();
 
-    if (gFloorpPinnedTabsTitle.isShowPinnedTabsTitleEnabled) {
-      const css = document.createElement("style");
-      css.id = "showPinnedTabsTitle-css";
-      css.textContent = gFloorpPinnedTabsTitle.pinnedTabsTitleCSS;
-      document.body.appendChild(css);
+    if (this.isShowPinnedTabsTitleEnabled) {
+      const styleElement = document.createElement("style");
+      styleElement.id = "showPinnedTabsTitle-css";
+      styleElement.textContent = this.pinnedTabsTitleCSS;
+      document.body.appendChild(styleElement);
     }
 
     const tabBrowserTabs = document.getElementById("tabbrowser-tabs");
-    tabBrowserTabs._pinnedTabsLayoutCache = null;
-    tabBrowserTabs._positionPinnedTabs();
+    if (tabBrowserTabs) {
+      tabBrowserTabs._pinnedTabsLayoutCache = null;
+      tabBrowserTabs._positionPinnedTabs();
+    }
   },
 };
 
