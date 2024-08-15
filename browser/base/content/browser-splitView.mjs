@@ -263,7 +263,8 @@ export class SplitView {
   addMainPopupShowingListener() {
     const mainPopup = document.getElementById("mainPopupSet");
     mainPopup?.addEventListener("popupshowing", () => {
-      document.getElementById("context_splittabs").disabled =
+      const elem = document.getElementById("context_splittabs");
+      elem.disabled =
         window.gBrowser.selectedTab === window.TabContextMenu.contextTab ||
         this._data.some(group =>
           group.tabs.includes(window.TabContextMenu.contextTab)
@@ -271,6 +272,15 @@ export class SplitView {
         this._data.some(group =>
           group.tabs.includes(window.gBrowser.selectedTab)
         );
+
+      if (elem.getAttribute("disabled") === "true") {
+        document.l10n.setAttributes(
+          elem,
+          "floorp-split-view-open-menu-disabled"
+        );
+      } else {
+        document.l10n.setAttributes(elem, "floorp-split-view-open-menu");
+      }
     });
   }
 
