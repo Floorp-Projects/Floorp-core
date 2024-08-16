@@ -5,222 +5,205 @@ import { BrowserManagerSidebar } from "chrome://floorp/content/modules/bms/Brows
 export const EXPORTED_SYMBOLS = ["BrowserManagerSidebarPanelWindowUtils"];
 
 export const BrowserManagerSidebarPanelWindowUtils = {
-    get STATIC_SIDEBAR_DATA() {
-        return BrowserManagerSidebar.STATIC_SIDEBAR_DATA;
-      },
+  get STATIC_SIDEBAR_DATA() {
+    return BrowserManagerSidebar.STATIC_SIDEBAR_DATA;
+  },
 
-    get BROWSER_SIDEBAR_DATA() {
-      return JSON.parse(
-        Services.prefs.getStringPref("floorp.browser.sidebar2.data", undefined)
-      );
-    },
+  get BROWSER_SIDEBAR_DATA() {
+    return JSON.parse(
+      Services.prefs.getStringPref("floorp.browser.sidebar2.data", undefined)
+    );
+  },
 
-    getWindowByWebpanelId(webpanelId, parentWindow) {
-        let webpanelBrowserId = "webpanel" + webpanelId;
-        let webpanelBrowser = parentWindow.document.getElementById(webpanelBrowserId);
+  getWindowByWebpanelId(webpanelId, parentWindow) {
+    const webpanelBrowserId = "webpanel" + webpanelId;
+    const webpanelBrowser =
+      parentWindow.document.getElementById(webpanelBrowserId);
 
-        if (!webpanelBrowser) {
-            return null;
-        }
+    if (!webpanelBrowser) {
+      return null;
+    }
 
-        return webpanelBrowser.browsingContext.associatedWindow;
-    },
+    return webpanelBrowser.browsingContext.associatedWindow;
+  },
 
-    toggleMutePanel(aWindow, webpanelId, isParentWindow) {
-        let targetPanelWindow = null;
+  toggleMutePanel(aWindow, webpanelId, isParentWindow) {
+    let targetPanelWindow = null;
 
-        if (isParentWindow) {
-            targetPanelWindow = this.getWindowByWebpanelId(webpanelId, window);
-        } else {
-            targetPanelWindow = window;
-        }
+    if (isParentWindow) {
+      targetPanelWindow = this.getWindowByWebpanelId(webpanelId, window);
+    } else {
+      targetPanelWindow = window;
+    }
 
-        if (!targetPanelWindow) {
-            return;
-        }
+    if (!targetPanelWindow) {
+      return;
+    }
 
-        let tab = targetPanelWindow.gBrowser.selectedTab;
-        let audioMuted = tab.linkedBrowser.audioMuted;
+    const tab = targetPanelWindow.gBrowser.selectedTab;
+    const audioMuted = tab.linkedBrowser.audioMuted;
 
-        if (audioMuted) {
-            tab.linkedBrowser.unmute();
-        } else {
-            tab.linkedBrowser.mute();
-        }
-    },
+    if (audioMuted) {
+      tab.linkedBrowser.unmute();
+    } else {
+      tab.linkedBrowser.mute();
+    }
+  },
 
-    reloadPanel(aWindow, webpanelId, isParentWindow) {
-        let targetPanelWindow = null;
+  reloadPanel(aWindow, webpanelId, isParentWindow) {
+    let targetPanelWindow = null;
 
-        if (isParentWindow) {
-            targetPanelWindow = this.getWindowByWebpanelId(webpanelId, aWindow);
-        } else {
-            targetPanelWindow = aWindow;
-        }
+    if (isParentWindow) {
+      targetPanelWindow = this.getWindowByWebpanelId(webpanelId, aWindow);
+    } else {
+      targetPanelWindow = aWindow;
+    }
 
-        if (!targetPanelWindow) {
-            return;
-        }
+    if (!targetPanelWindow) {
+      return;
+    }
 
-        let tab = targetPanelWindow.gBrowser.selectedTab;
-        tab.linkedBrowser.reload();
-    },
+    const tab = targetPanelWindow.gBrowser.selectedTab;
+    tab.linkedBrowser.reload();
+  },
 
-    goForwardPanel(aWindow, webpanelId, isParentWindow) {
-        let targetPanelWindow = null;
+  goForwardPanel(aWindow, webpanelId, isParentWindow) {
+    let targetPanelWindow = null;
 
-        if (isParentWindow) {
-            targetPanelWindow = this.getWindowByWebpanelId(webpanelId, aWindow);
-        } else {
-            targetPanelWindow = aWindow;
-        }
+    if (isParentWindow) {
+      targetPanelWindow = this.getWindowByWebpanelId(webpanelId, aWindow);
+    } else {
+      targetPanelWindow = aWindow;
+    }
 
-        if (!targetPanelWindow) {
-            return;
-        }
+    if (!targetPanelWindow) {
+      return;
+    }
 
-        let tab = targetPanelWindow.gBrowser.selectedTab;
-        tab.linkedBrowser.goForward();
-    },
+    const tab = targetPanelWindow.gBrowser.selectedTab;
+    tab.linkedBrowser.goForward();
+  },
 
-    goBackPanel(aWindow, webpanelId, isParentWindow) {
-        let targetPanelWindow = null;
+  goBackPanel(aWindow, webpanelId, isParentWindow) {
+    let targetPanelWindow = null;
 
-        if (isParentWindow) {
-            targetPanelWindow = this.getWindowByWebpanelId(webpanelId, aWindow);
-        } else {
-            targetPanelWindow = aWindow;
-        }
+    if (isParentWindow) {
+      targetPanelWindow = this.getWindowByWebpanelId(webpanelId, aWindow);
+    } else {
+      targetPanelWindow = aWindow;
+    }
 
-        if (!targetPanelWindow) {
-            return;
-        }
+    if (!targetPanelWindow) {
+      return;
+    }
 
-        let tab = targetPanelWindow.gBrowser.selectedTab;
-        tab.linkedBrowser.goBack();
-    },
+    const tab = targetPanelWindow.gBrowser.selectedTab;
+    tab.linkedBrowser.goBack();
+  },
 
-    goIndexPagePanel(aWindow, webpanelId, isParentWindow) {
-        let targetPanelWindow = null;
+  goIndexPagePanel(aWindow, webpanelId, isParentWindow) {
+    let targetPanelWindow = null;
 
-        if (isParentWindow) {
-            targetPanelWindow = this.getWindowByWebpanelId(webpanelId, aWindow);
-        } else {
-            targetPanelWindow = aWindow;
-        }
+    if (isParentWindow) {
+      targetPanelWindow = this.getWindowByWebpanelId(webpanelId, aWindow);
+    } else {
+      targetPanelWindow = aWindow;
+    }
 
-        if (!targetPanelWindow) {
-            return;
-        }
+    if (!targetPanelWindow) {
+      return;
+    }
 
-        let uri = targetPanelWindow.bmsLoadedURI;
-        targetPanelWindow.gBrowser.loadURI(Services.io.newURI(uri), {
-            triggeringPrincipal:
-                Services.scriptSecurityManager.getSystemPrincipal(),
-        });
-    },
+    const uri = targetPanelWindow.bmsLoadedURI;
+    targetPanelWindow.gBrowser.loadURI(Services.io.newURI(uri), {
+      triggeringPrincipal: Services.scriptSecurityManager.getSystemPrincipal(),
+    });
+  },
 
-    reopenInSelectContainer(aWindow, webpanelId, userContextId, isParentWindow) {
-        let targetPanelWindow = null;
+  reopenInSelectContainer(aWindow, webpanelId, userContextId, isParentWindow) {
+    let targetPanelWindow = null;
 
-        if (isParentWindow) {
-            targetPanelWindow = this.getWindowByWebpanelId(webpanelId, aWindow);
-        } else {
-            targetPanelWindow = aWindow;
-        }
+    if (isParentWindow) {
+      targetPanelWindow = this.getWindowByWebpanelId(webpanelId, aWindow);
+    } else {
+      targetPanelWindow = aWindow;
+    }
 
-        if (!targetPanelWindow) {
-            return;
-        }
+    if (!targetPanelWindow) {
+      return;
+    }
 
-        let reopenedTabs = targetPanelWindow.gBrowser.tabs;
-        let loadURL = BrowserManagerSidebarPanelWindowUtils.BROWSER_SIDEBAR_DATA.data[webpanelId].url;
+    const targetTab = targetPanelWindow.gBrowser.selectedTab;
+    const targetBrowser = targetTab.linkedBrowser;
+    targetBrowser.setAttribute("usercontextid", userContextId);
+    setTimeout(() => {
+      targetBrowser.reload();
+    }, 500);
+  },
 
-        for (let tab of reopenedTabs) {
-            if (tab.getAttribute("usercontextid") == userContextId) {
-                continue;
-            }
+  saveZoomLevel(webpanelId, zoomLevel) {
+    const currentBSMData = this.BROWSER_SIDEBAR_DATA;
+    currentBSMData.data[webpanelId].zoomLevel = zoomLevel;
+    Services.prefs.setStringPref(
+      "floorp.browser.sidebar2.data",
+      JSON.stringify(currentBSMData)
+    );
+  },
 
+  zoomInPanel(aWindow, webpanelId, isParentWindow) {
+    let targetPanelWindow = null;
 
-            tab.setAttribute("BMS-webpanel-tab", "true");
+    if (isParentWindow) {
+      targetPanelWindow = this.getWindowByWebpanelId(webpanelId, window);
+    } else {
+      targetPanelWindow = window;
+    }
 
-            let newTab = targetPanelWindow.gBrowser.addTab(loadURL, {
-                userContextId,
-                triggeringPrincipal: Services.scriptSecurityManager.createNullPrincipal({}),
-            });
+    if (!targetPanelWindow) {
+      return;
+    }
 
-            targetPanelWindow.gBrowser.moveTabTo(newTab, tab._tPos);
-            targetPanelWindow.gBrowser.removeTab(tab);
-            targetPanelWindow.gBrowser.selectedTab = newTab;
+    targetPanelWindow.ZoomManager.enlarge();
 
-            targetPanelWindow.gBrowser.addTab("about:blank", {
-                userContextId,
-                triggeringPrincipal: Services.scriptSecurityManager.createNullPrincipal({}),
-                inBackground: true,
-            });
-        }
-    },
+    const zoomLevel = targetPanelWindow.ZoomManager.zoom;
+    this.saveZoomLevel(webpanelId, zoomLevel);
+  },
 
-    saveZoomLevel(webpanelId, zoomLevel) {
-        let currentBSMData = this.BROWSER_SIDEBAR_DATA;
-        currentBSMData.data[webpanelId].zoomLevel = zoomLevel;
-        Services.prefs.setStringPref("floorp.browser.sidebar2.data", JSON.stringify(currentBSMData));
-    },
+  zoomOutPanel(aWindow, webpanelId, isParentWindow) {
+    let targetPanelWindow = null;
 
-    zoomInPanel(aWindow, webpanelId, isParentWindow) {
-        let targetPanelWindow = null;
+    if (isParentWindow) {
+      targetPanelWindow = this.getWindowByWebpanelId(webpanelId, window);
+    } else {
+      targetPanelWindow = window;
+    }
 
-        if (isParentWindow) {
-            targetPanelWindow = this.getWindowByWebpanelId(webpanelId, window);
-        } else {
-            targetPanelWindow = window;
-        }
+    if (!targetPanelWindow) {
+      return;
+    }
 
-        if (!targetPanelWindow) {
-            return;
-        }
+    targetPanelWindow.ZoomManager.reduce();
 
-        targetPanelWindow.ZoomManager.enlarge();
+    const zoomLevel = targetPanelWindow.ZoomManager.zoom;
+    this.saveZoomLevel(webpanelId, zoomLevel);
+  },
 
-        let zoomLevel = targetPanelWindow.ZoomManager.zoom;
-        this.saveZoomLevel(webpanelId, zoomLevel);
-    },
+  resetZoomPanel(aWindow, webpanelId, isParentWindow) {
+    let targetPanelWindow = null;
 
-    zoomOutPanel(aWindow, webpanelId, isParentWindow) {
-        let targetPanelWindow = null;
+    if (isParentWindow) {
+      targetPanelWindow = this.getWindowByWebpanelId(webpanelId, window);
+    } else {
+      targetPanelWindow = window;
+    }
 
-        if (isParentWindow) {
-            targetPanelWindow = this.getWindowByWebpanelId(webpanelId, window);
-        } else {
-            targetPanelWindow = window;
-        }
+    if (!targetPanelWindow) {
+      return;
+    }
 
-        if (!targetPanelWindow) {
-            return;
-        }
+    targetPanelWindow.ZoomManager.zoom = 1;
 
-        targetPanelWindow.ZoomManager.reduce();
-
-        let zoomLevel = targetPanelWindow.ZoomManager.zoom;
-        this.saveZoomLevel(webpanelId, zoomLevel);
-    },
-
-    resetZoomPanel(aWindow, webpanelId, isParentWindow) {
-        let targetPanelWindow = null;
-
-        if (isParentWindow) {
-            targetPanelWindow = this.getWindowByWebpanelId(webpanelId, window);
-        } else {
-            targetPanelWindow = window;
-        }
-
-        if (!targetPanelWindow) {
-            return;
-        }
-
-        targetPanelWindow.ZoomManager.zoom = 1;
-
-        let zoomLevel = targetPanelWindow.ZoomManager.zoom;
-        this.saveZoomLevel(webpanelId, zoomLevel);
-    },
+    const zoomLevel = targetPanelWindow.ZoomManager.zoom;
+    this.saveZoomLevel(webpanelId, zoomLevel);
+  },
 };

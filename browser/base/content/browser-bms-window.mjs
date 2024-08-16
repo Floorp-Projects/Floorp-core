@@ -2,7 +2,7 @@
 
 import { BrowserManagerSidebarPanelWindowUtils } from "./modules/bms/BrowserManagerSidebarPanelWindowUtils.mjs";
 
-export var gBmsWindow = {
+export const gBmsWindow = {
   _initialized: false,
   currentURL: new URL(window.location.href),
 
@@ -40,7 +40,9 @@ export var gBmsWindow = {
 
     // Against session restore issue
     window.floorpWebPanelWindow = true;
-    window.SessionStore.promiseInitialized.then(() => this.createWebpanelWindow());
+    window.SessionStore.promiseInitialized.then(() =>
+      this.createWebpanelWindow()
+    );
 
     // Finish initialization
     this._initialized = true;
@@ -70,10 +72,10 @@ export var gBmsWindow = {
     if (userContextId !== 0) {
       window.setTimeout(() => {
         BrowserManagerSidebarPanelWindowUtils.reopenInSelectContainer(
-            window,
-            this.webpanelId,
-            userContextId,
-            false
+          window,
+          this.webpanelId,
+          userContextId,
+          false
         );
       }, 0);
     }
@@ -86,9 +88,9 @@ export var gBmsWindow = {
 
     // Window modifications
     mainWindow.setAttribute(
-        "chromehidden",
-        "toolbar menubar directories extrachrome",
-        "chrome,location=yes,centerscreen,dialog=no,resizable=yes,scrollbars=yes"
+      "chromehidden",
+      "toolbar menubar directories extrachrome",
+      "chrome,location=yes,centerscreen,dialog=no,resizable=yes,scrollbars=yes"
     );
 
     const BMSStyleElement = document.createElement("style");

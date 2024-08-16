@@ -38,6 +38,7 @@ export const gFloorpDesign = {
       FluerialUI: `@import url(chrome://floorp/skin/designs/fluerial/fluerial.css?${this.updateDateAndTime});`,
 
       // Vertical Tabs CSS Injection
+      // biome-ignore lint/style/noUnusedTemplateLiteral: <explanation>
       LeptonVerticalTabs: `@import url(chrome://floorp/skin/designs/lepton/leptonVerticalTabs.css);`,
     };
   },
@@ -131,101 +132,387 @@ export const gFloorpDesign = {
   },
 
   setPhotonUI() {
-    Services.prefs.setIntPref("floorp.lepton.interface", 1);
-    Services.prefs.setBoolPref("userChrome.tab.connect_to_window", true);
-    Services.prefs.setBoolPref("userChrome.tab.color_like_toolbar", true);
+    Services.prefs.setBoolPref("svg.context-properties.content.enabled", true);
+    Services.prefs.setBoolPref("browser.compactmode.show", true);
+    Services.prefs.setBoolPref(
+      "browser.newtabpage.activity-stream.improvesearch.handoffToAwesomebar",
+      false
+    );
+    Services.prefs.setBoolPref("layout.css.has-selector.enabled", true);
+    Services.prefs.setBoolPref("userChrome.tab.color_like_toolbar", true); // Original, Photon
 
-    Services.prefs.setBoolPref("userChrome.tab.lepton_like_padding", false);
-    Services.prefs.setBoolPref("userChrome.tab.photon_like_padding", true);
+    Services.prefs.setBoolPref("userChrome.tab.lepton_like_padding", false); // Original
+    Services.prefs.setBoolPref("userChrome.tab.photon_like_padding", true); // Photon
 
-    Services.prefs.setBoolPref("userChrome.tab.dynamic_separator", false);
-    Services.prefs.setBoolPref("userChrome.tab.static_separator", true);
+    Services.prefs.setBoolPref("userChrome.tab.dynamic_separator", false); // Original, Proton
+    Services.prefs.setBoolPref("userChrome.tab.static_separator", true); // Photon
     Services.prefs.setBoolPref(
       "userChrome.tab.static_separator.selected_accent",
       false
-    );
-    Services.prefs.setBoolPref("userChrome.tab.bar_separator", false);
+    ); // Just option
+    Services.prefs.setBoolPref("userChrome.tab.bar_separator", false); // Just option
 
-    Services.prefs.setBoolPref("userChrome.tab.newtab_button_like_tab", false);
-    Services.prefs.setBoolPref("userChrome.tab.newtab_button_smaller", true);
-    Services.prefs.setBoolPref("userChrome.tab.newtab_button_proton", false);
+    Services.prefs.setBoolPref("userChrome.tab.newtab_button_like_tab", false); // Original
+    Services.prefs.setBoolPref("userChrome.tab.newtab_button_smaller", true); // Photon
+    Services.prefs.setBoolPref("userChrome.tab.newtab_button_proton", false); // Proton
 
-    Services.prefs.setBoolPref("userChrome.icon.panel_full", false);
-    Services.prefs.setBoolPref("userChrome.icon.panel_photon", true);
+    Services.prefs.setBoolPref("userChrome.icon.panel_full", false); // Original, Proton
+    Services.prefs.setBoolPref("userChrome.icon.panel_photon", true); // Photon
 
+    // Original Only
     Services.prefs.setBoolPref("userChrome.tab.box_shadow", false);
     Services.prefs.setBoolPref("userChrome.tab.bottom_rounded_corner", false);
 
+    // Photon Only
     Services.prefs.setBoolPref("userChrome.tab.photon_like_contextline", true);
     Services.prefs.setBoolPref("userChrome.rounding.square_tab", true);
+
+    Services.prefs.setBoolPref("userChrome.compatibility.theme", true);
+    Services.prefs.setBoolPref("userChrome.compatibility.os", true);
+
+    Services.prefs.setBoolPref("userChrome.theme.built_in_contrast", true);
+    Services.prefs.setBoolPref("userChrome.theme.system_default", true);
+    Services.prefs.setBoolPref("userChrome.theme.proton_color", true);
+    Services.prefs.setBoolPref("userChrome.theme.proton_chrome", true); // Need proton_color
+    Services.prefs.setBoolPref("userChrome.theme.fully_color", true); // Need proton_color
+    Services.prefs.setBoolPref("userChrome.theme.fully_dark", true); // Need proton_color
+
+    Services.prefs.setBoolPref("userChrome.decoration.cursor", true);
+    Services.prefs.setBoolPref("userChrome.decoration.field_border", true);
+    Services.prefs.setBoolPref("userChrome.decoration.download_panel", true);
+    Services.prefs.setBoolPref("userChrome.decoration.animate", true);
+
+    Services.prefs.setBoolPref("userChrome.padding.tabbar_width", true);
+    Services.prefs.setBoolPref("userChrome.padding.tabbar_height", true);
+    Services.prefs.setBoolPref("userChrome.padding.toolbar_button", true);
+    Services.prefs.setBoolPref("userChrome.padding.navbar_width", true);
+    Services.prefs.setBoolPref("userChrome.padding.urlbar", true);
+    Services.prefs.setBoolPref("userChrome.padding.bookmarkbar", true);
+    Services.prefs.setBoolPref("userChrome.padding.infobar", true);
+    Services.prefs.setBoolPref("userChrome.padding.menu", true);
+    Services.prefs.setBoolPref("userChrome.padding.bookmark_menu", true);
+    Services.prefs.setBoolPref("userChrome.padding.global_menubar", true);
+    Services.prefs.setBoolPref("userChrome.padding.panel", true);
+    Services.prefs.setBoolPref("userChrome.padding.popup_panel", true);
+
+    Services.prefs.setBoolPref("userChrome.tab.multi_selected", true);
+    Services.prefs.setBoolPref("userChrome.tab.unloaded", true);
+    Services.prefs.setBoolPref("userChrome.tab.letters_cleary", true);
+    Services.prefs.setBoolPref("userChrome.tab.close_button_at_hover", true);
+    Services.prefs.setBoolPref("userChrome.tab.sound_hide_label", true);
+    Services.prefs.setBoolPref("userChrome.tab.sound_with_favicons", true);
+    Services.prefs.setBoolPref("userChrome.tab.pip", true);
+    Services.prefs.setBoolPref("userChrome.tab.container", true);
+    Services.prefs.setBoolPref("userChrome.tab.crashed", true);
+
+    Services.prefs.setBoolPref("userChrome.fullscreen.overlap", true);
+    Services.prefs.setBoolPref("userChrome.fullscreen.show_bookmarkbar", true);
+
+    Services.prefs.setBoolPref("userChrome.icon.library", true);
+    Services.prefs.setBoolPref("userChrome.icon.panel", true);
+    Services.prefs.setBoolPref("userChrome.icon.menu", true);
+    Services.prefs.setBoolPref("userChrome.icon.context_menu", true);
+    Services.prefs.setBoolPref("userChrome.icon.global_menu", true);
+    Services.prefs.setBoolPref("userChrome.icon.global_menubar", true);
+    Services.prefs.setBoolPref("userChrome.icon.1-25px_stroke", true);
+
+    // -- User Content -------------------------------------------------------------
+    Services.prefs.setBoolPref("userContent.player.ui", true);
+    Services.prefs.setBoolPref("userContent.player.icon", true);
+    Services.prefs.setBoolPref("userContent.player.noaudio", true);
+    Services.prefs.setBoolPref("userContent.player.size", true);
+    Services.prefs.setBoolPref("userContent.player.click_to_play", true);
+    Services.prefs.setBoolPref("userContent.player.animate", true);
+
+    Services.prefs.setBoolPref("userContent.newTab.full_icon", true);
+    Services.prefs.setBoolPref("userContent.newTab.animate", true);
+    Services.prefs.setBoolPref("userContent.newTab.pocket_to_last", true);
+    Services.prefs.setBoolPref("userContent.newTab.searchbar", true);
+
+    Services.prefs.setBoolPref("userContent.page.field_border", true);
+    Services.prefs.setBoolPref("userContent.page.illustration", true);
+    Services.prefs.setBoolPref("userContent.page.proton_color", true);
+    Services.prefs.setBoolPref("userContent.page.dark_mode", true); // Need proton_color
+    Services.prefs.setBoolPref("userContent.page.proton", true); // Need proton_color
+
+    // ** Useful Options ***********************************************************
+    // Tab preview
+    // https://blog.nightly.mozilla.org/2024/02/06/a-preview-of-tab-previews-these-weeks-in-firefox-issue-153/
+    Services.prefs.setBoolPref("browser.tabs.cardPreview.enabled", true);
+
+    // Paste suggestion at urlbar
+    // https://blog.nightly.mozilla.org/2023/12/04/url-gonna-want-to-check-this-out-these-weeks-in-firefox-issue-150/
+    Services.prefs.setBoolPref("browser.urlbar.clipboard.featureGate", true);
+
+    // Integrated calculator at urlbar
+    Services.prefs.setBoolPref("browser.urlbar.suggest.calculator", true);
+
     gFloorpDesign.setBrowserDesign();
   },
 
   setLeptonUI() {
-    Services.prefs.setIntPref("floorp.lepton.interface", 2);
-    Services.prefs.setBoolPref("userChrome.tab.connect_to_window", true);
-    Services.prefs.setBoolPref("userChrome.tab.color_like_toolbar", true);
+    // Fill SVG Color
+    Services.prefs.setBoolPref("svg.context-properties.content.enabled", true);
 
-    Services.prefs.setBoolPref("userChrome.tab.lepton_like_padding", true);
-    Services.prefs.setBoolPref("userChrome.tab.photon_like_padding", false);
+    // Restore Compact Mode - 89 Above
+    Services.prefs.setBoolPref("browser.compactmode.show", true);
 
-    Services.prefs.setBoolPref("userChrome.tab.dynamic_separator", true);
-    Services.prefs.setBoolPref("userChrome.tab.static_separator", false);
+    // about:home Search Bar - 89 Above
+    Services.prefs.setBoolPref(
+      "browser.newtabpage.activity-stream.improvesearch.handoffToAwesomebar",
+      false
+    );
+
+    // CSS's `:has()` selector #457 - 103 Above
+    Services.prefs.setBoolPref("layout.css.has-selector.enabled", true);
+
+    // Browser Theme Based Scheme - Will be activate 95 Above
+    // Services.prefs.setBoolPref("layout.css.prefers-color-scheme.content-override", 3);
+
+    // ** Theme Related Options ****************************************************
+    // == Theme Distribution Settings ==============================================
+    // The rows that are located continuously must be changed `true`/`false` explicitly because there is a collision.
+    // https://github.com/black7375/Firefox-UI-Fix/wiki/Options#important
+    Services.prefs.setBoolPref("userChrome.tab.connect_to_window", true); // Original, Photon
+    Services.prefs.setBoolPref("userChrome.tab.color_like_toolbar", true); // Original, Photon
+
+    Services.prefs.setBoolPref("userChrome.tab.lepton_like_padding", true); // Original
+    Services.prefs.setBoolPref("userChrome.tab.photon_like_padding", false); // Photon
+
+    Services.prefs.setBoolPref("userChrome.tab.dynamic_separator", true); // Original, Proton
+    Services.prefs.setBoolPref("userChrome.tab.static_separator", false); // Photon
     Services.prefs.setBoolPref(
       "userChrome.tab.static_separator.selected_accent",
       false
-    );
-    Services.prefs.setBoolPref("userChrome.tab.bar_separator", false);
+    ); // Just option
+    Services.prefs.setBoolPref("userChrome.tab.bar_separator", false); // Just option
 
-    Services.prefs.setBoolPref("userChrome.tab.newtab_button_like_tab", true);
-    Services.prefs.setBoolPref("userChrome.tab.newtab_button_smaller", false);
-    Services.prefs.setBoolPref("userChrome.tab.newtab_button_proton", false);
+    Services.prefs.setBoolPref("userChrome.tab.newtab_button_like_tab", true); // Original
+    Services.prefs.setBoolPref("userChrome.tab.newtab_button_smaller", false); // Photon
+    Services.prefs.setBoolPref("userChrome.tab.newtab_button_proton", false); // Proton
 
-    Services.prefs.setBoolPref("userChrome.icon.panel_full", true);
-    Services.prefs.setBoolPref("userChrome.icon.panel_photon", false);
+    Services.prefs.setBoolPref("userChrome.icon.panel_full", true); // Original, Proton
+    Services.prefs.setBoolPref("userChrome.icon.panel_photon", false); // Photon
 
-    Services.prefs.setBoolPref("userChrome.tab.box_shadow", false);
+    // Original Only
+    Services.prefs.setBoolPref("userChrome.tab.box_shadow", true);
     Services.prefs.setBoolPref("userChrome.tab.bottom_rounded_corner", true);
 
+    // Photon Only
     Services.prefs.setBoolPref("userChrome.tab.photon_like_contextline", false);
     Services.prefs.setBoolPref("userChrome.rounding.square_tab", false);
+
+    Services.prefs.setBoolPref("userChrome.compatibility.theme", true);
+    Services.prefs.setBoolPref("userChrome.compatibility.os", true);
+
+    Services.prefs.setBoolPref("userChrome.theme.built_in_contrast", true);
+    Services.prefs.setBoolPref("userChrome.theme.system_default", true);
+    Services.prefs.setBoolPref("userChrome.theme.proton_color", true);
+    Services.prefs.setBoolPref("userChrome.theme.proton_chrome", true); // Need proton_color
+    Services.prefs.setBoolPref("userChrome.theme.fully_color", true); // Need proton_color
+    Services.prefs.setBoolPref("userChrome.theme.fully_dark", true); // Need proton_color
+
+    Services.prefs.setBoolPref("userChrome.decoration.cursor", true);
+    Services.prefs.setBoolPref("userChrome.decoration.field_border", true);
+    Services.prefs.setBoolPref("userChrome.decoration.download_panel", true);
+    Services.prefs.setBoolPref("userChrome.decoration.animate", true);
+
+    Services.prefs.setBoolPref("userChrome.padding.tabbar_width", true);
+    Services.prefs.setBoolPref("userChrome.padding.tabbar_height", true);
+    Services.prefs.setBoolPref("userChrome.padding.toolbar_button", true);
+    Services.prefs.setBoolPref("userChrome.padding.navbar_width", true);
+    Services.prefs.setBoolPref("userChrome.padding.urlbar", true);
+    Services.prefs.setBoolPref("userChrome.padding.bookmarkbar", true);
+    Services.prefs.setBoolPref("userChrome.padding.infobar", true);
+    Services.prefs.setBoolPref("userChrome.padding.menu", true);
+    Services.prefs.setBoolPref("userChrome.padding.bookmark_menu", true);
+    Services.prefs.setBoolPref("userChrome.padding.global_menubar", true);
+    Services.prefs.setBoolPref("userChrome.padding.panel", true);
+    Services.prefs.setBoolPref("userChrome.padding.popup_panel", true);
+
+    Services.prefs.setBoolPref("userChrome.tab.multi_selected", true);
+    Services.prefs.setBoolPref("userChrome.tab.unloaded", true);
+    Services.prefs.setBoolPref("userChrome.tab.letters_cleary", true);
+    Services.prefs.setBoolPref("userChrome.tab.close_button_at_hover", true);
+    Services.prefs.setBoolPref("userChrome.tab.sound_hide_label", true);
+    Services.prefs.setBoolPref("userChrome.tab.sound_with_favicons", true);
+    Services.prefs.setBoolPref("userChrome.tab.pip", true);
+    Services.prefs.setBoolPref("userChrome.tab.container", true);
+    Services.prefs.setBoolPref("userChrome.tab.crashed", true);
+
+    Services.prefs.setBoolPref("userChrome.fullscreen.overlap", true);
+    Services.prefs.setBoolPref("userChrome.fullscreen.show_bookmarkbar", true);
+
+    Services.prefs.setBoolPref("userChrome.icon.library", true);
+    Services.prefs.setBoolPref("userChrome.icon.panel", true);
+    Services.prefs.setBoolPref("userChrome.icon.menu", true);
+    Services.prefs.setBoolPref("userChrome.icon.context_menu", true);
+    Services.prefs.setBoolPref("userChrome.icon.global_menu", true);
+    Services.prefs.setBoolPref("userChrome.icon.global_menubar", true);
+    Services.prefs.setBoolPref("userChrome.icon.1-25px_stroke", true);
+
+    // -- User Content -------------------------------------------------------------
+    Services.prefs.setBoolPref("userContent.player.ui", true);
+    Services.prefs.setBoolPref("userContent.player.icon", true);
+    Services.prefs.setBoolPref("userContent.player.noaudio", true);
+    Services.prefs.setBoolPref("userContent.player.size", true);
+    Services.prefs.setBoolPref("userContent.player.click_to_play", true);
+    Services.prefs.setBoolPref("userContent.player.animate", true);
+
+    Services.prefs.setBoolPref("userContent.newTab.full_icon", true);
+    Services.prefs.setBoolPref("userContent.newTab.animate", true);
+    Services.prefs.setBoolPref("userContent.newTab.pocket_to_last", true);
+    Services.prefs.setBoolPref("userContent.newTab.searchbar", true);
+
+    Services.prefs.setBoolPref("userContent.page.field_border", true);
+    Services.prefs.setBoolPref("userContent.page.illustration", true);
+    Services.prefs.setBoolPref("userContent.page.proton_color", true);
+    Services.prefs.setBoolPref("userContent.page.dark_mode", true); // Need proton_color
+    Services.prefs.setBoolPref("userContent.page.proton", true); // Need proton_color
+
+    // ** Useful Options ***********************************************************
+    // Tab preview
+    // https://blog.nightly.mozilla.org/2024/02/06/a-preview-of-tab-previews-these-weeks-in-firefox-issue-153/
+    Services.prefs.setBoolPref("browser.tabs.cardPreview.enabled", true);
+
+    // Paste suggestion at urlbar
+    // https://blog.nightly.mozilla.org/2023/12/04/url-gonna-want-to-check-this-out-these-weeks-in-firefox-issue-150/
+    Services.prefs.setBoolPref("browser.urlbar.clipboard.featureGate", true);
+
+    // Integrated calculator at urlbar
+    Services.prefs.setBoolPref("browser.urlbar.suggest.calculator", true);
+
     gFloorpDesign.setBrowserDesign();
   },
 
   setProtonFixUI() {
-    Services.prefs.setIntPref("floorp.lepton.interface", 3);
+    Services.prefs.setBoolPref("svg.context-properties.content.enabled", true);
 
-    Services.prefs.setBoolPref("userChrome.tab.connect_to_window", false);
-    Services.prefs.setBoolPref("userChrome.tab.color_like_toolbar", false);
+    // Restore Compact Mode - 89 Above
+    Services.prefs.setBoolPref("browser.compactmode.show", true);
 
-    Services.prefs.setBoolPref("userChrome.tab.lepton_like_padding", false);
-    Services.prefs.setBoolPref("userChrome.tab.photon_like_padding", false);
+    // about:home Search Bar - 89 Above
+    Services.prefs.setBoolPref(
+      "browser.newtabpage.activity-stream.improvesearch.handoffToAwesomebar",
+      false
+    );
 
-    Services.prefs.setBoolPref("userChrome.tab.dynamic_separator", true);
-    Services.prefs.setBoolPref("userChrome.tab.static_separator", false);
+    // CSS's `:has()` selector #457 - 103 Above
+    Services.prefs.setBoolPref("layout.css.has-selector.enabled", true);
+
+    Services.prefs.setBoolPref("userChrome.tab.connect_to_window", false); // Original, Photon
+    Services.prefs.setBoolPref("userChrome.tab.color_like_toolbar", true); // Original, Photon
+
+    Services.prefs.setBoolPref("userChrome.tab.lepton_like_padding", false); // Original
+    Services.prefs.setBoolPref("userChrome.tab.photon_like_padding", false); // Photon
+
+    Services.prefs.setBoolPref("userChrome.tab.dynamic_separator", true); // Original, Proton
+    Services.prefs.setBoolPref("userChrome.tab.static_separator", false); // Photon
     Services.prefs.setBoolPref(
       "userChrome.tab.static_separator.selected_accent",
       false
-    );
-    Services.prefs.setBoolPref("userChrome.tab.bar_separator", false);
+    ); // Just option
+    Services.prefs.setBoolPref("userChrome.tab.bar_separator", false); // Just option
 
-    Services.prefs.setBoolPref("userChrome.tab.newtab_button_like_tab", false);
-    Services.prefs.setBoolPref("userChrome.tab.newtab_button_smaller", false);
-    Services.prefs.setBoolPref("userChrome.tab.newtab_button_proton", true);
+    Services.prefs.setBoolPref("userChrome.tab.newtab_button_like_tab", false); // Original
+    Services.prefs.setBoolPref("userChrome.tab.newtab_button_smaller", false); // Photon
+    Services.prefs.setBoolPref("userChrome.tab.newtab_button_proton", true); // Proton
 
-    Services.prefs.setBoolPref("userChrome.icon.panel_full", true);
-    Services.prefs.setBoolPref("userChrome.icon.panel_photon", false);
+    Services.prefs.setBoolPref("userChrome.icon.panel_full", true); // Original, Proton
+    Services.prefs.setBoolPref("userChrome.icon.panel_photon", false); // Photon
 
+    // Original Only
     Services.prefs.setBoolPref("userChrome.tab.box_shadow", false);
     Services.prefs.setBoolPref("userChrome.tab.bottom_rounded_corner", false);
 
+    // Photon Only
     Services.prefs.setBoolPref("userChrome.tab.photon_like_contextline", false);
     Services.prefs.setBoolPref("userChrome.rounding.square_tab", false);
+
+    Services.prefs.setBoolPref("userChrome.compatibility.theme", true);
+    Services.prefs.setBoolPref("userChrome.compatibility.os", true);
+
+    Services.prefs.setBoolPref("userChrome.theme.built_in_contrast", true);
+    Services.prefs.setBoolPref("userChrome.theme.system_default", true);
+    Services.prefs.setBoolPref("userChrome.theme.proton_color", true);
+    Services.prefs.setBoolPref("userChrome.theme.proton_chrome", true); // Need proton_color
+    Services.prefs.setBoolPref("userChrome.theme.fully_color", true); // Need proton_color
+    Services.prefs.setBoolPref("userChrome.theme.fully_dark", true); // Need proton_color
+
+    Services.prefs.setBoolPref("userChrome.decoration.cursor", true);
+    Services.prefs.setBoolPref("userChrome.decoration.field_border", true);
+    Services.prefs.setBoolPref("userChrome.decoration.download_panel", true);
+    Services.prefs.setBoolPref("userChrome.decoration.animate", true);
+
+    Services.prefs.setBoolPref("userChrome.padding.tabbar_width", true);
+    Services.prefs.setBoolPref("userChrome.padding.tabbar_height", true);
+    Services.prefs.setBoolPref("userChrome.padding.toolbar_button", true);
+    Services.prefs.setBoolPref("userChrome.padding.navbar_width", true);
+    Services.prefs.setBoolPref("userChrome.padding.urlbar", true);
+    Services.prefs.setBoolPref("userChrome.padding.bookmarkbar", true);
+    Services.prefs.setBoolPref("userChrome.padding.infobar", true);
+    Services.prefs.setBoolPref("userChrome.padding.menu", true);
+    Services.prefs.setBoolPref("userChrome.padding.bookmark_menu", true);
+    Services.prefs.setBoolPref("userChrome.padding.global_menubar", true);
+    Services.prefs.setBoolPref("userChrome.padding.panel", true);
+    Services.prefs.setBoolPref("userChrome.padding.popup_panel", true);
+
+    Services.prefs.setBoolPref("userChrome.tab.multi_selected", true);
+    Services.prefs.setBoolPref("userChrome.tab.unloaded", true);
+    Services.prefs.setBoolPref("userChrome.tab.letters_cleary", true);
+    Services.prefs.setBoolPref("userChrome.tab.close_button_at_hover", true);
+    Services.prefs.setBoolPref("userChrome.tab.sound_hide_label", true);
+    Services.prefs.setBoolPref("userChrome.tab.sound_with_favicons", true);
+    Services.prefs.setBoolPref("userChrome.tab.pip", true);
+    Services.prefs.setBoolPref("userChrome.tab.container", true);
+    Services.prefs.setBoolPref("userChrome.tab.crashed", true);
+
+    Services.prefs.setBoolPref("userChrome.fullscreen.overlap", true);
+    Services.prefs.setBoolPref("userChrome.fullscreen.show_bookmarkbar", true);
+
+    Services.prefs.setBoolPref("userChrome.icon.library", true);
+    Services.prefs.setBoolPref("userChrome.icon.panel", true);
+    Services.prefs.setBoolPref("userChrome.icon.menu", true);
+    Services.prefs.setBoolPref("userChrome.icon.context_menu", true);
+    Services.prefs.setBoolPref("userChrome.icon.global_menu", true);
+    Services.prefs.setBoolPref("userChrome.icon.global_menubar", true);
+    Services.prefs.setBoolPref("userChrome.icon.1-25px_stroke", true);
+
+    // -- User Content -------------------------------------------------------------
+    Services.prefs.setBoolPref("userContent.player.ui", true);
+    Services.prefs.setBoolPref("userContent.player.icon", true);
+    Services.prefs.setBoolPref("userContent.player.noaudio", true);
+    Services.prefs.setBoolPref("userContent.player.size", true);
+    Services.prefs.setBoolPref("userContent.player.click_to_play", true);
+    Services.prefs.setBoolPref("userContent.player.animate", true);
+
+    Services.prefs.setBoolPref("userContent.newTab.full_icon", true);
+    Services.prefs.setBoolPref("userContent.newTab.animate", true);
+    Services.prefs.setBoolPref("userContent.newTab.pocket_to_last", true);
+    Services.prefs.setBoolPref("userContent.newTab.searchbar", true);
+
+    Services.prefs.setBoolPref("userContent.page.field_border", true);
+    Services.prefs.setBoolPref("userContent.page.illustration", true);
+    Services.prefs.setBoolPref("userContent.page.proton_color", true);
+    Services.prefs.setBoolPref("userContent.page.dark_mode", true); // Need proton_color
+    Services.prefs.setBoolPref("userContent.page.proton", true); // Need proton_color
+
+    // ** Useful Options ***********************************************************
+    // Tab preview
+    // https://blog.nightly.mozilla.org/2024/02/06/a-preview-of-tab-previews-these-weeks-in-firefox-issue-153/
+    Services.prefs.setBoolPref("browser.tabs.cardPreview.enabled", true);
+
+    // Paste suggestion at urlbar
+    // https://blog.nightly.mozilla.org/2023/12/04/url-gonna-want-to-check-this-out-these-weeks-in-firefox-issue-150/
+    Services.prefs.setBoolPref("browser.urlbar.clipboard.featureGate", true);
+
+    // Integrated calculator at urlbar
+    Services.prefs.setBoolPref("browser.urlbar.suggest.calculator", true);
 
     gFloorpDesign.setBrowserDesign();
   },
 
-  toggleNavigationPanel(){
+  toggleNavigationPanel() {
     const navigationBar = document.getElementById("nav-bar");
     navigationBar.style.display = navigationBar.style.display ? "" : "none";
   },
@@ -233,7 +520,8 @@ export const gFloorpDesign = {
   hideUserInterface() {
     let shownElementAmount = 0;
 
-    const navigationToolboxElements = document.getElementById("navigator-toolbox").children;
+    const navigationToolboxElements =
+      document.getElementById("navigator-toolbox").children;
     const navigationBar = navigationToolboxElements[1];
 
     for (const element of navigationToolboxElements) {
@@ -246,7 +534,7 @@ export const gFloorpDesign = {
     if (shownElementAmount > 1 && navigationBar.style.display !== "") {
       navigationBar.style.display = "";
     }
-  }
+  },
 };
 
 gFloorpDesign.init();

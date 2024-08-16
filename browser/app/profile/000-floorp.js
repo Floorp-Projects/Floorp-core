@@ -321,6 +321,8 @@ pref("toolkit.legacyUserProfileCustomizations.script", false);
 // 1 = photon, 2 = lepton, 3 = proton fix
 pref("floorp.lepton.interface", 2);
 
+
+// v8.6.2 Lepton
 // ** Theme Default Options ****************************************************
 // userchrome.css usercontent.css activate
 pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
@@ -363,177 +365,13 @@ pref("userChrome.icon.panel_full",                true); // Original, Proton
 pref("userChrome.icon.panel_photon",             false); // Photon
 
 // Original Only
-pref("userChrome.tab.box_shadow",                 false);
+pref("userChrome.tab.box_shadow",                 true);
 pref("userChrome.tab.bottom_rounded_corner",      true);
 
 // Photon Only
 pref("userChrome.tab.photon_like_contextline",   false);
 pref("userChrome.rounding.square_tab",           false);
 
-// == Theme Compatibility Settings =============================================
-// pref("userChrome.compatibility.accent_color",         true); // Firefox v103 Below
-// pref("userChrome.compatibility.covered_header_image", true);
-// pref("userChrome.compatibility.panel_cutoff",         true);
-// pref("userChrome.compatibility.navbar_top_border",    true);
-// pref("userChrome.compatibility.dynamic_separator",    true); // Need dynamic_separator
-
-// pref("userChrome.compatibility.os.linux_non_native_titlebar_button", true);
-// pref("userChrome.compatibility.os.windows_maximized", true);
-// pref("userChrome.compatibility.os.win11",             true);
-
-// == Theme Custom Settings ====================================================
-// -- User Chrome --------------------------------------------------------------
-// pref("userChrome.theme.private",                       true);
-// pref("userChrome.theme.proton_color.dark_blue_accent", true);
-// pref("userChrome.theme.monospace",                     true);
-// pref("userChrome.theme.transparent.frame",             true);
-// pref("userChrome.theme.transparent.menu",              true);
-// pref("userChrome.theme.transparent.panel",             true);
-// pref("userChrome.theme.non_native_menu",               true); // only for linux
-
-// pref("userChrome.decoration.disable_panel_animate",    true);
-// pref("userChrome.decoration.disable_sidebar_animate",  true);
-// pref("userChrome.decoration.panel_button_separator",   true);
-// pref("userChrome.decoration.panel_arrow",              true);
-
-// pref("userChrome.autohide.tab",                        true);
-// pref("userChrome.autohide.tab.opacity",                true);
-// pref("userChrome.autohide.tab.blur",                   true);
-// pref("userChrome.autohide.tabbar",                     true);
-// pref("userChrome.autohide.navbar",                     true);
-// pref("userChrome.autohide.bookmarkbar",                true);
-// pref("userChrome.autohide.sidebar",                    true);
-// pref("userChrome.autohide.fill_urlbar",                true);
-// pref("userChrome.autohide.back_button",                true);
-// pref("userChrome.autohide.forward_button",             true);
-// pref("userChrome.autohide.page_action",                true);
-// pref("userChrome.autohide.toolbar_overlap",            true);
-// pref("userChrome.autohide.toolbar_overlap.allow_layout_shift", true);
-
-// pref("userChrome.hidden.tab_icon",                     true);
-// pref("userChrome.hidden.tab_icon.always",              true);
-// pref("userChrome.hidden.tabbar",                       true);
-// pref("userChrome.hidden.navbar",                       true);
-// pref("userChrome.hidden.private_indicator",            true);
-// pref("userChrome.hidden.titlebar_container",           true);
-// pref("userChrome.hidden.sidebar_header",               true);
-// pref("userChrome.hidden.sidebar_header.vertical_tab_only", true);
-// pref("userChrome.hidden.urlbar_iconbox",               true);
-// pref("userChrome.hidden.urlbar_iconbox.label_only",    true);
-// pref("userChrome.hidden.bookmarkbar_icon",             true);
-// pref("userChrome.hidden.bookmarkbar_label",            true);
-// pref("userChrome.hidden.disabled_menu",                true);
-
-// pref("userChrome.centered.tab",                        true);
-// pref("userChrome.centered.tab.label",                  true);
-// pref("userChrome.centered.urlbar",                     true);
-// pref("userChrome.centered.bookmarkbar",                true);
-
-// pref("userChrome.counter.tab",                         true);
-// pref("userChrome.counter.bookmark_menu",               true);
-
-// pref("userChrome.combined.nav_button",                 true);
-// pref("userChrome.combined.nav_button.home_button",     true);
-// pref("userChrome.combined.urlbar.nav_button",          true);
-// pref("userChrome.combined.urlbar.home_button",         true);
-// pref("userChrome.combined.urlbar.reload_button",       true);
-// pref("userChrome.combined.sub_button.none_background", true);
-// pref("userChrome.combined.sub_button.as_normal",       true);
-
-// pref("userChrome.rounding.square_button",              true);
-// pref("userChrome.rounding.square_dialog",              true);
-// pref("userChrome.rounding.square_panel",               true);
-// pref("userChrome.rounding.square_panelitem",           true);
-// pref("userChrome.rounding.square_menupopup",           true);
-// pref("userChrome.rounding.square_menuitem",            true);
-// pref("userChrome.rounding.square_infobox",             true);
-// pref("userChrome.rounding.square_toolbar",             true);
-// pref("userChrome.rounding.square_field",               true);
-// pref("userChrome.rounding.square_urlView_item",        true);
-// pref("userChrome.rounding.square_checklabel",          true);
-
-// pref("userChrome.padding.first_tab",                   true);
-// pref("userChrome.padding.first_tab.always",            true);
-// pref("userChrome.padding.drag_space",                  true);
-// pref("userChrome.padding.drag_space.maximized",        true);
-
-// pref("userChrome.padding.toolbar_button.compact",      true);
-// pref("userChrome.padding.menu_compact",                true);
-// pref("userChrome.padding.bookmark_menu.compact",       true);
-// pref("userChrome.padding.urlView_expanding",           true);
-// pref("userChrome.padding.urlView_result",              true);
-// pref("userChrome.padding.panel_header",                true);
-
-// pref("userChrome.urlbar.iconbox_with_separator",       true);
-
-// pref("userChrome.urlView.as_commandbar",               true);
-// pref("userChrome.urlView.full_width_padding",          true);
-// pref("userChrome.urlView.always_show_page_actions",    true);
-// pref("userChrome.urlView.move_icon_to_left",           true);
-// pref("userChrome.urlView.go_button_when_typing",       true);
-// pref("userChrome.urlView.focus_item_border",           true);
-
-// pref("userChrome.tabbar.as_titlebar",                  true);
-// pref("userChrome.tabbar.fill_width",                   true);
-// pref("userChrome.tabbar.multi_row",                    true);
-// pref("userChrome.tabbar.unscroll",                     true);
-// pref("userChrome.tabbar.on_bottom",                    true);
-// pref("userChrome.tabbar.on_bottom.above_bookmark",     true); // Need on_bottom
-// pref("userChrome.tabbar.on_bottom.menubar_on_top",     true); // Need on_bottom
-// pref("userChrome.tabbar.on_bottom.hidden_single_tab",  true); // Need on_bottom
-// pref("userChrome.tabbar.one_liner",                    true);
-// pref("userChrome.tabbar.one_liner.combine_navbar",     true); // Need one_liner
-// pref("userChrome.tabbar.one_liner.tabbar_first",       true); // Need one_liner
-// pref("userChrome.tabbar.one_liner.responsive",         true); // Need one_liner
-
-// pref("userChrome.tab.bottom_rounded_corner.all",       true);
-// pref("userChrome.tab.bottom_rounded_corner.australis", true);
-// pref("userChrome.tab.bottom_rounded_corner.edge",      true);
-// pref("userChrome.tab.bottom_rounded_corner.chrome",    true);
-// pref("userChrome.tab.bottom_rounded_corner.chrome_legacy", true);
-// pref("userChrome.tab.bottom_rounded_corner.wave",      true);
-// pref("userChrome.tab.always_show_tab_icon",            true);
-// pref("userChrome.tab.close_button_at_pinned",          true);
-// pref("userChrome.tab.close_button_at_pinned.always",   true);
-// pref("userChrome.tab.close_button_at_pinned.background", true);
-// pref("userChrome.tab.close_button_at_hover.always",    true); // Need close_button_at_hover
-// pref("userChrome.tab.close_button_at_hover.with_selected", true);  // Need close_button_at_hover
-// pref("userChrome.tab.sound_show_label",                true); // Need remove sound_hide_label
-// pref("userChrome.tab.container.on_top",                true);
-// pref("userChrome.tab.sound_with_favicons.on_center",   true);
-// pref("userChrome.tab.selected_bold",                   true);
-
-// pref("userChrome.navbar.as_sidebar",                   true);
-
-// pref("userChrome.bookmarkbar.multi_row",               true);
-
-// pref("userChrome.findbar.floating_on_top",             true);
-
-// pref("userChrome.panel.remove_strip",                  true);
-// pref("userChrome.panel.full_width_separator",          true);
-// pref("userChrome.panel.full_width_padding",            true);
-
-// pref("userChrome.sidebar.overlap",                     true);
-
-// pref("userChrome.icon.disabled",                       true);
-// pref("userChrome.icon.account_image_to_right",         true);
-// pref("userChrome.icon.account_label_to_right",         true);
-// pref("userChrome.icon.menu.full",                      true);
-// pref("userChrome.icon.global_menu.mac",                true);
-
-// -- User Content -------------------------------------------------------------
-// pref("userContent.player.ui.twoline",                  true);
-
-// pref("userContent.newTab.hidden_logo",                 true);
-// pref("userContent.newTab.background_image",            true); // Need wallpaper image to `userContent.css`. :root { --uc-newTab-wallpaper: url("../icons/background_image.png"); }
-
-// pref("userContent.page.proton_color.dark_blue_accent", true);
-// pref("userContent.page.proton_color.system_accent",    true);
-// pref("userContent.page.dark_mode.pdf",                 true);
-// pref("userContent.page.monospace",                     true);
-
-// == Theme Default Settings ===================================================
-// -- User Chrome --------------------------------------------------------------
 pref("userChrome.compatibility.theme",       true);
 pref("userChrome.compatibility.os",          true);
 
@@ -581,6 +419,7 @@ pref("userChrome.icon.menu",                 true);
 pref("userChrome.icon.context_menu",         true);
 pref("userChrome.icon.global_menu",          true);
 pref("userChrome.icon.global_menubar",       true);
+pref("userChrome.icon.1-25px_stroke",        true);
 
 // -- User Content -------------------------------------------------------------
 pref("userContent.player.ui",             true);
@@ -602,77 +441,13 @@ pref("userContent.page.dark_mode",        true); // Need proton_color
 pref("userContent.page.proton",           true); // Need proton_color
 
 // ** Useful Options ***********************************************************
+// Tab preview
+// https://blog.nightly.mozilla.org/2024/02/06/a-preview-of-tab-previews-these-weeks-in-firefox-issue-153/
+pref("browser.tabs.cardPreview.enabled",   true);
+
+// Paste suggestion at urlbar
+// https://blog.nightly.mozilla.org/2023/12/04/url-gonna-want-to-check-this-out-these-weeks-in-firefox-issue-150/
+pref("browser.urlbar.clipboard.featureGate", true);
+
 // Integrated calculator at urlbar
 pref("browser.urlbar.suggest.calculator", true);
-
-// Disable ads
-
-pref("browser.vpn_promo.enabled", false);
-pref("browser.contentblocking.report.show_mobile_app", false);
-pref("browser.promo.focus.enabled", false);
-
-// Integrated unit convertor at urlbar
-// pref("browser.urlbar.unitConversion.enabled", true);
-
-// Draw in Titlebar
-// pref("browser.tabs.drawInTitlebar", true);
-// pref("browser.tabs.inTitlebar",        1); // Nightly, 96 Above
-
-// ** Scrolling Settings *******************************************************
-// == Only Sharpen Scrolling ===================================================
-//         Pref                                             Value      Original
-/*
-pref("mousewheel.min_line_scroll_amount",                 10); //        5
-pref("general.smoothScroll.mouseWheel.durationMinMS",     80); //       50
-pref("general.smoothScroll.currentVelocityWeighting", "0.15"); //   "0.25"
-pref("general.smoothScroll.stopDecelerationWeighting", "0.6"); //    "0.4"
-*/
-
-// == Smooth Scrolling ==========================================================
-// ** Scrolling Options ********************************************************
-// based on natural smooth scrolling v2 by aveyo
-// this preset will reset couple extra variables for consistency
-//         Pref                                              Value                 Original
-/*
-pref("apz.allow_zooming",                               true);            ///     true
-pref("apz.force_disable_desktop_zooming_scrollbars",   false);            ///    false
-pref("apz.paint_skipping.enabled",                      true);            ///     true
-pref("apz.windows.use_direct_manipulation",             true);            ///     true
-pref("dom.event.wheel-deltaMode-lines.always-disabled", true);            ///    false
-pref("general.smoothScroll.currentVelocityWeighting", "0.12");            ///   "0.25" <- 1. If scroll too slow, set to "0.15"
-pref("general.smoothScroll.durationToIntervalRatio",    1000);            ///      200
-pref("general.smoothScroll.lines.durationMaxMS",         100);            ///      150
-pref("general.smoothScroll.lines.durationMinMS",           0);            ///      150
-pref("general.smoothScroll.mouseWheel.durationMaxMS",    100);            ///      200
-pref("general.smoothScroll.mouseWheel.durationMinMS",      0);            ///       50
-pref("general.smoothScroll.mouseWheel.migrationPercent", 100);            ///      100
-pref("general.smoothScroll.msdPhysics.continuousMotionMaxDeltaMS", 12);   ///      120
-pref("general.smoothScroll.msdPhysics.enabled",                  true);   ///    false
-pref("general.smoothScroll.msdPhysics.motionBeginSpringConstant", 200);   ///     1250
-pref("general.smoothScroll.msdPhysics.regularSpringConstant",     200);   ///     1000
-pref("general.smoothScroll.msdPhysics.slowdownMinDeltaMS",         10);   ///       12
-pref("general.smoothScroll.msdPhysics.slowdownMinDeltaRatio",  "1.20");   ///    "1.3"
-pref("general.smoothScroll.msdPhysics.slowdownSpringConstant",   1000);   ///     2000
-pref("general.smoothScroll.other.durationMaxMS",         100);            ///      150
-pref("general.smoothScroll.other.durationMinMS",           0);            ///      150
-pref("general.smoothScroll.pages.durationMaxMS",         100);            ///      150
-pref("general.smoothScroll.pages.durationMinMS",           0);            ///      150
-pref("general.smoothScroll.pixels.durationMaxMS",        100);            ///      150
-pref("general.smoothScroll.pixels.durationMinMS",          0);            ///      150
-pref("general.smoothScroll.scrollbars.durationMaxMS",    100);            ///      150
-pref("general.smoothScroll.scrollbars.durationMinMS",      0);            ///      150
-pref("general.smoothScroll.stopDecelerationWeighting", "0.6");            ///    "0.4"
-pref("layers.async-pan-zoom.enabled",                   true);            ///     true
-pref("layout.css.scroll-behavior.spring-constant",   "250.0");            ///   "250.0"
-pref("mousewheel.acceleration.factor",                     3);            ///       10
-pref("mousewheel.acceleration.start",                     -1);            ///       -1
-pref("mousewheel.default.delta_multiplier_x",            100);            ///      100
-pref("mousewheel.default.delta_multiplier_y",            100);            ///      100
-pref("mousewheel.default.delta_multiplier_z",            100);            ///      100
-pref("mousewheel.min_line_scroll_amount",                  0);            ///        5
-pref("mousewheel.system_scroll_override.enabled",       true);            ///     true <- 2. If scroll too fast, set to false
-pref("mousewheel.system_scroll_override_on_root_content.enabled", false); ///     true
-pref("mousewheel.transaction.timeout",                  1500);            ///     1500
-pref("toolkit.scrollbox.horizontalScrollDistance",         4);            ///        5
-pref("toolkit.scrollbox.verticalScrollDistance",           3);            ///        3
-*/

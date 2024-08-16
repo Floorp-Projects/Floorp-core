@@ -9518,10 +9518,10 @@
     counter-increment: tab-counts;
   }
   .tabbrowser-tab:not([hidden="true"])[pinned="true"] .tab-label-container::before {
-    content: " " counter(tab-counts);
+    content: " " counter(tab-counts);
   }
   .tabbrowser-tab:not([hidden="true"]):not([pinned="true"]) .tab-label-container::before {
-    content: counter(tab-counts) ": ";
+    content: counter(tab-counts) ": ";
   }
   .tabbrowser-tab:not([hidden="true"]) .tab-label-container {
     display: grid;
@@ -12140,8 +12140,13 @@
       #sidebartabs_asamuzak_jp-menuitem-_reloadAllTabs {
         --menuitem-image: url("chrome://floorp/skin/designs/lepton/reload.svg");
       }
+      #context_playTab,
+      #context_playSelectedTabs {
+        --menuitem-image: url("chrome://floorp/skin/designs/lepton/play-fill.svg");
+      }
       #context_toggleMuteTab,
       #context_toggleMuteSelectedTabs,
+      #treestyletab_piro_sakura_ne_jp-menuitem-_context_toggleMuteTab[label="Mute Tab"],
       #treestyletab_piro_sakura_ne_jp-menuitem-_context_toggleMuteTab-mute,
       #tabcenter-reborn_ariasuni-menuitem-_contextMenuMuteTab,
       #sidebartabs_asamuzak_jp-menuitem-_muteTab {
@@ -12150,6 +12155,7 @@
       }
       #context_toggleMuteTab[muted],
       #context_toggleMuteSelectedTabs[muted],
+      #treestyletab_piro_sakura_ne_jp-menuitem-_context_toggleMuteTab[label="Unmute Tab"],
       #treestyletab_piro_sakura_ne_jp-menuitem-_context_toggleMuteTab-unmute,
       #tabcenter-reborn_ariasuni-menuitem-_contextMenuMuteTab[label="Unmute Tab"],
       #sidebartabs_asamuzak_jp-menuitem-_muteTab[label="Unmute Tab"] {
@@ -12168,6 +12174,12 @@
       #tabcenter-reborn_ariasuni-menuitem-_contextMenuPinTab[label="Unpin Tab"],
       #sidebartabs_asamuzak_jp-menuitem-_pinTab[label="Unpin Tab"] {
         --menuitem-image: url("chrome://floorp/skin/designs/lepton/unpin-tab.svg");
+      }
+      #treestyletab_piro_sakura_ne_jp-menuitem-_context_topLevel_toggleSticky[label="Stick Tab to Edges"] {
+        --menuitem-image: url("chrome://floorp/skin/designs/lepton/align-distribute-top.svg");
+      }
+      #treestyletab_piro_sakura_ne_jp-menuitem-_context_topLevel_toggleSticky[label="Unstick Tab to Edges"] {
+        --menuitem-image: url("chrome://floorp/skin/designs/lepton/align-space-evenly-vertical.svg");
       }
       #context_duplicateTab,
       #context_duplicateTabs,
@@ -12332,7 +12344,7 @@
         }
       }
       #tm-renameTab {
-        --menuitem-image: url("chrome://global/skin/icons/edit.svg");
+        --menuitem-image: url("chrome://floorp/skin/designs/lepton/edit-active.svg");
       }
       #tm-copyTabUrl {
         --menuitem-image: url("chrome://floorp/skin/designs/lepton/link.svg");
@@ -12591,6 +12603,9 @@
       #context-translate-selection {
         --menuitem-image: url("chrome://floorp/skin/designs/lepton/translations.svg");
       }
+      #context-ask-chat {
+        --menuitem-image: url("chrome://floorp/skin/designs/lepton/chat-sparkle.svg");
+      }
       #frame {
         --menuitem-image: url("chrome://floorp/skin/designs/lepton/command-frames.svg");
       }
@@ -12778,7 +12793,7 @@
       #placesContext_show_bookmark\:info,
       #placesContext_show\:info,
       #placesContext_show_folder\:info {
-        --menuitem-image: url("chrome://global/skin/icons/edit.svg");
+        --menuitem-image: url("chrome://floorp/skin/designs/lepton/edit-active.svg");
       }
       #placesContext_deleteBookmark,
       #placesContext_deleteFolder,
@@ -12842,7 +12857,7 @@
         --menuitem-image: url("chrome://global/skin/icons/check.svg");
       }
       #blockedPopupOptions > menuitem[oncommand="gPopupBlockerObserver.editPopupSettings();"] {
-        --menuitem-image: url("chrome://global/skin/icons/edit.svg");
+        --menuitem-image: url("chrome://floorp/skin/designs/lepton/edit-active.svg");
       }
       #blockedPopupDontShowMessage {
         /* checkbox */
@@ -13084,7 +13099,7 @@
         --menuitem-image: url("chrome://floorp/skin/designs/lepton/mail-inbox-all.svg");
       }
       #edit-menu {
-        --menuitem-image: url("chrome://global/skin/icons/edit.svg");
+        --menuitem-image: url("chrome://floorp/skin/designs/lepton/edit-active.svg");
       }
       #view-menu {
         --menuitem-image: url("chrome://floorp/skin/designs/lepton/content-view.svg");
@@ -13562,7 +13577,7 @@
       --menuitem-image: url("chrome://global/skin/icons/reload.svg");
     }
     #usercssloader-submenupopup > menuitem[data-l10n-id="make-browsercss-file"] {
-      --menuitem-image: url("chrome://global/skin/icons/edit.svg");
+      --menuitem-image: url("chrome://floorp/skin/designs/lepton/edit-active.svg");
     }
     #usercssloader-submenupopup > menuitem[data-l10n-id="open-css-folder"] {
       --menuitem-image: var(--uc-folder-icon);
@@ -14550,7 +14565,7 @@
       --input-error-border-color: var(--win-error-color) !important;
      */
     /* Others */
-    --tab-selected-bgcolor: unset !important;
+    --tab-selected-bgcolor: var(--toolbar-bgcolor);
     --tabs-border-color: transparent !important;
     --checkbox-checked-border-color: transparent !important;
     /* Other Defaults */
@@ -23974,10 +23989,10 @@
     counter-increment: tab-counts;
   }
   .tabbrowser-tab:not([hidden="true"])[pinned="true"] .tab-label-container::before {
-    content: " " counter(tab-counts);
+    content: " " counter(tab-counts);
   }
   .tabbrowser-tab:not([hidden="true"]):not([pinned="true"]) .tab-label-container::before {
-    content: counter(tab-counts) ": ";
+    content: counter(tab-counts) ": ";
   }
   .tabbrowser-tab:not([hidden="true"]) .tab-label-container {
     display: grid;
@@ -27046,8 +27061,13 @@
   #sidebartabs_asamuzak_jp-menuitem-_reloadAllTabs {
     --menuitem-image: url("chrome://floorp/skin/designs/lepton/reload.svg");
   }
+  #context_playTab,
+  #context_playSelectedTabs {
+    --menuitem-image: url("chrome://floorp/skin/designs/lepton/play-fill.svg");
+  }
   #context_toggleMuteTab,
   #context_toggleMuteSelectedTabs,
+  #treestyletab_piro_sakura_ne_jp-menuitem-_context_toggleMuteTab[label="Mute Tab"],
   #treestyletab_piro_sakura_ne_jp-menuitem-_context_toggleMuteTab-mute,
   #tabcenter-reborn_ariasuni-menuitem-_contextMenuMuteTab,
   #sidebartabs_asamuzak_jp-menuitem-_muteTab {
@@ -27056,6 +27076,7 @@
   }
   #context_toggleMuteTab[muted],
   #context_toggleMuteSelectedTabs[muted],
+  #treestyletab_piro_sakura_ne_jp-menuitem-_context_toggleMuteTab[label="Unmute Tab"],
   #treestyletab_piro_sakura_ne_jp-menuitem-_context_toggleMuteTab-unmute,
   #tabcenter-reborn_ariasuni-menuitem-_contextMenuMuteTab[label="Unmute Tab"],
   #sidebartabs_asamuzak_jp-menuitem-_muteTab[label="Unmute Tab"] {
@@ -27074,6 +27095,12 @@
   #tabcenter-reborn_ariasuni-menuitem-_contextMenuPinTab[label="Unpin Tab"],
   #sidebartabs_asamuzak_jp-menuitem-_pinTab[label="Unpin Tab"] {
     --menuitem-image: url("chrome://floorp/skin/designs/lepton/unpin-tab.svg");
+  }
+  #treestyletab_piro_sakura_ne_jp-menuitem-_context_topLevel_toggleSticky[label="Stick Tab to Edges"] {
+    --menuitem-image: url("chrome://floorp/skin/designs/lepton/align-distribute-top.svg");
+  }
+  #treestyletab_piro_sakura_ne_jp-menuitem-_context_topLevel_toggleSticky[label="Unstick Tab to Edges"] {
+    --menuitem-image: url("chrome://floorp/skin/designs/lepton/align-space-evenly-vertical.svg");
   }
   #context_duplicateTab,
   #context_duplicateTabs,
@@ -27309,7 +27336,7 @@
 }
 @media (not (-moz-bool-pref: "userChrome.icon.disabled")) and (-moz-bool-pref: "userChrome.icon.menu") and (-moz-bool-pref: "userChrome.icon.context_menu") {
   #tm-renameTab {
-    --menuitem-image: url("chrome://global/skin/icons/edit.svg");
+    --menuitem-image: url("chrome://floorp/skin/designs/lepton/edit-active.svg");
   }
 }
 @media (not (-moz-bool-pref: "userChrome.icon.disabled")) and (-moz-bool-pref: "userChrome.icon.menu") and (-moz-bool-pref: "userChrome.icon.context_menu") {
@@ -27711,6 +27738,11 @@
   }
 }
 @media (not (-moz-bool-pref: "userChrome.icon.disabled")) and (-moz-bool-pref: "userChrome.icon.menu") and (-moz-bool-pref: "userChrome.icon.context_menu") {
+  #context-ask-chat {
+    --menuitem-image: url("chrome://floorp/skin/designs/lepton/chat-sparkle.svg");
+  }
+}
+@media (not (-moz-bool-pref: "userChrome.icon.disabled")) and (-moz-bool-pref: "userChrome.icon.menu") and (-moz-bool-pref: "userChrome.icon.context_menu") {
   #frame {
     --menuitem-image: url("chrome://floorp/skin/designs/lepton/command-frames.svg");
   }
@@ -27994,7 +28026,7 @@
   #placesContext_show_bookmark\:info,
   #placesContext_show\:info,
   #placesContext_show_folder\:info {
-    --menuitem-image: url("chrome://global/skin/icons/edit.svg");
+    --menuitem-image: url("chrome://floorp/skin/designs/lepton/edit-active.svg");
   }
 }
 @media (not (-moz-bool-pref: "userChrome.icon.disabled")) and (-moz-bool-pref: "userChrome.icon.menu") and (-moz-bool-pref: "userChrome.icon.context_menu") {
@@ -28094,7 +28126,7 @@
 }
 @media (not (-moz-bool-pref: "userChrome.icon.disabled")) and (-moz-bool-pref: "userChrome.icon.menu") and (-moz-bool-pref: "userChrome.icon.context_menu") {
   #blockedPopupOptions > menuitem[oncommand="gPopupBlockerObserver.editPopupSettings();"] {
-    --menuitem-image: url("chrome://global/skin/icons/edit.svg");
+    --menuitem-image: url("chrome://floorp/skin/designs/lepton/edit-active.svg");
   }
 }
 @media (not (-moz-bool-pref: "userChrome.icon.disabled")) and (-moz-bool-pref: "userChrome.icon.menu") and (-moz-bool-pref: "userChrome.icon.context_menu") {
@@ -28426,7 +28458,7 @@
     --menuitem-image: url("chrome://floorp/skin/designs/lepton/mail-inbox-all.svg");
   }
   #edit-menu {
-    --menuitem-image: url("chrome://global/skin/icons/edit.svg");
+    --menuitem-image: url("chrome://floorp/skin/designs/lepton/edit-active.svg");
   }
   #view-menu {
     --menuitem-image: url("chrome://floorp/skin/designs/lepton/content-view.svg");
@@ -29078,7 +29110,7 @@
     --menuitem-image: url("chrome://global/skin/icons/reload.svg");
   }
   #usercssloader-submenupopup > menuitem[data-l10n-id="make-browsercss-file"] {
-    --menuitem-image: url("chrome://global/skin/icons/edit.svg");
+    --menuitem-image: url("chrome://floorp/skin/designs/lepton/edit-active.svg");
   }
   #usercssloader-submenupopup > menuitem[data-l10n-id="open-css-folder"] {
     --menuitem-image: var(--uc-folder-icon);

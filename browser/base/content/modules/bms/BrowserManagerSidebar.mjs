@@ -62,7 +62,7 @@ export const BrowserManagerSidebar = {
    <spacer flex="1"/>
    <vbox id="bottomButtonBox">
      <toolbarbutton class="sidepanel-browser-icon" data-l10n-id="sidebar2-hide-sidebar"  oncommand="Services.prefs.setBoolPref('floorp.browser.sidebar.enable', false);" id="sidebar-hide-icon"/>
-     <toolbarbutton class="sidepanel-browser-icon" data-l10n-id="sidebar-addons-button"  oncommand="BrowserOpenAddonsMgr();" id="addons-icon"/>
+     <toolbarbutton class="sidepanel-browser-icon" data-l10n-id="sidebar-addons-button"  oncommand="BrowserAddonUI.openAddonsMgr('addons://list/extension');" id="addons-icon"/>
      <toolbarbutton class="sidepanel-browser-icon" data-l10n-id="sidebar-passwords-button"  oncommand="LoginHelper.openPasswordManager(window, { entryPoint: 'mainmenu' });" id="passwords-icon"/>
      <toolbarbutton class="sidepanel-browser-icon" data-l10n-id="sidebar-preferences-button"  oncommand="openPreferences();" id="preferences-icon"/>
    </vbox>
@@ -116,8 +116,8 @@ export const BrowserManagerSidebar = {
     "https://docs.floorp.app",
   ],
   prefsUpdate() {
-    let defaultPref = { data: {}, index: [] };
-    for (let elem in this.STATIC_SIDEBAR_DATA) {
+    const defaultPref = { data: {}, index: [] };
+    for (const elem in this.STATIC_SIDEBAR_DATA) {
       if (this.STATIC_SIDEBAR_DATA[elem].enabled === false) {
         delete this.STATIC_SIDEBAR_DATA[elem];
         continue;
@@ -128,7 +128,7 @@ export const BrowserManagerSidebar = {
       };
       defaultPref.index.push(elem.replace("//", "__"));
     }
-    for (let elem in this.DEFAULT_WEBPANEL) {
+    for (const elem in this.DEFAULT_WEBPANEL) {
       defaultPref.data[`w${elem}`] = { url: this.DEFAULT_WEBPANEL[elem] };
       defaultPref.index.push(`w${elem}`);
     }
@@ -140,11 +140,11 @@ export const BrowserManagerSidebar = {
       );
 
     if (Services.prefs.prefHasUserValue("floorp.browser.sidebar2.data")) {
-      let prefTemp = JSON.parse(
+      const prefTemp = JSON.parse(
         Services.prefs.getStringPref("floorp.browser.sidebar2.data")
       );
-      let setPref = { data: {}, index: [] };
-      for (let elem of prefTemp.index) {
+      const setPref = { data: {}, index: [] };
+      for (const elem of prefTemp.index) {
         setPref.data[elem] = prefTemp.data[elem];
         setPref.index.push(elem);
       }
@@ -163,7 +163,7 @@ export const BrowserManagerSidebar = {
     }
 
     if (sbar_url.startsWith("http://") || sbar_url.startsWith("https://")) {
-      let iconProvider = Services.prefs.getStringPref(
+      const iconProvider = Services.prefs.getStringPref(
         "floorp.browser.sidebar.useIconProvider",
         null
       );
@@ -202,11 +202,11 @@ export const BrowserManagerSidebar = {
             throw new Error(`${response.status} ${response.statusText}`);
           }
 
-          let reader = new FileReader();
+          const reader = new FileReader();
 
-          let blob_data = await response.blob();
+          const blob_data = await response.blob();
 
-          let icon_data_url = await new Promise(resolve => {
+          const icon_data_url = await new Promise(resolve => {
             reader.addEventListener("load", function () {
               resolve(this.result);
             });
@@ -255,18 +255,18 @@ export const BrowserManagerSidebar = {
     } else if (sbar_url.startsWith("file://")) {
       elem.style.setProperty("--BMSIcon", `url(moz-icon:${sbar_url}?size=128)`);
     } else if (sbar_url.startsWith("extension")) {
-      let iconURL = sbar_url.split(",")[4];
+      const iconURL = sbar_url.split(",")[4];
       elem.style.setProperty("--BMSIcon", `url(${iconURL})`);
       elem.className += " extension-icon";
-      let listTexts =
+      const listTexts =
         "chrome://floorp/content/BMS-extension-needs-white-bg.txt";
       fetch(listTexts)
         .then(response => {
           return response.text();
         })
         .then(text => {
-          let lines = text.split(/\r?\n/);
-          for (let line of lines) {
+          const lines = text.split(/\r?\n/);
+          for (const line of lines) {
             if (line == sbar_url.split(",")[2]) {
               elem.className += " extension-icon-add-white";
               break;
@@ -283,10 +283,10 @@ export const BrowserManagerSidebar = {
     }
   },
   async getAdoonSidebarPage(addonId) {
-    let addonUUID = JSON.parse(
+    const addonUUID = JSON.parse(
       Services.prefs.getStringPref("extensions.webextensions.uuids")
     );
-    let manifestJSON = await (
+    const manifestJSON = await (
       await fetch(`moz-extension://${addonUUID[addonId]}/manifest.json`)
     ).json();
     let toURL = manifestJSON.sidebar_action.default_panel;
@@ -298,9 +298,9 @@ export const BrowserManagerSidebar = {
 
   addPanel(url, uc) {
     let parentWindow = Services.wm.getMostRecentWindow("navigator:browser");
-    let updateNumberDate = new Date();
-    let updateNumber = `w${updateNumberDate.getFullYear()}${updateNumberDate.getMonth()}${updateNumberDate.getDate()}${updateNumberDate.getHours()}${updateNumberDate.getMinutes()}${updateNumberDate.getSeconds()}`;
-    let object = { new: true, id: updateNumber };
+    const updateNumberDate = new Date();
+    const updateNumber = `w${updateNumberDate.getFullYear()}${updateNumberDate.getMonth()}${updateNumberDate.getDate()}${updateNumberDate.getHours()}${updateNumberDate.getMinutes()}${updateNumberDate.getSeconds()}`;
+    const object = { new: true, id: updateNumber };
     if (url != "") {
       object.url = url;
     }
