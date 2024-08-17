@@ -121,6 +121,7 @@
 }
 
 #tabbrowser-tabs {
+  overflow-y: scroll !important;
   border-inline-start: none !important;
   padding-inline-start: 0 !important;
   border-bottom: solid var(--toolbarseparator-color) 0.1px !important;
