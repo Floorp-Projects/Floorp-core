@@ -24,7 +24,6 @@ pref("floorp.chrome.theme.mode", -1);
 
 //ブラウザーUIのカスタマイズ設定
 pref("floorp.bookmarks.bar.focus.mode", false);//フォーカスした際にブックマークバーを展開
-pref("floorp.material.effect.enable", false);//マテリアルモードの実装
 pref("floorp.disable.fullscreen.notification", false);//フルスクリーン通知を無効化
 pref("floorp.navbar.bottom", false);
 pref("floorp.tabs.showPinnedTabsTitle", false); //ピン留めされたタブのタイトルを表示
@@ -313,7 +312,6 @@ pref("mousewheel.default.delta_multiplier_y", 300);
 pref("extensions.htmlaboutaddons.recommendations.enabled", false, locked);
 pref("datareporting.policy.dataSubmissionEnable", false, locked);
 pref("datareporting.healthreport.uploadEnabled", false, locked);
-pref("toolkit.legacyUserProfileCustomizations.script", false);
 
 /*-----------------------------------------------------------------------------以下、Photon の既定の設定-----------------------------------------------------------------------------*/
 //Floorp

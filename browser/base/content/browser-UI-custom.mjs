@@ -37,18 +37,6 @@ export const gFloorpObservePreference = (prefName, callback) => {
   });
 };
 
-// prefs
-gFloorpObservePreference("floorp.material.effect.enable", function (event) {
-  if (event.prefValue) {
-    let Tag = document.createElement("style");
-    Tag.innerText = `@import url(chrome://floorp/skin/designs/options/micaforeveryone.css)`;
-    Tag.setAttribute("id", "floorp-micaforeveryone");
-    document.head.appendChild(Tag);
-  } else {
-    document.getElementById("floorp-micaforeveryone")?.remove();
-  }
-});
-
 gFloorpObservePreference(
   "floorp.Tree-type.verticaltab.optimization",
   function (event) {

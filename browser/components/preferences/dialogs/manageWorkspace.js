@@ -72,7 +72,7 @@ async function onLoad() {
         <menuitem label="${container.name}" value="${container.userContextId}"></menuitem>
       `);
 
-		if (container.l10nID) {
+		if (container.l10nId) {
 			const labelName = ContextualIdentityService.getUserContextLabel(
 				container.userContextId,
 			);
