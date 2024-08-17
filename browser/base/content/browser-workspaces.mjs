@@ -1183,16 +1183,15 @@ export const gWorkspaces = {
       gWorkspaces.checkAllTabsForVisibility();
     }, 100);
 
-    // Override the default newtab opening position in tabbar.
-    //copy from browser.js (./browser/base/content/browser.js)
-    // eslint-disable-next-line no-undef
-    BrowserOpenTab = async function ({
-      event,
-      // eslint-disable-next-line no-undef
-      url = BROWSER_NEW_TAB_URL,
-    } = {}) {
-      let relatedToCurrent = false; //"relatedToCurrent" decide where to open the new tab. Default work as last tab (right side). Floorp use this.
+    BrowserCommands.openTab = async (event, url) => {
+      let werePassedURL = !!url;
+      url ??= BROWSER_NEW_TAB_URL;
+      let searchClipboard =
+        gMiddleClickNewTabUsesPasteboard && event?.button == 1;
+
+      let relatedToCurrent = false;
       let where = "tab";
+
       let currentWorkspaceContextId =
         await gWorkspaces.getWorkspaceContainerUserContextId(
           await gWorkspaces.getCurrentWorkspaceId()
@@ -1213,7 +1212,7 @@ export const gWorkspaces = {
         default:
           if (event) {
             // eslint-disable-next-line no-undef
-            where = whereToOpenLink(event, false, true);
+            where = BrowserUtils.whereToOpenLink(event, false, true);
             switch (where) {
               case "tab":
               case "tabshifted":
@@ -1228,8 +1227,7 @@ export const gWorkspaces = {
           }
       }
 
-      //Wrote by Mozilla(Firefox)
-      // A notification intended to be useful for modular performance tracking
+      // A notification intended to be useful for modular peformance tracking
       // starting as close as is reasonably possible to the time when the user
       // expressed the intent to open a new tab.  Since there are a lot of
       // entry points, this won't catch every single tab created, but most
@@ -1242,14 +1240,23 @@ export const gWorkspaces = {
       Services.obs.notifyObservers(
         {
           wrappedJSObject: new Promise(resolve => {
-            // eslint-disable-next-line no-undef
-            openTrustedLinkIn(url, where, {
+            let options = {
               relatedToCurrent,
               resolveOnNewTabCreated: resolve,
               userContextId: gWorkspaces.workspaceEnabled
                 ? currentWorkspaceContextId
                 : 0,
-            });
+            };
+            if (!werePassedURL && searchClipboard) {
+              let clipboard = readFromClipboard();
+              clipboard =
+                UrlbarUtils.stripUnsafeProtocolOnPaste(clipboard).trim();
+              if (clipboard) {
+                url = clipboard;
+                options.allowThirdPartyFixup = true;
+              }
+            }
+            openTrustedLinkIn(url, where, options);
           }),
         },
         "browser-open-newtab-start"
