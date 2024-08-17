@@ -265,7 +265,7 @@
 }
 
 #add-button{
-  list-style-image: url("chrome://floorp/skin/designs/fluerialUI/newtab.svg");
+  list-style-image: url("chrome://global/skin/icons/plus.svg");
 }
 
 .sidepanel-icon{
