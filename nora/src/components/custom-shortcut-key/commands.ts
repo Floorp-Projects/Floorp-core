@@ -354,16 +354,11 @@ export const commands: Commands = {
   },
   "floorp-open-split-view-on-left": {
     command: () =>
-      gSplitView.Functions.setSplitView(gBrowser.selectedTab, "left"),
-    type: "split-view-action",
-  },
-  "floorp-open-split-view-on-right": {
-    command: () =>
-      gSplitView.Functions.setSplitView(gBrowser.selectedTab, "right"),
+      gSplitView.splitFromCsk(),
     type: "split-view-action",
   },
   "floorp-close-split-view": {
-    command: () => gSplitView.Functions.removeSplitView(),
+    command: () => gSplitView.resetSplitView(),
     type: "split-view-action",
   },
   "floorp-custom-action-1": {

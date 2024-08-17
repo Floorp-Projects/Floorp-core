@@ -308,6 +308,29 @@ export class SplitView {
   }
 
   /**
+   * Splits the selected tabs.
+   */
+  cskSplitTabs() {
+    const tab = [this.getAnotherTab(), window.gBrowser.selectedTab];
+    this.splitTabs(tab);
+  }
+
+  getAnotherTab() {
+    let result =
+      window.gBrowser.tabs[
+        window.gBrowser.tabs.indexOf(window.gBrowser.selectedTab) - 1
+      ];
+    if (!result) {
+      result =
+      window.gBrowser.tabs[
+        window.gBrowser.tabs.indexOf(window.gBrowser.selectedTab) + 1
+      ];
+    }
+
+    return result ?? null;
+  }
+
+  /**
    * Handles the location change event.
    *
    * @param {Browser} browser - The browser instance.
@@ -325,6 +348,9 @@ export class SplitView {
    * @param {Tab[]} tabs - The tabs to split.
    */
   splitTabs(tabs) {
+    if (tabs.length < 2 || tabs.includes(null)) {
+      return;
+    }
     const existingSplitTab = tabs.find(tab => tab.splitView);
     if (existingSplitTab) {
       const groupIndex = this._data.findIndex(group =>
@@ -382,7 +408,7 @@ export class SplitView {
   /**
    * Deactivates the split view.
    */
-  deactivateSplitView() {
+  deactivateSplitView() 
     for (const tab of this._data[this.currentView].tabs) {
       const container = tab.linkedBrowser.closest(".browserSidebarContainer");
       this.resetContainerStyle(container);
@@ -394,7 +420,6 @@ export class SplitView {
     this.setTabsDocShellState(this._data[this.currentView].tabs, false);
     this.currentView = -1;
     this.hideSplitViewManager();
-  }
 
   /**
    * Activates the split view.
@@ -435,7 +460,7 @@ export class SplitView {
     activeTab,
     reverse = true,
     method = "column"
-  ) {
+  ) 
     this.tabBrowserPanel.style.flexDirection = this.getFlexDirection(
       reverse,
       method
@@ -452,14 +477,12 @@ export class SplitView {
         reverse
       );
     });
-  }
 
-  getFlexDirection(reverse, method) {
+  getFlexDirection(reverse, method) 
     if (method === "column") {
       return reverse ? "column-reverse" : "column";
     }
     return reverse ? "row-reverse" : "row";
-  }
 
   /**
    * Styles the container for a tab.
@@ -469,7 +492,7 @@ export class SplitView {
    * @param {number} index - The index of the tab.
    * @param {string} flexType - The type of flex layout.
    */
-  styleContainer(container, isActive, index, flexType) {
+  styleContainer(container, isActive, index, flexType) 
     container.removeAttribute("split-active");
     if (isActive) {
       container.setAttribute("split-active", "true");
@@ -481,7 +504,6 @@ export class SplitView {
       container.style.flex = "1";
       container.style.order = index;
     }
-  }
 
   /**
    * Handles the tab click event.
@@ -504,7 +526,7 @@ export class SplitView {
    * @param {Tab[]} tabs - The tabs.
    * @param {boolean} active - Indicates if the tabs are active.
    */
-  setTabsDocShellState(tabs, active) {
+  setTabsDocShellState(tabs, active) 
     for (const tab of tabs) {
       tab.linkedBrowser.spliting = active;
       tab.linkedBrowser.docShellIsActive = active;
@@ -523,26 +545,24 @@ export class SplitView {
         browser.removeAttribute("style");
       }
     }
-  }
 
   /**
    * Resets the container style.
    *
    * @param {Element} container - The container element.
    */
-  resetContainerStyle(container) {
+  resetContainerStyle(container) 
     container.removeAttribute("split-active");
     container.classList.remove("deck-selected");
     container.style.flex = "";
     container.style.order = "";
-  }
 
   /**
    * Gets the modifier element.
    *
    * @returns {Element} The modifier element.
    */
-  get modifierElement() {
+  get modifierElement() 
     if (!this.__modifierElement) {
       const wrapper = document.getElementById("template-split-view-modifier");
       const panel = wrapper.content.firstElementChild;
@@ -550,7 +570,6 @@ export class SplitView {
       this.__modifierElement = panel;
     }
     return this.__modifierElement;
-  }
 
   /**
    * @description unsplit the current view.]
