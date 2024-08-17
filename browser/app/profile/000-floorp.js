@@ -16,10 +16,6 @@
 pref("enable.floorp.updater.latest", false);
 pref("enable.floorp.update", true);
 
-// userAgent
-pref("floorp.browser.UserAgent", 0);
-pref("floorp.general.useragent.override", "");
-
 pref("floorp.chrome.theme.mode", -1);
 
 //ブラウザーUIのカスタマイズ設定
