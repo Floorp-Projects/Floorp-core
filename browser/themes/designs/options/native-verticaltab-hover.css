@@ -38,18 +38,18 @@
 
 @media (-moz-platform: windows) or (-moz-platform: macos) {
   #TabsToolbar {
-    background-color: var(--lwt-accent-color-inactive, var(--lwt-accent-color)) !important;
+    background-color: var(--lwt-accent-color-inactive, var(--lwt-accent-color, var(--tabpanel-background-color))) !important;
     background-image: var(--lwt-additional-images) !important;
   }
 }
 
 @media (-moz-platform: linux) {
-  #TabsToolbar:-moz-lwtheme {
+  #TabsToolbar {
     background-color: var(--lwt-accent-color) !important;
     background-image: var(--lwt-additional-images) !important;
   }
 
-  #TabsToolbar[id]:not(:-moz-lwtheme) {
+  #TabsToolbar[id] {
     background-color: ActiveCaption !important;
   }
 }
