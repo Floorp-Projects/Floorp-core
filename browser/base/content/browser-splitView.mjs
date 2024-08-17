@@ -310,7 +310,7 @@ export class SplitView {
   /**
    * Splits the selected tabs.
    */
-  cskSplitTabs() {
+  splitFromCsk() {
     const tab = [this.getAnotherTab(), window.gBrowser.selectedTab];
     this.splitTabs(tab);
   }
