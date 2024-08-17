@@ -52,12 +52,27 @@ export class CustomShortcutKey {
     console.warn("CSK Init Completed");
   }
 
+  private getCSKData() {
+    const shouldBeRemovedKeys = ["floorp-open-split-view-on-right"];
+    const data = JSON.parse(
+      Services.prefs.getStringPref("floorp.browser.nora.csk.data", "{}"),
+    );
+    for (const key of shouldBeRemovedKeys) {
+      if (data[key]) {
+        delete data[key];
+        Services.prefs.setStringPref(
+          "floorp.browser.nora.csk.data",
+          JSON.stringify(data),
+        );
+      }
+    }
+    return data;
+  }
+
   private initCSKData() {
     //TODO: safely catch
     this.cskData = zCSKData.parse(
-      JSON.parse(
-        Services.prefs.getStringPref("floorp.browser.nora.csk.data", "{}"),
-      ),
+      this.getCSKData(),
     );
   }
   private startHandleShortcut(_window: Window) {

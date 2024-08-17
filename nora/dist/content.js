@@ -41,11 +41,25 @@ const _CustomShortcutKey = class _CustomShortcutKey {
       }
     }
   }
+  getCSKData() {
+    const shouldBeRemovedKeys = ["floorp-open-split-view-on-right"];
+    const data = JSON.parse(
+      Services.prefs.getStringPref("floorp.browser.nora.csk.data", "{}")
+    );
+    for (const key of shouldBeRemovedKeys) {
+      if (data[key]) {
+        delete data[key];
+        Services.prefs.setStringPref(
+          "floorp.browser.nora.csk.data",
+          JSON.stringify(data)
+        );
+      }
+    }
+    return data;
+  }
   initCSKData() {
     this.cskData = zCSKData.parse(
-      JSON.parse(
-        Services.prefs.getStringPref("floorp.browser.nora.csk.data", "{}")
-      )
+      this.getCSKData()
     );
   }
   startHandleShortcut(_window) {
