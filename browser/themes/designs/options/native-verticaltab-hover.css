@@ -36,7 +36,7 @@
   background-size: cover !important;
 }
 
-@media (-moz-platform: windows-win10) and (-moz-platform: macos) {
+@media (-moz-platform: windows) and (-moz-platform: macos) {
   #TabsToolbar {
     background-color: var(--lwt-accent-color-inactive, var(--lwt-accent-color)) !important;
     background-image: var(--lwt-additional-images) !important;
