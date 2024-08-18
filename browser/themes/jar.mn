@@ -232,6 +232,7 @@ floorp.jar:
   skin/classic/designs/lepton/tool-accessibility.svg                        (designs/lepton/icons/tool-accessibility.svg)
   skin/classic/designs/lepton/screenshot.svg                                (designs/lepton/icons/screenshot.svg)
   skin/classic/designs/lepton/firefox-view.svg                              (designs/lepton/icons/firefox-view.svg)
+  skin/classic/designs/lepton/translations.svg                              (designs/lepton/icons/translations.svg)
 
 # Floorp legacy
   skin/classic/designs/fluerial/fluerial.css                                (designs/fluerial/fluerial.css)

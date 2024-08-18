@@ -6054,7 +6054,7 @@
       #editBMPanel_folderMenuList:not([selectedGuid="toolbar_____"], [selectedGuid="menu________"]),
       #editBMPanel_folderMenuList .folder-icon:not([id]),
       .downloadIconShow > .button-box > .button-icon {
-        list-style-image: var(--uc-folder-icon) !important;
+        list-style-image:  url("chrome://floorp/skin/designs/lepton/folder.svg");
       }
       /* Standard Folder - Open */
       :-moz-any(#PlacesToolbar, #BMB_bookmarksPopup, #bookmarksMenu)
@@ -7303,7 +7303,7 @@
         --menuitem-image: url("chrome://floorp/skin/designs/lepton/fluid.svg");
       }
       .downloadShowMenuItem {
-        --menuitem-image: var(--uc-folder-icon);
+        --menuitem-image:  url("chrome://floorp/skin/designs/lepton/folder.svg");
       }
       #downloadsContextMenu > menuitem.downloadOpenReferrerMenuItem,
       #downloadsContextMenu > menuitem[command="downloadsCmd_openReferrer"] {
@@ -7376,7 +7376,7 @@
       }
       #placesContext_showInFolder,
       #placesContext_new\:folder {
-        --menuitem-image: var(--uc-folder-icon);
+        --menuitem-image:  url("chrome://floorp/skin/designs/lepton/folder.svg");
       }
       #placesContext_new\:separator {
         --menuitem-image: url("chrome://floorp/skin/designs/lepton/vertical-line.svg");
@@ -7404,7 +7404,7 @@
         --menuitem-image: url("chrome://browser/skin/bookmark.svg");
       }
       #newfolder {
-        --menuitem-image: var(--uc-folder-icon);
+        --menuitem-image:  url("chrome://floorp/skin/designs/lepton/folder.svg");
       }
       #newseparator {
         --menuitem-image: url("chrome://floorp/skin/designs/lepton/vertical-line.svg");
