@@ -77,7 +77,7 @@ export const gFloorpLegacyStyleDownloadBar = {
     `);
     const showAllDownloadTextAndButtonElem = window.MozXULElement
       .parseXULToFragment(`
-      <toolbarbutton id="show-downloads-button" class="toolbarbutton-1" oncommand="BrowserDownloadsUI();"
+      <toolbarbutton id="show-downloads-button" class="toolbarbutton-1" oncommand="DownloadsPanel.showDownloadsHistory();"
                      data-l10n-id="floorp-show-all-downloads" />
     `);
 
