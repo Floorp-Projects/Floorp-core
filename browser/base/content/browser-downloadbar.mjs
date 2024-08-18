@@ -90,7 +90,11 @@ export const gFloorpLegacyStyleDownloadBar = {
     document
       .getElementById("downloadsListBox")
       .appendChild(hideAllDownloadButtonElem);
-    window.DownloadsPanel.panel = document.getElementById("downloadsPanel");
+      window.DownloadsPanel.panel = document.getElementById("downloadsPanel");
+      window.DownloadsPanel.richListBox = document.getElementById("downloadsListBox");
+      window.DownloadsView.contextMenu = document.getElementById("downloadsContextMenu");
+      window.DownloadsPanel._initialized = false;
+      window.DownloadsPanel.initialize();
     this._initialized = true;
   },
 };
