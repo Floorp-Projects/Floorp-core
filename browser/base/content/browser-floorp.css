@@ -739,3 +739,12 @@ tabpanels > [split="true"] {
 .splitView-select-box.selected {
   border: var(--button-primary-hover-bgcolor) solid 1px;
 }
+
+#navigator-toolbox {
+  :root[lwtheme] & {
+    background-image: var(--lwt-additional-images);
+    background-repeat: var(--lwt-background-tiling);
+    background-position: var(--lwt-background-alignment);
+    color: inherit;
+  }
+}
