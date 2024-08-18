@@ -13,14 +13,27 @@
   min-width: 150px !important;
   transition :min-width 150ms ease-out, max-width 150ms ease-out !important;
   overflow: hidden !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-size: cover !important;
 }
 
-#TabsToolbar:-moz-lwtheme {
-  background-image: var(--lwt-additional-images) !important;
-  background-repeat: no-repeat !important;
-  background-position: center !important;
-  background-size: cover !important;
-  background-color: var(--lwt-accent-color-inactive, var(--lwt-accent-color)) !important;
+@media (-moz-platform: windows) or (-moz-platform: macos) {
+  #TabsToolbar {
+    background-color: var(--lwt-accent-color-inactive, var(--lwt-accent-color, var(--tabpanel-background-color))) !important;
+    background-image: var(--lwt-additional-images) !important;
+  }
+}
+
+@media (-moz-platform: linux) {
+  #TabsToolbar {
+    background-color: var(--lwt-accent-color) !important;
+    background-image: var(--lwt-additional-images) !important;
+  }
+
+  #TabsToolbar[id] {
+    background-color: ActiveCaption !important;
+  }
 }
 
 .tabbrowser-tab {
