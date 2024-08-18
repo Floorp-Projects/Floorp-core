@@ -303,6 +303,9 @@ pref("general.smoothScroll.msdPhysics.slowdownSpringConstant", 250);
 pref("mousewheel.default.delta_multiplier_y", 300);
 #endif
 
+// Lepton
+pref("userContent.page.dark_mode", true);
+
 /*-----------------------------------------------------------------------------------all.js の設定-----------------------------------------------------------------------------------*/
 
 pref("extensions.htmlaboutaddons.recommendations.enabled", false, locked);
