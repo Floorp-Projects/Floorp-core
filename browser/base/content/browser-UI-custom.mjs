@@ -4,6 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { gFloorpOnLocationChange } from "./browser-onlocation-change.mjs";
+import { gFloorpTabBarStyle } from "./browser-tabbar.mjs";
 
 try {
   var { gBmsWindow } = await import(
@@ -72,8 +73,13 @@ gFloorpObservePreference("floorp.bookmarks.bar.focus.mode", function (event) {
     document.getElementById("floorp-bookmarkbarfocus")?.remove();
   }
   window.setTimeout(() => {
-    let bmBarHeight = `-${document.getElementById("PersonalToolbar").clientHeight}px`;
-    document.documentElement.style.setProperty('--bookmark-bar-height', bmBarHeight)
+    let bmBarHeight = `-${
+      document.getElementById("PersonalToolbar").clientHeight
+    }px`;
+    document.documentElement.style.setProperty(
+      "--bookmark-bar-height",
+      bmBarHeight
+    );
   }, 1000);
 });
 
@@ -291,3 +297,21 @@ gFloorpObservePreference(
     }
   }
 );
+
+/*------------------------------------------- tab min height -------------------------------------------*/
+
+gFloorpObservePreference("floorp.browser.tabs.tabMinHeight", function () {
+  document.getElementById("floorp-tabminheight")?.remove();
+  let Tag = document.createElement("style");
+  Tag.innerText = `
+      .tabbrowser-tab {
+        --tab-min-height: ${Services.prefs.getIntPref(
+          "floorp.browser.tabs.tabMinHeight",
+          30
+        )}px !important;
+      }
+    `;
+  Tag.setAttribute("id", "floorp-tabminheight");
+  document.head.appendChild(Tag);
+  gFloorpTabBarStyle.setMultirowTabMaxHeight();
+});

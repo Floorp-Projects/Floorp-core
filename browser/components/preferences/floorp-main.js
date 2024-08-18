@@ -39,14 +39,14 @@ window.addEventListener(
             let userConfirm = await confirmRestartPrompt(null);
             if (userConfirm == CONFIRM_RESTART_PROMPT_RESTART_NOW) {
               Services.startup.quit(
-                Ci.nsIAppStartup.eAttemptQuit | Ci.nsIAppStartup.eRestart,
+                Ci.nsIAppStartup.eAttemptQuit | Ci.nsIAppStartup.eRestart
               );
             }
           })();
         } else {
           window.setTimeout(function () {
             Services.startup.quit(
-              Services.startup.eAttemptQuit | Services.startup.eRestart,
+              Services.startup.eAttemptQuit | Services.startup.eRestart
             );
           }, 500);
         }
@@ -66,33 +66,16 @@ window.addEventListener(
     }
 
     {
-      function setOverrideUA() {
-        if (document.getElementById("floorpUAs").value == 5) {
-          document.getElementById("customUsergent").disabled = false;
-        } else {
-          document.getElementById("customUsergent").disabled = true;
-        }
-      }
-
-      setOverrideUA();
-      let prefName = "floorp.general.useragent.override";
-      let elem = document.getElementById("customUsergent");
-      elem.value = Services.prefs.getStringPref(prefName, undefined);
-
+      let prefName = "floorp.browser.tabs.tabMinHeight";
+      let elem = document.getElementById("tabHeightValue");
+      elem.value = Services.prefs.getIntPref(prefName, undefined);
       elem.addEventListener("change", function () {
-        Services.prefs.setStringPref(prefName, elem.value);
-        Services.prefs.setStringPref(
-          "general.useragent.override",
-          Services.prefs.getCharPref("floorp.general.useragent.override"),
-        );
+        Services.prefs.setIntPref(prefName, Number(elem.value));
       });
       Services.prefs.addObserver(prefName, function () {
-        elem.value = Services.prefs.getStringPref(prefName, undefined);
+        elem.value = Services.prefs.getIntPref(prefName, undefined);
       });
     }
-    document.getElementById("floorpUAs").addEventListener("click", function () {
-      setOverrideUA();
-    });
 
     document
       .getElementById("backUpNotesOption")
@@ -112,7 +95,7 @@ window.addEventListener(
         gSubDialog.open(
           "chrome://floorp/content/preferences/dialogs/tabsleep.xhtml",
           undefined,
-          undefined,
+          undefined
         );
       });
 
@@ -127,13 +110,13 @@ window.addEventListener(
 
     Services.prefs.addObserver("toolkit.tabbox.switchByScrolling", function () {
       let isEnabled = Services.prefs.getBoolPref(
-        "toolkit.tabbox.switchByScrolling",
+        "toolkit.tabbox.switchByScrolling"
       );
       let tabscrollReverse = document.querySelector(
-        '[preference="floorp.tabscroll.reverse"]',
+        '[preference="floorp.tabscroll.reverse"]'
       );
       let tabscrollWrap = document.querySelector(
-        '[preference="floorp.tabscroll.wrap"]',
+        '[preference="floorp.tabscroll.wrap"]'
       );
       if (isEnabled) {
         tabscrollReverse.removeAttribute("disabled");
@@ -147,15 +130,15 @@ window.addEventListener(
     {
       const basePrefName = "extensions.checkCompatibility";
       const isNightlyPref = !["aurora", "beta", "release", "esr"].includes(
-        AppConstants.MOZ_UPDATE_CHANNEL,
+        AppConstants.MOZ_UPDATE_CHANNEL
       );
       const appVersion = Services.appinfo.version.replace(
         /^([^\.]+\.[0-9]+[a-z]*).*/gi,
-        "$1",
+        "$1"
       );
       const appVersionMajor = appVersion.replace(
         /^([^\.]+)\.[0-9]+[a-z]*/gi,
-        "$1",
+        "$1"
       );
       const prefNameNightly = `${basePrefName}.nightly`;
       const prefNameVersion = `${basePrefName}.${appVersion}`;
@@ -167,7 +150,7 @@ window.addEventListener(
         for (let minor = 0; minor <= 15; minor++) {
           Services.prefs.setBoolPref(
             `${basePrefName}.${appVersionMajor}.${minor}`,
-            !elem.checked,
+            !elem.checked
           );
         }
       });
@@ -188,7 +171,7 @@ window.addEventListener(
     // Version Injections
     let versionElem = document.getElementById("updateAppInfo");
     let versionElemL10nArgs = JSON.parse(
-      versionElem.getAttribute("data-l10n-args"),
+      versionElem.getAttribute("data-l10n-args")
     );
     let floorpVersion = versionElemL10nArgs.version;
     let firefoxInsideVersion = Services.appinfo.version;
@@ -199,7 +182,7 @@ window.addEventListener(
 
     versionElem.setAttribute("data-l10n-args", JSON.stringify(injectedObj));
   },
-  { once: true },
+  { once: true }
 );
 
 // Optimize for portable version

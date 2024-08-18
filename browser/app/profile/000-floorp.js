@@ -24,9 +24,7 @@ pref("floorp.disable.fullscreen.notification", false);//フルスクリーン通
 pref("floorp.navbar.bottom", false);
 pref("floorp.tabs.showPinnedTabsTitle", false); //ピン留めされたタブのタイトルを表示
 pref("floorp.delete.browser.border", false); //ブラウザーの枠線削除＆丸くする
-
-//Fluerial UIの設定
-pref("floorp.fluerial.roundVerticalTabs",false); //垂直タブのタブの形 trueが横に引っ付けるやつ、falseは角丸長方形
+pref("floorp.browser.tabs.tabMinHeight", 30); //タブの高さ
 
 pref("floorp.browser.user.interface", 3);// Floorp 10 系以降のインターフェーステーマ設定
 pref("floorp.browser.tabbar.settings", 0);// タブの設定

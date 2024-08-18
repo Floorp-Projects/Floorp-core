@@ -27,6 +27,10 @@ export const gFloorpPinnedTabsTitle = {
     return Services.prefs.getIntPref("browser.tabs.tabMinWidth", 76);
   },
 
+  get tabMinHeight() {
+    return Services.prefs.getIntPref("floorp.browser.tabs.tabMinHeight", 30);
+  },
+
   get showPinnedTabsTitleCssElem() {
     return document.getElementById("showPinnedTabsTitle-css");
   },
@@ -38,6 +42,7 @@ export const gFloorpPinnedTabsTitle = {
       }
       .tabbrowser-tab[pinned] {
         width: ${this.tabMinWidth}px !important;
+        height: ${this.tabMinHeight}px !important;
       }
       .tab-throbber[pinned], .tab-icon-pending[pinned], 
       .tab-icon-image[pinned], .tab-sharing-icon-overlay[pinned], 
@@ -58,6 +63,10 @@ export const gFloorpPinnedTabsTitle = {
     );
     Services.prefs.addObserver(
       "browser.tabs.tabMinWidth",
+      this.applyShowPinnedTabsTitle.bind(this)
+    );
+    Services.prefs.addObserver(
+      "floorp.browser.tabs.tabMinHeight",
       this.applyShowPinnedTabsTitle.bind(this)
     );
 
