@@ -36,7 +36,7 @@ export const gFloorpPinnedTabsTitle = {
       .tab-label-container[pinned] {
         width: unset !important;
       }
-      .tabbrowser-tab[pinned="true"] {
+      .tabbrowser-tab[pinned] {
         width: ${this.tabMinWidth}px !important;
       }
       .tab-throbber[pinned], .tab-icon-pending[pinned], 
@@ -48,10 +48,18 @@ export const gFloorpPinnedTabsTitle = {
   },
 
   init() {
-    if (this._initialized) return;
+    if (this._initialized) {
+      return;
+    }
 
-    Services.prefs.addObserver("floorp.tabs.showPinnedTabsTitle", this.applyShowPinnedTabsTitle.bind(this));
-    Services.prefs.addObserver("browser.tabs.tabMinWidth", this.applyShowPinnedTabsTitle.bind(this));
+    Services.prefs.addObserver(
+      "floorp.tabs.showPinnedTabsTitle",
+      this.applyShowPinnedTabsTitle.bind(this)
+    );
+    Services.prefs.addObserver(
+      "browser.tabs.tabMinWidth",
+      this.applyShowPinnedTabsTitle.bind(this)
+    );
 
     this.applyShowPinnedTabsTitle();
     this._initialized = true;
@@ -59,7 +67,9 @@ export const gFloorpPinnedTabsTitle = {
 
   applyShowPinnedTabsTitle() {
     const cssElem = this.showPinnedTabsTitleCssElem;
-    if (cssElem) cssElem.remove();
+    if (cssElem) {
+      cssElem.remove();
+    }
 
     if (this.isShowPinnedTabsTitleEnabled) {
       const styleElement = document.createElement("style");
