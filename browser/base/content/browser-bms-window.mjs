@@ -36,7 +36,9 @@ export const gBmsWindow = {
   },
 
   init() {
-    if (this._initialized || !this.webpanelId) return;
+    if (this._initialized || !this.webpanelId) {
+      return;
+    }
 
     // Against session restore issue
     window.floorpWebPanelWindow = true;
@@ -68,23 +70,22 @@ export const gBmsWindow = {
     // Attribute modifications
     window.gBrowser.selectedTab.setAttribute("BMS-webpanel-tab", "true");
 
-    // User context handling
-    if (userContextId !== 0) {
-      window.setTimeout(() => {
-        BrowserManagerSidebarPanelWindowUtils.reopenInSelectContainer(
-          window,
-          this.webpanelId,
-          userContextId,
-          false
-        );
-      }, 0);
-    }
-
     // Handle issue of opening URL by another application and not loading on the main window
     window.setTimeout(() => {
       const tab = window.gBrowser.addTrustedTab("about:blank");
       window.gBrowser.removeTab(tab);
     }, 0);
+
+    // User context handling
+
+    (async () => {
+      BrowserManagerSidebarPanelWindowUtils.reopenInSelectContainer(
+        window,
+        this.webpanelId,
+        userContextId,
+        false
+      );
+    })();
 
     // Window modifications
     mainWindow.setAttribute(

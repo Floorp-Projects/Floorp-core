@@ -1,11 +1,7 @@
 
 /* Toolbars***************************************************************/
 
-toolbar {
-  display: none !important;
-}
-
-#titlebar {
+#titlebar, toolbar {
   display: none !important;
 }
 
