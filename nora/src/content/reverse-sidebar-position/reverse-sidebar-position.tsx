@@ -27,7 +27,7 @@ export class gReverseSidebarPosition {
       "sidebar-reverse-position-toolbar",
       "sidebar-reverse-position-toolbar",
       () => {
-        window.SidebarUI.reversePosition();
+        window.SidebarController.reversePosition();
       },
       this.StyleElement(),
       CustomizableUI.AREA_NAVBAR,
@@ -35,7 +35,7 @@ export class gReverseSidebarPosition {
       () => {
         const onFirstLaunch = ChromeUtils.importESModule(
           "resource://floorp/FloorpStartup.sys.mjs"
-        ).isFirstRun
+        ).isFirstRun;
 
         if (onFirstLaunch) {
           // Sidebar button should right side of navbar
@@ -43,7 +43,7 @@ export class gReverseSidebarPosition {
             "sidebar-button",
             CustomizableUI.AREA_NAVBAR,
             3,
-         );
+          );
         }
       },
     );

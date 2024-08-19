@@ -58,7 +58,7 @@ export const gFloorpBrowserAction = {
   createMenuToolbarButton(
     widgetId: string,
     l10nId: string,
-    popupElem: JSXElement,
+    popupElem: XULPopupElement,
     onCommandFunc: () => void,
     area: string = CustomizableUI.AREA_NAVBAR,
     styleElement: JSXElement | null = null,
@@ -83,7 +83,7 @@ export const gFloorpBrowserAction = {
         },
         onCreated: (aNode: XULElement) => {
           aNode.setAttribute("type", "menu");
-          insert(aNode, () => popupElem, aNode.lastChild);
+          aNode.appendChild(popupElem);
           onCreatedFunc?.(aNode);
         },
       });

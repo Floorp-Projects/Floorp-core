@@ -538,7 +538,7 @@ const gFloorpBrowserAction = {
         },
         onCreated: (aNode) => {
           aNode.setAttribute("type", "menu");
-          insert(aNode, () => popupElem, aNode.lastChild);
+          aNode.appendChild(popupElem);
           onCreatedFunc == null ? void 0 : onCreatedFunc(aNode);
         }
       });
@@ -562,7 +562,7 @@ const _gReverseSidebarPosition = class _gReverseSidebarPosition {
       })();
     });
     gFloorpBrowserAction.createToolbarClickActionButton("sidebar-reverse-position-toolbar", "sidebar-reverse-position-toolbar", () => {
-      window.SidebarUI.reversePosition();
+      window.SidebarController.reversePosition();
     }, this.StyleElement(), CustomizableUI$2.AREA_NAVBAR, 2, () => {
       const onFirstLaunch = ChromeUtils.importESModule("resource://floorp/FloorpStartup.sys.mjs").isFirstRun;
       if (onFirstLaunch) {
