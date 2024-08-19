@@ -135,6 +135,7 @@
 
 #tabbrowser-tabs {
   overflow-y: scroll !important;
+  scrollbar-width: thin !important;
   border-inline-start: none !important;
   padding-inline-start: 0 !important;
   border-bottom: solid var(--toolbarseparator-color) 0.1px !important;
@@ -145,11 +146,6 @@
 
 #tabbrowser-arrowscrollbox-periphery {
   display: none;
-}
-
-#tabbrowser-arrowscrollbox {
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
 }
 
 #TabsToolbar > .titlebar-spacer[type="pre-tabs"], #TabsToolbar > .titlebar-spacer[type="post-tabs"] {
