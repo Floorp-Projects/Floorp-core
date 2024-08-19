@@ -748,3 +748,8 @@ tabpanels > [split="true"] {
     color: inherit;
   }
 }
+
+/* Fix Bookmarks Toolbar Overlaps Vertical Tabs */
+:root[BookmarksToolbarOverlapsBrowser] {
+  --bookmarks-toolbar-overlapping-browser-height: unset !important;
+}
