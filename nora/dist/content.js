@@ -4,7 +4,7 @@ var __publicField = (obj, key, value) => {
   __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
   return value;
 };
-import { k as zCSKCommands, z as zCSKData, b as checkIsSystemShortcut, h as commands, c as createSignal, a as createEffect, d as createElement, s as setProp, j as effect, i as insertNode, g as insert, r as render, e as createComponent, S as Show } from "./assets/utils.js";
+import { k as zCSKCommands, z as zCSKData, b as checkIsSystemShortcut, h as commands, d as createElement, s as setProp, g as insert, i as insertNode, c as createSignal, a as createEffect, r as render, e as createComponent, S as Show, j as effect } from "./assets/utils.js";
 const _CustomShortcutKey = class _CustomShortcutKey {
   constructor() {
     //this boolean disable shortcut of csk
@@ -86,97 +86,7 @@ const _CustomShortcutKey = class _CustomShortcutKey {
 __publicField(_CustomShortcutKey, "instance");
 __publicField(_CustomShortcutKey, "windows", []);
 let CustomShortcutKey = _CustomShortcutKey;
-const [showStatusbar, setShowStatusbar] = createSignal(Services.prefs.getBoolPref("browser.display.statusbar", false));
-const _gFloorpStatusBar = class _gFloorpStatusBar {
-  static getInstance() {
-    if (!_gFloorpStatusBar.instance) {
-      _gFloorpStatusBar.instance = new _gFloorpStatusBar();
-    }
-    return _gFloorpStatusBar.instance;
-  }
-  get statusbarEnabled() {
-    return Services.prefs.getBoolPref("browser.display.statusbar", false);
-  }
-  constructor() {
-    var _a;
-    window.CustomizableUI.registerArea("statusBar", {
-      type: window.CustomizableUI.TYPE_TOOLBAR,
-      defaultPlacements: ["screenshot-button", "fullscreen-button"]
-    });
-    window.CustomizableUI.registerToolbarNode(document.getElementById("statusBar"));
-    createEffect(() => {
-      const statuspanel_label = document.getElementById("statuspanel-label");
-      const statuspanel = document.getElementById("statuspanel");
-      const statusText = document.getElementById("status-text");
-      const observer = new MutationObserver(() => {
-        if (statuspanel.getAttribute("inactive") === "true" && statusText) {
-          statusText.setAttribute("hidden", "true");
-        } else {
-          statusText == null ? void 0 : statusText.removeAttribute("hidden");
-        }
-      });
-      Services.prefs.setBoolPref("browser.display.statusbar", showStatusbar());
-      if (showStatusbar()) {
-        statusText == null ? void 0 : statusText.appendChild(statuspanel_label);
-        observer.observe(statuspanel, {
-          attributes: true
-        });
-      } else {
-        statuspanel == null ? void 0 : statuspanel.appendChild(statuspanel_label);
-        observer == null ? void 0 : observer.disconnect();
-      }
-    });
-    (_a = document.body) == null ? void 0 : _a.appendChild(document.getElementById("statusBar"));
-    this.observeStatusbar();
-  }
-  observeStatusbar() {
-    Services.prefs.addObserver("browser.display.statusbar", () => setShowStatusbar(() => this.statusbarEnabled));
-  }
-};
-__publicField(_gFloorpStatusBar, "instance");
-let gFloorpStatusBar = _gFloorpStatusBar;
-function ContextMenu$2() {
-  return (() => {
-    var _el$ = createElement("xul:menuitem");
-    setProp(_el$, "data-l10n-id", "status-bar");
-    setProp(_el$, "label", "Status Bar");
-    setProp(_el$, "type", "checkbox");
-    setProp(_el$, "id", "toggle_statusBar");
-    setProp(_el$, "onCommand", () => setShowStatusbar((value) => !value));
-    effect((_$p) => setProp(_el$, "checked", showStatusbar(), _$p));
-    return _el$;
-  })();
-}
-const statusbarStyle = '#statusBar {\n  border-top: 1px solid var(--chrome-content-separator-color);\n  visibility: visible !important;\n}\n\n:root[inFullscreen]:not([macOSNativeFullscreen]) #statusBar:not([fullscreentoolbar="true"]) {\n  visibility: collapse !important;\n}\n\n:root[customizing] #statusBar {\n  display: inherit !important;\n}\n\n#statusBar.collapsed {\n  display: none;\n}\n\n#statusBar #statuspanel-label {\n  box-shadow: none !important;\n  background: none !important;\n  border: none !important;\n}\n\n#statusBar #status-text {\n  overflow: hidden !important;\n}\n';
-function StatusBar() {
-  return [(() => {
-    var _el$ = createElement("xul:toolbar"), _el$2 = createElement("xul:hbox");
-    insertNode(_el$, _el$2);
-    setProp(_el$, "id", "statusBar");
-    setProp(_el$, "toolbarname", "Status bar");
-    setProp(_el$, "customizable", "true");
-    setProp(_el$, "mode", "icons");
-    setProp(_el$, "context", "toolbar-context-menu");
-    setProp(_el$, "accesskey", "A");
-    setProp(_el$2, "id", "status-text");
-    setProp(_el$2, "align", "center");
-    setProp(_el$2, "flex", "1");
-    setProp(_el$2, "class", "statusbar-padding");
-    effect((_$p) => setProp(_el$, "class", `browser-toolbar customization-target ${showStatusbar() ? "" : "collapsed"}`, _$p));
-    return _el$;
-  })(), (() => {
-    var _el$3 = createElement("style");
-    setProp(_el$3, "jsx", true);
-    insert(_el$3, statusbarStyle);
-    return _el$3;
-  })()];
-}
-function initStatusbar() {
-  render(() => createComponent(StatusBar, {}), document.getElementById("navigator-toolbox"));
-  insert(document.getElementById("toolbar-context-menu"), () => createComponent(ContextMenu$2, {}), document.getElementById("viewToolbarsMenuSeparator"));
-  gFloorpStatusBar.getInstance();
-}
-function ContextMenu$1(id, l10n, runFunction) {
+function ContextMenu$2(id, l10n, runFunction) {
   return (() => {
     var _el$ = createElement("xul:menuitem");
     setProp(_el$, "data-l10n-id", l10n);
@@ -217,7 +127,7 @@ class gFloorpContextMenuServices {
     this.initialized = true;
   }
   addContextBox(id, l10n, insertElementId, runFunction, checkID, checkedFunction) {
-    const contextMenu = ContextMenu$1(id, l10n, runFunction);
+    const contextMenu = ContextMenu$2(id, l10n, runFunction);
     const targetNode = document.getElementById(checkID);
     const insertElement = document.getElementById(insertElementId);
     insert(this.contentAreaContextMenu, () => contextMenu, insertElement);
@@ -255,6 +165,208 @@ class gFloorpContextMenuServices {
 const gFloorpContextMenu = new gFloorpContextMenuServices();
 function initBrowserContextMenu() {
   gFloorpContextMenu.init();
+}
+const downloadbarStyle = ':root[inFullscreen]:not([macOSNativeFullscreen]) #downloadsPanel {\n  display: none !important;\n}\n\n#downloadsPanel:not([hasdownloads]) {\n  display: none;\n}\n\n#downloadsListBox {\n  scrollbar-width: none;\n  flex-flow: row;\n  flex-grow: 1;\n  overflow-x: scroll;\n  min-width: 0 !important;\n}\n\n.downloadDetails {\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  width: 170px;\n  overflow: hidden;\n}\n\n#downloadsListBox > richlistitem {\n  min-height: 48px;\n  max-width: min-content !important;\n  margin: 3px 6px !important;\n}\n\n#downloadsListBox > richlistitem:hover {\n  background-color: var(--toolbarbutton-hover-background);\n}\n\n#emptyDownloads, #downloadsFooterButtons {\n  display: none !important;\n}\n\n#downloadsPanel-mainView {\n  padding: 0 !important;\n}\n\n#downloadsPanel-list {\n  flex-flow: row;\n  display: flex;\n}\n\n#downloadsPanel-button {\n  flex-flow: row;\n  flex-grow: 0;\n  align-items: center;\n  display: flex;\n  background-color: rgba(var(--toolbar-bgcolor), 70%) !important;\n  justify-content: flex-end !important;\n  min-width: 0 !important;\n}\n\n#downloadsPanel-button toolbarbutton {\n  fill: var(--toolbarbutton-icon-fill);\n  background-size: 25px;\n  flex-direction: row-reverse;\n  justify-content: center;\n  align-items: center;\n  display: flex;\n  background-color: rgba(var(--toolbar-bgcolor), 70%) !important;\n  min-width: 0 !important;\n  margin: 1px 5px !important;\n}\n\n#downloadsPanel-button toolbarbutton:hover {\n  background-color: var(--toolbarbutton-hover-background) !important;\n}\n\n#downloadsPanel-button toolbarbutton > .toolbarbutton-text {\n  padding-inline-start: 0 !important;\n}\n\n#downloadIcon > .toolbarbutton-icon {\n  display: none;\n}\n\n#downloadIcon {\n  border: 1px solid;\n  border-color: var(--toolbarbutton-icon-fill);\n}\n\n#closeIcon {\n  list-style-image: url("chrome://global/skin/icons/close.svg");\n}\n\n.downloadProgress {\n  height: 2px;\n}\n\n.downloadBlockedBadge {\n  margin-inline-start: 0 !important;\n  margin-inline-end: 0 !important;\n}\n\n.downloadMainArea {\n  padding-block-start: 0 !important;\n  padding-block-end: 0 !important;\n}\n';
+function DonwloadBar() {
+  return [(() => {
+    var _el$ = createElement("vbox"), _el$2 = createElement("linkset"), _el$3 = createElement("link"), _el$4 = createElement("xul:menupopup"), _el$5 = createElement("xul:menuitem"), _el$6 = createElement("xul:menuitem"), _el$7 = createElement("xul:menuitem"), _el$8 = createElement("xul:menuitem"), _el$9 = createElement("xul:menuitem"), _el$10 = createElement("xul:menuitem"), _el$11 = createElement("xul:menuitem"), _el$12 = createElement("xul:menuseparator"), _el$13 = createElement("xul:menuitem"), _el$14 = createElement("xul:menuitem"), _el$15 = createElement("xul:menuseparator"), _el$16 = createElement("xul:menuitem"), _el$17 = createElement("xul:menuitem"), _el$18 = createElement("xul:menuitem"), _el$19 = createElement("xul:menuitem"), _el$20 = createElement("vbox"), _el$21 = createElement("hbox"), _el$22 = createElement("vbox"), _el$23 = createElement("div"), _el$24 = createElement("xul:richlistbox"), _el$25 = createElement("description"), _el$26 = createElement("div"), _el$27 = createElement("xul:toolbarbutton"), _el$28 = createElement("xul:toolbarbutton"), _el$29 = createElement("vbox"), _el$30 = createElement("stack"), _el$31 = createElement("hbox"), _el$32 = createElement("image"), _el$33 = createElement("vbox"), _el$34 = createElement("description"), _el$35 = createElement("progress"), _el$36 = createElement("description"), _el$37 = createElement("vbox"), _el$38 = createElement("toolbarseparator"), _el$39 = createElement("button");
+    insertNode(_el$, _el$2);
+    insertNode(_el$, _el$4);
+    insertNode(_el$, _el$20);
+    setProp(_el$, "id", "downloadsPanel");
+    setProp(_el$, "data-l10n-id", "downloads-panel");
+    setProp(_el$, "class", "cui-widget-panel panel-no-padding");
+    setProp(_el$, "role", "group");
+    setProp(_el$, "type", "arrow");
+    setProp(_el$, "orient", "horizontal");
+    insertNode(_el$2, _el$3);
+    setProp(_el$3, "rel", "localization");
+    setProp(_el$3, "href", "browser/downloads.ftl");
+    insertNode(_el$4, _el$5);
+    insertNode(_el$4, _el$6);
+    insertNode(_el$4, _el$7);
+    insertNode(_el$4, _el$8);
+    insertNode(_el$4, _el$9);
+    insertNode(_el$4, _el$10);
+    insertNode(_el$4, _el$11);
+    insertNode(_el$4, _el$12);
+    insertNode(_el$4, _el$13);
+    insertNode(_el$4, _el$14);
+    insertNode(_el$4, _el$15);
+    insertNode(_el$4, _el$16);
+    insertNode(_el$4, _el$17);
+    insertNode(_el$4, _el$18);
+    insertNode(_el$4, _el$19);
+    setProp(_el$4, "id", "downloadsContextMenu");
+    setProp(_el$4, "class", "download-state");
+    setProp(_el$5, "command", "downloadsCmd_pauseResume");
+    setProp(_el$5, "class", "downloadPauseMenuItem");
+    setProp(_el$5, "data-l10n-id", "downloads-cmd-pause");
+    setProp(_el$6, "command", "downloadsCmd_pauseResume");
+    setProp(_el$6, "class", "downloadResumeMenuItem");
+    setProp(_el$6, "data-l10n-id", "downloads-cmd-resume");
+    setProp(_el$7, "command", "downloadsCmd_unblock");
+    setProp(_el$7, "class", "downloadUnblockMenuItem");
+    setProp(_el$7, "data-l10n-id", "downloads-cmd-unblock");
+    setProp(_el$8, "command", "downloadsCmd_openInSystemViewer");
+    setProp(_el$8, "class", "downloadUseSystemDefaultMenuItem");
+    setProp(_el$8, "data-l10n-id", "downloads-cmd-use-system-default");
+    setProp(_el$9, "command", "downloadsCmd_alwaysOpenInSystemViewer");
+    setProp(_el$9, "type", "checkbox");
+    setProp(_el$9, "class", "downloadAlwaysUseSystemDefaultMenuItem");
+    setProp(_el$9, "data-l10n-id", "downloads-cmd-always-use-system-default");
+    setProp(_el$10, "command", "downloadsCmd_alwaysOpenSimilarFiles");
+    setProp(_el$10, "type", "checkbox");
+    setProp(_el$10, "class", "downloadAlwaysOpenSimilarFilesMenuItem");
+    setProp(_el$10, "data-l10n-id", "downloads-cmd-always-open-similar-files");
+    setProp(_el$11, "command", "downloadsCmd_show");
+    setProp(_el$11, "class", "downloadShowMenuItem");
+    setProp(_el$11, "data-l10n-id", "downloads-cmd-show-menuitem-2");
+    setProp(_el$12, "class", "downloadCommandsSeparator");
+    setProp(_el$13, "command", "downloadsCmd_openReferrer");
+    setProp(_el$13, "class", "downloadOpenReferrerMenuItem");
+    setProp(_el$13, "data-l10n-id", "downloads-cmd-go-to-download-page");
+    setProp(_el$14, "command", "downloadsCmd_copyLocation");
+    setProp(_el$14, "class", "downloadCopyLocationMenuItem");
+    setProp(_el$14, "data-l10n-id", "downloads-cmd-copy-download-link");
+    setProp(_el$16, "command", "downloadsCmd_deleteFile");
+    setProp(_el$16, "class", "downloadDeleteFileMenuItem");
+    setProp(_el$16, "data-l10n-id", "downloads-cmd-delete-file");
+    setProp(_el$17, "command", "cmd_delete");
+    setProp(_el$17, "class", "downloadRemoveFromHistoryMenuItem");
+    setProp(_el$17, "data-l10n-id", "downloads-cmd-remove-from-history");
+    setProp(_el$18, "command", "downloadsCmd_clearList");
+    setProp(_el$18, "data-l10n-id", "downloads-cmd-clear-list");
+    setProp(_el$19, "command", "downloadsCmd_clearDownloads");
+    setProp(_el$19, "hidden", "true");
+    setProp(_el$19, "data-l10n-id", "downloads-cmd-clear-downloads");
+    insertNode(_el$20, _el$21);
+    setProp(_el$20, "id", "downloadsPanel-multiView");
+    setProp(_el$20, "mainViewId", "downloadsPanel-mainView");
+    setProp(_el$20, "disablekeynav", "true");
+    insertNode(_el$21, _el$22);
+    insertNode(_el$21, _el$29);
+    setProp(_el$21, "id", "downloadsPanel-mainView");
+    insertNode(_el$22, _el$23);
+    setProp(_el$22, "class", "panel-view-body-unscrollable");
+    insertNode(_el$23, _el$24);
+    insertNode(_el$23, _el$25);
+    insertNode(_el$23, _el$26);
+    setProp(_el$23, "id", "downloadsPanel-list");
+    setProp(_el$24, "id", "downloadsListBox");
+    setProp(_el$24, "data-l10n-id", "downloads-panel-items");
+    setProp(_el$24, "data-l10n-attrs", "style");
+    setProp(_el$24, "context", "downloadsContextMenu");
+    setProp(_el$24, "onmouseover", "DownloadsView.onDownloadMouseOver(event);");
+    setProp(_el$24, "onmouseout", "DownloadsView.onDownloadMouseOut(event);");
+    setProp(_el$24, "oncontextmenu", "DownloadsView.onDownloadContextMenu(event);");
+    setProp(_el$24, "ondragstart", "DownloadsView.onDownloadDragStart(event);");
+    setProp(_el$25, "id", "emptyDownloads");
+    setProp(_el$25, "data-l10n-id", "downloads-panel-empty");
+    insertNode(_el$26, _el$27);
+    insertNode(_el$26, _el$28);
+    setProp(_el$26, "id", "downloadsPanel-button");
+    setProp(_el$27, "oncommand", "DownloadsPanel.showDownloadsHistory();");
+    setProp(_el$27, "class", "toolbarbutton-1 subviewbutton");
+    setProp(_el$27, "data-l10n-id", "downloads-history");
+    setProp(_el$27, "id", "downloadIcon");
+    setProp(_el$28, "command", "downloadsCmd_clearList");
+    setProp(_el$28, "class", "toolbarbutton-1 subviewbutton");
+    setProp(_el$28, "id", "closeIcon");
+    insertNode(_el$29, _el$30);
+    setProp(_el$29, "id", "downloadsFooter");
+    insertNode(_el$30, _el$31);
+    insertNode(_el$30, _el$37);
+    insertNode(_el$31, _el$32);
+    insertNode(_el$31, _el$33);
+    setProp(_el$31, "id", "downloadsSummary");
+    setProp(_el$31, "align", "center");
+    setProp(_el$31, "orient", "horizontal");
+    setProp(_el$31, "onkeydown", "DownloadsSummary.onKeyDown(event);");
+    setProp(_el$31, "onclick", "DownloadsSummary.onClick(event);");
+    setProp(_el$32, "class", "downloadTypeIcon");
+    insertNode(_el$33, _el$34);
+    insertNode(_el$33, _el$35);
+    insertNode(_el$33, _el$36);
+    setProp(_el$33, "pack", "center");
+    setProp(_el$33, "flex", "1");
+    setProp(_el$33, "class", "downloadContainer");
+    setProp(_el$34, "id", "downloadsSummaryDescription");
+    setProp(_el$35, "id", "downloadsSummaryProgress");
+    setProp(_el$35, "class", "downloadProgress");
+    setProp(_el$35, "max", "100");
+    setProp(_el$36, "id", "downloadsSummaryDetails");
+    setProp(_el$36, "crop", "end");
+    insertNode(_el$37, _el$38);
+    insertNode(_el$37, _el$39);
+    setProp(_el$37, "id", "downloadsFooterButtons");
+    setProp(_el$39, "id", "downloadsHistory");
+    setProp(_el$39, "data-l10n-id", "downloads-history");
+    setProp(_el$39, "class", "downloadsPanelFooterButton subviewbutton panel-subview-footer-button toolbarbutton-1");
+    setProp(_el$39, "flex", "1");
+    setProp(_el$39, "oncommand", "DownloadsPanel.showDownloadsHistory();");
+    setProp(_el$39, "pack", "start");
+    return _el$;
+  })(), (() => {
+    var _el$40 = createElement("style");
+    setProp(_el$40, "class", "nora-statusbar");
+    setProp(_el$40, "jsx", true);
+    insert(_el$40, downloadbarStyle);
+    return _el$40;
+  })()];
+}
+const [showDownloadbar, setShowDownloadbar] = createSignal(Services.prefs.getBoolPref("floorp.browser.native.downloadbar.enabled", false));
+class DownloadBarManager {
+  constructor() {
+    var _a;
+    createEffect(() => {
+      Services.prefs.setBoolPref("floorp.browser.native.downloadbar.enabled", showDownloadbar());
+    });
+    (_a = document.querySelector("#appcontent")) == null ? void 0 : _a.appendChild(document.getElementById("downloadsPanel"));
+    this.observeDownloadbar();
+  }
+  //if we use just method, `this` will be broken
+  observeDownloadbar() {
+    Services.prefs.addObserver("floorp.browser.native.downloadbar.enabled", () => setShowDownloadbar(() => Services.prefs.getBoolPref("floorp.browser.native.downloadbar.enabled")));
+  }
+}
+function initDownloadbar() {
+  var _a;
+  new DownloadBarManager();
+  console.log(showDownloadbar());
+  if (!showDownloadbar()) {
+    return;
+  }
+  (_a = document.getElementById("downloadsPanel")) == null ? void 0 : _a.remove();
+  render(
+    DonwloadBar,
+    document.getElementById("appcontent")
+  );
+  console.log("init download bar");
+  window.DownloadsPanel.hidePanel = () => {
+    return;
+  };
+  delete window.DownloadsView.contextMenu;
+  delete window.DownloadsPanel.panel;
+  delete window.DownloadsPanel.richListBox;
+  window.DownloadsPanel.panel = document.getElementById("downloadsPanel");
+  window.DownloadsPanel.richListBox = document.getElementById("downloadsListBox");
+  window.DownloadsView.contextMenu = document.getElementById("downloadsContextMenu");
+  window.DownloadsPanel._initialized = false;
+  window.DownloadsPanel.initialize();
+  window.DownloadsView.onDownloadAdded_hook = window.DownloadsView.onDownloadAdded;
+  window.DownloadsView.onDownloadAdded = (download) => {
+    document.getElementById("downloadsListBox").scrollLeft = 0;
+    DownloadsView.onDownloadAdded_hook(download);
+  };
+  const scrollElem = document.getElementById("downloadsListBox");
+  scrollElem == null ? void 0 : scrollElem.addEventListener("wheel", (e) => {
+    if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) {
+      return;
+    }
+    e.preventDefault();
+    scrollElem.scrollLeft += e.deltaY * 10;
+  });
 }
 const { ContextualIdentityService } = ChromeUtils.importESModule(
   "resource://gre/modules/ContextualIdentityService.sys.mjs"
@@ -443,7 +555,7 @@ const _gFloorpPrivateContainer = class _gFloorpPrivateContainer {
 };
 __publicField(_gFloorpPrivateContainer, "instance");
 let gFloorpPrivateContainer = _gFloorpPrivateContainer;
-function ContextMenu() {
+function ContextMenu$1() {
   return (() => {
     var _el$ = createElement("xul:menuitem");
     setProp(_el$, "id", "context_toggleToPrivateContainer");
@@ -456,36 +568,9 @@ function ContextMenu() {
   })();
 }
 function initPrivateContainer() {
-  insert(document.querySelector("#tabContextMenu"), () => createComponent(ContextMenu, {}), document.querySelector("#context_selectAllTabs"));
+  insert(document.querySelector("#tabContextMenu"), () => createComponent(ContextMenu$1, {}), document.querySelector("#context_selectAllTabs"));
   window.gFloorpPrivateContainer = gFloorpPrivateContainer.getInstance();
   console.log(window.gFloorpPrivateContainer);
-}
-const shareModeStyle = '#PersonalToolbar, #alltabs-button, #sidebar-box, #sidebar-select-box, #sidebar-splitter2, #sidebar-select-box, #downloads-button, #unified-extensions-button, #appMenu-fxa-status2, #PanelUI-fxa, #workspace-button > .toolbarbutton-text, .unified-extensions-item, .tab-content:not([selected="true"]), .tab-background:not([selected="true"]) {\n  display: none !important;\n}\n\n.urlbar-addon-page-action {\n  display: none;\n}\n\n.urlbar-addon-page-action[actionid="floorp-system_floorp_ablaze_one"] {\n  display: block;\n}\n\n.urlbar-addon-page-action[actionid="_036a55b4-5e72-4d05-a06c-cba2dfcc134a_"] {\n  display: block;\n}\n\n#fxa-toolbar-menu-button {\n  border: 2px solid green;\n  border-radius: 15px;\n  max-height: 25px;\n  color: #90ee90 !important;\n  fill: currentColor !important;\n  margin: auto !important;\n  padding: 0 0 0 10px !important;\n}\n\n#fxa-toolbar-menu-button:before {\n  content: "Share Mode";\n  margin: auto;\n  font-size: 12px;\n  font-weight: bold;\n  display: -moz-box;\n}\n\n#fxa-toolbar-menu-button:-webkit-any([open], [checked]) {\n  background: none !important;\n  background-color: unset !important;\n}\n\n#fxa-toolbar-menu-button:-moz-any([open], [checked]) {\n  background: none !important;\n  background-color: unset !important;\n}\n\n#fxa-toolbar-menu-button:is([open], [checked]) {\n  background: none !important;\n  background-color: unset !important;\n}\n\n#fxa-toolbar-menu-button:hover > .toolbarbutton-badge-stack {\n  background: none !important;\n  background-color: unset !important;\n}\n\n#fxa-toolbar-menu-button:not([disabled="true"]):-webkit-any([open], [checked], :hover:active) > .toolbarbutton-badge-stack {\n  background: none !important;\n  background-color: unset !important;\n}\n\n#fxa-toolbar-menu-button:not([disabled="true"]):-moz-any([open], [checked], :hover:active) > .toolbarbutton-badge-stack {\n  background: none !important;\n  background-color: unset !important;\n}\n\n#fxa-toolbar-menu-button:not([disabled="true"]):is([open], [checked], :hover:active) > .toolbarbutton-badge-stack {\n  background: none !important;\n  background-color: unset !important;\n}\n\n#fxa-avatar-image {\n  scale: 1.2;\n  list-style-image: url("chrome://branding/content/about-logo-private.png") !important;\n}\n';
-const [shareModeEnabled, setShareModeEnabled] = createSignal(false);
-function ShareModeElement() {
-  return [(() => {
-    var _el$ = createElement("xul:menuitem");
-    setProp(_el$, "data-l10n-id", "sharemode-menuitem");
-    setProp(_el$, "label", "Toggle Share Mode");
-    setProp(_el$, "type", "checkbox");
-    setProp(_el$, "id", "toggle_sharemode");
-    setProp(_el$, "checked", false);
-    setProp(_el$, "onCommand", () => setShareModeEnabled((prev) => !prev));
-    setProp(_el$, "accesskey", "S");
-    return _el$;
-  })(), createComponent(Show, {
-    get when() {
-      return shareModeEnabled();
-    },
-    get children() {
-      var _el$2 = createElement("style");
-      insert(_el$2, shareModeStyle);
-      return _el$2;
-    }
-  })];
-}
-function initShareMode() {
-  insert(document.querySelector("#menu_ToolsPopup"), () => createComponent(ShareModeElement, {}), document.querySelector("#menu_openFirefoxView"));
 }
 const {
   CustomizableUI: CustomizableUI$3
@@ -548,69 +633,6 @@ const gFloorpBrowserAction = {
     })();
   }
 };
-const iconStyle$1 = '#sidebar-reverse-position-toolbar {\n  list-style-image: url("chrome://browser/skin/preferences/category-sync.svg");\n}\n';
-const {
-  CustomizableUI: CustomizableUI$2
-} = ChromeUtils.importESModule("resource:///modules/CustomizableUI.sys.mjs");
-const _gReverseSidebarPosition = class _gReverseSidebarPosition {
-  constructor() {
-    __publicField(this, "StyleElement", () => {
-      return (() => {
-        var _el$ = createElement("style");
-        insert(_el$, iconStyle$1);
-        return _el$;
-      })();
-    });
-    gFloorpBrowserAction.createToolbarClickActionButton("sidebar-reverse-position-toolbar", "sidebar-reverse-position-toolbar", () => {
-      window.SidebarController.reversePosition();
-    }, this.StyleElement(), CustomizableUI$2.AREA_NAVBAR, 2, () => {
-      const onFirstLaunch = ChromeUtils.importESModule("resource://floorp/FloorpStartup.sys.mjs").isFirstRun;
-      if (onFirstLaunch) {
-        CustomizableUI$2.addWidgetToArea("sidebar-button", CustomizableUI$2.AREA_NAVBAR, 3);
-      }
-    });
-  }
-  static getInstance() {
-    if (!_gReverseSidebarPosition.instance) {
-      _gReverseSidebarPosition.instance = new _gReverseSidebarPosition();
-    }
-    return _gReverseSidebarPosition.instance;
-  }
-};
-__publicField(_gReverseSidebarPosition, "instance");
-let gReverseSidebarPosition = _gReverseSidebarPosition;
-function initReverseSidebarPosition() {
-  gReverseSidebarPosition.getInstance();
-}
-const iconStyle = '#undo-closed-tab {\n  list-style-image: url("chrome://global/skin/icons/undo.svg");\n}\n';
-const {
-  CustomizableUI: CustomizableUI$1
-} = ChromeUtils.importESModule("resource:///modules/CustomizableUI.sys.mjs");
-const _gFloorpUndoClosedTab = class _gFloorpUndoClosedTab {
-  constructor() {
-    __publicField(this, "StyleElement", () => {
-      return (() => {
-        var _el$ = createElement("style");
-        insert(_el$, iconStyle);
-        return _el$;
-      })();
-    });
-    gFloorpBrowserAction.createToolbarClickActionButton("undo-closed-tab", "undo-closed-tab", () => {
-      window.undoCloseTab();
-    }, this.StyleElement(), CustomizableUI$1.AREA_NAVBAR, 0);
-  }
-  static getInstance() {
-    if (!_gFloorpUndoClosedTab.instance) {
-      _gFloorpUndoClosedTab.instance = new _gFloorpUndoClosedTab();
-    }
-    return _gFloorpUndoClosedTab.instance;
-  }
-};
-__publicField(_gFloorpUndoClosedTab, "instance");
-let gFloorpUndoClosedTab = _gFloorpUndoClosedTab;
-function initUndoClosedTab() {
-  gFloorpUndoClosedTab.getInstance();
-}
 function MenuPopup() {
   return (() => {
     var _el$ = createElement("xul:menupopup"), _el$2 = createElement("xul:browser");
@@ -628,7 +650,7 @@ function MenuPopup() {
 }
 const profileManagerStyle = '#profile-switcher-browser {\n  min-width: 25em !important;\n  min-height: 41em !important;\n}\n\n#profile-manager {\n  list-style-image: url("chrome://browser/skin/fxa/avatar-color.svg");\n}\n';
 const {
-  CustomizableUI
+  CustomizableUI: CustomizableUI$2
 } = ChromeUtils.importESModule("resource:///modules/CustomizableUI.sys.mjs");
 const _gFloorpProfileManager = class _gFloorpProfileManager {
   constructor() {
@@ -642,7 +664,7 @@ const _gFloorpProfileManager = class _gFloorpProfileManager {
     gFloorpBrowserAction.createMenuToolbarButton("profile-manager", "floorp-profile-manager", createComponent(MenuPopup, {}), async () => {
       const popup = document.getElementById("profile-manager-popup");
       popup == null ? void 0 : popup.openPopup(document.getElementById("profile-manager-popup"), "after_start", 0, 0, false, false);
-    }, CustomizableUI.AREA_NAVBAR, this.StyleElement(), 15);
+    }, CustomizableUI$2.AREA_NAVBAR, this.StyleElement(), 15);
   }
   static getInstance() {
     if (!_gFloorpProfileManager.instance) {
@@ -656,12 +678,193 @@ let gFloorpProfileManager = _gFloorpProfileManager;
 function initProfileManager() {
   gFloorpProfileManager.getInstance();
 }
+const iconStyle$1 = '#sidebar-reverse-position-toolbar {\n  list-style-image: url("chrome://browser/skin/preferences/category-sync.svg");\n}\n';
+const {
+  CustomizableUI: CustomizableUI$1
+} = ChromeUtils.importESModule("resource:///modules/CustomizableUI.sys.mjs");
+const _gReverseSidebarPosition = class _gReverseSidebarPosition {
+  constructor() {
+    __publicField(this, "StyleElement", () => {
+      return (() => {
+        var _el$ = createElement("style");
+        insert(_el$, iconStyle$1);
+        return _el$;
+      })();
+    });
+    gFloorpBrowserAction.createToolbarClickActionButton("sidebar-reverse-position-toolbar", "sidebar-reverse-position-toolbar", () => {
+      window.SidebarController.reversePosition();
+    }, this.StyleElement(), CustomizableUI$1.AREA_NAVBAR, 2, () => {
+      const onFirstLaunch = ChromeUtils.importESModule("resource://floorp/FloorpStartup.sys.mjs").isFirstRun;
+      if (onFirstLaunch) {
+        CustomizableUI$1.addWidgetToArea("sidebar-button", CustomizableUI$1.AREA_NAVBAR, 3);
+      }
+    });
+  }
+  static getInstance() {
+    if (!_gReverseSidebarPosition.instance) {
+      _gReverseSidebarPosition.instance = new _gReverseSidebarPosition();
+    }
+    return _gReverseSidebarPosition.instance;
+  }
+};
+__publicField(_gReverseSidebarPosition, "instance");
+let gReverseSidebarPosition = _gReverseSidebarPosition;
+function initReverseSidebarPosition() {
+  gReverseSidebarPosition.getInstance();
+}
+const shareModeStyle = '#PersonalToolbar, #alltabs-button, #sidebar-box, #sidebar-select-box, #sidebar-splitter2, #sidebar-select-box, #downloads-button, #unified-extensions-button, #appMenu-fxa-status2, #PanelUI-fxa, #workspace-button > .toolbarbutton-text, .unified-extensions-item, .tab-content:not([selected="true"]), .tab-background:not([selected="true"]) {\n  display: none !important;\n}\n\n.urlbar-addon-page-action {\n  display: none;\n}\n\n.urlbar-addon-page-action[actionid="floorp-system_floorp_ablaze_one"] {\n  display: block;\n}\n\n.urlbar-addon-page-action[actionid="_036a55b4-5e72-4d05-a06c-cba2dfcc134a_"] {\n  display: block;\n}\n\n#fxa-toolbar-menu-button {\n  border: 2px solid green;\n  border-radius: 15px;\n  max-height: 25px;\n  color: #90ee90 !important;\n  fill: currentColor !important;\n  margin: auto !important;\n  padding: 0 0 0 10px !important;\n}\n\n#fxa-toolbar-menu-button:before {\n  content: "Share Mode";\n  margin: auto;\n  font-size: 12px;\n  font-weight: bold;\n  display: -moz-box;\n}\n\n#fxa-toolbar-menu-button:-webkit-any([open], [checked]) {\n  background: none !important;\n  background-color: unset !important;\n}\n\n#fxa-toolbar-menu-button:-moz-any([open], [checked]) {\n  background: none !important;\n  background-color: unset !important;\n}\n\n#fxa-toolbar-menu-button:is([open], [checked]) {\n  background: none !important;\n  background-color: unset !important;\n}\n\n#fxa-toolbar-menu-button:hover > .toolbarbutton-badge-stack {\n  background: none !important;\n  background-color: unset !important;\n}\n\n#fxa-toolbar-menu-button:not([disabled="true"]):-webkit-any([open], [checked], :hover:active) > .toolbarbutton-badge-stack {\n  background: none !important;\n  background-color: unset !important;\n}\n\n#fxa-toolbar-menu-button:not([disabled="true"]):-moz-any([open], [checked], :hover:active) > .toolbarbutton-badge-stack {\n  background: none !important;\n  background-color: unset !important;\n}\n\n#fxa-toolbar-menu-button:not([disabled="true"]):is([open], [checked], :hover:active) > .toolbarbutton-badge-stack {\n  background: none !important;\n  background-color: unset !important;\n}\n\n#fxa-avatar-image {\n  scale: 1.2;\n  list-style-image: url("chrome://branding/content/about-logo-private.png") !important;\n}\n';
+const [shareModeEnabled, setShareModeEnabled] = createSignal(false);
+function ShareModeElement() {
+  return [(() => {
+    var _el$ = createElement("xul:menuitem");
+    setProp(_el$, "data-l10n-id", "sharemode-menuitem");
+    setProp(_el$, "label", "Toggle Share Mode");
+    setProp(_el$, "type", "checkbox");
+    setProp(_el$, "id", "toggle_sharemode");
+    setProp(_el$, "checked", false);
+    setProp(_el$, "onCommand", () => setShareModeEnabled((prev) => !prev));
+    setProp(_el$, "accesskey", "S");
+    return _el$;
+  })(), createComponent(Show, {
+    get when() {
+      return shareModeEnabled();
+    },
+    get children() {
+      var _el$2 = createElement("style");
+      insert(_el$2, shareModeStyle);
+      return _el$2;
+    }
+  })];
+}
+function initShareMode() {
+  insert(document.querySelector("#menu_ToolsPopup"), () => createComponent(ShareModeElement, {}), document.querySelector("#menu_openFirefoxView"));
+}
+const [showStatusbar, setShowStatusbar] = createSignal(Services.prefs.getBoolPref("browser.display.statusbar", false));
+const _gFloorpStatusBar = class _gFloorpStatusBar {
+  static getInstance() {
+    if (!_gFloorpStatusBar.instance) {
+      _gFloorpStatusBar.instance = new _gFloorpStatusBar();
+    }
+    return _gFloorpStatusBar.instance;
+  }
+  get statusbarEnabled() {
+    return Services.prefs.getBoolPref("browser.display.statusbar", false);
+  }
+  constructor() {
+    var _a;
+    window.CustomizableUI.registerArea("statusBar", {
+      type: window.CustomizableUI.TYPE_TOOLBAR,
+      defaultPlacements: ["screenshot-button", "fullscreen-button"]
+    });
+    window.CustomizableUI.registerToolbarNode(document.getElementById("statusBar"));
+    createEffect(() => {
+      const statuspanel_label = document.getElementById("statuspanel-label");
+      const statuspanel = document.getElementById("statuspanel");
+      const statusText = document.getElementById("status-text");
+      const observer = new MutationObserver(() => {
+        if (statuspanel.getAttribute("inactive") === "true" && statusText) {
+          statusText.setAttribute("hidden", "true");
+        } else {
+          statusText == null ? void 0 : statusText.removeAttribute("hidden");
+        }
+      });
+      Services.prefs.setBoolPref("browser.display.statusbar", showStatusbar());
+      if (showStatusbar()) {
+        statusText == null ? void 0 : statusText.appendChild(statuspanel_label);
+        observer.observe(statuspanel, {
+          attributes: true
+        });
+      } else {
+        statuspanel == null ? void 0 : statuspanel.appendChild(statuspanel_label);
+        observer == null ? void 0 : observer.disconnect();
+      }
+    });
+    (_a = document.body) == null ? void 0 : _a.appendChild(document.getElementById("statusBar"));
+    this.observeStatusbar();
+  }
+  observeStatusbar() {
+    Services.prefs.addObserver("browser.display.statusbar", () => setShowStatusbar(() => this.statusbarEnabled));
+  }
+};
+__publicField(_gFloorpStatusBar, "instance");
+let gFloorpStatusBar = _gFloorpStatusBar;
+function ContextMenu() {
+  return (() => {
+    var _el$ = createElement("xul:menuitem");
+    setProp(_el$, "data-l10n-id", "status-bar");
+    setProp(_el$, "label", "Status Bar");
+    setProp(_el$, "type", "checkbox");
+    setProp(_el$, "id", "toggle_statusBar");
+    setProp(_el$, "onCommand", () => setShowStatusbar((value) => !value));
+    effect((_$p) => setProp(_el$, "checked", showStatusbar(), _$p));
+    return _el$;
+  })();
+}
+const statusbarStyle = '#statusBar {\n  border-top: 1px solid var(--chrome-content-separator-color);\n  visibility: visible !important;\n}\n\n:root[inFullscreen]:not([macOSNativeFullscreen]) #statusBar:not([fullscreentoolbar="true"]) {\n  visibility: collapse !important;\n}\n\n:root[customizing] #statusBar {\n  display: inherit !important;\n}\n\n#statusBar.collapsed {\n  display: none;\n}\n\n#statusBar #statuspanel-label {\n  box-shadow: none !important;\n  background: none !important;\n  border: none !important;\n}\n\n#statusBar #status-text {\n  overflow: hidden !important;\n}\n';
+function StatusBar() {
+  return [(() => {
+    var _el$ = createElement("xul:toolbar"), _el$2 = createElement("xul:hbox");
+    insertNode(_el$, _el$2);
+    setProp(_el$, "id", "statusBar");
+    setProp(_el$, "toolbarname", "Status bar");
+    setProp(_el$, "customizable", "true");
+    setProp(_el$, "mode", "icons");
+    setProp(_el$, "context", "toolbar-context-menu");
+    setProp(_el$, "accesskey", "A");
+    setProp(_el$2, "id", "status-text");
+    setProp(_el$2, "align", "center");
+    setProp(_el$2, "flex", "1");
+    setProp(_el$2, "class", "statusbar-padding");
+    effect((_$p) => setProp(_el$, "class", `browser-toolbar customization-target ${showStatusbar() ? "" : "collapsed"}`, _$p));
+    return _el$;
+  })(), (() => {
+    var _el$3 = createElement("style");
+    setProp(_el$3, "jsx", true);
+    insert(_el$3, statusbarStyle);
+    return _el$3;
+  })()];
+}
+function initStatusbar() {
+  render(() => createComponent(StatusBar, {}), document.getElementById("navigator-toolbox"));
+  insert(document.getElementById("toolbar-context-menu"), () => createComponent(ContextMenu, {}), document.getElementById("viewToolbarsMenuSeparator"));
+  gFloorpStatusBar.getInstance();
+}
+const iconStyle = '#undo-closed-tab {\n  list-style-image: url("chrome://global/skin/icons/undo.svg");\n}\n';
+const {
+  CustomizableUI
+} = ChromeUtils.importESModule("resource:///modules/CustomizableUI.sys.mjs");
+const _gFloorpUndoClosedTab = class _gFloorpUndoClosedTab {
+  constructor() {
+    __publicField(this, "StyleElement", () => {
+      return (() => {
+        var _el$ = createElement("style");
+        insert(_el$, iconStyle);
+        return _el$;
+      })();
+    });
+    gFloorpBrowserAction.createToolbarClickActionButton("undo-closed-tab", "undo-closed-tab", () => {
+      window.undoCloseTab();
+    }, this.StyleElement(), CustomizableUI.AREA_NAVBAR, 0);
+  }
+  static getInstance() {
+    if (!_gFloorpUndoClosedTab.instance) {
+      _gFloorpUndoClosedTab.instance = new _gFloorpUndoClosedTab();
+    }
+    return _gFloorpUndoClosedTab.instance;
+  }
+};
+__publicField(_gFloorpUndoClosedTab, "instance");
+let gFloorpUndoClosedTab = _gFloorpUndoClosedTab;
+function initUndoClosedTab() {
+  gFloorpUndoClosedTab.getInstance();
+}
 CustomShortcutKey.getInstance();
 window.SessionStore.promiseInitialized.then(() => {
   initBrowserContextMenu();
   initPrivateContainer();
   initShareMode();
   initStatusbar();
+  initDownloadbar();
   initReverseSidebarPosition();
   initUndoClosedTab();
   initProfileManager();

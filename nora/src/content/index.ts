@@ -3,14 +3,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { CustomShortcutKey } from "../components/custom-shortcut-key";
-import { initStatusbar } from "./statusbar";
 import { initBrowserContextMenu } from "./context-menu";
+import { initDownloadbar } from "./downloadbar";
 import { initPrivateContainer } from "./private-container";
-import { initShareMode } from "./share-mode";
-import { initReverseSidebarPosition } from "./reverse-sidebar-position";
-import { initUndoClosedTab } from "./undo-closed-tab";
 import { initProfileManager } from "./profile-manager";
-
+import { initReverseSidebarPosition } from "./reverse-sidebar-position";
+import { initShareMode } from "./share-mode";
+import { initStatusbar } from "./statusbar";
+import { initUndoClosedTab } from "./undo-closed-tab";
 CustomShortcutKey.getInstance();
 
 window.SessionStore.promiseInitialized.then(() => {
@@ -18,6 +18,7 @@ window.SessionStore.promiseInitialized.then(() => {
   initPrivateContainer();
   initShareMode();
   initStatusbar();
+  initDownloadbar();
   initReverseSidebarPosition();
   initUndoClosedTab();
   initProfileManager();

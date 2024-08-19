@@ -86,11 +86,6 @@ document.addEventListener(
 
     // If script need more delay, use the following code.
     window.SessionStore.promiseInitialized.then(() => {
-      import("chrome://floorp/content/browser-downloadbar.mjs").then(
-        ({ gFloorpLegacyStyleDownloadBar }) => {
-          window.gFloorpLegacyStyleDownloadBar = gFloorpLegacyStyleDownloadBar;
-        }
-      );
       import("chrome://floorp/content/browser-pinned-tabs-title.mjs").then(
         ({ gFloorpPinnedTabsTitle }) => {
           window.gFloorpPinnedTabsTitle = gFloorpPinnedTabsTitle;
