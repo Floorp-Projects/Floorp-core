@@ -528,3 +528,7 @@ BSB-header-links {
   max-width: 25em;
   overflow: hidden;
 }
+
+#workspace-warning {
+  margin-top: 10px;
+}
