@@ -133,12 +133,54 @@ export const BrowserManagerSidebarPanelWindowUtils = {
       return;
     }
 
-    const targetTab = targetPanelWindow.gBrowser.selectedTab;
-    const targetBrowser = targetTab.linkedBrowser;
-    targetBrowser.setAttribute("usercontextid", userContextId);
-    setTimeout(() => {
-      targetBrowser.reload();
-    }, 500);
+    let tab = targetPanelWindow.gBrowser.selectedTab;
+    if (tab.getAttribute("usercontextid") == userContextId) {
+      return;
+    }
+    let triggeringPrincipal;
+
+    if (tab.linkedPanel) {
+      triggeringPrincipal = tab.linkedBrowser.contentPrincipal;
+    } else {
+      let tabState = JSON.parse(
+        targetPanelWindow.SessionStore.getTabState(tab)
+      );
+      try {
+        triggeringPrincipal = targetPanelWindow.E10SUtils.deserializePrincipal(
+          tabState.triggeringPrincipal_base64
+        );
+      } catch (ex) {
+        console.error(
+          "Failed to deserialize triggeringPrincipal for lazy tab browser",
+          ex
+        );
+      }
+    }
+
+    if (!triggeringPrincipal || triggeringPrincipal.isNullPrincipal) {
+      triggeringPrincipal = Services.scriptSecurityManager.createNullPrincipal({
+        userContextId,
+      });
+    } else if (triggeringPrincipal.isContentPrincipal) {
+      triggeringPrincipal = Services.scriptSecurityManager.principalWithOA(
+        triggeringPrincipal,
+        {
+          userContextId,
+        }
+      );
+    }
+
+    let newTab = targetPanelWindow.gBrowser.addTab(
+      targetPanelWindow.bmsLoadedURI,
+      {
+        userContextId,
+        triggeringPrincipal,
+      }
+    );
+
+    if (targetPanelWindow.gBrowser.selectedTab == tab) {
+      targetPanelWindow.gBrowser.selectedTab = newTab;
+    }
   },
 
   saveZoomLevel(webpanelId, zoomLevel) {
