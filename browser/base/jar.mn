@@ -12,7 +12,6 @@ floorp.jar:
   content/browser-context-menu.mjs             (content/browser-context-menu.mjs)
   content/browser-custom-keyboard-shortcut.mjs (content/browser-custom-keyboard-shortcut.mjs)
   content/browser-design.mjs                   (content/browser-design.mjs)
-  content/browser-downloadbar.mjs              (content/browser-downloadbar.mjs)
   content/browser-favicon-color.mjs            (content/browser-favicon-color.mjs)
   content/browser-flex-order.mjs               (content/browser-flex-order.mjs)
   content/browser-floorp-pageActions.mjs       (content/browser-floorp-pageActions.mjs)
