@@ -103,3 +103,7 @@
 .downloadTarget {
   max-width: 170px !important;
 }
+
+#downloadsListBox .download-state[exists] .downloadDetails {
+  color: inherit !important;
+}
