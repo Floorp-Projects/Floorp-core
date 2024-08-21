@@ -99,3 +99,7 @@
 .downloadMainArea {
   padding-block: 0 !important;
 }
+
+.downloadTarget {
+  max-width: 170px !important;
+}
