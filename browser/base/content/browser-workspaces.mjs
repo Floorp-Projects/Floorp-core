@@ -344,24 +344,6 @@ export const gWorkspaces = {
   async getCurrentWindowId() {
     let windowId = window.workspacesWindowId;
 
-    if (windowId !== null) {
-      const windowIntegrityResult =
-        await WorkspacesWindowIdUtils.checkWindowIntegrity(
-          windowId,
-          window.gBrowser.tabs
-        );
-
-      if (!windowIntegrityResult) {
-        windowId = await WorkspacesWindowIdUtils.getWindowIdByInference(
-          window.gBrowser.tabs
-        );
-
-        if (windowId !== null) {
-          window.workspacesWindowId = windowId;
-        }
-      }
-    }
-
     if (windowId == null) {
       windowId = WorkspacesWindowUuidService.getGeneratedUuid();
       window.workspacesWindowId = windowId;
