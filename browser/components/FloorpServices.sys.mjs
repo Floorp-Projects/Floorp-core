@@ -5,13 +5,13 @@
 
 import { PrivateBrowsingUtils } from "resource://gre/modules/PrivateBrowsingUtils.sys.mjs";
 
-export var EXPORTED_SYMBOLS = ["FloorpServices"];
+export const EXPORTED_SYMBOLS = ["FloorpServices"];
 
-export var FloorpServices = {
+export const FloorpServices = {
   wm: {
     getMainWindowExcludeFloorpSpecialWindows(options = {}) {
-      let wins = Services.wm.getEnumerator("navigator:browser");
-      for (let win of wins) {
+      const wins = Services.wm.getEnumerator("navigator:browser");
+      for (const win of wins) {
         if (
           !this.IsFloorpSpecialWindow(win) &&
           !win.closed &&
@@ -22,7 +22,6 @@ export var FloorpServices = {
         ) {
           return win;
         }
-        continue;
       }
       return null;
     },
@@ -38,8 +37,7 @@ export var FloorpServices = {
   SessionStore: {
     filterFloorpSpecificWindowAndTabs(browserState) {
       for (let i = browserState.windows.length - 1; i >= 0; i--) {
-        let win = browserState.windows[i];
-
+        const win = browserState.windows[i];
         if (win.floorpShouldNotRestore) {
           browserState.windows.splice(i, 1);
 
