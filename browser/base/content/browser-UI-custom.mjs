@@ -175,7 +175,7 @@ gFloorpObservePreference("floorp.navbar.bottom", function (event) {
     SessionStore.promiseInitialized.then(() => {
       document
         .querySelector(".urlbarView")
-        .after(document.getElementById("urlbar-input-container"));
+        .after(document.querySelector(".urlbar-input-container"));
     });
   } else {
     document.getElementById("floorp-navvarcss")?.remove();
