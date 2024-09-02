@@ -275,14 +275,16 @@ export class SplitView {
     const mainPopup = document.getElementById("mainPopupSet");
     mainPopup?.addEventListener("popupshowing", () => {
       const elem = document.getElementById("context_splittabs");
+      const excludeSyncedDataList = this._data.filter(
+        group => group.syncMode !== true
+      );
+
       elem.disabled =
         window.gBrowser.selectedTab === window.TabContextMenu.contextTab ||
-        this._data.some(
-          group =>
-            !group.syncMode &&
-            group.tabs.includes(window.TabContextMenu.contextTab)
+        excludeSyncedDataList.some(group =>
+          group.tabs.includes(window.TabContextMenu.contextTab)
         ) ||
-        this._data.some(group =>
+        excludeSyncedDataList.some(group =>
           group.tabs.includes(window.gBrowser.selectedTab)
         );
 
@@ -375,8 +377,9 @@ export class SplitView {
     }
     const existingSplitTab = tabs.find(tab => tab.splitView);
     if (existingSplitTab) {
-      const groupIndex = this._data.findIndex(group =>
-        group.tabs.includes(existingSplitTab)
+      const groupIndex = this._data.findIndex(
+        group =>
+          group.tabs.includes(existingSplitTab) && group.syncMode !== true
       );
       if (groupIndex >= 0) {
         this.updateSplitView(existingSplitTab);
