@@ -403,6 +403,11 @@ export class SplitView {
     // If current view is sync's view, before update view, we should remove the sync view.
     const syncIndex = this._data.findIndex(group => group.syncMode === true);
     if (syncIndex >= 0) {
+      this._syncData.options = {
+        ...this._data[syncIndex],
+        reverse: reverse === null ? this._data[syncIndex].reverse : reverse,
+        method: method === null ? this._data[syncIndex].method : method,
+      };
       this.removeGroup(syncIndex);
     }
 
@@ -431,13 +436,6 @@ export class SplitView {
       newSplitData = {
         ...this._syncData.options,
         tabs: [this._syncData.syncTab, tab],
-        reverse,
-        method,
-      };
-      this._syncData.options = {
-        ...this._syncData.options,
-        reverse,
-        method,
       };
       // Push temporarily sync view data.
       this._data.push(newSplitData);
