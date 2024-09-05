@@ -186,7 +186,7 @@ gFloorpObservePreference("floorp.navbar.bottom", function (event) {
         .appendChild(document.getElementById("nav-bar"));
       document
         .querySelector(".urlbarView")
-        .after(document.querySelector(".urlbar-input-container"));
+        .before(document.querySelector(".urlbar-input-container"));
       if (
         !Services.prefs.getBoolPref("floorp.bookmarks.fakestatus.mode", false)
       ) {
