@@ -37,6 +37,13 @@ export class SplitView {
    */
   handleTabClose(event) {
     const tab = event.target;
+
+    if (this._syncData.syncTab === tab) {
+      this._syncData.syncTab = null;
+      this._syncData.sync = false;
+      this.hideSplitViewManager();
+    }
+
     const groupIndex = this._data.findIndex(group => group.tabs.includes(tab));
     if (groupIndex < 0) {
       return;
