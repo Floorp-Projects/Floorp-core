@@ -37,8 +37,6 @@ export const gFloorpCustomizeMode = {
       );
     }
 
-    console.log("addElemToCustomizeModeArea", targetId, type, retry);
-
     if (enabled) {
       // If enabled == false, this code is not needed. On XUL needless attribute sould be removed.
       elem.firstChild.setAttribute("checked", "true");
