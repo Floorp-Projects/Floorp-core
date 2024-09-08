@@ -89,8 +89,6 @@ pref("floorp.browser.tabbar.multirow.max.enabled", true);
 pref("floorp.browser.tabbar.multirow.newtab-inside.enabled", false);
 pref("floorp.browser.tabbar.multirow.max.row", 3);
 
-// 1つ目はタイトル、2つ目は内容
-
 // Floorp Notes
 pref("floorp.browser.note.memos", "");
 pref("floorp.browser.note.memos.using", -1);
@@ -108,6 +106,9 @@ pref("floorp.browser.tabs.verticaltab.right", false);
 pref("floorp.browser.tabs.verticaltab.temporary.disabled", false);
 pref("floorp.browser.tabs.verticaltab.width", 200);
 pref("floorp.verticaltab.paddingtop.enabled", false);
+
+// レガシーコンポーネント
+pref("toolkit.legacyUserProfileCustomizations.script", false);
 
 // Chrome 形式のダウンローダー
 pref("floorp.browser.native.downloadbar.enabled", false);

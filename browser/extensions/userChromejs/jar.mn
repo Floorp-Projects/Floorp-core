@@ -6,8 +6,8 @@ browser.jar:
 % content userchromejs %content/userchromejs/ contentaccessible=yes
 
 # Loader
-   content/userchromejs/BootstrapLoader.jsm         (loader/BootstrapLoader.jsm)
-   content/userchromejs/RDFDataSource.jsm           (loader/RDFDataSource.jsm)
-   content/userchromejs/RDFManifestConverter.jsm    (loader/RDFManifestConverter.jsm)
-   content/userchromejs/userChrome.jsm              (loader/userChrome.jsm)
-   content/userchromejs/xPref.jsm                   (loader/xPref.jsm)
+   content/userchromejs/BootstrapLoader.js             (loader/BootstrapLoader.js)
+   content/userchromejs/RDFDataSource.sys.mjs          (loader/RDFDataSource.sys.mjs)
+   content/userchromejs/RDFManifestConverter.sys.mjs   (loader/RDFManifestConverter.sys.mjs)
+   content/userchromejs/userChrome.jsm                 (loader/userChrome.jsm)
+   content/userchromejs/xPref.jsm                      (loader/xPref.jsm)
