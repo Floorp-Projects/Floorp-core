@@ -8,8 +8,10 @@ import {
   cskDatumToString,
   currentFocus,
   editingStatus,
+  focusElement,
   setCurrentFocus,
   setEditingStatus,
+  setFocusElement,
 } from "./setkey";
 import {
   commands,
@@ -22,10 +24,28 @@ export const CustomShortcutKeyPage = () => {
       <div>
         <h1 data-l10n-id="floorp-CSK-title" />
         <xul:description
-          class="indent tip-caption"
+          class="indent tip-caption needreboot"
           data-l10n-id="floorp-CSK-description"
         />
-        <xul:checkbox data-l10n-id="disable-fx-actions" />
+        <xul:checkbox data-l10n-id="disable-fx-actions" checked={Services.prefs.getBoolPref("floorp.custom.shortcutkeysAndActions.remove.fx.actions", false)} onClick={(ev) => {
+          Services.prefs.setBoolPref("floorp.custom.shortcutkeysAndActions.remove.fx.actions", ev.currentTarget.checked);
+          if (!Services.prefs.getBoolPref("floorp.enable.auto.restart", false)) {
+            (async () => {
+              let userConfirm = await confirmRestartPrompt(null);
+              if (userConfirm == CONFIRM_RESTART_PROMPT_RESTART_NOW) {
+                Services.startup.quit(
+                  Ci.nsIAppStartup.eAttemptQuit | Ci.nsIAppStartup.eRestart
+                );
+              }
+            })();
+          } else {
+            window.setTimeout(function () {
+              Services.startup.quit(
+                Services.startup.eAttemptQuit | Services.startup.eRestart
+              );
+            }, 500);
+          }
+        }} />
       </div>
       <For each={csk_category}>
         {(category) => (
@@ -49,33 +69,45 @@ export const CustomShortcutKeyPage = () => {
                     >
                       {key}
                     </label>
-                    <input
-                      value={
-                        currentFocus() === key && editingStatus() !== null
-                          ? editingStatus()!
-                          : cskDatumToString(cskData(), key)
-                      }
-                      onFocus={(ev) => {
-                        setCurrentFocus(key);
-                      }}
-                      onBlur={(ev) => {
-                        setEditingStatus(null);
-                        if (currentFocus() === key) {
-                          setCurrentFocus(null);
+                    <div style={{
+                      display: "flex",
+                      "flex-direction": "column-reverse",
+                      "justify-content": "right",
+                      "align-content": "end",
+                      "align-items": "end"
+                    }}>
+                      <label class="csks-error-message" data-l10n-id="floorp-CSK-error" />
+                      <input
+                        value={
+                          currentFocus() === key && editingStatus() !== null
+                            ? editingStatus()!
+                            : cskDatumToString(cskData(), key)
                         }
-                      }}
-                      readonly={true}
-                      placeholder="Type a shortcut"
-                      style={{
-                        "border-radius": "4px",
-                        color: "inherit",
-                        padding: "6px 10px",
-                        "background-color": "transparent !important",
-                        border:
-                          "1px solid var(--input-border-color) !important",
-                        transition: "all .2s ease-in-out !important",
-                      }}
-                    />
+                        onFocus={(ev) => {
+                          if (focusElement() === ev.currentTarget) {
+                            return;
+                          }
+                          focusElement()?.classList.remove("csk-error");
+                          setCurrentFocus(key);
+                          setFocusElement(ev.currentTarget);
+                        }}
+                        onBlur={(ev) => {
+                          setEditingStatus(null);
+                          if (currentFocus() === key) {
+                            setCurrentFocus(null);
+                          }
+                        }}
+                        readonly={true}
+                        placeholder="Type a shortcut"
+                        style={{
+                          "border-radius": "4px",
+                          color: "inherit",
+                          padding: "6px 10px",
+                          "background-color": "transparent !important",
+                          transition: "all .2s ease-in-out !important",
+                        }}
+                      />
+                    </div>
                   </div>
                 ) : undefined
               }
