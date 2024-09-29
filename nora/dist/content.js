@@ -19,6 +19,9 @@ const _CustomShortcutKey = class _CustomShortcutKey {
       _CustomShortcutKey.instance = new _CustomShortcutKey();
     }
     if (!_CustomShortcutKey.windows.includes(window)) {
+      if (Services.prefs.getBoolPref("floorp.custom.shortcutkeysAndActions.remove.fx.actions", false)) {
+        _CustomShortcutKey.instance.disableAllCustomKeyShortcut();
+      }
       _CustomShortcutKey.instance.startHandleShortcut(window);
       _CustomShortcutKey.windows.push(window);
     }
@@ -61,6 +64,15 @@ const _CustomShortcutKey = class _CustomShortcutKey {
     this.cskData = zCSKData.parse(
       this.getCSKData()
     );
+  }
+  disableAllCustomKeyShortcut() {
+    var _a;
+    const keyElems = (_a = document == null ? void 0 : document.querySelector("#mainKeyset")) == null ? void 0 : _a.childNodes;
+    for (const keyElem of keyElems) {
+      if (!keyElem.classList.contains("floorpCustomShortcutKey")) {
+        keyElem.setAttribute("disabled", true);
+      }
+    }
   }
   startHandleShortcut(_window) {
     _window.addEventListener("keydown", (ev) => {
