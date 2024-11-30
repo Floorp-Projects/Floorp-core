@@ -552,15 +552,23 @@ export const gWorkspaces = {
   async deleteWorkspace(workspaceId) {
     let windowId = await this.getCurrentWindowId();
     let currentWorkspaceId = await this.getCurrentWorkspaceId();
-    await WorkspacesService.deleteWorkspace(workspaceId, windowId);
-    this.removeWorkspaceTabs(workspaceId);
-    if (workspaceId == currentWorkspaceId) {
-      await this.changeWorkspace(
-        await WorkspacesWindowIdUtils.getDefaultWorkspaceId(windowId),
-        0
-      );
+    const workspace = await this.getWorkspaceById(workspaceId);
+    const result = Services.prompt.confirm(
+      window,
+      this.l10n.formatValueSync("delete-workspace-prompt-title"),
+      this.l10n.formatValueSync("delete-workspace-prompt-text", { name: workspace.name }),
+    );
+    if (result) {
+      await WorkspacesService.deleteWorkspace(workspaceId, windowId);
+      this.removeWorkspaceTabs(workspaceId);
+      if (workspaceId == currentWorkspaceId) {
+        await this.changeWorkspace(
+          await WorkspacesWindowIdUtils.getDefaultWorkspaceId(windowId),
+          0
+        );
+      }
+      this.rebuildWorkspacesToolbar();
     }
-    this.rebuildWorkspacesToolbar();
   },
 
   async renameWorkspace(workspaceId, newName) {
