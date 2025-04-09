@@ -16,12 +16,12 @@
 ## For further details, consult:
 ## https://mozilla-l10n.github.io/styleguides/mozilla_general/#brands-copyright-and-trademark
 
--brand-shorter-name = Floorp
--brand-short-name = Floorp
--brand-shortcut-name = Floorp
--brand-full-name = Ablaze Floorp
+-brand-shorter-name = Rhea
+-brand-short-name = Rhea
+-brand-shortcut-name = Rhea
+-brand-full-name = Rhea Browser
 # This brand name can be used in messages where the product name needs to
 # remain unchanged across different versions (Nightly, Beta, etc.).
--brand-product-name = Floorp
--vendor-short-name = Ablaze
-trademarkInfo = Floorp and the Floorp logos are trademarks of the Ablaze.
+-brand-product-name = Rhea
+-vendor-short-name = Rhea AI    
+trademarkInfo = Rhea and the Rhea Browser logos are trademarks of Rhea AI.

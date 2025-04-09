@@ -9,26 +9,26 @@
 # BrandFullNameInternal is used for some registry and file system values
 # instead of BrandFullName and typically should not be modified.
 
-!define BrandFullNameInternal "Ablaze Floorp"
-!define BrandFullName         "Ablaze Floorp"
-!define CompanyName           "Ablaze"
-!define URLInfoAbout          "https://www.ablaze.one"
-!define URLUpdateInfo         "https://blog.ablaze.one"
-!define HelpLink              "https://support.ablaze.one"
+!define BrandFullNameInternal "Rhea Browser"
+!define BrandFullName         "Rhea Browser"
+!define CompanyName           "Boone Voyage"
+!define URLInfoAbout          "https://boone.voyage"
+!define URLUpdateInfo         "https://boone.voyage"
+!define HelpLink              "https://boone.voyage"
 
 ; The OFFICIAL define is a workaround to support different urls for Release and
 ; Beta since they share the same branding when building with other branches that
 ; set the update channel to beta.
 !define OFFICIAL
 !define URLStubDownloadX86 ""
-!define URLStubDownloadAMD64 "https://github.com/Floorp-Projects/Floorp/releases/latest/download/floorp-win64.installer.exe"
+!define URLStubDownloadAMD64 "https://github.com/Boone-Voyage/rhea-browser/releases/latest/download/rhea-win64.installer.exe"
 !define URLStubDownloadAArch64 ""
 !define URLManualDownload ""
 !define URLSystemRequirements "https://www.mozilla.org/firefox/system-requirements/"
 !define Channel "release"
 
 # The installer's certificate name and issuer expected by the stub installer
-!define CertNameDownload   "Open Source Developer, Ryosuke Asano"
+!define CertNameDownload   "Boone Voyage"
 !define CertIssuerDownload "Certum Code Signing 2021 CA"
 
 # Dialog units are used so the UI displays correctly with the system's DPI

@@ -4,9 +4,9 @@
 
 // This file contains branding-specific prefs.
 
-pref("startup.homepage_override_url", "https://blog.ablaze.one/category/ablaze/ablaze-project/floorp/");
-pref("startup.homepage_welcome_url", "about:setup | https://blog.ablaze.one/3225/2023-06-22/");
-pref("startup.homepage_welcome_url.additional", "https://docs.ablaze.one/floorp_privacy_policy/");
+pref("startup.homepage_override_url", "https://rheagi.com");
+pref("startup.homepage_welcome_url", "about:setup | https://rheagi.com");
+pref("startup.homepage_welcome_url.additional", "https://rheagi.com/privacy");
 // Interval: Time between checks for a new version (in seconds)
 pref("app.update.interval", 43200); // 12 hours
 // Give the user x seconds to react before showing the big UI. default=192 hours
@@ -17,15 +17,15 @@ pref("app.update.promptWaitTime", 691200);
 // update" link supplied in the "An update is available" page of the update
 // wizard.
 #if MOZ_UPDATE_CHANNEL == beta
-  pref("app.update.url.manual", "https://www.mozilla.org/%LOCALE%/firefox/beta");
-  pref("app.update.url.details", "https://www.mozilla.org/%LOCALE%/firefox/beta/notes");
-  pref("app.releaseNotesURL", "https://blog.ablaze.one/category/ablaze/ablaze-project/floorp/");
-  pref("app.releaseNotesURL.aboutDialog", "https://blog.ablaze.one/category/ablaze/ablaze-project/floorp/");
+  pref("app.update.url.manual", "https://rheagi.com/browser/beta");
+  pref("app.update.url.details", "https://rheagi.com/browser/beta/notes");
+  pref("app.releaseNotesURL", "https://rheagi.com/browser/notes");
+  pref("app.releaseNotesURL.aboutDialog", "https://rheagi.com/browser/notes");
 #else
-  pref("app.update.url.manual", "https://www.mozilla.org/%LOCALE%/firefox/");
-  pref("app.update.url.details", "https://www.mozilla.org/%LOCALE%/firefox/notes");
-  pref("app.releaseNotesURL", "https://blog.ablaze.one/category/ablaze/ablaze-project/floorp/");
-  pref("app.releaseNotesURL.aboutDialog", "https://blog.ablaze.one/category/ablaze/ablaze-project/floorp/");
+  pref("app.update.url.manual", "https://rheagi.com/browser");
+  pref("app.update.url.details", "https://rheagi.com/browser/notes");
+  pref("app.releaseNotesURL", "https://rheagi.com/browser/notes");
+  pref("app.releaseNotesURL.aboutDialog", "https://rheagi.com/browser/notes");
 #endif
 
 // The number of days a binary is permitted to be old
