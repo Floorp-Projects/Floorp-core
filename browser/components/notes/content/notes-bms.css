@@ -12,18 +12,18 @@
 }
 
 button {
-  background-color: var(--in-content-box-info-background) !important;
+  background-color: var(--in-content-button-background) !important;
   transition: 0.2s ease-out;
 }
 
 button:hover,
 button#memo-add:hover {
-  background-color: #ffffff40 !important;
+  background-color: var(--in-content-button-background-hover) !important;
 }
 
 button:active,
 button#memo-add:active {
-  background-color: #ffffff50 !important;
+  background-color: var(--in-content-button-background-active) !important;
 }
 
 #memo-add.selected {
@@ -74,15 +74,15 @@ html {
 }
 
 .memo-list-item.selected {
-  background-color: #ffffff20;
+  background-color: var(--in-content-button-background);
 }
 
 .memo-list-item:hover {
-  background-color: #ffffff30;
+  background-color: var(--in-content-button-background-hover);
 }
 
 .memo-list-item:active {
-  background-color: #ffffff40;
+  background-color: var(--in-content-button-background-active);
 }
 
 .memo-list-item::after {
