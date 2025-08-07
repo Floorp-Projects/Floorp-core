@@ -105,6 +105,11 @@ export const gFloorpPreferences = {
     /*------------------------------------- user.js -------------------------------------*/
     this.applyUserJSCustomize();
     this.initialized = true;
+
+    /*------------------------------------- set Browser 11 for Migration -------------------------------------*/
+    if (Services.prefs.getBoolPref("browser.tabs.tabbrowser.is11", false)) {
+      this.setBrowserIs11();
+    }
   },
 
   async backupFloorpNotes() {
@@ -140,7 +145,7 @@ export const gFloorpPreferences = {
           });
         }
       });
-    } catch (e) {}
+    } catch (e) { }
   },
 
   getAllBackupedNotes() {
@@ -165,7 +170,7 @@ export const gFloorpPreferences = {
 
       try {
         userjs.remove(false);
-      } catch (e) {}
+      } catch (e) { }
 
       fetch(url)
         .then(response => response.text())
@@ -177,6 +182,10 @@ export const gFloorpPreferences = {
         });
     }
   },
+
+  setBrowserIs11() {
+    Services.prefs.setBoolPref("floorp.browser.is11", true);
+  }
 };
 
 gFloorpPreferences.init();
