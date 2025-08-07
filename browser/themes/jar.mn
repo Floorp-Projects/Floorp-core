@@ -15,7 +15,11 @@ floorp.jar:
   skin/classic/icons/verticaltab.svg                                        (icons/verticaltab.svg)
 
 # bms
-  skin/classic/icons/bms-hide.svg                                   (icons/bms-hide.svg)
+  skin/classic/icons/bms-hide.svg                                           (icons/bms-hide.svg)
+
+# bms
+  skin/classic/floorp12/floorp12.png                                        (floorp12/floorp12.png)
+  skin/classic/floorp12/logo.png                                            (floorp12/logo.png)
 
 # options
   skin/classic/designs/options/micaforeveryone.css                          (designs/options/micaforeveryone.css)
