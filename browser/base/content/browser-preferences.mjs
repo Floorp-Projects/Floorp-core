@@ -107,9 +107,7 @@ export const gFloorpPreferences = {
     this.initialized = true;
 
     /*------------------------------------- set Browser 11 for Migration -------------------------------------*/
-    if (Services.prefs.getBoolPref("browser.tabs.tabbrowser.is11", false)) {
-      this.setBrowserIs11();
-    }
+    this.setBrowserIs11();
   },
 
   async backupFloorpNotes() {
@@ -184,7 +182,7 @@ export const gFloorpPreferences = {
   },
 
   setBrowserIs11() {
-    Services.prefs.setBoolPref("floorp.browser.is11", true);
+    Services.prefs.setBoolPref("floorp.browser.isVersion11", true);
   }
 };
 
